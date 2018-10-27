@@ -1,0 +1,89 @@
+.taskManagement{
+    height:95%;
+    .elStyle{
+        padding: 0px 20px 20px 20px;
+        height: 100%;
+        border-right: 1px solid #e4e7ed;
+    }
+    .blackOne{
+            display: block;
+            padding: 10px 20px;
+            border-bottom: 1px solid #e4e7ed;
+    .oneFirst{
+        margin-bottom: 10px;
+    }
+    }
+    .rightTag{
+        text-align: right;
+    }
+    .blackOne:hover{
+        cursor: pointer;
+    }
+    .blackOne:focus{
+        outline:none;
+        background: rgba(16, 142, 233,0.08);
+    }
+    .rowOne{
+        border:1px solid #e4e7ed;
+        border-top:none;
+        height:100%;
+    }
+    .despSpan{
+        margin: 10px 0 20px 0px;
+        font-size: 16px;
+    }
+    .despInfon{
+        margin-bottom: 20px;
+        .el-col{
+            border-radius: 20px;
+            padding: 5px;
+            text-align: center;
+        }
+        .el-col:hover{
+            cursor: pointer;
+            background: rgba(16, 142, 233,0.08);
+        }
+    }
+    .desp_look{
+        color:#999999;
+    }
+    .firstTab div{
+        margin: 10px 0;
+     }
+     .rightSpan{
+         margin-left: 20px;
+     }
+     .rightNumber{
+         float: right;
+         color: #13CE66;
+         font-weight: 700;
+         font-style: normal;
+         font-size: 16px;
+     }
+     .rightEL{
+        padding:0px 20px 20px 20px;
+        .rightElSpan{
+            margin: 10px 0;
+        }
+     }
+     .iconStyle{
+        font-size: 20px;
+        font-weight:700;
+     }
+     .despImage{
+        width:30px;
+        height:30px;
+        display:inline-block;
+        vertical-align: top;
+     }
+     .secondtTab{
+         .el-row{
+             margin: 20px 10px;
+         }
+     }
+     .taskList{
+        border-bottom:1px solid #e4e7ed;
+        padding: 10px 10px 30px 10px;
+        margin-bottom:30px;
+     }
+}

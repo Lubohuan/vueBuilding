@@ -1,0 +1,32 @@
+.home {
+  height: 100%;
+  min-width: 1400px;
+
+  .treeList {
+    height: 100%;
+    background: rgba(244, 245, 249, 1);
+
+    .el-tree-node__content:hover {
+      background: rgba(0, 0, 0, 0.2) !important;
+    }
+
+    .el-tree-node:focus>.el-tree-node__content {
+      background: rgba(16, 142, 233, 0.08);
+      color: #409EFF;
+    }
+  }
+  .titleSpan{
+    font-family: '微软雅黑 Bold', '微软雅黑';
+    font-weight: 700;font-style: normal;
+    color: #434343;
+    font-size:18px;
+    margin:20px 0;
+  }
+  .elContent{
+    padding:32px;
+    height:100%;
+  }
+}
+.breadTitle{
+  margin-bottom: 20px;
+}
