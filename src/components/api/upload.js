@@ -1,142 +1,198 @@
 import request from '@/utils/request'
-import { getToken} from '@/utils/auth'
-
-// 云盘上传文件接口
-export function getPolicy(ext) {
+import {
+  getToken
+} from '@/utils/auth'
+const baseUrl = 'http://172.16.7.135'
+// 查询统计单位接口
+export function getUnitPage(data) {
   return request({
-    url: `http://localhost:8080/alphaPortalService/cloud/policy`,
+    url: baseUrl + '/basicData/getUnitPage',
     method: 'get',
-    params: { ext }
+    params: data
   })
 }
-
-// 云盘上传文件接口
-export function uploadSave(data) {
+// 添加统计单位接口
+export function addUnit(data) {
   return request({
-    url: 'http://autobuild.jiguantong.com/alphaPortalService/cloud/file',
+    url: baseUrl + '/basicData/addUnit',
     method: 'post',
     data: data
   })
 }
-// 请求云盘列表数据
-export function getUploadDataList() {
+// 修改统计单位接口
+export function updateUnitById(data) {
   return request({
-    url: '',
-    method: 'get',
-    data: {
-      
-    }
-  })
-}
-
-///////////////////
-
-// 新增云盘文件信息
-export function saveCloudFileInfo(data) {
-  return request({
-    url: 'http://autobuild.jiguantong.com/alphaPortalService/cloud/file',
-    // url: 'http://192.168.1.16:8080/alphaPortalService/cloud/file',
-    method: 'post',
-    data: data
-  })
-}
-
-// 修改云盘文件信息
-export function updateCloudFileInfo(data) {
-  return request({
-    url: 'http://autobuild.jiguantong.com/alphaPortalService/cloud/file',
+    url: baseUrl + '/basicData/updateUnitById',
     method: 'put',
     data: data
   })
 }
-
-// 分页查询云盘文件信息
-// 传入文件夹ID 查询文件夹下列表， 默认传入值0
-export function queryCloudFileInfoPage(folderId) {
+// 删除统计单位接口
+export function deleteUnitById(data) {
   return request({
-    url: 'http://autobuild.jiguantong.com/alphaPortalService/cloud/file',
-    method: 'get',
-    params: {folderId}
-  })
-}
-
-// 查询云盘文件信息
-export function queryCloudFileInfo(id) {
-  return request({
-    url: 'http://autobuild.jiguantong.com/alphaPortalService/cloud/file'+'?id='+id,
-    method: 'get',
-    data: {
-      
-    }
-  })
-}
-
-// 删除云盘文件信息
-export function deleteCloudFileInfo(data) {
-  return request({
-    url: 'http://autobuild.jiguantong.com/alphaPortalService/cloud/file',
+    url: baseUrl + '/basicData/deleteUnitById/' + data,
     method: 'delete',
-    data: data
   })
 }
-
-///////////////////
-
-// 新增云盘文件夹信息
-export function saveCloudFolderInfo(data) {
+// 分页查询任务预警记录
+export function getTaskWarningLogPage(data) {
   return request({
-    url: 'http://autobuild.jiguantong.com/alphaPortalService/cloud/folder',
-    // url: 'http://192.168.1.16:8080/alphaPortalService/cloud/folder',
+    url: baseUrl + '/warning/getTaskWarningLogPage',
+    method: 'get',
+    params: data
+  })
+}
+// 分页查询进度预警
+export function getTaskWarningPage(data) {
+  return request({
+    url: baseUrl + '/warning/getTaskWarningPage',
+    method: 'get',
+    params: data
+  })
+}
+// 解除任务预警
+export function relieveTaskWarning(data) {
+  return request({
+    url: baseUrl + '/warning/relieveTaskWarning',
     method: 'post',
     data: data
   })
 }
-
-// 修改云盘文件夹信息
-export function updateCloudFolderInfo(data) {
+// 任务督办
+export function urgeTask(data) {
   return request({
-    url: 'http://autobuild.jiguantong.com/alphaPortalService/cloud/folder',
+    url: baseUrl + '/warning/urgeTask',
+    method: 'post',
+    data: data
+  })
+}
+// 查询所在组织可用的分部分项信息
+export function getSubsectionPage(data) {
+  return request({
+    url: baseUrl + '/basicData/getSubsectionPage',
+    method: 'get',
+    params: data
+  })
+}
+// 添加分部分项
+export function addSubsection(data) {
+  return request({
+    url: baseUrl + '/basicData/addSubsection',
+    method: 'post',
+    data: data
+  })
+}
+// 修改分部分项
+export function updateSubsection(data) {
+  return request({
+    url: baseUrl + '/basicData/updateSubsection',
     method: 'put',
     data: data
   })
 }
-
-// 分页查询云盘文件夹信息
-// 传如parentId 查询文件夹下列表， 默认传入值0 
-export function queryCloudFolderInfoPage(parentId) {
+// 分页查询进度计划
+export function getConstructPlanPage(data) {
   return request({
-    url: 'http://autobuild.jiguantong.com/alphaPortalService/cloud/folder',
+    url: baseUrl + '/schedule/getConstructPlanPage',
     method: 'get',
-    params: { parentId }
+    params: data
   })
 }
-
-// 查询云盘文件夹信息
-// 目前没用
-export function queryCloudFolderInfo(id) {
+// 添加施工记录
+export function addConstructLog(data) {
   return request({
-    url: 'http://autobuild.jiguantong.com/alphaPortalService/cloud/folder'+'?id='+id,
-    method: 'get',
-    data: {
-      
-    }
-  })
-}
-
-// 删除云盘文件夹信息
-export function deleteCloudFolderInfo(data) {
-  return request({
-    url: 'http://autobuild.jiguantong.com/alphaPortalService/cloud/folder',
-    method: 'delete',
+    url: baseUrl + '/schedule/addConstructLog',
+    method: 'post',
     data: data
   })
 }
-
-//获取code
-export function getUserCode(token) {
+// 添加进度计划
+export function addConstructPlan(data) {
   return request({
-    url: 'http://autobuild.jiguantong.com/alphaPortalService/user/code',
-    method: 'POST',
-    data: {token: token}
+    url: baseUrl + '/schedule/addConstructPlan',
+    method: 'post',
+    data: data
+  })
+}
+// 启用施工进度计划
+export function startConstructPlan(data) {
+  return request({
+    url: baseUrl + '/schedule/startConstructPlan/' + data,
+    method: 'put'
+  })
+}
+// 禁用施工进度计划
+export function stopVisualStatItem(data) {
+  return request({
+    url: baseUrl + '/schedule/stopVisualStatItem/' + data,
+    method: 'put'
+  })
+}
+// 删除施工进度计划
+export function deleteConstructPlanById(data) {
+  return request({
+    url: baseUrl + '/schedule/deleteConstructPlanById/' + data,
+    method: 'delete',
+  })
+}
+// 根据父ID查询施工区域
+export function listRegion(data) {
+  return request({
+    url: baseUrl + '/project/listRegion',
+    method: 'get',
+    params: data
+  })
+}
+// 添加施工区域
+export function addRegion(data) {
+  return request({
+    url: baseUrl + '/project/addRegion',
+    method: 'post',
+    data: data
+  })
+}
+// 添加形象进度统计项
+export function addVisualStatItem(data) {
+  return request({
+    url: baseUrl + '/project/addVisualStatItem',
+    method: 'post',
+    data: data
+  })
+}
+// 删除（逻辑删除）施工区域
+export function deleteRegionById(data) {
+  return request({
+    url: baseUrl + '/project/deleteRegionById/' + data,
+    method: 'delete',
+  })
+}
+// 分页查询形象进度统计项
+export function getVisualStatItemPage(data) {
+  return request({
+    url: baseUrl + '/project/getVisualStatItemPage',
+    method: 'get',
+    params: data
+  })
+}
+// 启用形象进度统计项
+export function startVisualStatItem(data) {
+  return request({
+    url: baseUrl + '/project/startVisualStatItem/' + data,
+    method: 'get'
+  })
+}
+// 禁用形象进度统计项
+export function stopVisualStatItems(data) {
+  return request({
+    url: baseUrl + '/project/stopVisualStatItem/' + data,
+    method: 'get'
+  })
+}
+// 修改施工区域
+export function updateRegion(data) {
+  return request({
+    url: baseUrl + '/project/updateRegion',
+    method: 'put',
+    data:data
   })
 }

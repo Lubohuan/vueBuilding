@@ -19,6 +19,16 @@
   </el-row>
   <el-row class="rowOne">
       <el-col :span="8" class="elStyle" style="padding:0px;">
+          <el-row class="sortTab">
+              <el-col :span="8">
+              <el-button type="primary" size="mini">任务</el-button>
+              </el-col>
+              <el-col :span="16" style="text-align:right;">
+                    <span><i class="el-icon-sort iconStyle"></i>排序</span>
+                    <span><i class="el-icon-sort iconStyle"></i>分组</span>
+                    <span>筛选</span>
+              </el-col>
+          </el-row>
           <div v-for="(item,index) in tableData" :key="item.id" @click="lookInfo(item)" class="blackOne" tabindex = "0">
               <div class="oneFirst">{{item.desp}}</div>
               <div>
@@ -35,7 +45,12 @@
               </div>
           </div>
       </el-col>
-      <el-col :span="8" class="elStyle">
+      <el-col :span="16" class="elStyle" style="border-right:none;">
+          <el-row class="sortTabs">
+            <span>#{{personalData.name}}</span>
+          </el-row>
+          <el-row class="despRowHeight">
+          <el-col :span="12" class="elDesp">
           <div class="despSpan">{{personalData.desp}}</div>
           <el-row class="despInfon">
                   <el-col :span="8">
@@ -60,7 +75,8 @@
                        </div>
                   </el-col>
             </el-row>
-             <el-tabs v-model="activeName1" @tab-click="handleClick">
+            <el-row class="despSpans">
+            <el-tabs v-model="activeName1" @tab-click="handleClick">
                   <el-tab-pane label="基础信息" name="first1" class="firstTab">
                       <div>跟踪频率：{{personalData.id}}/次</div>
                       <div style="margin:0px;">任务描述</div>
@@ -94,32 +110,35 @@
                       </div>
                   </el-tab-pane>
                   <el-tab-pane label="文件" name="third1"></el-tab-pane>
-             </el-tabs>           
-      </el-col>
-      <el-col :span="8" class="rightEL">
-             <el-row class="rightElSpan">
+            </el-tabs>
+            </el-row>
+            </el-col>
+            <el-col :span="12"  class="rightEL">
+            <el-row class="rightElSpan">
                  <el-col :span="12">
                      <span>进展</span>
                  </el-col>
                  <el-col :span="12" style="text-align:right;">
                      <i class="el-icon-sort iconStyle"></i>
-                 </el-col>
-                 
-             </el-row>
-             <el-tabs v-model="activeName11" @tab-click="handleClick">
+                 </el-col>  
+            </el-row>
+            <el-tabs v-model="activeName11" @tab-click="handleClick">
                 <el-tab-pane label="全部" name="first11"></el-tab-pane>
                 <el-tab-pane label="评论" name="second12"></el-tab-pane>
                 <el-tab-pane label="文件" name="third13"></el-tab-pane>
                 <el-tab-pane label="变更记录" name="fourth14"></el-tab-pane>
-             </el-tabs>
-             <el-row v-for="item in tableData" :key="item.id" style="margin:15px 0;">
+            </el-tabs>
+            <el-row v-for="item in tableData" :key="item.id" style="margin:15px 0;">
                  <el-col>
                      <i class="el-icon-bell"></i>
                      <span>{{item.name}}：</span>
                      <span class="desp_look">{{item.desp}}</span>
                      <span class="desp_look" style="float:right;">2018-10-26</span>
                  </el-col>               
-             </el-row>
+            </el-row>
+
+            </el-col>
+          </el-row>          
       </el-col>
   </el-row>
   </div>
@@ -157,7 +176,7 @@ export default {
         }
       ],
       personalData: {},
-      textarea: "",
+      textarea: ""
     };
   },
   methods: {

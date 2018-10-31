@@ -1,0 +1,126 @@
+.commandCentre {
+  height: 100%;
+
+  .blueBlock {
+    width: 12px;
+    height: 32px;
+    background: rgba(16, 142, 255, 1);
+    display: inline-block;
+    margin-bottom: 15px;
+  }
+
+  .spanBlock {
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 6px;
+    margin-left: 10px;
+    font-family: "微软雅黑 Bold", 微软雅黑;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 16px;
+  }
+
+  .tableDiv {
+    padding: 32px 20px;
+    border: 1px solid #e4e7ed;
+    .tableTitle{
+        margin-bottom: 12px;
+    }
+    .el-table th.is-leaf {
+      padding: 6px 0 !important;
+    }
+  }
+
+  .despImage {
+    width: 56px;
+    height: 56px;
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 10px;
+  }
+
+  .desp_look {
+    display: inline-block;
+    color: rgba(0, 0, 0, 0.427450980392157);
+    margin-bottom: 5px;
+  }
+
+  .desp_personal {
+    font-size: 30px;
+    font-weight: 600;
+  }
+
+  .commandCard {
+    height: 106px;
+    padding: 30px 20px 20px 20px;
+    border: 1px solid #e4e7ed;
+    margin-bottom: 20px;
+  }
+
+  .cardFooter {
+    margin-top: 20px;
+    border-top: 1px solid #e4e7ed;
+    padding-top: 10px;
+  }
+
+  .footerRight {
+    float: right;
+  }
+
+  .cradContent {
+    // width:100%;
+    display: inline-block;
+    margin-left: 30px;
+  }
+
+  .el-progress-bar__outer {
+    border-radius: 0;
+    height: 12px !important;
+  }
+
+  .el-progress-bar__inner {
+    // width:100%;
+    border-radius: 0;
+    height: 12px;
+  }
+
+  .el-progress__text {
+    margin-top: -78px;
+    margin-left: -45px;
+    font-family: 微软雅黑;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 30px !important;
+  }
+  .el-progress-bar{
+      padding-right: 0px !important;
+  }
+  .commandCards {
+    padding: 30px 20px 20px 20px;
+    height: 106px;
+    border: 1px solid #e4e7ed;
+
+    .cradContents {
+      width: 100%;
+      display: inline-block;
+    }
+    .desp_looks{
+        display: inline-block;
+        color: rgba(0, 0, 0, 0.427450980392157);
+        margin-bottom: 20px;
+    }
+    .cardFooters{
+        margin-top: 32px;
+        border-top: 1px solid #e4e7ed;
+        padding-top: 10px;
+    }
+  }
+  .upDownImage{
+      width: 14px;
+      height: 15px;
+  }
+  .downImage{
+    transform:rotate(180deg);
+    margin-bottom:5px;
+  }
+}

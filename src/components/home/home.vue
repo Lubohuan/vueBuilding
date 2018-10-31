@@ -1,15 +1,17 @@
 <template>
 <!--布局页面-->
 <div class="home">
-<el-row style="height:100%;">
- <el-col :span="3" class="treeList" style="padding-left:20px;">
+<el-container style="height:100%;">
+  <el-aside width="220px" class="asideList">
      <div class="titleSpan">进度可视化管理</div>
      <el-tree class="treeList" :data="data2" :props="defaultProps" default-expand-all @node-click="handleNodeClick" :highlight-current="true"></el-tree>
- </el-col>
- <el-col :span="21" class="elContent">
+  </el-aside>
+  <el-container>
+    <el-main class="elContent">
       <router-view> </router-view>
- </el-col>
-</el-row>
+    </el-main>
+  </el-container>
+</el-container>
 </div>
 </template>
 
@@ -23,11 +25,11 @@ export default {
         label: "label"
       },
       data2: [
-        // {
-        //   id: 1,
-        //   label: "指挥中心",
-        //   path:""
-        // },
+        {
+          id: 1,
+          label: "指挥中心",
+          path:"/commandCentre"
+        },
         // {
         //   id: 2,
         //   label: "可视化进度",
@@ -92,6 +94,7 @@ export default {
         {
           id: 6,
           label: "设置",
+          path:"",
           children: [
             {
               id: 61,

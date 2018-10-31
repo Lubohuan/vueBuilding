@@ -11,7 +11,11 @@
     <el-table-column prop="name"  label="项目名称" align="center"></el-table-column>
     <el-table-column prop="name"  label="任务名称" align="center"></el-table-column>
     <el-table-column prop="name"  label="施工区段" align="center" min-width="120"></el-table-column>
-    <el-table-column prop="name"  label="预警原因" align="center" min-width="120"></el-table-column>
+    <el-table-column prop="name"  label="预警原因" align="center" min-width="120">
+        <template slot-scope="scope">
+            <span style="color:red;">{{scope.row.name}}</span>
+      </template>
+    </el-table-column>
     <el-table-column prop="name"  label="负责人" align="center"></el-table-column>
     <el-table-column prop="name"  label="预约时间" align="center" min-width="120"></el-table-column>
     <el-table-column prop="name"  label="责任人" align="center" min-width="120"></el-table-column>
@@ -23,13 +27,13 @@
       </template>
     </el-table-column>
   </el-table>
-  <el-pagination background 
+  <el-pagination background v-if="total > 0"
       class="pageStyle"
 	  layout="prev, pager, next, sizes, total, jumper"
 	  :page-sizes="[5, 10, 15, 20]"
 	  :page-size="pagesize"
-      :current-page="currentPage"
-	  :total="tableData.length"
+    :current-page.sync="currentPage"
+	  :total="total"
 	  @current-change="handleCurrentChange"
 	  @size-change="handleSizeChange"
   >
@@ -48,39 +52,31 @@
         </el-form-item>
       </el-form>
       <div class="clickBtn">
-        <el-button @click="dialog.relieveReason = false;relieveReasons={}"  size="small">取消</el-button>
-        <el-button  size="small" type="primary">确定</el-button>
+        <el-button @click="close"  size="small">取消</el-button>
+        <el-button  size="small" type="primary" @click="commit">确定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
+import { getTaskWarningLogPage, relieveTaskWarning } from "../api/upload.js";
 import supervise from "../taskWarning/supervise.vue";
 export default {
   name: "taskWarning",
-  components:{
-      supervise
+  components: {
+    supervise
   },
   data() {
     return {
       multipleSelection: [],
-      valueData:"",
-      tableData: [
-        {
-          id: 1,
-          name: "m1"
-        },
-        {
-          id: 2,
-          name: "m2"
-        }
-      ],
-      relieveReasons:{
-          id:"",
-          reason:""
+      valueData: "",
+      tableData: [],
+      relieveReasons: {
+        id: "",
+        relieveReason: ""
       },
-      remindData:{},
+      remindData: {},
       companyList: [
         {
           companyName: 11,
@@ -93,12 +89,12 @@ export default {
       ],
       companyCode: "",
       dialog: {
-        supervise:false,
+        supervise: false,
         relieveReason: false
       },
       pagesize: 10,
-      currpage: 1,
-      currentPage: 1
+      currentPage: 1,
+      total: 0
     };
   },
   methods: {
@@ -106,45 +102,62 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
-    //删除方法
-    deleteClick(scope) {
-       this.$confirm("确定要删除此进度吗", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消"
-      })
-        .then(() => {
-          this.$message.success("删除成功!");
-        })
-        .catch(() => {
-          this.$message.error("已取消删除");
-        });
-    },
-    //新增
-    supervise(){
-       this.dialog.supervise = true;
-       this.dataObj = {}
-    },
-    //编辑
-    editPlan(data){
-        this.dialog.supervise = true;
-        this.dataObj = data;
-    },
+    //页码变化
     handleCurrentChange(cpage) {
-      this.currpage = cpage;
+      this.currentPage = cpage;
     },
+    //每页显示数量变化
     handleSizeChange(psize) {
       this.pagesize = psize;
     },
     //解除预警
-    relieveReason(data){
+    relieveReason(data) {
       this.relieveReasons.id = data.id;
-      this.dialog.relieveReason = true;  
+      this.dialog.relieveReason = true;
     },
     //提醒督办
-    remindSupervise(data){
-      this.remindData= data;
-      this.dialog.supervise = true;  
+    remindSupervise(data) {
+      this.remindData = data;
+      this.dialog.supervise = true;
+    },
+    //分页查询
+    refreshList() {
+      getTaskWarningLogPage({
+        current: this.currentPage,
+        offset: this.pagesize
+      })
+        .then(response => {
+          this.tableData = response.body.rows;
+          this.total = Number(response.body.page.rows);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    //关闭解除预警弹框
+    close() {
+      this.dialog.relieveReason = false;
+      this.relieveReasons.id = "";
+      this.relieveReasons.relieveReason = "";
+    },
+    //提交解除预警
+    commit() {
+      relieveTaskWarning(this.relieveReasons)
+        .then(response => {
+          if (response.code == "200") {
+            this.$message.success("提交成功!");
+            this.close();
+          } else {
+            this.$message.error(response.msg);
+          }
+        })
+        .catch(error => {
+          this.$message.error(error);
+        });
     }
+  },
+  created() {
+    this.refreshList();
   }
 };
 </script>

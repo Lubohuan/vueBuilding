@@ -2,8 +2,8 @@
 <!-- 提醒督办 -->
 <div class="supervise">
   <el-form :model="superviseModel" :rules="rules" ref="supervise" label-width="125px">
-    <el-form-item label="督办内容" prop="desp">
-        <el-input  type="textarea" :autosize="{minRows:3}" v-model="superviseModel.desp" size="small" placeholder="请输入督办内容"></el-input>
+    <el-form-item label="督办内容" prop="urgeContent">
+        <el-input  type="textarea" :autosize="{minRows:3}" v-model="superviseModel.urgeContent" size="small" placeholder="请输入督办内容"></el-input>
     </el-form-item>
      <el-form-item label="是否短信通知：" prop="radio">
         <el-radio-group v-model="superviseModel.radio" style="width:110px;">
@@ -20,46 +20,50 @@
 </template>
 
 <script>
+import { urgeTask } from "../api/upload.js";
 export default {
   name: "supervise",
   data() {
     return {
       superviseModel: {
+        createTime: "",
+        createUser: "",
         id: "",
-        desp:"",
-        radio:""
+        isDelete: "",
+        planId: "",
+        respUser: "",
+        state: "",
+        urgeContent: "",
+        radio: ""
       },
-      userList:[
-          {
-            name:"www",
-            id:1
-          },
-          {
-           name:"sss",
-           id:2
-          }
+      userList: [
+        {
+          name: "www",
+          id: 1
+        },
+        {
+          name: "sss",
+          id: 2
+        }
       ],
       //数据校验
       rules: {
-        desp: [{ required: true, message: "请输入编码", trigger: "blur" }]
+        urgeContent: [
+          { required: true, message: "请输入督办内容", trigger: "blur" }
+        ]
       },
-      radio:""
+      radio: ""
     };
   },
   methods: {
-    /**
-     反显数据
-     */
-    update(data) {
-      if (!data.id) return;
+    update() {
       this.superviseModel.id = data.id;
-      console.log(this.superviseModel, "this.superviseModel");
     },
     //重置方法
     reset() {
       const AddStat = this.$refs["supervise"];
       AddStat.resetFields();
-      this.superviseModel.id = null;
+      this.superviseModel= {};
     },
     //关闭弹框
     close() {
@@ -72,21 +76,30 @@ export default {
         if (!valid) {
           return;
         }
-        this.$emit("close");
-        this.reset();
+        urgeTask(this.relieveReasons)
+          .then(response => {
+            if (response.code == "200") {
+              this.$message.success("提交成功!");
+              this.close();
+            } else {
+              this.$message.error(response.msg);
+            }
+          })
+          .catch(error => {
+            this.$message.error(error);
+          });
       });
     }
   }
 };
 </script>
 <style lang="scss" scoped>
-.supervise{
-.clickBtn {
-  text-align: center;
+.supervise {
+  .clickBtn {
+    text-align: center;
+  }
+  .el-form-item {
+    width: 90%;
+  }
 }
-.el-form-item{
-  width: 90%;
-}
-}
-
 </style>

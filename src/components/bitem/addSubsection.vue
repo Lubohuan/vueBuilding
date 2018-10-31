@@ -1,9 +1,12 @@
 <template>
-<!-- 新增/修改单位 -->
-<div class="addStat">
-  <el-form :model="dataModel" :rules="rules" ref="addStat" label-width="100px">
-        <el-form-item label="单位名称：" prop="unitName">
-          <el-input v-model="dataModel.unitName"></el-input>
+<!-- 新增/修改分部分项 -->
+<div class="addSubsection">
+  <el-form :model="dataModel" :rules="rules" ref="addSubsection" label-width="120px">
+        <el-form-item label="分部分项名称：" prop="subName">
+          <el-input v-model="dataModel.subName"></el-input>
+        </el-form-item>
+         <el-form-item label="备注信息：" prop="remark">
+          <el-input v-model="dataModel.remark"></el-input>
         </el-form-item>
   </el-form>
   <div class="clickBtn">
@@ -14,20 +17,23 @@
 </template>
 
 <script>
-import { addUnit, updateUnitById } from "../api/upload.js";
+import { addSubsection, updateSubsection } from "../api/upload.js";
 export default {
-  name: "addStat",
+  name: "addSubsection",
   data() {
     return {
       dataModel: {
-        unitName: "",
-        id: "",
-        remark: ""
+        // id: null,
+        // parentId: 0,
+        projectType: 1,
+        remark: "",
+        sort: 1,
+        subName: ""
       },
       //数据校验
       rules: {
-        unitName: [
-          { required: true, message: "请输入单位名称", trigger: "blur" }
+        subName: [
+          { required: true, message: "分部分项名称", trigger: "blur" }
         ]
       }
     };
@@ -38,18 +44,18 @@ export default {
      */
     update(data) {
       if (!data.id) return;
-      this.dataModel.unitName = data.unitName;
-      this.dataModel.id = data.id;
-      this.dataModel.remark = data.remark;
-      console.log(this.dataModel, "this.dataModel");
+      this.dataModel = {...data};
     },
     //重置方法
     reset() {
-      const AddStat = this.$refs["addStat"];
-      AddStat.resetFields();
-      this.dataModel.unitName = "";
-      this.dataModel.id = "";
+      const addSubsection = this.$refs["addSubsection"];
+      addSubsection.resetFields();
+      this.dataModel.id = null;
+      this.dataModel.parentId = null;
+      this.dataModel.projectType = "";
       this.dataModel.remark = "";
+      this.dataModel.sort = 1;
+      this.dataModel.subName = "";
     },
     //关闭弹框
     close() {
@@ -59,17 +65,17 @@ export default {
     //点击提交
     commit() {
       console.log(this.dataModel, "this.dataModel");
-      this.$refs["addStat"].validate(valid => {
+      this.$refs["addSubsection"].validate(valid => {
         if (!valid) {
           return;
         }
         //根据是否有数据传入决定执行新增还是修改
-        const result = this.dataModel.id ? this.updateStat() : this.addStat();
+        const result = this.dataModel.id ? this.updateSubsections() : this.addSubsections();
       });
     },
-    //新增单位
-    addStat() {
-      addUnit(this.dataModel)
+    //添加分部分项
+    addSubsections() {
+      addSubsection(this.dataModel)
         .then(response => {
           if (response.code == "200") {
             this.$message.success("添加成功!");
@@ -84,24 +90,10 @@ export default {
           return false;
         });
       return true;
-      // this.$axios
-      //   .post("http://172.16.7.135/basicData/addUnit", this.dataModel)
-      //   .then(response => {
-      //     if (response.data.code == "200") {
-      //       this.$message.success("添加成功!");
-      //       this.close();
-      //       this.$emit("refreshData");
-      //     } else {
-      //       this.$message.error(response.data.msg);
-      //     }
-      //   })
-      //   .catch(error => {
-      //     return false;
-      //   });
     },
-    //修改单位
-    updateStat() {
-      updateUnitById(this.dataModel)
+    //修改分部分项
+    updateSubsections() {
+      updateSubsection(this.dataModel)
         .then(response => {
           if (response.code == "200") {
             this.$message.success("修改成功!");

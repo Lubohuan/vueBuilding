@@ -20,7 +20,7 @@
   </el-row>
   <el-row>
    <el-col :span="5">
-      <el-button size="mini" type="primary">+ 添加分部</el-button>
+      <el-button size="mini" type="primary" @click="addSub">+ 添加分部</el-button>
       <el-button size="mini" type="success">导出excel</el-button>
    </el-col>
    <el-col :span="19" class="bitem_btn1">
@@ -29,26 +29,6 @@
       </el-select>
    </el-col>
   </el-row>
-  <!-- <el-table :data="tableData" style="width: 100%"   @selection-change="handleSelectionChange">
-    <el-table-column type="selection" width="80" align="center"></el-table-column>
-    <el-table-column prop="date" label="分部分项划分名称" align="center"></el-table-column>
-    <el-table-column label="操作" align="center">
-      <template slot-scope="scope">
-            <el-button size="small" type="primary" @click="deleteClick(scope)">添加子项</el-button>
-            <el-button size="small" type="primary" @click="deleteClick(scope)">编辑</el-button>
-            <el-button size="small" type="danger" @click="deleteClick(scope)">删除</el-button>
-      </template>
-    </el-table-column>
-     <el-table-column type="expand">
-      <template slot-scope="props">
-        <el-form label-position="left" inline class="demo-table-expand" v-for="item in props.row.child" :key="item.id">
-          <el-form-item label="商品名称">
-            <span>{{ item.date}}</span>
-          </el-form-item>
-        </el-form>
-      </template>
-    </el-table-column>
-  </el-table> -->
   <el-row class="tableHead">
     <el-col :span="20" class="tableCol">
       <div>分部分项划分名称</div>
@@ -57,51 +37,59 @@
       <div>操作</div>
     </el-col>
   </el-row>
-  <el-tree :data="tableData" show-checkbox node-key="id" :default-expand-all="false" draggable :expand-on-click-node="false">
+  <el-tree :data="tableData" show-checkbox node-key="id" :default-expand-all="false" draggable :expand-on-click-node="false" :props="defaultProps">
       <span class="custom-tree-node" slot-scope="{ node, data }">
-        <span style="margin-left:100px;">{{ data.date }}</span>
+        <span style="margin-left:100px;">{{ data.subName }}</span>
         <span>
-            <el-button size="mini" type="primary"  @click="deleteClick(data)">添加子项</el-button>
-            <el-button size="mini" type="primary" @click="deleteClick(data)">编辑</el-button>
-            <el-button size="mini" type="danger"  @click="deleteClick(data)">删除</el-button>
+            <el-button size="mini" type="primary"  @click="addSubChild(data)">添加子项</el-button>
+            <el-button size="mini" type="primary"  @click="editSub(data)">编辑</el-button>
+            <el-button size="mini" type="danger"   @click="deleteClick(data)">删除</el-button>
         </span>
       </span>
    </el-tree>
-
+   <el-pagination background v-if="total > 0"
+      class="pageStyle"
+	  layout="prev, pager, next, sizes, total, jumper"
+	  :page-sizes="[5, 10, 15, 20]"
+	  :page-size="pagesize"
+    :current-page.sync="currentPage"
+	  :total="total"
+	  @current-change="handleCurrentChange"
+	  @size-change="handleSizeChange"
+  >
+   </el-pagination>
    <!--类别管理-->
     <el-dialog title="类别管理" :center="true" :visible.sync="dialog.modify" width="800px">
       <categoryManagement ref="categoryManagement" @close="dialog.modify = false" ></categoryManagement>
+    </el-dialog>
+     <!--添加/修改分部分项-->
+    <el-dialog :title="subObject.id?'修改分部分项':'新增分部分项'" :center="true" :visible.sync="dialog.addSubsection" width="800px"  @open="$nextTick(()=>$refs['addSubsection'].update(subObject))" @close="$refs['addSubsection'].reset()">
+      <addSubsection ref="addSubsection" @refreshData="refreshList" @close="dialog.addSubsection = false" ></addSubsection>
+    </el-dialog>
+     <!--新增子项-->
+    <el-dialog title="新增子项" :center="true" :visible.sync="dialog.addSubChid" width="800px" @open="$nextTick(()=>$refs['addSubChid'].update(subObject))" @close="$refs['addSubChid'].reset()">
+      <addSubChid ref="addSubChid" @refreshData="refreshList" @close="dialog.addSubChid = false" ></addSubChid>
     </el-dialog>
   </div>
 </template>
 
 <script>
 import categoryManagement from "../bitem/categoryManagement.vue";
+import addSubChid from "../bitem/addSubChid.vue";
+import addSubsection from "../bitem/addSubsection.vue";
+import { getSubsectionPage, deleteRegionById } from "../api/upload.js";
 export default {
   name: "bitem",
   components: {
-    categoryManagement
+    categoryManagement,
+    addSubsection,
+    addSubChid
   },
   data() {
     return {
       activeName: "first",
       multipleSelection: [],
-      tableData: [
-        {
-          id: 1,
-          date: 11,
-          children: [
-            {
-              id: 11,
-              date: 111
-            }
-          ]
-        },
-        {
-          id: 2,
-          date: 22
-        }
-      ],
+      tableData: [],
       companyList: [
         {
           companyName: 11,
@@ -112,10 +100,20 @@ export default {
           companyCode: 13
         }
       ],
+      defaultProps: {
+        children: "child"
+      },
       companyCode: "",
+      projectType: 1,
+      currentPage: 1,
+      pagesize: 10,
+      total: 0,
       dialog: {
-        modify: false
-      }
+        modify: false,
+        addSubsection: false,
+        addSubChid: false
+      },
+      subObject: {}
     };
   },
   methods: {
@@ -126,12 +124,77 @@ export default {
       this.multipleSelection = val;
       console.log(this.multipleSelection, "this.multipleSelection");
     },
-    deleteClick(scope) {
-      console.log(scope);
+    //切换页码
+    handleCurrentChange(value) {
+      this.currentPage = value;
+      this.refreshList();
     },
+    //切换每页显示数量
+    handleSizeChange(value) {
+      this.pagesize = value;
+      this.refreshList();
+    },
+    //删除操作
+    deleteClick(data) {
+      this.$confirm("确定要删除此区段吗", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消"
+      })
+        .then(() => {
+          deleteRegionById(data.id)
+            .then(response => {
+              if (response.code == "200") {
+                this.$message.success("删除成功!");
+                this.refreshList();
+              } else {
+                this.$message.error(response.msg);
+              }
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        })
+        .catch(() => {
+          this.$message.error("已取消删除");
+        });
+    },
+    //打开类别管理弹框
     categoryManagement() {
       this.dialog.modify = true;
+    },
+    //新增分部分项
+    addSub() {
+      this.dialog.addSubsection = true;
+      this.subObject = {};
+    },
+    //添加子项
+    addSubChild(data) {
+      this.dialog.addSubChid = true;
+      this.subObject = data;
+    },
+    //编辑分部分项
+    editSub(data) {
+      this.dialog.addSubsection = true;
+      this.subObject = data;
+    },
+    //分页查询
+    refreshList() {
+      getSubsectionPage({
+        current: this.currentPage,
+        offset: this.pagesize,
+        projectType: this.projectType
+      })
+        .then(response => {
+          this.tableData = response.body;
+          this.total = Number(response.body.page.rows);
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
+  },
+  created() {
+    this.refreshList();
   }
 };
 </script>

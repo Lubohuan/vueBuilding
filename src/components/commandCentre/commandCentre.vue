@@ -1,54 +1,158 @@
 <template>
-<!--形象进度报表-->
-<div class="Imagereport">
- <el-breadcrumb separator-class="el-icon-arrow-right" class="breadTitle">
-    <el-breadcrumb-item :to="{ path: '/' }">生产形象进度  </el-breadcrumb-item>
-    <el-breadcrumb-item>形象进度管理</el-breadcrumb-item>
-    <el-breadcrumb-item>形象进度报表</el-breadcrumb-item>
-  </el-breadcrumb>
-  <el-row>
-    <el-col :span="18">
-      <el-tabs v-model="activeName" @tab-click="handleClick" >
-      <el-tab-pane label="日报" name="first"></el-tab-pane>
-      <el-tab-pane label="周报" name="second"></el-tab-pane>
-      <el-tab-pane label="月报" name="third"></el-tab-pane>
-      <el-tab-pane label="自定义" name="fourth"></el-tab-pane>
-      </el-tabs>
+<!--指挥中心-->
+<div class="commandCentre">    
+    <el-row :gutter="20">
+        <el-col :span="6" >
+        <div class="commandCard">
+            <div>
+                <img src="../../assets/u484.png" alt="" class="despImage">
+                <div class="cradContent">
+                    <div class="desp_look">今日完成生产任务</div>
+                    <div class="desp_personal">负责人</div>
+                </div>
+             </div>
+             <div class="cardFooter">
+                <span>同周比：
+                   <span>
+                       <img v-if="imageData === 'up'" src="../../assets/u489.png" alt="" class="upDownImage" >
+                       <img v-else src="../../assets/u493.png" alt="" class="upDownImage downImage">
+                    </span>
+                   <span>2.23%</span> 
+                </span>
+                <span class="footerRight">日环比:
+                    <span>
+                       <img v-if="imageData === 'up'" src="../../assets/u489.png" alt="" class="upDownImage" >
+                       <img v-else src="../../assets/u493.png" alt="" class="upDownImage downImage">
+                    </span>
+                    <span>23%</span>
+                </span>
+             </div>
+        </div>
+        </el-col>
+        <el-col :span="6">
+        <div class="commandCard">
+            <div>
+            <img src="../../assets/u484.png" alt="" class="despImage">
+                       <div  class="cradContent">
+                            <div class="desp_look">今日产值</div>
+                            <div class="desp_personal">负责人</div>
+                       </div>
+            </div>
+            <div class="cardFooter">
+                <span>同周比：
+                   <span>
+                       <img v-if="imageData === 'up'" src="../../assets/u489.png" alt="" class="upDownImage" >
+                       <img v-else src="../../assets/u493.png" alt="" class="upDownImage downImage">
+                    </span>
+                   <span>2.23%</span> 
+                </span>
+                <span class="footerRight">日环比:
+                    <span>
+                       <img v-if="imageData === 'up'" src="../../assets/u489.png" alt="" class="upDownImage" >
+                       <img v-else src="../../assets/u493.png" alt="" class="upDownImage downImage">
+                    </span>
+                    <span>23%</span>
+                </span>
+            </div>
+        </div>
     </el-col>
-    <el-col :span="6" class="tabCol">     
-       <div v-if="activeName === 'first'" class="reportTab">
-          <i @click="reduceDay" class="el-icon-arrow-left"></i>
-          <span>{{dayData}}</span>
-          <i @click="addDay" class="el-icon-arrow-right"></i>
-       </div>
-         <div v-if="activeName === 'second'" class="reportTab">
-          <i @click="reduceMonth" class="el-icon-arrow-left"></i>
-          <span>{{monthData}}</span>
-          <i @click="addMonth" class="el-icon-arrow-right"></i>
-       </div>
-       <div v-if="activeName === 'third'" class="reportTab">         
-          <i @click="reduceWeek" class="el-icon-arrow-left"></i>
-          <span>{{weekData}}周</span>
-          <i @click="addWeek" class="el-icon-arrow-right"></i>
-       </div>
-        <div v-if="activeName === 'fourth'" class="activeTab">         
-         <el-date-picker size="small" v-model="value6" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
-       </div>
+    <el-col :span="6" >
+        <div class="commandCards">
+            <div class="cradContents">
+                <span class="desp_looks">产值完成情况</span>
+                <el-progress :stroke-width="18" :percentage="70"></el-progress>
+                </div>
+                <div class="cardFooters">
+                <span>同周比：
+                   <span>
+                       <img v-if="imageData === 'up'" src="../../assets/u514.png" alt="" class="upDownImage" >
+                       <img v-else src="../../assets/u518.png" alt="" class="upDownImage downImage">
+                    </span>
+                   <span>2.23%</span> 
+                </span>
+                <span class="footerRight">日环比:
+                    <span>
+                       <img v-if="imageData === 'up'" src="../../assets/u514.png" alt="" class="upDownImage" >
+                       <img v-else src="../../assets/u518.png" alt="" class="upDownImage downImage">
+                    </span>
+                    <span>23%</span>
+                </span>
+                </div>
+            </div>
     </el-col>
- </el-row>
-    <div class="tableDiv">
-      <span class="blueBlock"></span>
-      <span class="spanBlock">产值进度</span>
+    <el-col :span="6" >
+        <div class="commandCards">
+           <div class="cradContents">
+                <span class="desp_looks">合同工期进度</span>
+                <el-progress :stroke-width="18" :percentage="70"></el-progress>
+                </div>
+            <div class="cardFooters">
+              <span>同周比：
+                   <span>
+                       <img v-if="imageData === 'up'" src="../../assets/u514.png" alt="" class="upDownImage" >
+                       <img v-else src="../../assets/u518.png" alt="" class="upDownImage downImage">
+                    </span>
+                   <span>2.23%</span> 
+                </span>
+                <span class="footerRight">日环比:
+                    <span>
+                       <img v-if="imageData === 'up'" src="../../assets/u514.png" alt="" class="upDownImage" >
+                       <img v-else src="../../assets/u518.png" alt="" class="upDownImage downImage">
+                    </span>
+                    <span>23%</span>
+                </span>
+            </div>
+      </div>
+    </el-col>
+</el-row>
+<div class="tableDiv">
+    <el-row class="tableTitle">
+          <el-col :span="18">
+             <span class="blueBlock"></span>
+             <span class="spanBlock">产值进度</span>
+          </el-col>
+          <el-col :span="6" style="text-align:right;">
+            <el-radio-group v-model="tabPosition" size="small">
+             <el-radio-button label="最近七天">最近七天</el-radio-button>
+             <el-radio-button label="本周">本周</el-radio-button>
+             <el-radio-button label="上周">上周</el-radio-button>
+            </el-radio-group>
+          </el-col>
+      </el-row>
       <el-table  border :data="tableData" style="width: 100%">
-       <el-table-column prop="name" label="名称" align="center" width="100" ></el-table-column>
-       <el-table-column prop="name"  label="今日完成产值" align="center"></el-table-column>
-       <el-table-column prop="name"  label="累计完成产值" align="center"></el-table-column>
-       <el-table-column prop="name"  label="累计完成比例" align="center" min-width="120"></el-table-column>
+      <el-table-column type="index" label="序号" align="center" width="100"></el-table-column>
+       <el-table-column prop="name" label="施工区段" align="center"></el-table-column>
+       <el-table-column prop="name" label="计划任务名称" align="center" min-width="120"></el-table-column>
+       <el-table-column prop="name" label="设计工程量" align="center" min-width="120"></el-table-column>
+       <el-table-column prop="name" label="累计完成" align="center" min-width="120"></el-table-column>
+       <el-table-column prop="name" label="累计完成百分比" align="center" min-width="120"></el-table-column>
+       <el-table-column prop="name" label="本月计划" align="center"></el-table-column>
+       <el-table-column prop="name" label="本月完成" align="center"></el-table-column>
+       <el-table-column prop="name" label="完成比例" align="center"></el-table-column>
+       <el-table-column prop="name" label="24" align="center" ></el-table-column>
+       <el-table-column prop="name" label="25" align="center" ></el-table-column>
+       <el-table-column prop="name" label="26" align="center" ></el-table-column>
+       <el-table-column prop="name" label="27" align="center" ></el-table-column>
+       <el-table-column prop="name" label="28" align="center" ></el-table-column>
+       <el-table-column prop="name" label="29" align="center" ></el-table-column>
+       <el-table-column prop="name" label="30" align="center" ></el-table-column>
       </el-table>
     </div>
-     <div class="tableDiv">
-      <span class="blueBlock"></span>
-      <span class="spanBlock">施工区域进展</span>
+     <div class="tableDiv" style="border-top:none;">
+      <el-row class="tableTitle">
+          <el-col :span="18">
+             <span class="blueBlock"></span>
+             <span class="spanBlock">施工区域进展</span>
+          </el-col>
+          <el-col :span="6" style="text-align:right;">
+            <el-radio-group v-model="tabPositions" size="small">
+             <el-radio-button label="最近七天"></el-radio-button>
+             <el-radio-button label="本周"></el-radio-button>
+             <el-radio-button label="上周"></el-radio-button>
+            </el-radio-group>
+          </el-col>
+      </el-row>
+     
       <el-table  border :data="tableData" style="width: 100%">
        <el-table-column type="index" label="序号" align="center" width="100"></el-table-column>
        <el-table-column prop="name" label="施工区段" align="center"></el-table-column>
@@ -62,36 +166,18 @@
        <el-table-column prop="name" label="累计完成比例" align="center" ></el-table-column>
       </el-table>
     </div>
-    <div class="tableDiv" style="border-bottom:1px solid #e4e7ed;">
-      <span class="blueBlock"></span>
-      <span class="spanBlock">分部分项形象进度</span>
-      <el-table  border :data="tableData" style="width: 100%">
-       <el-table-column type="index" label="序号" align="center" width="100"></el-table-column>
-       <el-table-column prop="name" label="分部分项名称" align="center"></el-table-column>
-       <el-table-column prop="name" label="预算工程量" align="center" min-width="120"></el-table-column>
-       <el-table-column prop="name" label="今日完成工程量" align="center" min-width="120"></el-table-column>
-       <el-table-column prop="name" label="累计完成工程量" align="center"></el-table-column>
-       <el-table-column prop="name" label="累计完成比例" align="center" min-width="120"></el-table-column>
-       <el-table-column prop="name" label="今日完成产值" align="center"></el-table-column>
-       <el-table-column prop="name" label="累计完成产值" align="center"></el-table-column>
-       <el-table-column prop="name" label="累计完成比例" align="center" ></el-table-column>
-      </el-table>
-    </div>
-    
-           
-
 
   </div>
 </template>
 
 <script>
 export default {
-  name: "Imagereport",
+  name: "commandCentre",
   data() {
     return {
-      tableData:[],
-      activeName:"first",
-      value6:"",
+      tableData: [],
+      activeName: "first",
+      value6: "",
       personalData: {},
       textarea: "",
       monthData1: "",
@@ -102,13 +188,16 @@ export default {
       dayData2: "",
       dayData3: "",
       dayData: "",
-      weekData: ""
+      weekData: "",
+      imageData:"up",
+      tabPosition:"最近七天",
+      tabPositions:"最近七天"
     };
   },
   methods: {
     handleClick(tab) {
       this.activeName = tab.name;
-      console.log(this.activeName,"tab")
+      console.log(this.activeName, "tab");
     },
 
     //月份减
@@ -353,5 +442,5 @@ export default {
 };
 </script>
 <style lang="scss">
-@import "Imagereport.scss";
+@import "commandCentre.scss";
 </style>

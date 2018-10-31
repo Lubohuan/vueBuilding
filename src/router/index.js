@@ -10,6 +10,14 @@ export default new Router({
       require(['../components/home/home.vue'], resolve)
     },
     children: [
+      //指挥中心
+      {
+        path: '/commandCentre',
+        name: 'commandCentre',
+        component: (resolve) => {
+          require(['../components/commandCentre/commandCentre.vue'], resolve)
+        }
+      },
       //分部分项库
       {
         path: '/bitem',

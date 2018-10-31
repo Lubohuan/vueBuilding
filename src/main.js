@@ -12,7 +12,7 @@ import Api from './components/public/public.js'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import locale from 'element-ui/lib/locale/lang/zh-CN' // lang i18n
-
+import store from './store';
 //import VueAxios from 'vue-axios'
 Vue.prototype.$Api = Api;
 Vue.prototype.$axios = axios
@@ -31,6 +31,7 @@ new Vue({
   el: '#hompage',
   router,
   components: { Home },
-  template: '<Home/>'
+  template: '<Home/>',
+  store
  
 })

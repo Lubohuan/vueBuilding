@@ -19,13 +19,11 @@
       <el-select size="small" v-model="companyCode" placeholder="请选择项目" clearable>
             <el-option v-for="(item,index) in companyList" :label="item.companyName" :value="item.companyCode" :key="index"></el-option>
       </el-select>
-       <el-select size="small" v-model="companyCode" placeholder="请选择施工区段" clearable>
-            <el-option v-for="(item,index) in companyList" :label="item.companyName" :value="item.companyCode" :key="index"></el-option>
-      </el-select>
+      <el-cascader :options="reginList" v-model="regionId" :props="defaultProp" size="small" placeholder="请选择施工区段"></el-cascader>
    </el-col>
    <el-col :span="9" class="lookProgress_btn1">
        <el-button size="mini" type="success" >搜索</el-button>
-       <el-button size="mini" >重置</el-button>
+       <el-button size="mini" @click="resetForm">重置</el-button>
    </el-col>
   </el-row>
   <el-table :data="tableData" style="width: 100%;margin-top:20px;"   @selection-change="handleSelectionChange" border>
@@ -74,6 +72,7 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex';
 export default {
   name: "lookProgress",
   data() {
@@ -110,10 +109,24 @@ export default {
       },
       pagesize: 10,
       currpage: 1,
-      currentPage: 1
+      currentPage: 1,
+      defaultProp:{
+        children: "child",
+        label: "regionName",
+        value: "id"
+      },
+      regionId:[]
     };
   },
+  computed: {
+    ...mapState([
+     'reginList'
+    ]),
+  },
   methods: {
+    ...mapActions([
+        'getReginList'
+    ]),
     //选择项变化
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -140,7 +153,15 @@ export default {
     openData(){
       console.log(111);
       this.dialog.openData = true;  
+    },
+    //重置
+    resetForm(){
+      this.regionId = [];
+      this.companyCode = "";
     }
+  },
+  created(){
+    this.getReginList();
   }
 };
 </script>

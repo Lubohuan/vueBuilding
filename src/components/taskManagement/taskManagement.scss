@@ -1,8 +1,8 @@
 .taskManagement{
-    height:95%;
+    height:91%;
     .elStyle{
-        padding: 0px 20px 20px 20px;
-        height: 100%;
+        // padding: 0px 20px 20px 20px;
+        height: 99.3%;
         border-right: 1px solid #e4e7ed;
     }
     .blackOne{
@@ -25,15 +25,16 @@
     }
     .rowOne{
         border:1px solid #e4e7ed;
-        border-top:none;
         height:100%;
     }
     .despSpan{
+        padding: 0 20px;
         margin: 10px 0 20px 0px;
         font-size: 16px;
     }
     .despInfon{
         margin-bottom: 20px;
+        padding: 0 20px;
         .el-col{
             border-radius: 20px;
             padding: 5px;
@@ -85,5 +86,24 @@
         border-bottom:1px solid #e4e7ed;
         padding: 10px 10px 30px 10px;
         margin-bottom:30px;
+     }
+     .sortTab{
+        padding:20px;
+        border-bottom:1px solid #e4e7ed;
+     }
+     .sortTabs{
+        padding:30px 20px 20px 20px;
+        height:69px;
+        border-bottom:1px solid #e4e7ed;
+     }
+     .despSpans{
+        padding: 0 20px;
+     }
+     .elDesp{
+        border-right:1px solid #e4e7ed;
+        height:100%;
+     }
+     .despRowHeight{
+        height:91.7%;
      }
 }
