@@ -12,9 +12,7 @@
       <el-button size="mini" type="success">导出excel</el-button>
    </el-col>
    <el-col :span="14" class="graphicProgress_btn1">
-     <el-select size="small" v-model="companyCode" placeholder="请选择施工区段" clearable>
-            <el-option v-for="(item,index) in companyList" :label="item.companyName" :value="item.companyCode" :key="index"></el-option>
-     </el-select>
+      <el-cascader placeholder="请选择施工区段" :options="reginList" v-model="regionId" :props="defaultProps" size="small" @change="reserchList" clearable></el-cascader>
    </el-col>
   </el-row>
    <el-row class="graphicProgress_row">
@@ -44,9 +42,9 @@
     <el-table-column label="操作" align="center" min-width="230">
       <template slot-scope="scope">
             <el-button size="mini" type="primary" @click="editClick(scope)">编辑</el-button>
-            <el-button size="mini" type="danger" @click="deleteClick(scope)">删除</el-button>
-            <el-button v-if="scope.row.isForbid == 'YES'" size="mini" type="danger" @click="stopClick(scope)">禁用</el-button>
-            <el-button v-else size="mini" type="danger" @click="startClick(scope)">启用</el-button>
+            <el-button v-if="scope.row.isForbid == null" size="mini" type="danger" @click="deleteClick(scope)">删除</el-button>
+            <el-button v-if="scope.row.isForbid == 0" size="mini" type="warning" @click="stopClick(scope)">禁用</el-button>
+            <el-button v-if="scope.row.isForbid == 1" size="mini" type="success" @click="startClick(scope)">启用</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -71,6 +69,7 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
 import {getVisualStatItemPage,startVisualStatItem,stopVisualStatItems} from "../api/upload.js";
 import addProgress from "../graphicProgress/addProgress.vue";
 export default {
@@ -97,14 +96,28 @@ export default {
       dialog: {
         addProgress: false
       },
+      defaultProps: {
+        children: "child",
+        label: "regionName",
+        value: "id"
+      },
       pagesize: 10,
       currentPage: 1,
       projectId: null,
       regionId: null,
-      total: 0
+      total: 0,
+      regionIds:null
     };
   },
+  computed: {
+    ...mapState([
+     'reginList'
+    ]),
+  },
   methods: {
+    ...mapActions([
+        'getReginList'
+    ]),
     //选择项变化
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -176,7 +189,7 @@ export default {
         current: this.currentPage,
         offset: this.pagesize,
         projectId: this.projectId,
-        regionId: this.regionId
+        regionId: this.regionIds
       })
         .then(response => {
           this.tableData = response.body.rows;
@@ -185,10 +198,15 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    reserchList(){
+      this.regionIds = this.regionId[this.regionId.length - 1];
+      this.refreshList();
     }
   },
   created() {
     this.refreshList();
+    this.getReginList();
   }
 };
 </script>

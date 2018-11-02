@@ -5,9 +5,9 @@
     <el-form-item label="项目名称：" prop="projectId">
         <el-input v-model="dataModel.projectId" size="small"></el-input>
     </el-form-item>
-    <el-form-item label="选择统计项：" prop="visualStatId">
-        <el-select size="small" v-model="visualStatObject" placeholder="请选择形象进度统计项" clearable style="width:100%;" value-key="id"  @change="changeVisu">
-            <el-option v-for="(item,index) in statisList" :label="item.statName" :value="item" :key="index"></el-option>
+    <el-form-item label="选择统计项：" v-if="dataModel.id == null" prop="visualStatId">
+         <el-select  size="small" v-model="dataModel.visualStatId" placeholder="请选择形象进度统计项" clearable style="width:100%;"  @change="changeVisu">
+            <el-option v-for="(item,index) in statisList" :label="item.statName" :value="item.id" :key="index"></el-option>
         </el-select>
         <span v-if="visualStatObject !== null" style="color:rgb(64, 158, 255);">分部分项：{{visualStatObject.statName}}</span>
         <div  v-if="visualStatObject !== null" class="visualSpan">
@@ -20,10 +20,10 @@
         <el-input v-model="dataModel.planName" size="small"></el-input>
     </el-form-item>
     <el-form-item label="开始时间：" prop="planStartTime">
-         <el-date-picker value-format="timestamp"  format="yyyy 年 MM 月 dd 日" size="small" v-model="dataModel.planStartTime" type="date" placeholder="选择日期" style="width:100%;"></el-date-picker>
+         <el-date-picker value-format="yyyy-MM-dd"  format="yyyy 年 MM 月 dd 日" size="small" v-model="dataModel.planStartTime" type="date" placeholder="选择日期" style="width:100%;"></el-date-picker>
     </el-form-item>
     <el-form-item label="完成时间：" prop="planEndTime">
-        <el-date-picker value-format="timestamp"  format="yyyy 年 MM 月 dd 日" size="small" v-model="dataModel.planEndTime " type="date" placeholder="选择日期" style="width:100%;"></el-date-picker>
+        <el-date-picker value-format="yyyy-MM-dd"  format="yyyy 年 MM 月 dd 日" size="small" v-model="dataModel.planEndTime " type="date" placeholder="选择日期" style="width:100%;"></el-date-picker>
     </el-form-item> 
     <el-form-item label="计划完成工程量：" prop="planFinish">
         <el-input v-model.number="dataModel.planFinish " size="small"></el-input>
@@ -98,7 +98,9 @@ export default {
         'getStatisList'
     ]),
     changeVisu(){
-     this.dataModel.visualStatId = this.visualStatObject.id;
+    this.visualStatObject = this.statisList.find(
+      (v) => v.id === this.dataModel.visualStatId,
+    );
      this.dataModel.planName = this.visualStatObject.statName;
     },
     /**
@@ -108,6 +110,7 @@ export default {
       this.getStatisList();
       if (!data.id) return;
       this.dataModel = {...data};
+      // this.visualStatObject = {...data}
     },
     //重置方法
     reset() {
@@ -128,7 +131,7 @@ export default {
           return;
         }
         //根据是否有数据传入决定执行新增还是修改
-        const result = this.dataModel.id ? this.updateRegion() : this.addPlan();
+        const result = this.dataModel.id ? this.updatePlan() : this.addPlan();
       });
     },
     //添加进度计划
@@ -144,14 +147,26 @@ export default {
           }
         })
         .catch(error => {
-          this.$message.error(error);
           return false;
         });
       return true;
     },
     //修改进度计划
     updatePlan(){
-
+      updateConstructPlan(this.dataModel)
+        .then(response => {
+          if (response.code == "200") {
+            this.$message.success("修改成功!");
+            this.close();
+            this.$emit("refreshData");
+          } else {
+            this.$message.error(response.msg);
+          }
+        })
+        .catch(error => {
+          return false;
+        });
+      return true;
     }
   }
 };

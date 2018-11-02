@@ -112,7 +112,7 @@
              <span class="spanBlock">产值进度</span>
           </el-col>
           <el-col :span="6" style="text-align:right;">
-            <el-radio-group v-model="tabPosition" size="small">
+            <el-radio-group v-model="tabPosition" size="small" @change="tabClick">
              <el-radio-button label="最近七天">最近七天</el-radio-button>
              <el-radio-button label="本周">本周</el-radio-button>
              <el-radio-button label="上周">上周</el-radio-button>
@@ -199,7 +199,9 @@ export default {
       this.activeName = tab.name;
       console.log(this.activeName, "tab");
     },
-
+    tabClick(){
+    console.log(this.tabPosition,"tabPosition");
+    },
     //月份减
     reduceMonth() {
       var arr = this.monthData.split("-");

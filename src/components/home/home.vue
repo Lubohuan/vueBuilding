@@ -2,9 +2,9 @@
 <!--布局页面-->
 <div class="home">
 <el-container style="height:100%;">
-  <el-aside width="220px" class="asideList">
+  <el-aside width="200px" class="asideList">
      <div class="titleSpan">进度可视化管理</div>
-     <el-tree class="treeList" :data="data2" :props="defaultProps" default-expand-all @node-click="handleNodeClick" :highlight-current="true"></el-tree>
+     <el-tree class="treeList" :data="data2" :props="defaultProps" default-expand-all @node-click="handleNodeClick"></el-tree>
   </el-aside>
   <el-container>
     <el-main class="elContent">
@@ -44,7 +44,7 @@ export default {
             {
               id: 41,
               label: "形象进度统计项",
-              path:"/"
+              path:"/graphicProgress"
             },
             {
               id: 42,

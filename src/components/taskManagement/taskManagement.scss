@@ -90,6 +90,14 @@
      .sortTab{
         padding:20px;
         border-bottom:1px solid #e4e7ed;
+        span{
+            margin: 5px;
+            line-height: 28px;
+            cursor: pointer;
+        }
+        span:hover{
+            color: #338fe5;
+        }
      }
      .sortTabs{
         padding:30px 20px 20px 20px;
@@ -105,5 +113,41 @@
      }
      .despRowHeight{
         height:91.7%;
+     }
+     .clickBtn{
+         margin-top: 20px;
+         text-align: center;
+     }
+     .stateList{
+         border-bottom: 1px solid #e4e7ed;
+         padding:10px 20px;
+         cursor: pointer;
+     }
+     .stateList:focus{
+        outline: none;
+     }
+    //  .stateList:hover>span{
+    //     color: #338fe5;
+    //  }
+     .stateList:focus>span{
+        color: #338fe5;
+     }
+     .iconStyles{
+         float: right;
+         font-weight: bold;
+         font-size: 20px;
+     }
+     .showTrueStyle{
+         text-align: right;
+         span{
+             cursor: pointer;
+             margin: 0 10px;
+         }
+         span:hover{
+            color: #338fe5;
+         }
+     }
+     .el-tooltip__popper.is-dark{
+         opacity: 0.8;
      }
 }

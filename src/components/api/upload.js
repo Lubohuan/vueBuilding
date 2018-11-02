@@ -1,7 +1,4 @@
 import request from '@/utils/request'
-import {
-  getToken
-} from '@/utils/auth'
 const baseUrl = 'http://172.16.7.135'
 // 查询统计单位接口
 export function getUnitPage(data) {
@@ -194,5 +191,29 @@ export function updateRegion(data) {
     url: baseUrl + '/project/updateRegion',
     method: 'put',
     data:data
+  })
+}
+// 修改进度计划
+export function updateConstructPlan(data) {
+  return request({
+    url: baseUrl + '/schedule/updateConstructPlan',
+    method: 'put',
+    data:data
+  })
+}
+// 分页查询形象进度详请信息
+export function getConstructPlanDetail(data) {
+  return request({
+    url: baseUrl + '/schedule/getConstructPlanDetail',
+    method: 'get',
+    params:data
+  })
+}
+// 根据进度计划ID分页查询施工日志信息
+export function getConstructLogPage(data) {
+  return request({
+    url: baseUrl + '/schedule/getConstructLogPage',
+    method: 'get',
+    params:data
   })
 }

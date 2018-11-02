@@ -45,9 +45,9 @@
     <el-table-column label="操作" align="center" min-width="230">
       <template slot-scope="scope">
          <el-button size="mini" type="primary" @click="editPlan(scope.row)">编辑</el-button>
-         <el-button size="mini" type="danger" @click="deleteClick(scope)">删除</el-button>
-         <el-button v-if="scope.row.isForbid == 'YES'" size="mini" type="danger" @click="stopClick(scope)">禁用</el-button>
-         <el-button v-else size="mini" type="danger" @click="startClick(scope)">启用</el-button>
+         <el-button v-if="scope.row.isForbid == 0" size="mini" type="warning" @click="stopClick(scope)">禁用</el-button>
+         <el-button v-if="scope.row.isForbid == 1" size="mini" type="success" @click="startClick(scope)">启用</el-button>
+         <el-button v-if="scope.row.isForbid == null" size="mini" type="danger" @click="deleteClick(scope)">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -64,7 +64,7 @@
    </el-pagination>
 
  <!--新增/修改进度计划-->
-    <el-dialog :title="dataObj.id?'修改计划进度':'新增形计划进度'" :center="true" :visible.sync="dialog.addPlan" width="700px" @open="$nextTick(()=>$refs['addPlan'].update(dataObj))">
+    <el-dialog :title="dataObj.id?'修改计划进度':'新增形计划进度'" :center="true" :visible.sync="dialog.addPlan" width="700px" @open="$nextTick(()=>$refs['addPlan'].update(dataObj))" @close="$refs['addPlan'].reset()">
       <addPlan ref="addPlan"  @refreshData="refreshList"  @close="dialog.addPlan = false" ></addPlan>
     </el-dialog>
 

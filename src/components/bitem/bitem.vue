@@ -24,9 +24,7 @@
       <el-button size="mini" type="success">导出excel</el-button>
    </el-col>
    <el-col :span="19" class="bitem_btn1">
-     <el-select size="small" v-model="companyCode" placeholder="搜索" clearable>
-            <el-option v-for="(item,index) in companyList" :label="item.companyName" :value="item.companyCode" :key="index"></el-option>
-      </el-select>
+      <el-input v-model="subName" size="small" placeholder="搜索" clearable @change="resarchBitem" style="width:200px;"></el-input>
    </el-col>
   </el-row>
   <el-row class="tableHead">
@@ -107,6 +105,7 @@ export default {
       projectType: 1,
       currentPage: 1,
       pagesize: 10,
+      subName:null,
       total: 0,
       dialog: {
         modify: false,
@@ -182,7 +181,8 @@ export default {
       getSubsectionPage({
         current: this.currentPage,
         offset: this.pagesize,
-        projectType: this.projectType
+        projectType: this.projectType,
+        subName:this.subName
       })
         .then(response => {
           this.tableData = response.body;
@@ -191,6 +191,9 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    resarchBitem(){
+      this.refreshList();
     }
   },
   created() {
