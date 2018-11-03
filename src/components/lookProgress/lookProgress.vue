@@ -19,7 +19,7 @@
       <el-select size="small" v-model="companyCode" placeholder="请选择项目" clearable>
             <el-option v-for="(item,index) in companyList" :label="item.companyName" :value="item.companyCode" :key="index"></el-option>
       </el-select>
-      <el-cascader :options="reginList" v-model="regionId" :props="defaultProp" size="small" placeholder="请选择施工区段"></el-cascader>
+      <el-cascader :options="reginList" v-model="regionId" :props="defaultProp" size="small" placeholder="请选择施工区段" clearable></el-cascader>
    </el-col>
    <el-col :span="9" class="lookProgress_btn1">
        <el-button size="mini" type="success" >搜索</el-button>
@@ -28,13 +28,13 @@
   </el-row>
   <el-table :data="tableData" style="width: 100%;margin-top:20px;"   @selection-change="handleSelectionChange" border>
     <el-table-column type="index" label="序号" align="center" width="100"></el-table-column>
-    <el-table-column prop="name" label="项目名称" align="center"></el-table-column>
+    <el-table-column prop="projectId" label="项目名称" align="center"></el-table-column>
     <el-table-column prop="name" label="施工区段" align="center"></el-table-column>
-    <el-table-column prop="name" label="分部分项名称" align="center" min-width="120"></el-table-column>
+    <el-table-column prop="statName" label="分部分项名称" align="center" min-width="120"></el-table-column>
     <el-table-column prop="name" label="形象进度统计项" align="center" min-width="120"></el-table-column>
     <el-table-column prop="name" label="形象单位" align="center"></el-table-column>
-    <el-table-column prop="name" label="预算工程量" align="center" min-width="120"></el-table-column>
-    <el-table-column prop="name" label="累计完成" align="center"></el-table-column>
+    <el-table-column prop="budgetTotal" label="预算工程量" align="center" min-width="120"></el-table-column>
+    <el-table-column prop="finishBudget" label="累计完成" align="center"></el-table-column>
     <el-table-column prop="name" label="完成比例" align="center"></el-table-column>
     <el-table-column prop="name" label="8月计划" align="center" ></el-table-column>
     <el-table-column prop="name" label="8月完成" align="center" ></el-table-column>
@@ -43,7 +43,7 @@
     <el-table-column prop="name" label="10月完成" align="center"></el-table-column>
     <el-table-column prop="name" label="10月完成" align="center"></el-table-column>
   </el-table>
-  <el-pagination background 
+  <el-pagination background v-if="total>0"
       class="pageStyle"
 			layout="prev, pager, next, sizes, total, jumper"
 			:page-sizes="[5, 10, 15, 20]"
@@ -73,6 +73,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { getVisualStatMonitorPage } from "../api/upload.js";
 export default {
   name: "lookProgress",
   data() {
@@ -83,16 +84,7 @@ export default {
          value1:"",
          value2:"",
       },
-      tableData: [
-        {
-          id: 1,
-          name: "m1"
-        },
-        {
-          id: 2,
-          name: "m2"
-        }
-      ],
+      tableData: [],
       companyList: [
         {
           companyName: 11,
@@ -108,14 +100,15 @@ export default {
         openData: false
       },
       pagesize: 10,
-      currpage: 1,
       currentPage: 1,
       defaultProp:{
         children: "child",
         label: "regionName",
         value: "id"
       },
-      regionId:[]
+      regionId:[],
+      projectId:null,
+      total:0
     };
   },
   computed: {
@@ -127,41 +120,55 @@ export default {
     ...mapActions([
         'getReginList'
     ]),
+
     //选择项变化
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
-    //删除方法
-    deleteClick(scope) {
-       this.$confirm("确定要删除此进度吗", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消"
-      })
-        .then(() => {
-          this.$message.success("删除成功!");
-        })
-        .catch(() => {
-          this.$message.error("已取消删除");
-        });
-    },
+
+    //页码变化
     handleCurrentChange(cpage) {
-      this.currpage = cpage;
+      this.currentPage = cpage;
+      this.refreshList();
     },
+
+    //每页数据改变
     handleSizeChange(psize) {
       this.pagesize = psize;
+      this.refreshList();
     },
+
+    //打开选择时间弹框
     openData(){
-      console.log(111);
       this.dialog.openData = true;  
     },
+
+    //分页查询
+    refreshList() {
+      getVisualStatMonitorPage({
+        current: this.currentPage,
+        offset: this.pagesize,
+        projectId: this.projectId,
+        regionId: this.regionId,
+      })
+        .then(response => {
+          this.tableData = response.body.rows;
+          this.total = Number(response.body.page.rows);
+        })
+        .catch(error => {
+          console.log(error);
+      });
+    },
+
     //重置
     resetForm(){
       this.regionId = [];
       this.companyCode = "";
-    }
+    },
   },
   created(){
     this.getReginList();
+    this.refreshList();
   }
 };
 </script>

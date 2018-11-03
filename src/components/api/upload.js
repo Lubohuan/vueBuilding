@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const baseUrl = 'http://172.16.7.135'
+const baseUrl = 'http://172.16.7.135:8081'
 // 查询统计单位接口
 export function getUnitPage(data) {
   return request({
@@ -90,7 +90,7 @@ export function updateSubsection(data) {
 // 分页查询进度计划
 export function getConstructPlanPage(data) {
   return request({
-    url: baseUrl + '/schedule/getConstructPlanPage',
+    url: baseUrl + '/task/getConstructPlanPage',
     method: 'get',
     params: data
   })
@@ -98,7 +98,7 @@ export function getConstructPlanPage(data) {
 // 添加施工记录
 export function addConstructLog(data) {
   return request({
-    url: baseUrl + '/schedule/addConstructLog',
+    url: baseUrl + '/task/addConstructLog',
     method: 'post',
     data: data
   })
@@ -106,7 +106,7 @@ export function addConstructLog(data) {
 // 添加进度计划
 export function addConstructPlan(data) {
   return request({
-    url: baseUrl + '/schedule/addConstructPlan',
+    url: baseUrl + '/task/addConstructPlan',
     method: 'post',
     data: data
   })
@@ -114,21 +114,21 @@ export function addConstructPlan(data) {
 // 启用施工进度计划
 export function startConstructPlan(data) {
   return request({
-    url: baseUrl + '/schedule/startConstructPlan/' + data,
+    url: baseUrl + '/task/startConstructPlan/' + data,
     method: 'put'
   })
 }
 // 禁用施工进度计划
 export function stopVisualStatItem(data) {
   return request({
-    url: baseUrl + '/schedule/stopVisualStatItem/' + data,
+    url: baseUrl + '/task/stopVisualStatItem/' + data,
     method: 'put'
   })
 }
 // 删除施工进度计划
 export function deleteConstructPlanById(data) {
   return request({
-    url: baseUrl + '/schedule/deleteConstructPlanById/' + data,
+    url: baseUrl + '/task/deleteConstructPlanById/' + data,
     method: 'delete',
   })
 }
@@ -196,7 +196,7 @@ export function updateRegion(data) {
 // 修改进度计划
 export function updateConstructPlan(data) {
   return request({
-    url: baseUrl + '/schedule/updateConstructPlan',
+    url: baseUrl + '/task/updateConstructPlan',
     method: 'put',
     data:data
   })
@@ -204,7 +204,7 @@ export function updateConstructPlan(data) {
 // 分页查询形象进度详请信息
 export function getConstructPlanDetail(data) {
   return request({
-    url: baseUrl + '/schedule/getConstructPlanDetail',
+    url: baseUrl + '/task/getConstructPlanDetail',
     method: 'get',
     params:data
   })
@@ -212,7 +212,31 @@ export function getConstructPlanDetail(data) {
 // 根据进度计划ID分页查询施工日志信息
 export function getConstructLogPage(data) {
   return request({
-    url: baseUrl + '/schedule/getConstructLogPage',
+    url: baseUrl + '/task/getConstructLogPage',
+    method: 'get',
+    params:data
+  })
+}
+// 获取分部分项统计报表
+export function getSubsectionReport(data) {
+  return request({
+    url: baseUrl + '/workStat/getSubsectionReport',
+    method: 'get',
+    params:data
+  })
+}
+// 分页查询进度监视信息
+export function getVisualStatMonitorPage(data) {
+  return request({
+    url: baseUrl + '/workStat/getVisualStatMonitorPage',
+    method: 'get',
+    params:data
+  })
+}
+// 获取形象进度统计报表
+export function getVisualStatReport(data) {
+  return request({
+    url: baseUrl + '/workStat/getVisualStatReport',
     method: 'get',
     params:data
   })

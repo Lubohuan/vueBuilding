@@ -21,25 +21,25 @@
           <span>{{dayData}}</span>
           <i @click="addDay" class="el-icon-arrow-right"></i>
        </div>
-         <div v-if="activeName === 'second'" class="reportTab">
-          <i @click="reduceMonth" class="el-icon-arrow-left"></i>
-          <span>{{monthData}}</span>
-          <i @click="addMonth" class="el-icon-arrow-right"></i>
-       </div>
-       <div v-if="activeName === 'third'" class="reportTab">         
+        <div v-if="activeName === 'second'" class="reportTab">         
           <i @click="reduceWeek" class="el-icon-arrow-left"></i>
           <span>{{weekData}}周</span>
           <i @click="addWeek" class="el-icon-arrow-right"></i>
        </div>
+         <div v-if="activeName === 'third'" class="reportTab">
+          <i @click="reduceMonth" class="el-icon-arrow-left"></i>
+          <span>{{monthData}}</span>
+          <i @click="addMonth" class="el-icon-arrow-right"></i>
+       </div>
         <div v-if="activeName === 'fourth'" class="activeTab">         
-         <el-date-picker size="small" v-model="value6" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+         <el-date-picker value-format="yyyy-MM-dd" size="small" v-model="setvalue" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" @change="changeSetDate"></el-date-picker>
        </div>
     </el-col>
  </el-row>
     <div class="tableDiv">
       <span class="blueBlock"></span>
       <span class="spanBlock">产值进度</span>
-      <el-table  border :data="tableData" style="width: 100%">
+      <el-table  border :data="tableData1" style="width: 100%">
        <el-table-column prop="name" label="名称" align="center" width="100" ></el-table-column>
        <el-table-column prop="name"  label="今日完成产值" align="center"></el-table-column>
        <el-table-column prop="name"  label="累计完成产值" align="center"></el-table-column>
@@ -49,23 +49,23 @@
      <div class="tableDiv">
       <span class="blueBlock"></span>
       <span class="spanBlock">施工区域进展</span>
-      <el-table  border :data="tableData" style="width: 100%">
+      <el-table  border :data="tableData2" style="width: 100%">
        <el-table-column type="index" label="序号" align="center" width="100"></el-table-column>
-       <el-table-column prop="name" label="施工区段" align="center"></el-table-column>
-       <el-table-column prop="name" label="分部分项名称" align="center"></el-table-column>
-       <el-table-column prop="name" label="预算工程量" align="center" min-width="120"></el-table-column>
-       <el-table-column prop="name" label="今日完成工程量" align="center" min-width="120"></el-table-column>
-       <el-table-column prop="name" label="累计完成工程量" align="center"></el-table-column>
-       <el-table-column prop="name" label="累计完成比例" align="center" min-width="120"></el-table-column>
-       <el-table-column prop="name" label="今日完成产值" align="center"></el-table-column>
-       <el-table-column prop="name" label="累计完成产值" align="center"></el-table-column>
-       <el-table-column prop="name" label="累计完成比例" align="center" ></el-table-column>
+       <el-table-column prop="regionFullName" label="施工区段" align="center"></el-table-column>
+       <el-table-column prop="subFullName" label="分部分项名称" align="center"></el-table-column>
+       <el-table-column prop="budgetTotal" label="预算工程量" align="center" min-width="120"></el-table-column>
+       <el-table-column prop="outputTotal" label="今日完成工程量" align="center" min-width="120"></el-table-column>
+       <el-table-column prop="finishBudgetTotal" label="累计完成工程量" align="center"></el-table-column>
+       <el-table-column prop="finishBudgetTotalRate" label="累计完成比例" align="center" min-width="120"></el-table-column>
+       <el-table-column prop="finishAmount" label="今日完成产值" align="center"></el-table-column>
+       <el-table-column prop="finishOutputTotal" label="累计完成产值" align="center"></el-table-column>
+       <el-table-column prop="finishOutputTotalRate" label="累计完成比例" align="center" ></el-table-column>
       </el-table>
     </div>
     <div class="tableDiv" style="border-bottom:1px solid #e4e7ed;">
       <span class="blueBlock"></span>
       <span class="spanBlock">分部分项形象进度</span>
-      <el-table  border :data="tableData" style="width: 100%">
+      <el-table  border :data="tableData3" style="width: 100%">
        <el-table-column type="index" label="序号" align="center" width="100"></el-table-column>
        <el-table-column prop="name" label="分部分项名称" align="center"></el-table-column>
        <el-table-column prop="name" label="预算工程量" align="center" min-width="120"></el-table-column>
@@ -77,21 +77,20 @@
        <el-table-column prop="name" label="累计完成比例" align="center" ></el-table-column>
       </el-table>
     </div>
-    
-           
-
-
   </div>
 </template>
 
 <script>
+import { getVisualStatReport,getSubsectionReport } from "../api/upload.js";
 export default {
   name: "Imagereport",
   data() {
     return {
-      tableData:[],
+      tableData1:[],
+      tableData2:[],
+      tableData3:[],
       activeName:"first",
-      value6:"",
+      setvalue:"",
       personalData: {},
       textarea: "",
       monthData1: "",
@@ -108,7 +107,26 @@ export default {
   methods: {
     handleClick(tab) {
       this.activeName = tab.name;
-      console.log(this.activeName,"tab")
+      switch(this.activeName){
+      case "first":
+      this.getThisDays();
+      this.refreshList();
+      break;
+      case "second":
+      this.getWeek();
+      this.getWeekTime();
+      this.start = this.dataArr[0];
+      this.end = this.dataArr[this.dataArr.length - 1];
+      this.refreshList();
+      break;
+      case "third":
+      this.getMonths(); 
+      this.refreshList();
+      break;
+      // case "fourth":
+      //   执行代码块 4
+      // break;
+}
     },
 
     //月份减
@@ -124,6 +142,9 @@ export default {
         month = month - 1;
       }
       this.monthData = year + "-" + month;
+      this.start = year + "-" + month + "-" + '01';
+      this.end = year + "-" + month + '-' + '15';
+      this.refreshList();
     },
 
     //月份加
@@ -139,6 +160,9 @@ export default {
         month = month + 1;
       }
       this.monthData = year + "-" + month;
+      this.start = year + "-" + month + "-" + '01';
+      this.end = year + "-" + month + '-' + '15';
+      this.refreshList();
     },
 
     //天数加
@@ -220,6 +244,10 @@ export default {
         date += 1;
       }
       this.dayData = year + "-" + mouth + "-" + date;
+      this.start = this.dayData;
+      this.end = this.dayData;
+      this.refreshList();
+      dataArr = []
     },
 
     //天数减
@@ -266,6 +294,9 @@ export default {
         date = date - 1;
       }
       this.dayData = year + "-" + mouth + "-" + date; //拼接字符串插入到标签中
+      this.start = this.dayData;
+      this.end = this.dayData;
+      this.refreshList();
     },
     //周数减
     reduceWeek() {
@@ -273,7 +304,14 @@ export default {
         return;
       } else {
         this.weekData = this.weekData - 1;
+        this.getWeekTime();
+        this.start = this.dataArr[0];
+        this.end = this.dataArr[this.dataArr.length - 1];
       }
+        this.getWeekTime();
+        this.start = this.dataArr[0];
+        this.end = this.dataArr[this.dataArr.length - 1];
+        this.refreshList();
     },
     //周数加
     addWeek() {
@@ -282,19 +320,24 @@ export default {
       } else {
         this.weekData = this.weekData + 1;
       }
+        this.getWeekTime();
+        this.start = this.dataArr[0];
+        this.end = this.dataArr[this.dataArr.length - 1];
+        this.refreshList();
     },
 
     /*传入年，周数，获取周数对应的所有日期*/
     getWeekTime() {
-      var year = 2018;
-      var index = 43;
+      var data = new Date();
+      var year = data.getFullYear();
+      var index = this.weekData;
       var d = new Date(year, 0, 1);
+      var arr = [];
       while (d.getDay() != 1) {
         d.setDate(d.getDate() + 1);
       }
       var to = new Date(year + 1, 0, 1);
       var i = 1;
-      var arr = [];
       for (var from = d; from < to; ) {
         if (i == index) {
           arr.push(
@@ -324,24 +367,61 @@ export default {
         }
         from.setDate(from.getDate() + 1);
         i++;
-        console.log(arr, "arr");
+        this.dataArr = arr;
       }
-    }
-  },
-  created() {
-    //年月
+    },
+    //自定义查询
+    changeSetDate(){
+      this.start = this.setvalue[0];
+      this.end = this.setvalue[1];
+      this.refreshList();
+    },
+     //查询
+    refreshList() {
+      getVisualStatReport({
+           startTime: this.start,
+           endTime:this.end,
+           projectId:12
+      })
+        .then(response => {
+          this.tableData2 = response.body;
+        })
+        .catch(error => {
+          console.log(error);
+      });
+      getSubsectionReport({
+           startTime: this.start,
+           endTime:this.end,
+           projectId:12
+      })
+        .then(response => {
+          this.tableData3 = response.body;
+        })
+        .catch(error => {
+          console.log(error);
+      });
+    },
+    //获取年月日
+    getThisDays(){
     var data = new Date();
-    this.monthData1 = data.getFullYear();
-    this.monthData2 = data.getMonth() + 1;
-    this.monthData = this.monthData1 + "-" + this.monthData2;
-
-    //年月日
     this.dayData1 = data.getFullYear();
     this.dayData2 = data.getMonth() + 1;
     this.dayData3 = data.getDate();
     this.dayData = this.dayData1 + "-" + this.dayData2 + "-" + this.dayData3;
-
+    this.start = this.dayData;
+    this.end = this.dayData;
+    },
+    //获取年月
+    getMonths(){
+    var data = new Date();
+    this.monthData1 = data.getFullYear();
+    this.monthData2 = data.getMonth() + 1;
+    this.monthData = this.monthData1 + "-" + this.monthData2;
+    this.start = this.monthData  + "-" + '01';
+    this.end =  this.monthData  + '-' + '15';
+    },
     //获取今天是今年第几周
+    getWeek(){
     var d1 = new Date();
     var d2 = new Date();
     d2.setMonth(0);
@@ -349,6 +429,11 @@ export default {
     var rq = d1 - d2;
     var s1 = Math.ceil(rq / (24 * 60 * 60 * 1000));
     this.weekData = Math.ceil(s1 / 7);
+    }
+  },
+  created() {
+  this.getThisDays();
+  this.refreshList(); 
   }
 };
 </script>

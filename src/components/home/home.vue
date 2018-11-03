@@ -6,7 +6,7 @@
      <div class="titleSpan">进度可视化管理</div>
      <el-tree class="treeList" :data="data2" :props="defaultProps" default-expand-all @node-click="handleNodeClick"></el-tree>
   </el-aside>
-  <el-container>
+  <el-container style="overflow:auto;height:95%;">
     <el-main class="elContent">
       <router-view> </router-view>
     </el-main>
