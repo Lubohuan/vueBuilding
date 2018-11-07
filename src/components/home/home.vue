@@ -2,15 +2,13 @@
 <!--布局页面-->
 <div class="home">
 <el-container style="height:100%;">
-  <el-aside width="200px" class="asideList">
+  <el-aside width="180px" class="asideList">
      <div class="titleSpan">进度可视化管理</div>
      <el-tree class="treeList" :data="data2" :props="defaultProps" default-expand-all @node-click="handleNodeClick"></el-tree>
   </el-aside>
-  <el-container style="overflow:auto;height:95%;">
     <el-main class="elContent">
       <router-view> </router-view>
     </el-main>
-  </el-container>
 </el-container>
 </div>
 </template>
@@ -48,7 +46,7 @@ export default {
             },
             {
               id: 42,
-              label: "进度计划",
+              label: "形象进度月计划",
               path:"/planProgress"
             },
              {

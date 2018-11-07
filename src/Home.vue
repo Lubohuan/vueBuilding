@@ -29,8 +29,6 @@ export default {
       })
     },
     gotest:function(){
-      //this.$router.replace('/Login');
-      //this.$router.replace('/HelloWorld');
       this.$router.replace('/mainMenu/text2/text2');
     }
   }

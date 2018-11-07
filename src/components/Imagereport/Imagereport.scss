@@ -1,5 +1,5 @@
 .Imagereport{
-    height:100%;
+    height:calc(100% - 20px);;
     // padding:20px;
     .tabCol{
         padding:11px 0px 7px 0px;
@@ -41,7 +41,7 @@
         font-size: 16px;
     }
     .tableDiv{
-        padding: 20px 20px 32px 20px;
+        padding: 20px;
         border:1px solid #e4e7ed;
         border-bottom: none;
         .el-table th.is-leaf{

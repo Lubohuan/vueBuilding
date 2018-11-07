@@ -1,10 +1,10 @@
 <template>
-<!--进度计划-->
+<!--形象进度月计划-->
 <div class="planProgress">
    <el-breadcrumb separator-class="el-icon-arrow-right" class="breadTitle">
     <el-breadcrumb-item :to="{ path: '/' }">生产形象进度  </el-breadcrumb-item>
     <el-breadcrumb-item>形象进度管理</el-breadcrumb-item>
-    <el-breadcrumb-item>进度计划</el-breadcrumb-item>
+    <el-breadcrumb-item>形象进度月计划</el-breadcrumb-item>
   </el-breadcrumb>
   <el-row>
    <el-col :span="10">

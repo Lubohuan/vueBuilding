@@ -22,7 +22,10 @@
     <el-form-item label=" 预算工程量：" prop="budgetTotal">
         <el-input v-model="dataModel.budgetTotal" size="small"></el-input>     
     </el-form-item>
-    <el-row>
+    <el-form-item label="工程总产值：" prop="outputTotal">
+        <el-input v-model="dataModel.outputTotal" size="small"></el-input>
+    </el-form-item>
+    <!-- <el-row>
           <el-col :span="17">
             <el-form-item label="工程总产值：" prop="outputTotal" style="width:96%">
               <el-input v-model="dataModel.outputTotal" size="small"></el-input>
@@ -36,7 +39,7 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
-    </el-row>
+    </el-row> -->
   </el-form>
   <div class="clickBtn">
     <el-button @click="close"  size="small">取消</el-button>
@@ -226,7 +229,7 @@ export default {
     text-align: center;
   }
   .el-form-item {
-    width: 68%;
+    width: 90%;
   }
   .el-radio + .el-radio {
     margin-left: 10px;

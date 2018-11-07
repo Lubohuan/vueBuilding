@@ -43,7 +43,7 @@
       }
     }
     .content{
-      width:100%;
+      width:calc(100% - 51px);
       height:100%;
       position: relative;
       box-sizing: border-box;
@@ -52,7 +52,7 @@
       -webkit-transition:width 300ms 100ms; /* Safari and Chrome */
       -o-transition:width 300ms 100ms; /* Opera */
       .right_content{
-        height:100%;
+        height:calc(100% - 50px);
         width:100%;
         overflow: hidden;
       }
