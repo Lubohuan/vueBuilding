@@ -1,22 +1,22 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: ding-portal-website
+  name: bim-schedule-website
   namespace: develop
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: ding-portal-website
+      name: bim-schedule-website
   template:
     metadata:
       labels:
-        name: ding-portal-website
-        app: ding-portal-website
+        name: bim-schedule-website
+        app: bim-schedule-website
     spec:
       containers:
-      - image: registry.cn-beijing.aliyuncs.com/huazhu_alpha/ding-portal-website:${TAG}
+      - image: registry.cn-beijing.aliyuncs.com/huazhu_alpha/bim-schedule-website:${TAG}
         imagePullPolicy: Always
-        name: ding-portal-website
+        name: bim-schedule-website
         ports:
         - containerPort: 8080
