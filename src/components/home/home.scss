@@ -19,6 +19,10 @@
     .el-tree-node__label{
       font-size: 12px;
     }
+    .el-tree-node__children .el-tree-node__content{
+      padding-left: 30px !important;
+      color: #666;
+    }
   }
   .titleSpan{
     font-family: '微软雅黑 Bold', '微软雅黑';
@@ -42,10 +46,7 @@
     color: #333;
     height: 36px !important;
   }
-  .el-tree-node__children .el-tree-node__content{
-    padding-left: 30px !important;
-    color: #666;
-  }
+  
 }
 .breadTitle{
   margin-bottom: 20px;
