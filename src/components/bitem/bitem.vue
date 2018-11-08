@@ -37,7 +37,7 @@
   </el-row>
   <el-tree :data="tableData" show-checkbox node-key="id" :default-expand-all="false" draggable :expand-on-click-node="false" :props="defaultProps">
       <span class="custom-tree-node" slot-scope="{ node, data }">
-        <span style="margin-left:100px;">{{ data.subName }}</span>
+        <span style="margin-left:100px;font-size:12px;">{{ data.subName }}</span>
         <span>
             <el-button size="mini" type="primary"  @click="addSubChild(data)">添加子项</el-button>
             <el-button size="mini" type="primary"  @click="editSub(data)">编辑</el-button>
@@ -75,7 +75,7 @@
 import categoryManagement from "../bitem/categoryManagement.vue";
 import addSubChid from "../bitem/addSubChid.vue";
 import addSubsection from "../bitem/addSubsection.vue";
-import { getSubsectionPage, deleteRegionById } from "../api/upload.js";
+import { getSubsectionPage, deleteSubsectionById } from "../api/upload.js";
 export default {
   name: "bitem",
   components: {
@@ -140,7 +140,7 @@ export default {
         cancelButtonText: "取消"
       })
         .then(() => {
-          deleteRegionById(data.id)
+          deleteSubsectionById(data.id)
             .then(response => {
               if (response.code == "200") {
                 this.$message.success("删除成功!");

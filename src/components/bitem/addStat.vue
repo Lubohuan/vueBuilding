@@ -80,7 +80,7 @@ export default {
           }
         })
         .catch(error => {
-          this.$message.error(error);
+          // this.$message.error(error);
           return false;
         });
       return true;
@@ -112,26 +112,10 @@ export default {
           }
         })
         .catch(error => {
-          this.$message.error(error);
+          // this.$message.error(error);
           return false;
         });
       return true;
-      // this.$axios
-      //   .put("http://172.16.7.135/basicData/updateUnitById", this.dataModel)
-      //   .then(response => {
-      //     if (response.data && response.data.code == "200") {
-      //       this.$message.success("修改成功!");
-      //       this.close();
-      //       this.$emit("refreshData");
-      //     } else {
-      //       this.$message.error(response.data.msg);
-      //     }
-      //   })
-      //   .catch(error => {
-      //     this.$message.error(error);
-      //     return false;
-      //   });
-      // return true;
     }
   }
 };

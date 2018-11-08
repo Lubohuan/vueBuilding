@@ -18,7 +18,7 @@
    </el-col>
   </el-row>
   <el-table :data="tableData" style="width: 100%;margin-top:20px;"   @selection-change="handleSelectionChange" border>
-    <el-table-column type="selection" width="80" align="center"></el-table-column>
+    <el-table-column type="selection" width="50" align="center"></el-table-column>
     <el-table-column prop="unitName" label="单位名称" align="center"></el-table-column>
     <el-table-column label="操作" align="center">
       <template slot-scope="scope">

@@ -1,3 +1,12 @@
 .el-table th.is-leaf{
     padding: 6px 0 !important;
 }
+.el-table td, .el-table th{
+    padding: 10px 0 !important;
+}
+.el-table th>.cell{
+    font-size: 12px;
+}
+.el-table .cell{
+    font-size: 12px;
+}

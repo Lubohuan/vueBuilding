@@ -27,18 +27,18 @@
    </el-col>
   </el-row>
   <el-table :data="tableData" style="width: 100%;margin-top:20px;"   @selection-change="handleSelectionChange" border>
-    <el-table-column type="selection" width="80" align="center"></el-table-column>
-    <el-table-column type="index" width="100" label="序号" align="center"></el-table-column>
+    <el-table-column type="selection" width="50" align="center"></el-table-column>
+    <el-table-column type="index" width="50" label="序号" align="center"></el-table-column>
     <el-table-column prop="projectId" label="项目名称" align="center"></el-table-column>
-    <el-table-column prop="regionName" label="施工区段" align="center" min-width="180"></el-table-column>
-    <el-table-column prop="statName" label="分部分项名称" align="center" min-width="120"></el-table-column>
+    <el-table-column prop="regionFullName" label="施工区段" align="center" min-width="200"></el-table-column>
+    <el-table-column prop="subFullName" label="分部分项名称" align="center" min-width="180"></el-table-column>
     <el-table-column prop="statName" label="形象进度统计项" align="center" min-width="120"></el-table-column>
     <el-table-column prop="unitName" label="形象单位" align="center"></el-table-column>
     <el-table-column prop="budgetTotal" label="预算工程量" align="center" min-width="120"></el-table-column>
     <el-table-column prop="finishBudget" label="累计完成" align="center"></el-table-column>
     <el-table-column prop="outputTotal" label="总产值（万元）" align="center"  min-width="120"></el-table-column>
     <el-table-column prop="finishOutput" label="完成产值（万元）" align="center" min-width="140"></el-table-column>
-    <el-table-column prop="finishOutputRate" label="完成比例" align="center"></el-table-column>
+    <el-table-column prop="finishBudgetRate" label="完成比例" align="center"></el-table-column>
     <el-table-column label="操作" align="center" min-width="230">
       <template slot-scope="scope">
             <el-button size="mini" type="primary" @click="editClick(scope)">编辑</el-button>

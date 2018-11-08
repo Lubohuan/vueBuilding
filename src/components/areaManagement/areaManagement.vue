@@ -50,8 +50,8 @@
   </el-row>
   <el-tree :data="tableData" show-checkbox node-key="id" :default-expand-all="false" draggable :expand-on-click-node="false" :props="defaultProps">
 
-      <span class="custom-tree-node" slot-scope="{ node, data }">
-         <el-row style="width:100%;">
+    <span class="custom-tree-node" slot-scope="{ node, data }">
+    <el-row style="width:100%;">
     <el-col :span="2" class="tableCol" style="margin-left:20px;">
     <span>{{ data.regionName }}</span>
     </el-col>
@@ -73,7 +73,7 @@
     <el-col :span="2" class="tableCol" style="margin-left:10px;">
        <span>{{ data.expiryRate }}</span>
     </el-col>
-      <el-col :span="3" class="tableCol">
+    <el-col :span="3" class="tableCol">
       <span>{{ data.notStartCount }}</span>
     </el-col>
     <el-col :span="4"  class="tableCol">

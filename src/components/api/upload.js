@@ -1,5 +1,6 @@
 import request from '@/utils/request'
 // const baseUrl = 'http://172.16.7.135:8081';
+// const baseUrl = 'http://172.16.7.135';
 const baseUrl = 'http://autobuild.jiguantong.com/bimScheduleService';
 // 查询统计单位接口
 export function getUnitPage(data) {
@@ -29,6 +30,13 @@ export function updateUnitById(data) {
 export function deleteUnitById(data) {
   return request({
     url: baseUrl + '/basicData/deleteUnitById/' + data,
+    method: 'delete',
+  })
+}
+// 删除分部分项接口
+export function deleteSubsectionById(data) {
+  return request({
+    url: baseUrl + '/basicData/deleteSubsectionById/' + data,
     method: 'delete',
   })
 }
@@ -67,7 +75,7 @@ export function urgeTask(data) {
 // 查询所在组织可用的分部分项信息
 export function getSubsectionPage(data) {
   return request({
-    url: baseUrl + '/basicData/getSubsectionPage',
+    url: baseUrl + '/basicData/listSubsection',
     method: 'get',
     params: data
   })

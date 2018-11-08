@@ -7,7 +7,7 @@
     <el-breadcrumb-item>任务预警</el-breadcrumb-item>
   </el-breadcrumb>
   <el-table :data="tableData" style="width: 100%;margin-top:20px;"   @selection-change="handleSelectionChange" border>
-    <el-table-column type="index" label="序号" width="100" align="center"></el-table-column>
+    <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
     <el-table-column prop="name"  label="项目名称" align="center"></el-table-column>
     <el-table-column prop="name"  label="任务名称" align="center"></el-table-column>
     <el-table-column prop="name"  label="施工区段" align="center" min-width="120"></el-table-column>

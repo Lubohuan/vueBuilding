@@ -120,7 +120,7 @@
           </el-col>
       </el-row>
       <el-table  border :data="tableData" style="width: 100%">
-      <el-table-column type="index" label="序号" align="center" width="100"></el-table-column>
+      <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
        <el-table-column prop="name" label="施工区段" align="center"></el-table-column>
        <el-table-column prop="name" label="计划任务名称" align="center" min-width="120"></el-table-column>
        <el-table-column prop="name" label="设计工程量" align="center" min-width="120"></el-table-column>
@@ -154,7 +154,7 @@
       </el-row>
      
       <el-table  border :data="tableData" style="width: 100%">
-       <el-table-column type="index" label="序号" align="center" width="100"></el-table-column>
+       <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
        <el-table-column prop="name" label="施工区段" align="center"></el-table-column>
        <el-table-column prop="name" label="分部分项名称" align="center"></el-table-column>
        <el-table-column prop="name" label="预算工程量" align="center" min-width="120"></el-table-column>

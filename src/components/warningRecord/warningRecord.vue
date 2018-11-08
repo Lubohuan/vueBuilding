@@ -7,7 +7,7 @@
     <el-breadcrumb-item>预警记录</el-breadcrumb-item>
   </el-breadcrumb>
   <el-table :data="tableData" style="width: 100%;margin-top:20px;"   @selection-change="handleSelectionChange" border>
-    <el-table-column type="index" label="序号" align="center" width="100"></el-table-column>
+    <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
     <el-table-column prop="name"  label="项目名称" align="center"></el-table-column>
     <el-table-column prop="name"  label="预警原因" align="center"></el-table-column>
     <el-table-column prop="name"  label="责任人" align="center" min-width="120"></el-table-column>

@@ -40,7 +40,7 @@
       <span class="blueBlock"></span>
       <span class="spanBlock">产值进度</span>
       <el-table  border :data="tableData1" style="width: 100%">
-       <el-table-column prop="name" label="名称" align="center" width="100" ></el-table-column>
+       <el-table-column prop="name" label="名称" align="center" width="50" ></el-table-column>
        <el-table-column prop="name"  label="今日完成产值" align="center"></el-table-column>
        <el-table-column prop="name"  label="累计完成产值" align="center"></el-table-column>
        <el-table-column prop="name"  label="累计完成比例" align="center" min-width="120"></el-table-column>
@@ -50,13 +50,13 @@
       <span class="blueBlock"></span>
       <span class="spanBlock">施工区域进展</span>
       <el-table  border :data="tableData2" style="width: 100%">
-       <el-table-column type="index" label="序号" align="center" width="100"></el-table-column>
-       <el-table-column prop="regionFullName" label="施工区段" align="center"></el-table-column>
-       <el-table-column prop="subFullName" label="分部分项名称" align="center"></el-table-column>
-       <el-table-column prop="budgetTotal" label="预算工程量" align="center" min-width="120"></el-table-column>
-       <el-table-column prop="outputTotal" label="今日完成工程量" align="center" min-width="120"></el-table-column>
+       <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
+       <el-table-column prop="regionFullName" label="施工区段" align="center" min-width="200"></el-table-column>
+       <el-table-column prop="subFullName" label="分部分项名称" align="center" min-width="200"></el-table-column>
+       <el-table-column prop="budgetTotal" label="预算工程量" align="center" min-width="100"></el-table-column>
+       <el-table-column prop="outputTotal" label="今日完成工程量" align="center" min-width="100"></el-table-column>
        <el-table-column prop="finishBudgetTotal" label="累计完成工程量" align="center"></el-table-column>
-       <el-table-column prop="finishBudgetTotalRate" label="累计完成比例" align="center" min-width="120"></el-table-column>
+       <el-table-column prop="finishBudgetTotalRate" label="累计完成比例" align="center" min-width="80"></el-table-column>
        <el-table-column prop="finishAmount" label="今日完成产值" align="center"></el-table-column>
        <el-table-column prop="finishOutputTotal" label="累计完成产值" align="center"></el-table-column>
        <el-table-column prop="finishOutputTotalRate" label="累计完成比例" align="center" ></el-table-column>
@@ -66,12 +66,12 @@
       <span class="blueBlock"></span>
       <span class="spanBlock">分部分项形象进度</span>
       <el-table  border :data="tableData3" style="width: 100%">
-       <el-table-column type="index" label="序号" align="center" width="100"></el-table-column>
-       <el-table-column prop="name" label="分部分项名称" align="center"></el-table-column>
-       <el-table-column prop="name" label="预算工程量" align="center" min-width="120"></el-table-column>
-       <el-table-column prop="name" label="今日完成工程量" align="center" min-width="120"></el-table-column>
+       <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
+       <el-table-column prop="name" label="分部分项名称" align="center" min-width="150"></el-table-column>
+       <el-table-column prop="name" label="预算工程量" align="center" min-width="100"></el-table-column>
+       <el-table-column prop="name" label="今日完成工程量" align="center" min-width="100"></el-table-column>
        <el-table-column prop="name" label="累计完成工程量" align="center"></el-table-column>
-       <el-table-column prop="name" label="累计完成比例" align="center" min-width="120"></el-table-column>
+       <el-table-column prop="name" label="累计完成比例" align="center" min-width="80"></el-table-column>
        <el-table-column prop="name" label="今日完成产值" align="center"></el-table-column>
        <el-table-column prop="name" label="累计完成产值" align="center"></el-table-column>
        <el-table-column prop="name" label="累计完成比例" align="center" ></el-table-column>
