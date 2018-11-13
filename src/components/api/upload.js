@@ -60,7 +60,7 @@ export function getTaskWarningPage(data) {
 export function relieveTaskWarning(data) {
   return request({
     url: baseUrl + '/warning/relieveTaskWarning',
-    method: 'post',
+    method: 'put',
     data: data
   })
 }
@@ -68,7 +68,7 @@ export function relieveTaskWarning(data) {
 export function urgeTask(data) {
   return request({
     url: baseUrl + '/warning/urgeTask',
-    method: 'post',
+    method: 'put',
     data: data
   })
 }
@@ -246,6 +246,22 @@ export function getVisualStatMonitorPage(data) {
 export function getVisualStatReport(data) {
   return request({
     url: baseUrl + '/workStat/getVisualStatReport',
+    method: 'get',
+    params:data
+  })
+}
+// 查询形象进度进展信息列表(指挥中心形象进度进展)
+export function listVisualStatProgress(data) {
+  return request({
+    url: baseUrl + '/workStat/listVisualStatProgress',
+    method: 'get',
+    params:data
+  })
+}
+// 查询项目下拉框
+export function listOrgInfo(data) {
+  return request({
+    url: baseUrl + '/system/listOrgInfo',
     method: 'get',
     params:data
   })
