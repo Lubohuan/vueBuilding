@@ -67,14 +67,14 @@
       <span class="spanBlock">分部分项形象进度</span>
       <el-table  border :data="tableData3" style="width: 100%">
        <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-       <el-table-column prop="name" label="分部分项名称" align="center" min-width="150"></el-table-column>
-       <el-table-column prop="name" label="预算工程量" align="center" min-width="100"></el-table-column>
-       <el-table-column prop="name" label="今日完成工程量" align="center" min-width="100"></el-table-column>
-       <el-table-column prop="name" label="累计完成工程量" align="center"></el-table-column>
-       <el-table-column prop="name" label="累计完成比例" align="center" min-width="80"></el-table-column>
-       <el-table-column prop="name" label="今日完成产值" align="center"></el-table-column>
-       <el-table-column prop="name" label="累计完成产值" align="center"></el-table-column>
-       <el-table-column prop="name" label="累计完成比例" align="center" ></el-table-column>
+       <el-table-column prop="subFullName" label="分部分项名称" align="center" min-width="150"></el-table-column>
+       <el-table-column prop="budgetTotal" label="预算工程量" align="center" min-width="100"></el-table-column>
+       <el-table-column prop="finishAmount" label="今日完成工程量" align="center" min-width="100"></el-table-column>
+       <el-table-column prop="finishBudgetTotal" label="累计完成工程量" align="center"></el-table-column>
+       <el-table-column prop="finishBudgetTotalRate" label="累计完成比例" align="center" min-width="80"></el-table-column>
+       <el-table-column prop="finishOutput" label="今日完成产值" align="center"></el-table-column>
+       <el-table-column prop="outputTotal" label="累计完成产值" align="center"></el-table-column>
+       <el-table-column prop="finishOutputTotalRate" label="累计完成比例" align="center" ></el-table-column>
       </el-table>
     </div>
   </div>
@@ -101,7 +101,8 @@ export default {
       dayData2: "",
       dayData3: "",
       dayData: "",
-      weekData: ""
+      weekData: "",
+      newestData: ""
     };
   },
   methods: {
@@ -126,7 +127,7 @@ export default {
       // case "fourth":
       //   执行代码块 4
       // break;
-}
+    }
     },
 
     //月份减
@@ -298,6 +299,7 @@ export default {
       this.end = this.dayData;
       this.refreshList();
     },
+
     //周数减
     reduceWeek() {
       if (this.weekData <= 1) {
@@ -313,9 +315,11 @@ export default {
         this.end = this.dataArr[this.dataArr.length - 1];
         this.refreshList();
     },
+
     //周数加
     addWeek() {
-      if (this.weekData >= 52) {
+      if (this.weekData >= this.newestData) {
+         this.$message.success("已经是最新的了 !");
         return;
       } else {
         this.weekData = this.weekData + 1;
@@ -340,25 +344,13 @@ export default {
       var i = 1;
       for (var from = d; from < to; ) {
         if (i == index) {
-          arr.push(
-            from.getFullYear() +
-              "-" +
-              (from.getMonth() + 1) +
-              "-" +
-              from.getDate()
-          );
+          arr.push(from.getFullYear() + "-" +(from.getMonth() + 1) + "-" + from.getDate());
         }
         var j = 6;
         while (j > 0) {
           from.setDate(from.getDate() + 1);
           if (i == index) {
-            arr.push(
-              from.getFullYear() +
-                "-" +
-                (from.getMonth() + 1) +
-                "-" +
-                from.getDate()
-            );
+            arr.push(from.getFullYear() + "-" + (from.getMonth() + 1) + "-" + from.getDate());
           }
           j--;
         }
@@ -370,12 +362,14 @@ export default {
         this.dataArr = arr;
       }
     },
+
     //自定义查询
     changeSetDate(){
       this.start = this.setvalue[0];
       this.end = this.setvalue[1];
       this.refreshList();
     },
+
      //查询
     refreshList() {
       getVisualStatReport({
@@ -401,6 +395,7 @@ export default {
           console.log(error);
       });
     },
+
     //获取年月日
     getThisDays(){
     var data = new Date();
@@ -411,6 +406,7 @@ export default {
     this.start = this.dayData;
     this.end = this.dayData;
     },
+
     //获取年月
     getMonths(){
     var data = new Date();
@@ -420,6 +416,7 @@ export default {
     this.start = this.monthData  + "-" + '01';
     this.end =  this.monthData  + '-' + '15';
     },
+
     //获取今天是今年第几周
     getWeek(){
     var d1 = new Date();
@@ -429,6 +426,7 @@ export default {
     var rq = d1 - d2;
     var s1 = Math.ceil(rq / (24 * 60 * 60 * 1000));
     this.weekData = Math.ceil(s1 / 7);
+    this.newestData = Math.ceil(s1 / 7);
     }
   },
   created() {

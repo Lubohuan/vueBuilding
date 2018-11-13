@@ -109,7 +109,7 @@
     <el-row class="tableTitle">
           <el-col :span="18">
              <span class="blueBlock"></span>
-             <span class="spanBlock">产值进度</span>
+             <span class="spanBlock">形象进度进展</span>
           </el-col>
           <el-col :span="6" style="text-align:right;">
             <el-radio-group v-model="tabPosition" size="small" @change="tabClick">
@@ -121,28 +121,24 @@
       </el-row>
       <el-table  border :data="tableData" style="width: 100%">
       <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-       <el-table-column prop="name" label="施工区段" align="center"></el-table-column>
-       <el-table-column prop="name" label="计划任务名称" align="center" min-width="120"></el-table-column>
-       <el-table-column prop="name" label="设计工程量" align="center" min-width="120"></el-table-column>
-       <el-table-column prop="name" label="累计完成" align="center" min-width="120"></el-table-column>
+       <el-table-column prop="regionFullName" label="施工区段" align="center" min-width="200"></el-table-column>
+       <el-table-column prop="subFullName" label="计划任务名称" align="center" min-width="180"></el-table-column>
+       <el-table-column prop="finishBudget" label="设计工程量" align="center" min-width="120"></el-table-column>
+       <el-table-column prop="budgetTotal" label="累计完成" align="center" min-width="120"></el-table-column>
        <el-table-column prop="name" label="累计完成百分比" align="center" min-width="120"></el-table-column>
-       <el-table-column prop="name" label="本月计划" align="center"></el-table-column>
-       <el-table-column prop="name" label="本月完成" align="center"></el-table-column>
+       <el-table-column prop="monthPlan" label="本月计划" align="center"></el-table-column>
+       <el-table-column prop="monthFinish" label="本月完成" align="center"></el-table-column>
        <el-table-column prop="name" label="完成比例" align="center"></el-table-column>
-       <el-table-column prop="name" label="24" align="center" ></el-table-column>
-       <el-table-column prop="name" label="25" align="center" ></el-table-column>
-       <el-table-column prop="name" label="26" align="center" ></el-table-column>
-       <el-table-column prop="name" label="27" align="center" ></el-table-column>
-       <el-table-column prop="name" label="28" align="center" ></el-table-column>
-       <el-table-column prop="name" label="29" align="center" ></el-table-column>
-       <el-table-column prop="name" label="30" align="center" ></el-table-column>
+       <template v-for="(item,index) in dateArr">
+            <el-table-column  :prop="'logMms['+ index +'].finishTotal'"  :label=" item "  :key="index" align="center"></el-table-column>
+       </template>
       </el-table>
     </div>
      <div class="tableDiv" style="border-top:none;">
       <el-row class="tableTitle">
           <el-col :span="18">
              <span class="blueBlock"></span>
-             <span class="spanBlock">施工区域进展</span>
+             <span class="spanBlock">逾期形象进度计划</span>
           </el-col>
           <el-col :span="6" style="text-align:right;">
             <el-radio-group v-model="tabPositions" size="small">
@@ -171,6 +167,7 @@
 </template>
 
 <script>
+import { listVisualStatProgress } from "../api/upload.js";
 export default {
   name: "commandCentre",
   data() {
@@ -180,18 +177,16 @@ export default {
       value6: "",
       personalData: {},
       textarea: "",
-      monthData1: "",
-      monthData2: "",
-      monthData: "",
-
-      dayData1: "",
-      dayData2: "",
-      dayData3: "",
-      dayData: "",
-      weekData: "",
       imageData:"up",
       tabPosition:"最近七天",
-      tabPositions:"最近七天"
+      tabPositions:"最近七天",
+      projectId:12,
+      startTime:"",
+      endTime:"",
+      dateArr:[],
+      dateArrs:[],
+      nowWeekDate:"",
+
     };
   },
   methods: {
@@ -199,247 +194,183 @@ export default {
       this.activeName = tab.name;
       console.log(this.activeName, "tab");
     },
-    tabClick(){
+
+    tabClick(){ 
     console.log(this.tabPosition,"tabPosition");
-    },
-    //月份减
-    reduceMonth() {
-      var arr = this.monthData.split("-");
-      var year = parseInt(arr[0]);
-      var month = parseInt(arr[1]);
-      //判断month
-      if (month == 1) {
-        year = year - 1;
-        month = 12;
-      } else {
-        month = month - 1;
-      }
-      this.monthData = year + "-" + month;
-    },
-
-    //月份加
-    addMonth() {
-      var arr = this.monthData.split("-");
-      var year = parseInt(arr[0]);
-      var month = parseInt(arr[1]);
-      //判断month
-      if (month == 12) {
-        year = year + 1;
-        month = 1;
-      } else {
-        month = month + 1;
-      }
-      this.monthData = year + "-" + month;
-    },
-
-    //天数加
-    addDay() {
-      var arr = this.dayData.split("-"); //将获取的数组按“-”拆分成字符串数组
-
-      var year = parseInt(arr[0]); //开分字符串数组的第一个地址的内容是年份
-      var mouth = parseInt(arr[1]); //开分字符串数组的第二个地址的内容是月份
-      var date = parseInt(arr[arr.length - 1]); //开分字符串数组的第三个地址的内容是日期
-
-      if (date == 28) {
-        //当日期为28号时 只判断是否是2月
-        switch (mouth) {
-          case 2:
-            if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) {
-              date = date + 1;
-              break;
-              //如果是闰年2月 日期就加一
-            } else {
-              date = 1;
-              mouth = mouth + 1;
-              break;
-              //不是闰年2月 日期就变为1 月份加一
-            }
-          default:
-            date = date + 1;
-            break;
-          //其他月份默认日期加一
-        }
-      } else if (date == 29) {
-        //当日期为29号是 也是判断是否是2月
-        switch (mouth) {
-          case 2:
-            date = 1;
-            mouth = mouth + 1;
-            break;
-          default:
-            date = date + 1;
-            break;
-        } //当29号出现必定是闰年 日期变为1 月份加一 其他月份默认日期加一
-      } else if (date == 30) {
-        //当日期为30 时
-        switch (mouth) {
-          case 1:
-          case 3:
-          case 5:
-          case 7:
-          case 8:
-          case 10:
-          case 12:
-            date = date + 1;
-            break; //这些月份的时候一个月有31天 到30的时候再加一
-          case 4:
-          case 6:
-          case 9:
-          case 11:
-            date = 1;
-            mouth = mouth + 1;
-            break; //这些月份的时候一个月有30天 到30的时候 日期变为1 月份加一
-        }
-      } else if (date == 31) {
-        switch (mouth) {
-          case 1:
-          case 3:
-          case 5:
-          case 7:
-          case 8:
-          case 10:
-            date = 1;
-            mouth = mouth + 1;
-            break; //这些月份的时候一个月有31天 到31的时候  日期为1月份加一
-          case 12:
-            date = 1;
-            mouth = 1;
-            year = year + 1;
-            break; //十二月 的 31 号 日期变为一 月份变为一 年份加一
-        }
-      } else {
-        date += 1;
-      }
-      this.dayData = year + "-" + mouth + "-" + date;
-    },
-
-    //天数减
-    reduceDay() {
-      var arr = this.dayData.split("-"); //将获取的数组按“-”拆分成字符串数组
-      var year = parseInt(arr[0]); //开分字符串数组的第一个地址的内容是年份
-      var mouth = parseInt(arr[1]); //开分字符串数组的第二个地址的内容是月份
-      var date = parseInt(arr[arr.length - 1]); //开分字符串数组的第三个地址的内容是日期
-
-      if (date == 1) {
-        //当日期为1时，再剪就会改变月份，甚至年份
-        switch (mouth) {
-          case 1:
-            date = 31;
-            mouth = 12;
-            year = year - 1;
-            break; //一月一日 再剪一天 年份减一 月份为12 日期为31
-          case 2:
-          case 4:
-          case 6:
-          case 8:
-          case 9:
-          case 11:
-            date = 31;
-            mouth = mouth - 1;
-            break; //这些月一日 再剪一天  月份减一 日期为31
-          case 3:
-            if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) {
-              date = 29;
-              mouth = mouth - 1;
-            } else {
-              date = 28;
-              mouth = mouth - 1;
-            }
-            break; //三月一日 再剪一天  月份减一 日期为根据是否是闰年来判断 日期
-          case 5:
-          case 7:
-          case 10:
-            date = 30;
-            mouth = mouth - 1;
-            break; //这些月一日 再剪一天  月份减一 日期为30
-        }
-      } else {
-        date = date - 1;
-      }
-      this.dayData = year + "-" + mouth + "-" + date; //拼接字符串插入到标签中
-    },
-    //周数减
-    reduceWeek() {
-      if (this.weekData <= 1) {
-        return;
-      } else {
-        this.weekData = this.weekData - 1;
-      }
-    },
-    //周数加
-    addWeek() {
-      if (this.weekData >= 52) {
-        return;
-      } else {
-        this.weekData = this.weekData + 1;
-      }
-    },
-
-    /*传入年，周数，获取周数对应的所有日期*/
-    getWeekTime() {
-      var year = 2018;
-      var index = 43;
-      var d = new Date(year, 0, 1);
-      while (d.getDay() != 1) {
-        d.setDate(d.getDate() + 1);
-      }
-      var to = new Date(year + 1, 0, 1);
-      var i = 1;
-      var arr = [];
-      for (var from = d; from < to; ) {
-        if (i == index) {
-          arr.push(
-            from.getFullYear() +
-              "-" +
-              (from.getMonth() + 1) +
-              "-" +
-              from.getDate()
-          );
-        }
-        var j = 6;
-        while (j > 0) {
-          from.setDate(from.getDate() + 1);
-          if (i == index) {
-            arr.push(
-              from.getFullYear() +
-                "-" +
-                (from.getMonth() + 1) +
-                "-" +
-                from.getDate()
-            );
-          }
-          j--;
-        }
-        if (i == index) {
-          return arr;
-        }
-        from.setDate(from.getDate() + 1);
-        i++;
-        console.log(arr, "arr");
-      }
+        switch(this.tabPosition){
+        case "最近七天":
+        this.endTime   = this.getDay(0);//当天日期
+        this.startTime = this.getDay(-6);//7天前日期
+        this.getAllDays(6);
+        this.refreshList();
+        break;
+        case "本周":
+        this.getMonDate();
+        this.getWeekTime();
+        this.refreshList();
+        break;
+        case "上周":
+        this.startTime = this.getTimes(7);//上周开始时间
+        this.endTime = this.getTimes(1);//上周结束时间
+        this.getLastAllDays(7);
+        this.refreshList();
+        break;
     }
+    },
+    
+     //列表查询
+    refreshList() {
+      listVisualStatProgress({
+        projectId: this.projectId,
+        startTime:this.startTime,
+        endTime:this.endTime
+      })
+        .then(response => {
+          this.tableData = response.body;
+          this.total = Number(response.body.page.rows);
+        })
+        .catch(error => {
+          console.log(error);
+      });
+    },
+
+     //输入数字查询日期
+    getDay(day){  
+       var today = new Date();  
+       var targetday=today.getTime() + 1000*60*60*24*day;          
+       today.setTime(targetday); 
+         
+       var tYear = today.getFullYear();  
+       var tMonth = today.getMonth();  
+       var tDate = today.getDate();  
+       tMonth = this.doHandleMonth(tMonth + 1);  
+       tDate  =  this.doHandleMonth(tDate);  
+       return tYear+"-"+tMonth+"-"+tDate;  
+    }, 
+     
+    //获取本周一日期
+    getMonDate(){
+        var d=new Date(),
+        day  = d.getDay(),
+        date = d.getDate();
+        if(day==1)
+        this.nowWeekDate = d;
+        if(day==0)
+        d.setDate(date-6);
+        else
+        d.setDate(date-day+1);
+        this.nowWeekDate = d;
+    },
+
+    /*获取本周从周一开始到当天的的日期*/
+    getWeekTime() {
+        this.dateArr = [];
+        this.dateArrs = [];
+        var arr=[];
+        for(var i=0; i<7; i++){
+        arr.push(this.nowWeekDate.getFullYear()+'-'+(this.nowWeekDate.getMonth()+1)+'-'+this.nowWeekDate.getDate());
+        this.nowWeekDate.setDate(this.nowWeekDate.getDate()+1);
+        }
+        this.dateArrs = arr;
+        this.endTime = this.getDay(0);//获取当天日期
+        var arrIndex = this.indexVf(this.endTime);//查找当天在本周日期数组中的索引值
+        this.dateArrs = arr.slice(0,arrIndex);//取出从周一到当天的日期范围
+        this.startTime = this.dateArrs[0];
+        this.editDataArr();
+    },
+
+    //改编日期
+    editDataArr(){
+        for(var i=0;i<this.dateArrs.length;i++){
+            this.dateArr.push(this.dateArrs[i].substr(8,2));
+        }
+    },
+
+     //查找当天在本周日期数组中的索引值
+    indexVf(data){
+          for(var i=0;i<this.dateArrs.length;i++){
+              if(this.dateArrs[i] == data){
+                 return i+1;
+           }     
+        }
+    },
+
+    
+     //获取最近7天内所有的天数
+    getAllDays(index){
+      this.dateArr = [];
+      for(let i = 0;i<=index;i++){
+        let dateTime =  this.getDay((-i));
+        this.dateArr.unshift(dateTime.substr(8,2));
+      }
+    },
+
+    //获取上周起始时间结束时间;
+    getTimes(n) {
+        var now = new Date();
+        var year = now.getFullYear();
+        //因为月份是从0开始的,所以获取这个月的月份数要加1才行
+        var month = now.getMonth() + 1;
+        var date = now.getDate();
+        var day = now.getDay();
+        console.log(date);
+        //判断是否为周日,如果不是的话,就让今天的day-1(例如星期二就是2-1)
+        if (day !== 0) {
+            n = n + (day - 1);
+        } else {
+            n = n + day;
+        }
+        if (day) {
+            //这个判断是为了解决跨年的问题
+            if (month > 1) {
+            month = month;
+            }
+            //这个判断是为了解决跨年的问题,月份是从0开始的
+            else {
+            year = year - 1;
+            month = 12;
+            }
+        }
+        now.setDate(now.getDate() - n);
+        year = now.getFullYear();
+        month = now.getMonth() + 1;
+        date = now.getDate();
+        var s = year + "-" + (month < 10 ? ('0' + month) : month) + "-" + (date < 10 ? ('0' + date) : date);
+        return s;
+    },
+
+     //获取上周所有的天数
+    getLastAllDays(index){
+      this.dateArr = [];
+      for(let i = 1;i<=index;i++){
+        let dateTime =  this.getTimes(i);
+        this.dateArr.unshift(dateTime.substr(8,2));
+      }
+    },
+
+    doHandleMonth(month){  
+       var m = month;  
+       if(month.toString().length == 1){  
+          m = "0" + month;  
+       }  
+       return m;  
+    },
+
+    //获取当天日期
+    getThisDays(){
+    var data = new Date();
+    var dayData1 = data.getFullYear();
+    var dayData2 = data.getMonth() + 1;
+    var dayData3 = data.getDate();
+    this.endTime   = dayData1 + "-" + dayData2 + "-" + dayData3;
+    },
+
   },
   created() {
-    //年月
-    var data = new Date();
-    this.monthData1 = data.getFullYear();
-    this.monthData2 = data.getMonth() + 1;
-    this.monthData = this.monthData1 + "-" + this.monthData2;
-
-    //年月日
-    this.dayData1 = data.getFullYear();
-    this.dayData2 = data.getMonth() + 1;
-    this.dayData3 = data.getDate();
-    this.dayData = this.dayData1 + "-" + this.dayData2 + "-" + this.dayData3;
-
-    //获取今天是今年第几周
-    var d1 = new Date();
-    var d2 = new Date();
-    d2.setMonth(0);
-    d2.setDate(1);
-    var rq = d1 - d2;
-    var s1 = Math.ceil(rq / (24 * 60 * 60 * 1000));
-    this.weekData = Math.ceil(s1 / 7);
+    this.endTime = this.getDay(0);//当天日期
+    this.startTime = this.getDay(-6);//7天前日期
+    this.getAllDays(6);
+    this.refreshList();
   }
 };
 </script>

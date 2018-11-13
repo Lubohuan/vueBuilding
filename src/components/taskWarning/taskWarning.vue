@@ -8,18 +8,16 @@
   </el-breadcrumb>
   <el-table :data="tableData" style="width: 100%;margin-top:20px;"   @selection-change="handleSelectionChange" border>
     <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
-    <el-table-column prop="name"  label="项目名称" align="center"></el-table-column>
-    <el-table-column prop="name"  label="任务名称" align="center"></el-table-column>
+    <el-table-column prop="projectId"  label="项目名称" align="center"></el-table-column>
+    <el-table-column prop="planName"  label="任务名称" align="center"></el-table-column>
     <el-table-column prop="name"  label="施工区段" align="center" min-width="120"></el-table-column>
-    <el-table-column prop="name"  label="预警原因" align="center" min-width="120">
+    <el-table-column prop="warningReason"  label="预警原因" align="center" min-width="120">
         <template slot-scope="scope">
-            <span style="color:red;">{{scope.row.name}}</span>
+            <span style="color:red;">{{scope.row.warningReason}}</span>
       </template>
     </el-table-column>
-    <el-table-column prop="name"  label="负责人" align="center"></el-table-column>
-    <el-table-column prop="name"  label="预约时间" align="center" min-width="120"></el-table-column>
-    <el-table-column prop="name"  label="责任人" align="center" min-width="120"></el-table-column>
-    <el-table-column prop="name"  label="预警时间" align="center" min-width="120"></el-table-column>
+    <el-table-column prop="respUser"  label="责任人" align="center" min-width="120"></el-table-column>
+    <el-table-column prop="relieveTime"  label="预警时间" align="center" min-width="120"></el-table-column>
     <el-table-column prop="name"  label="操作" align="center" min-width="200">
       <template slot-scope="scope">
          <el-button size="mini" type="primary" @click="remindSupervise(scope.row)">督办</el-button>
@@ -40,19 +38,19 @@
    </el-pagination>
 
     <!--提醒督办-->
-    <el-dialog title="提醒督办" :center="true" :visible.sync="dialog.supervise" width="700px" @open="$nextTick(()=>$refs['supervise'].update(remindData))">
+    <el-dialog title="提醒督办" :center="true" :visible.sync="dialog.supervise" width="700px" @open="$nextTick(()=>$refs['supervise'].update(remindData))"  @close="$refs['supervise'].reset()">
       <supervise ref="supervise" @close="dialog.supervise = false" ></supervise>
     </el-dialog>
    
    <!--解除预警-->
-    <el-dialog title="解除预警" :center="true" :visible.sync="dialog.relieveReason" width="600px" >
-      <el-form :model="relieveReasons"  label-width="100px">
+    <el-dialog title="解除预警" :center="true" :visible.sync="dialog.relieveReason" width="600px" @close="relieveReasonReset()">
+      <el-form :model="relieveReasons"  label-width="100px" ref="relieveReason">
         <el-form-item prop="reason" label="解除预警原因:">
           <el-input v-model="relieveReasons.reason" size="small" placeholder="请输入解除预警原因"></el-input>
         </el-form-item>
       </el-form>
       <div class="clickBtn">
-        <el-button @click="close"  size="small">取消</el-button>
+        <el-button  @click="close"  size="small">取消</el-button>
         <el-button  size="small" type="primary" @click="commit">确定</el-button>
       </div>
     </el-dialog>
@@ -77,17 +75,6 @@ export default {
         relieveReason: ""
       },
       remindData: {},
-      companyList: [
-        {
-          companyName: 11,
-          companyCode: 10
-        },
-        {
-          companyName: 12,
-          companyCode: 13
-        }
-      ],
-      companyCode: "",
       dialog: {
         supervise: false,
         relieveReason: false
@@ -98,28 +85,43 @@ export default {
     };
   },
   methods: {
+    
     //选择项变化
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
+
     //页码变化
     handleCurrentChange(cpage) {
       this.currentPage = cpage;
     },
+
     //每页显示数量变化
     handleSizeChange(psize) {
       this.pagesize = psize;
     },
+
     //解除预警
     relieveReason(data) {
       this.relieveReasons.id = data.id;
       this.dialog.relieveReason = true;
     },
+
+     //解除预警弹框表单重置
+    relieveReasonReset() {
+      const RelieveReason = this.$refs["relieveReason"];
+      RelieveReason.resetFields();
+      this.relieveReasons.id = "";
+      this.relieveReasons.relieveReason = "";
+    },
+
     //提醒督办
     remindSupervise(data) {
       this.remindData = data;
       this.dialog.supervise = true;
+      console.log( this.remindData ," this.remindData ");
     },
+
     //分页查询
     refreshList() {
       getTaskWarningLogPage({
@@ -134,12 +136,13 @@ export default {
           console.log(error);
         });
     },
+
     //关闭解除预警弹框
     close() {
       this.dialog.relieveReason = false;
-      this.relieveReasons.id = "";
-      this.relieveReasons.relieveReason = "";
+      this.relieveReasonReset();
     },
+
     //提交解除预警
     commit() {
       relieveTaskWarning(this.relieveReasons)
@@ -152,7 +155,7 @@ export default {
           }
         })
         .catch(error => {
-          this.$message.error(error);
+           console.log(error);
         });
     }
   },

@@ -8,21 +8,21 @@
   </el-breadcrumb>
   <el-table :data="tableData" style="width: 100%;margin-top:20px;"   @selection-change="handleSelectionChange" border>
     <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-    <el-table-column prop="name"  label="项目名称" align="center"></el-table-column>
-    <el-table-column prop="name"  label="预警原因" align="center"></el-table-column>
-    <el-table-column prop="name"  label="责任人" align="center" min-width="120"></el-table-column>
+    <el-table-column prop="planName"  label="项目名称" align="center"></el-table-column>
+    <el-table-column prop="warningReason"  label="预警原因" align="center"></el-table-column>
+    <el-table-column prop="respUser"  label="责任人" align="center" min-width="120"></el-table-column>
     <el-table-column prop="name"  label="预警时间" align="center" min-width="120"></el-table-column>
     <el-table-column prop="name"  label="预警解除原因" align="center"></el-table-column>
     <el-table-column prop="name"  label="预警解除人" align="center" min-width="120"></el-table-column>
     <el-table-column prop="name"  label="预警解除时间" align="center" min-width="120"></el-table-column>
   </el-table>
-  <el-pagination background 
+  <el-pagination background v-if="total > 0"
       class="pageStyle"
 	  layout="prev, pager, next, sizes, total, jumper"
 	  :page-sizes="[5, 10, 15, 20]"
 	  :page-size="pagesize"
-      :current-page="currentPage"
-	  :total="tableData.length"
+    :current-page.sync="currentPage"
+	  :total="total"
 	  @current-change="handleCurrentChange"
 	  @size-change="handleSizeChange"
   >
@@ -31,38 +31,55 @@
 </template>
 
 <script>
+import { getTaskWarningPage} from "../api/upload.js";
 export default {
   name: "warningRecord",
   data() {
     return {
       multipleSelection: [],
       valueData:"",
-      tableData: [
-        {
-          id: 1,
-          name: "m1"
-        },
-        {
-          id: 2,
-          name: "m2"
-        }
-      ],
+      tableData: [],
       pagesize: 10,
-      currpage: 1,
-      currentPage: 1
+      currentPage: 1,
+      total:0
     };
   },
   methods: {
+
     //选择项变化
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
+
+    //切换页码
     handleCurrentChange(cpage) {
-      this.currpage = cpage;
+      this.currentPage = cpage;
+      this.refreshList();
     },
+
+    //每页显示数量变化
     handleSizeChange(psize) {
       this.pagesize = psize;
-    }
+      this.refreshList();
+    },
+
+     //分页查询
+    refreshList() {
+      getTaskWarningPage({
+        current: this.currentPage,
+        offset: this.pagesize
+      })
+        .then(response => {
+          this.tableData = response.body.rows;
+          this.total = Number(response.body.page.rows);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+  },
+  created(){
+    this.refreshList();
   }
 };
 </script>

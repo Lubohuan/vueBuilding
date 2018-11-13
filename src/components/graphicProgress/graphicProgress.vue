@@ -17,13 +17,11 @@
   </el-row>
    <el-row class="graphicProgress_row">
    <el-col :span="15">
-      <el-select size="small" v-model="companyCode" placeholder="请选择项目" clearable>
-            <el-option v-for="(item,index) in companyList" :label="item.companyName" :value="item.companyCode" :key="index"></el-option>
-      </el-select>
+      <el-cascader :options="listOrgInfoList" v-model="projectId" :props="defaultProp" size="small" placeholder="请选择项目"></el-cascader>
    </el-col>
    <el-col :span="9" class="graphicProgress_btn1">
-       <el-button size="mini" type="success" >搜索</el-button>
-       <el-button size="mini" >重置</el-button>
+       <el-button size="mini" type="success" @click="resarchInfo">搜索</el-button>
+       <el-button size="mini" @click="resetForm">重置</el-button>
    </el-col>
   </el-row>
   <el-table :data="tableData" style="width: 100%;margin-top:20px;"   @selection-change="handleSelectionChange" border>
@@ -82,17 +80,6 @@ export default {
       multipleSelection: [],
       dataObj: {},
       tableData: [],
-      companyList: [
-        {
-          companyName: 11,
-          companyCode: 10
-        },
-        {
-          companyName: 12,
-          companyCode: 13
-        }
-      ],
-      companyCode: "",
       dialog: {
         addProgress: false
       },
@@ -101,27 +88,37 @@ export default {
         label: "regionName",
         value: "id"
       },
+      defaultProp:{
+        children: "child",
+        label: "name",
+        value: "id"
+      },
       pagesize: 10,
       currentPage: 1,
       projectId: null,
       regionId: null,
       total: 0,
-      regionIds:null
+      regionIds:null,
+      projectIds:null
     };
   },
   computed: {
     ...mapState([
-     'reginList'
+     'reginList',
+     'listOrgInfoList'
     ]),
   },
   methods: {
     ...mapActions([
-        'getReginList'
+        'getReginList',
+        'getlistOrgInfoList'
     ]),
+
     //选择项变化
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
+
     //删除方法
     deleteClick(scope) {
       this.$confirm("确定要删除此进度吗", "提示", {
@@ -135,6 +132,7 @@ export default {
           this.$message.error("已取消删除");
         });
     },
+
     //禁用
     stopClick(scope) {
       stopVisualStatItems(scope.row.id)
@@ -150,6 +148,7 @@ export default {
           console.log(error);
         });
     },
+
     //启用
     startClick(scope) {
       startVisualStatItem(scope.row.id)
@@ -165,30 +164,37 @@ export default {
           console.log(error);
         });
     },
+
     //增加方法
     addProgress() {
       this.dialog.addProgress = true;
       this.dataObj = {};
     },
+    
     //修改方法
     editClick(scope) {
       this.dialog.addProgress = true;
       this.dataObj = scope.row;
     },
+
+    //页码改变
     handleCurrentChange(cpage) {
       this.currentPage = cpage;
       this.refreshList();
     },
+
+    //每页显示数量改变
     handleSizeChange(psize) {
       this.pagesize = psize;
       this.refreshList();
     },
+
     //分页查询
     refreshList() {
       getVisualStatItemPage({
         current: this.currentPage,
         offset: this.pagesize,
-        projectId: this.projectId,
+        projectId: this.projectIds,
         regionId: this.regionIds
       })
         .then(response => {
@@ -199,14 +205,29 @@ export default {
           console.log(error);
         });
     },
+
+    //查询按钮
+    resarchInfo(){
+       this.projectIds = this.projectId[this.projectId.length - 1];
+       this.refreshList();
+    },
+
+    //选择地区查询
     reserchList(){
       this.regionIds = this.regionId[this.regionId.length - 1];
       this.refreshList();
+    },
+
+    //重置搜索框
+    resetForm(){
+      this.projectId = []; 
+      this.projectIds = null;   
     }
   },
   created() {
     this.refreshList();
     this.getReginList();
+    this.getlistOrgInfoList();
   }
 };
 </script>

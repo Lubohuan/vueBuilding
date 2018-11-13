@@ -88,20 +88,9 @@ export default {
       activeName: "first",
       multipleSelection: [],
       tableData: [],
-      companyList: [
-        {
-          companyName: 11,
-          companyCode: 10
-        },
-        {
-          companyName: 12,
-          companyCode: 13
-        }
-      ],
       defaultProps: {
         children: "child"
       },
-      companyCode: "",
       projectType: 1,
       currentPage: 1,
       pagesize: 10,

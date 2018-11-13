@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {getVisualStatItemPage,listRegion,getUnitPage,getSubsectionPage} from "../components/api/upload.js";
+import {getVisualStatItemPage,listRegion,getUnitPage,getSubsectionPage,listOrgInfo} from "../components/api/upload.js";
 Vue.use(Vuex)
 export default new Vuex.Store({
   strict: false, // 开发中启用严格模式
@@ -9,7 +9,9 @@ export default new Vuex.Store({
     reginList: [], //施工区域列表
     planList: [], //统计单位列表
     statisList: [], //形象进度统计项列表
-    bitemList: [] //分部分项列表
+    bitemList: [], //分部分项列表
+    listOrgInfoList:[]//项目列表
+
   },
   mutations: {
     updatestatisList(state, data) {
@@ -27,6 +29,9 @@ export default new Vuex.Store({
     updatebitemList(state, data) {
         state.bitemList = data;
     },
+    updatelistOrgInfoList(state, data) {
+      state.listOrgInfoList = data;
+  },
   },
   actions: {
     //形象进度下拉框
@@ -70,7 +75,7 @@ export default new Vuex.Store({
             console.log(error);
           });
       },
-        //查询统计单位下拉框
+    //查询统计单位下拉框
     getUnitList({commit}) {
         getUnitPage({
             current: 1,
@@ -83,6 +88,20 @@ export default new Vuex.Store({
           .catch(error => {
             console.log(error);
           });
-      }
+      },
+      //查询项目列表下拉框
+    getlistOrgInfoList({commit}) {
+      return new Promise((resolve, reject) => {
+        listOrgInfo({})
+        .then(response => {
+          commit('updatelistOrgInfoList', response.body)
+          resolve()
+        })
+        .catch(error => {
+          console.log(error);
+          reject();
+        });
+      })
+    }
   }
 })

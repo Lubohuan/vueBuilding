@@ -5,7 +5,7 @@
     <el-form-item label="项目名称：" prop="projectId">
         <el-input v-model="dataModel.projectId" size="small"></el-input>
     </el-form-item>
-    <el-form-item label="施工区域" prop="regionId" v-if="dataModel.id === null">
+    <el-form-item label="施工区域" prop="regionId" >
          <el-cascader :options="reginList" v-model="dataModel.regionId" :props="defaultProps" size="small" style="width:100%;"></el-cascader>
     </el-form-item>
     <el-form-item label="形象进度统计项：" prop="statName">
@@ -71,7 +71,9 @@ export default {
         statName: "",
         // state: "1",
         subId: [],
-        unitId: ""
+        unitId: "",
+        dataParent:null,
+        parentList:[]
       },
       //数据校验
       rules: {
@@ -109,6 +111,37 @@ export default {
         'getSubsectionList',
         'getUnitList'
     ]),
+
+  deepClone(data){
+	let obj = JSON.stringify(data);
+	return JSON.parse(obj);
+  },
+
+  initTree(data){
+	let arr = [];
+	for(let i=data.length;i--;){
+		if(data[i]['child']){
+			arr.push(...this.initTree(data[i]['child']));
+			let a = this.deepClone(data[i]);
+			delete a.child;
+			arr.push(a);
+		}else{
+			arr.push(data[i]);
+		}
+	}
+	return arr;
+  },
+
+  findParent(data,id){
+	let arr = [];
+	for(let i=data.length;i--;){
+		if(id == data[i].id){
+			arr.unshift(id);
+			arr.unshift(...this.findParent(data,data[i].parentId));
+		}
+	  }
+	  return arr;
+  },
     /**
      反显数据
      */
@@ -118,7 +151,8 @@ export default {
       this.getUnitList();
       if (!data.id) return;
       this.dataModel ={...data};
-      console.log(this.dataModel, "this.dataModel");
+      this.dataParent = this.dataModel.id;
+      console.log(this.dataParent,"dataParent");
     },
 
     //重置方法
@@ -143,7 +177,10 @@ export default {
 
     //点击提交
     commit() {
-      console.log( this.dataModel.regionId," this.dataModel.regionId")
+      let object = this.initTree(this.reginList);
+      let arr  = this.findParent(object,"129204981474525294");
+      console.log( object," object")
+      console.log( arr," arr")
       this.$refs["addProgress"].validate(valid => {
         if (!valid) {
           return;

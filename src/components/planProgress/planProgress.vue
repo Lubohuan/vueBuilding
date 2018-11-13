@@ -17,17 +17,15 @@
    </el-col>
   </el-row>
    <el-row class="planProgress_row">
-   <el-col :span="15">
-      <el-select size="small" v-model="companyCode" placeholder="请选择项目" clearable>
-            <el-option v-for="(item,index) in companyList" :label="item.companyName" :value="item.companyCode" :key="index"></el-option>
-      </el-select>
+   <el-col :span="18">
+     <el-cascader :options="listOrgInfoList" v-model="projectId" :props="defaultProps" size="small" placeholder="请选择项目"></el-cascader>
      <el-cascader :options="reginList" v-model="regionId" :props="defaultProp" size="small" placeholder="请选择施工区段"></el-cascader>
-     <el-select size="small" v-model="companyCode" placeholder="请选择状态" clearable>
-            <el-option v-for="(item,index) in companyList" :label="item.companyName" :value="item.companyCode" :key="index"></el-option>
+     <el-select size="small" v-model="state" placeholder="请选择状态" clearable>
+            <el-option v-for="(item,index) in stateList" :label="item.name" :value="item.state" :key="index"></el-option>
      </el-select>
    </el-col>
-   <el-col :span="9" class="planProgress_btn1">
-       <el-button size="mini" type="success" >搜索</el-button>
+   <el-col :span="6" class="planProgress_btn1">
+       <el-button size="mini" type="success" @click="resarchInfo">搜索</el-button>
        <el-button size="mini"  @click="resetForm">重置</el-button>
    </el-col>
   </el-row>
@@ -41,7 +39,12 @@
     <el-table-column prop="finishTotal"  label="剩余工程量" align="center" min-width="120"></el-table-column>
     <el-table-column prop="planFinish"  label="计划工程量" align="center" min-width="120"></el-table-column>
     <el-table-column prop="planFinishRate"  label="完成比例" align="center" min-width="120"></el-table-column>
-    <el-table-column prop="state"  label="状态" align="center" min-width="120"></el-table-column>
+    <el-table-column prop="isForbid"  label="状态" align="center" min-width="120">
+       <template slot-scope="scope">
+          <span v-if="scope.row.isForbid == 0">启用</span>
+          <span v-if="scope.row.isForbid == 1">禁用</span>
+       </template>
+    </el-table-column>
     <el-table-column label="操作" align="center" min-width="230">
       <template slot-scope="scope">
          <el-button size="mini" type="primary" @click="editPlan(scope.row)">编辑</el-button>
@@ -86,40 +89,49 @@ export default {
       dataObj: {},
       valueData:"",
       tableData: [],
-      companyList: [
-        {
-          companyName: 11,
-          companyCode: 10
-        },
-        {
-          companyName: 12,
-          companyCode: 13
-        }
-      ],
-      companyCode: "",
       dialog: {
         addPlan: false
       },
       pagesize: 10,
       currentPage: 1,
       state:"",
+      stateList:[
+        {
+          name:"启用",
+          state: 0
+        },
+        {
+          name:"禁用",
+          state: 1
+        }
+      ],
       total:0,
-      regionId:[],
+      projectId: null,
+      regionId: null,
+      regionIds:null,
+      projectIds:null,
       defaultProp:{
         children: "child",
         label: "regionName",
         value: "id"
-      }
+      },
+       defaultProps:{
+        children: "child",
+        label: "name",
+        value: "id"
+      },
     };
   },
   computed: {
     ...mapState([
-     'reginList'
+     'reginList',
+     'listOrgInfoList',
     ]),
   },
   methods: {
     ...mapActions([
-      'getReginList'
+      'getReginList',
+      'getlistOrgInfoList'
     ]),
     //选择项变化
     handleSelectionChange(val) {
@@ -210,8 +222,8 @@ export default {
       getConstructPlanPage({
         current: this.currentPage,
         offset: this.pagesize,
-        projectId: this.projectId,
-        regionId: this.regionId,
+        projectId: this.projectIds,
+        regionId: this.regionIds,
         state:this.state
       })
         .then(response => {
@@ -222,15 +234,27 @@ export default {
           console.log(error);
       });
     },
+
+     //查询按钮
+    resarchInfo(){
+       this.regionIds = this.regionId[this.regionId.length - 1];
+       this.projectIds = this.projectId[this.projectId.length - 1];
+       this.refreshList();
+    },
+
      //重置
     resetForm(){
       this.regionId = [];
-      this.companyCode = "";
+      this.projectId = [];
+      this.regionIds = "";
+      this.projectIds = "";
+      this.state = "";
     }
   },
   created(){
     this.refreshList();
     this.getReginList();
+    this.getlistOrgInfoList();
   }
 };
 </script>

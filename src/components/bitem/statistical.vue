@@ -11,9 +11,6 @@
       <el-button size="mini" type="success">导出excel</el-button>
    </el-col>
    <el-col :span="14" class="statistical_btn1">
-     <!-- <el-select size="small" v-model="companyCode" placeholder="搜索" clearable>
-            <el-option v-for="(item,index) in companyList" :label="item.companyName" :value="item.companyCode" :key="index"></el-option>
-      </el-select> -->
       <el-input v-model="unitName" size="small" placeholder="搜索" @change="changeRefs" style="width:200px;" clearable></el-input>
    </el-col>
   </el-row>
@@ -47,7 +44,6 @@
 <script>
 import { getUnitPage, deleteUnitById } from "../api/upload.js";
 import addStat from "../bitem/addStat.vue";
-import { appendFile } from "fs";
 export default {
   name: "statistical",
   components: {
@@ -58,17 +54,6 @@ export default {
       multipleSelection: [],
       dataObj: {},
       tableData: [],
-      companyList: [
-        {
-          companyName: 11,
-          companyCode: 10
-        },
-        {
-          companyName: 12,
-          companyCode: 13
-        }
-      ],
-      companyCode: "",
       dialog: {
         addStat: false
       },

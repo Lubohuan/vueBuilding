@@ -108,6 +108,21 @@ export default new Router({
               require(['../components/Imagereport/Imagereport.vue'], resolve)
             }
           },
+          //形象进度甘特图
+          {
+            path: '/progressPIcture',
+            name: 'progressPIcture',
+            component: (resolve) => {
+              require(['../components/progressPIcture/progressPIcture.vue'], resolve)
+            }
+          },
+          {
+            path: '/engineeringcategorymanagement',
+            name: 'engineering-category-management',
+            component: (resolve) => {
+              require(['../components/engineering-category-management/engineering-category-management.vue'], resolve)
+            }
+          },
         ]
       }
     ]

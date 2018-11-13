@@ -112,11 +112,13 @@ export default {
     //点击提交
     commit() {
       this.$refs["addTasks"].validate(valid => {
-        if (!valid) {
-          return;
-        }
+        this.$emit("sendiptVal", this.dataModel) 
+        // if (!valid) {
+        //   return;
+        // }
       });
     }
+    
   }
 };
 </script>

@@ -103,9 +103,20 @@ export default {
               id: 62,
               label: "统计单位库",
               path:"/statistical"
+            },
+             {
+              id: 63,
+              label: "添加工程类别",
+              path:"/engineeringcategorymanagement"
             }
           ]
-        }
+        },
+        {
+          id: 7,
+          label: "项目进度计划",
+          path:"/progressPIcture"
+        },
+        
       ]
     };
   },

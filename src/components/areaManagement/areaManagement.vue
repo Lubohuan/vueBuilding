@@ -5,17 +5,15 @@
     <el-breadcrumb-item :to="{ path: '/' }">生产形象进度 </el-breadcrumb-item>
     <el-breadcrumb-item>施工区段管理</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-button size="mini" type="primary" @click="addClick">+ 添加分部</el-button>
+    <el-button size="mini" type="primary" @click="addClick">+ 添加区段</el-button>
     <el-button size="mini" type="success">导出excel</el-button>
     <el-row class="tableRow">
     <el-col :span="15">
-      <el-select size="small" v-model="companyCode" placeholder="请选择项目" clearable>
-        <el-option v-for="(item,index) in companyList" :label="item.companyName" :value="item.companyCode" :key="index"></el-option>
-      </el-select>
+      <el-cascader :options="listOrgInfoList" v-model="projectId" :props="defaultPropss" size="small" placeholder="请选择项目"></el-cascader>
       <el-cascader :options="reginList" v-model="regionId" :props="defaultProp" size="small" placeholder="请选择施工区段"></el-cascader>
    </el-col>
    <el-col :span="9" class="lightCol">
-       <el-button size="mini" type="success" >搜索</el-button>
+       <el-button size="mini" type="success"  @click="resarchInfo">搜索</el-button>
        <el-button size="mini" @click="resetForm">重置</el-button>
    </el-col>
   </el-row>
@@ -48,7 +46,7 @@
       <span>操作</span>
     </el-col>
   </el-row>
-  <el-tree :data="tableData" show-checkbox node-key="id" :default-expand-all="false" draggable :expand-on-click-node="false" :props="defaultProps">
+  <el-tree :data="tableData" show-checkbox node-key="id" :default-expand-all="false" draggable :expand-on-click-node="false" :props="defaultProps" style="overflow:auto;">
 
     <span class="custom-tree-node" slot-scope="{ node, data }">
     <el-row style="width:100%;">
@@ -78,8 +76,8 @@
     </el-col>
     <el-col :span="4"  class="tableCol">
      <span>
+            <el-button size="mini" type="primary">添加下级</el-button>
             <el-button size="mini" type="primary"  @click="editClick(data)">编辑</el-button>
-            <el-button size="mini" type="primary">详情</el-button>
             <el-button size="mini" type="danger"  @click="deleteClick(data)">删除</el-button>
         </span>
     </el-col>
@@ -107,20 +105,12 @@ export default {
       activeName: "first",
       multipleSelection: [],
       tableData: [],
-      companyList: [
-        {
-          companyName: 11,
-          companyCode: 10
-        },
-        {
-          companyName: 12,
-          companyCode: 13
-        }
-      ],
-      projectId: 12,
+      projectId: null,
+      regionId: null,
+      regionIds:null,
+      projectIds:null,
       currentPage: 1,
       pagesize: 10,
-      companyCode: "",
       regionObject: {},
       dialog: {
         addArea: false
@@ -133,25 +123,35 @@ export default {
         label: "regionName",
         value: "id"
       },
-      regionId:[]
+      defaultPropss:{
+        children: "child",
+        label: "name",
+        value: "id"
+      }
     };
   },
   computed: {
     ...mapState([
-     'reginList'
+     'reginList',
+     'listOrgInfoList',
     ]),
   },
   methods: {
+
     ...mapActions([
-        'getReginList'
+      'getReginList',
+      'getlistOrgInfoList'
     ]),
+
     handleClick(tab) {
       console.log(tab.name);
     },
+
     handleSelectionChange(val) {
       this.multipleSelection = val;
       console.log(this.multipleSelection, "this.multipleSelection");
     },
+
     //删除区段
     deleteClick(data) {
       this.$confirm("确定要删除此区段吗", "提示", {
@@ -176,22 +176,26 @@ export default {
           this.$message.error("已取消删除");
         });
     },
+
     //打开新增弹框
     addClick() {
       this.dialog.addArea = true;
       this.regionObject = {};
     },
+
     //打开修改弹框
     editClick(data) {
       this.dialog.addArea = true;
       this.regionObject = data;
     },
+
     //分页查询
     refreshList() {
       listRegion({
-        current: this.currentPage,
-        offset: this.pagesize,
-        projectId: this.projectId
+        current:  this.currentPage,
+        offset:   this.pagesize,
+        projectId:this.projectIds,
+        regionId: this.regionIds
       })
         .then(response => {
           this.tableData = response.body;
@@ -201,15 +205,26 @@ export default {
           console.log(error);
         });
     },
+
+     //按钮查询
+    resarchInfo(){
+       this.regionIds = this.regionId[this.regionId.length - 1];
+       this.projectIds = this.projectId[this.projectId.length - 1];
+       this.refreshList();
+    },
+
     //重置
     resetForm(){
-      this.regionId = [];
-      this.companyCode = "";
+       this.regionId = [];
+       this.projectId = [];
+       this.regionIds = "";
+       this.projectIds = "";
     }
   },
   created() {
     this.refreshList();
     this.getReginList();
+    this.getlistOrgInfoList();
   }
 };
 </script>

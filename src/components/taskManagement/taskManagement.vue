@@ -206,7 +206,7 @@
 
   <!--新建任务-->
     <el-dialog title="新建任务" :center="true" :visible.sync="dialog.addTasks" width="700px" @close="$refs['addTasks'].reset()">
-      <addTasks ref="addTasks"  @close="dialog.addTasks = false" ></addTasks>
+      <addTasks ref="addTasks"  @close="dialog.addTasks = false" @sendiptVal='showChildMsg'></addTasks>
     </el-dialog>
   <!--选择步骤-->
     <el-dialog title="选择步骤" :center="true" :visible.sync="dialog.changeState" width="700px"  @close="close">
@@ -345,6 +345,9 @@ export default {
             this.leftNumber = 24;
             this.showRoFalse = "显示动态";
         }  
+    },
+    showChildMsg(data){
+        console.log(data,"这是传的数据");
     }
   },
   created() {

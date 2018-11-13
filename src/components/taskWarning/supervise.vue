@@ -6,7 +6,7 @@
         <el-input  type="textarea" :autosize="{minRows:3}" v-model="superviseModel.urgeContent" size="small" placeholder="请输入督办内容"></el-input>
     </el-form-item>
      <el-form-item label="是否短信通知：" prop="radio">
-        <el-radio-group v-model="superviseModel.radio" style="width:110px;">
+        <el-radio-group v-model="radio" style="width:110px;">
             <el-radio label="0">是</el-radio>
             <el-radio label="1">否</el-radio>
         </el-radio-group>
@@ -34,18 +34,8 @@ export default {
         respUser: "",
         state: "",
         urgeContent: "",
-        radio: ""
       },
-      userList: [
-        {
-          name: "www",
-          id: 1
-        },
-        {
-          name: "sss",
-          id: 2
-        }
-      ],
+      radio: "",
       //数据校验
       rules: {
         urgeContent: [
@@ -56,8 +46,9 @@ export default {
     };
   },
   methods: {
-    update() {
+    update(data) {
       this.superviseModel.id = data.id;
+      console.log(this.superviseModel.id,"this.superviseModel.id");
     },
     //重置方法
     reset() {
@@ -76,7 +67,7 @@ export default {
         if (!valid) {
           return;
         }
-        urgeTask(this.relieveReasons)
+        urgeTask(this.superviseModel)
           .then(response => {
             if (response.code == "200") {
               this.$message.success("提交成功!");
