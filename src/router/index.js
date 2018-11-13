@@ -113,7 +113,7 @@ export default new Router({
             path: '/progressPIcture',
             name: 'progressPIcture',
             component: (resolve) => {
-              require(['../components/progressPIcture/progressPIcture.vue'], resolve)
+              require(['../components/progressPIcture/progressPicture.vue'], resolve)
             }
           },
           {
