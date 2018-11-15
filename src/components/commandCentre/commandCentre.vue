@@ -8,7 +8,7 @@
                 <img src="../../assets/u484.png" alt="" class="despImage">
                 <div class="cradContent">
                     <div class="desp_look">今日完成生产任务</div>
-                    <!-- <div class="desp_personal">{{panTable.finishTask}}个</div> -->
+                    <div class="desp_personal">{{panTable.finishTask}}个</div>
                 </div>
              </div>
              <div class="cardFooter">
@@ -35,7 +35,7 @@
             <img src="../../assets/u484.png" alt="" class="despImage">
                        <div  class="cradContent">
                             <div class="desp_look">今日产值</div>
-                            <!-- <div class="desp_personal">¥{{panTable.finishOutput}}万</div> -->
+                            <div class="desp_personal">¥{{panTable.finishOutput}}万</div>
                        </div>
             </div>
             <div class="cardFooter">
