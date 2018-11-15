@@ -412,6 +412,8 @@ export default {
     this.getAllDays(6);
     this.refreshList();
     this.refreshLists();
+    var token = window.location.href;
+   alert(token);
   }
 };
 </script>

@@ -48,18 +48,18 @@
           <div style="text-align:center;">
               <span style="background:rgba(144, 144, 144, 0.15);padding:2px 5px;">共{{tableData.length}}条任务</span>
           </div>
-          <div v-for="(item,index) in tableData" :key="item.id" @click="lookInfo(item)" class="blackOne" tabindex = "0">
+          <div v-for="item in tableData" :key="item.id" @click="lookInfo(item)" class="blackOne" tabindex = "0">
               <div class="oneFirst">{{item.planName}}</div>
               <div>
                   <el-row>
                       <el-col :span="15">
-                          <el-tooltip class="item" effect="dark"  placement="top" >
+                          <!-- <el-tooltip class="item" effect="dark"  placement="top" >
                               <span slot="content">任务id：#{{index}}</span>
                               <el-tag size="small"  type="info">#{{index}}</el-tag >
-                          </el-tooltip>
+                          </el-tooltip> -->
                           <el-tooltip class="item" effect="dark"  placement="top">
-                              <span slot="content">优先级：{{item.info}}</span>
-                              <el-tag size="small"  type="danger">#{{item.info}}</el-tag >
+                              <span slot="content">优先级：{{item.level}}</span>
+                              <el-tag size="small"  type="danger">#{{item.level}}</el-tag >
                           </el-tooltip>
                            <el-tooltip class="item" effect="dark"  placement="top">
                               <span slot="content">任务负责人：{{item.respUserName}}</span>
@@ -77,18 +77,13 @@
       </el-col>
       <el-col :span="16" class="elStyle" style="border-right:none;">
           <el-row class="sortTabs">
-            <el-col :span="16">
-                 <span>#{{personalData.name}}</span>
-            </el-col>
-            <el-col :span="8" class="showTrueStyle" style="text-align:right;">
-                <span style="padding:10px 20px 10px 0;border-right:1px solid #e4e7ed;">筛选</span>
+            <el-col :span="24" class="showTrueStyle" style="text-align:right;">
                 <span @click="hideRight">{{showRoFalse}}</span>
             </el-col>
-           
           </el-row>
           <el-row class="despRowHeight">
           <el-col :span="leftNumber" class="elDesp">
-          <div class="despSpan">{{personalData.desp}}</div>
+          <div class="despSpan">{{personalData.planName}}</div>
           <el-row class="despInfon">
                 <el-col :span="8">
                 <el-popover placement="bottom" width="200" v-model="visible3">
@@ -99,7 +94,7 @@
                     <div slot="reference">
                         <img src="../../assets/u1886.png" alt="" class="despImage">
                         <div style="display:inline-block;">
-                            <div>{{personalData.name}}</div>
+                            <div>{{personalData.respUserName}}</div>
                             <div class="desp_look">负责人</div>
                         </div>
                     </div>
@@ -109,7 +104,7 @@
                       <div @click="changeStates">                  
                        <img src="../../assets/u164.png" alt="" class="despImage">
                        <div style="display:inline-block;">
-                            <div>{{personalData.name}}</div>
+                            <div>{{personalData.state}}</div>
                             <div class="desp_look">当前状态</div>
                        </div>
                        </div>
@@ -119,7 +114,7 @@
                        <div>
                             <img src="../../assets/u1899.png" alt="" class="despImage">
                             <div style="display:inline-block;">
-                            <div>{{personalData.name}}</div>
+                            <div>{{personalData.level}}</div>
                             <div class="desp_look">优先级</div>
                             </div>
                        </div>                      
@@ -138,26 +133,26 @@
             <el-row class="despSpans">
             <el-tabs v-model="activeName1" @tab-click="handleClick">
                   <el-tab-pane label="基础信息" name="first1" class="firstTab">
-                      <div>跟踪频率：{{personalData.id}}/次</div>
+                      <div>跟踪频率：{{personalData.trackCycle}}/次</div>
                       <div style="margin:0px;">任务描述</div>
                       <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入任务描述" v-model="textarea" @focus="focusInput"></el-input>
                       <div v-if="showButton" style="text-align:right;">
                           <el-button size="mini" @click="showButton=false">取消</el-button>
                           <el-button size="mini" type="primary" @click="showButton=false">保存</el-button>
                       </div>
-                      <div>分部分项：{{personalData.name}}</div>
+                      <div>分部分项：{{personalData.subFullName}}</div>
                       <div>
-                          <span>计划工程量：{{personalData.name}}</span>
-                          <span class="rightNumber">9.99%</span>
+                          <span>计划工程量：{{personalData.planFinish}}</span>
+                          <span class="rightNumber">{{personalData.finishRate}}</span>
                       </div>
                        <div>
-                          <span>累计完成量：{{personalData.name}}</span>
-                          <span class="rightSpan">剩余工程量：{{personalData.name}}</span>
+                          <span>累计完成量：{{personalData.finishTotal}}</span>
+                          <span class="rightSpan">剩余工程量：{{personalData.notFinish}}</span>
                       </div>
-                       <div>计划产值：{{personalData.name}}</div>
+                       <div>计划产值：{{personalData.planFinish}}</div>
                        <div>
-                          <span>累计完成产值：{{personalData.name}}</span>
-                          <span class="rightSpan">剩余产值：{{personalData.name}}</span>
+                          <span>累计完成产值：{{personalData.finishTotal}}</span>
+                          <span class="rightSpan">剩余产值：{{personalData.notFinish}}</span>
                       </div>
                   </el-tab-pane>
                   <el-tab-pane label="相关任务" name="second1" class="secondtTab">
@@ -180,7 +175,7 @@
             <el-col v-if="isShowRight" :span="12"  class="rightEL">
             <el-row class="rightElSpan">
                  <el-col :span="12">
-                     <span>进展</span>
+                     <span style="font-size: 16px;">施工记录</span>
                  </el-col>
                  <el-col :span="12" style="text-align:right;">
                      <i class="el-icon-sort iconStyle"></i>
@@ -188,28 +183,32 @@
             </el-row>
             <el-tabs v-model="activeName11" @tab-click="handleClick">
                 <el-tab-pane label="全部" name="first11"></el-tab-pane>
-                <el-tab-pane label="评论" name="second12"></el-tab-pane>
+                <el-tab-pane label="进展" name="second12"></el-tab-pane>
                 <el-tab-pane label="文件" name="third13"></el-tab-pane>
                 <el-tab-pane label="变更记录" name="fourth14"></el-tab-pane>
             </el-tabs>
-            <el-row v-for="item in tableData" :key="item.id" style="margin:15px 0;">
+            <div style="height:90%;overflow:auto;">
+            <el-row v-for="item in tableDatas" :key="item.id" style="margin:15px 0;">
                  <el-col>
-                     <i class="el-icon-bell"></i>
-                     <span>{{item.name}}：</span>
-                     <span class="desp_look">{{item.desp}}</span>
-                     <span class="desp_look" style="float:right;">2018-10-26</span>
+                    <div class="diaryTitle">
+                        <i class="el-icon-bell"></i>
+                        <span>{{item.createUserName}}：</span>
+                        <span class="desp_look">{{item.remark}}</span>
+                        <div class="desp_look lookTime">{{item.createTime}}</div>
+                    </div> 
                     <div class="imgVidevoInfo">
                      <viewer style="display:inline-block;cursor: pointer;">
-	                    <img src="https://overwatch.nosdn.127.net/a/images/2018/11/5/0e282147eef1db225bbbcc9469efbd6d.jpg" width="150" height="80">
+	                    <img src="https://overwatch.nosdn.127.net/a/images/2018/11/5/0e282147eef1db225bbbcc9469efbd6d.jpg" width="120" height="70">
 	                 </viewer>
                      <div class="videoStyle" @click="dialog.openVideo=true;" >
                          <img src="http://overwatch.nos.netease.com/1/assets/img/icons/youtube-btn-ylw.png" class="openIcon" width="30" height="30">
                      </div>
                     </div>
-                    <aplayer autoplay :music="{title: 'secret base~君がくれたもの~',artist: 'Silent Siren',src: 'https://moeplayer.b0.upaiyun.com/aplayer/secretbase.mp3',pic: 'https://moeplayer.b0.upaiyun.com/aplayer/secretbase.jpg'}"/>
+                    <!-- <aplayer autoplay :music="{title: 'secret base~君がくれたもの~',artist: 'Silent Siren',src: 'https://moeplayer.b0.upaiyun.com/aplayer/secretbase.mp3',pic: 'https://moeplayer.b0.upaiyun.com/aplayer/secretbase.jpg'}"/> -->
                      
                  </el-col>               
             </el-row>
+            </div>
 
             </el-col>
           </el-row>          
@@ -242,6 +241,7 @@
 import addTasks from "../taskManagement/addTasks.vue";
 import { getPlanTaskPage,getConstructPlanDetailById,getConstructLogPage } from "../api/upload.js";
 import Aplayer from 'vue-aplayer';
+import { rejects } from 'assert';
 export default {
   name: "taskManagement",
   components:{
@@ -253,29 +253,7 @@ export default {
       activeName: "first",
       activeName1: "first1",
       activeName11: "first11",
-      tableData: [
-        {
-          id: 1,
-          desp: "一施工区>外墙施工>2.5m以上防水层施工",
-          info: "普通",
-          name: "m1",
-          stage: "未开始"
-        },
-        {
-          id: 2,
-          desp: "一施工区>外墙施工>钢筋绑扎",
-          info: "紧急",
-          name: "m2",
-          stage: "进行中"
-        },
-        {
-          id: 3,
-          desp: "一施工区>外墙施工>模板安装",
-          info: "紧急",
-          name: "m3",
-          stage: "逾期3天"
-        },
-      ],
+      tableData: [],
       tableDatas:[],
       stateData:[
         {
@@ -317,7 +295,7 @@ export default {
       dateId:null,
       playerOptions : {
         playbackRates: [0.7, 1.0, 1.5, 2.0], //播放速度
-        autoplay: true, //如果true,浏览器准备好时开始回放。
+        autoplay: true, //如果true,浏览器准备好时开始播放。
         muted: false, // 默认情况下将会消除任何音频。
         loop: false, // 导致视频一结束就重新开始。
         preload: 'auto', // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
@@ -329,7 +307,6 @@ export default {
           src: "https://blz-videos.nosdn.127.net/1/OverWatch/OVR-S03_E03_McCree_REUNION_zhCN_1080P_mb78.mp4" //url地址
         }],
         poster: "https://overwatch.nosdn.127.net/a/images/2018/11/5/0e282147eef1db225bbbcc9469efbd6d.jpg", //你的封面地址
-        // width: document.documentElement.clientWidth,
         notSupportedMessage: '此视频暂无法播放，请稍后再试', //允许覆盖Video.js无法播放媒体源时显示的默认信息。
         controlBar: {
           timeDivider: true,
@@ -341,71 +318,97 @@ export default {
     };
   },
   methods: {
+
+    //点击查看详情
     lookInfo(data) {
-      this.dateId = data.id;
+      this.dateId = data.planId;
       console.log(this.dateId,"data.id");
       console.log()
       this.refreshLists();
 
     },
+
+    //切换顶部tab标签
     handleClick(tab) {
       var data = new Date();
       console.log(tab.name);
     },
+
+    //打开添加任务弹框
     addTask(){
         this.dialog.addTasks = true;
     },
+
+    //打开排序
     changeSort(){
         this.visible = false;
     },
+
+    //打开分组
     changeTeam(){
         this.visible2 = false;
     },
+
+    //打开负责人
     changePeople(){
          this.visible3 = false;
     },
+
+    //打开步骤
     changeStates(){
         console.log(111);
        this.dialog.changeState = true;
     },
+
+    //选择步骤
     clickState(item){
       this.showIcon = item.id;
       this.isChoice = false;
     },
+
+    //选择完成点击确定
     commit(){
       this.dialog.changeState = false; 
       this.showIcon = false;
       this.isChoice = true; 
     },
+
+    //关闭选择步骤弹框
     close(){
       this.dialog.changeState = false;
       this.showIcon = false;
       this.isChoice = true;  
     },
+
+    //输入任务描述
     focusInput(){
       this.showButton = true;
     },
 
-    //查询
+    //查询任务列表
     refreshList() {
-      getPlanTaskPage({
+      return new Promise((resolve,reject)=>{
+        getPlanTaskPage({
           current:this.current,
           offset:this.offset,
       })
         .then(response => {
           this.tableData = response.body.rows;
-          console.log(this.tableData,"state");
+          resolve();
         })
         .catch(error => {
           console.log(error);
+          reject();
         });
+      })
+      
     },
     
     //根据id查询进度计划详情
     refreshLists() {
       getConstructPlanDetailById(this.dateId )
         .then(response => {
-          this.personalData = response.body.rows;
+          this.personalData = response.body;
         })
         .catch(error => {
           console.log(error);
@@ -424,6 +427,7 @@ export default {
         });
     },
 
+    //隐藏/显示动态
     hideRight(){
         if( this.isShowRight == false){
             this.isShowRight = true;
@@ -436,17 +440,24 @@ export default {
             this.showRoFalse = "显示动态";
         }  
     },
+
+    //子向父传值
     showChildMsg(data){
         console.log(data,"这是传的数据");
     },
 
+    //关闭施工视频弹框
     closeRest(){
         this.$refs.videoPlayer.player.pause()
     }
   },
-  created() {
-    this.personalData = this.tableData[0];
-    this.refreshList();
+  async created() {
+    
+    await this.refreshList();
+    console.log(this.tableData,"this.tableData");
+    this.dateId = this.tableData[0].planId;
+    console.log(this.dateId,"refreshLists()");
+    this.refreshLists();
   }
 };
 </script>

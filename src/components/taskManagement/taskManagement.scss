@@ -63,6 +63,7 @@
      }
      .rightEL{
         padding:0px 20px 20px 20px;
+        height: 100%;
         .rightElSpan{
             margin: 10px 0;
         }
@@ -88,7 +89,7 @@
         margin-bottom:30px;
      }
      .sortTab{
-        padding:20px;
+        padding:10px;
         border-bottom:1px solid #e4e7ed;
         span{
             margin: 5px;
@@ -100,8 +101,8 @@
         }
      }
      .sortTabs{
-        padding:30px 20px 20px 20px;
-        height:69px;
+        padding: 15px 20px 20px 10px;
+        height: 49px;
         border-bottom:1px solid #e4e7ed;
      }
      .despSpans{
@@ -155,10 +156,10 @@
      }
      .videoStyle{
         display:inline-block;
-        width:150px;
-        height: 80px;
+        width:120px;
+        height: 70px;
         background:url(https://overwatch.nosdn.127.net/a/images/2018/11/5/0e282147eef1db225bbbcc9469efbd6d.jpg);
-        background-size: 150px 80px;
+        background-size: 120px 70px;
         vertical-align: top;
         position: relative;
         cursor: pointer;
@@ -171,5 +172,13 @@
         right: 0;
         margin: auto;
      }
-    
+     .diaryTitle{
+         position: relative;
+         padding-right:62px;
+     }
+    .lookTime{
+        position:absolute;
+        bottom:0;
+        right: 0;
+    }
 }
