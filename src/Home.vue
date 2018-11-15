@@ -1,8 +1,6 @@
 <template>
-  <div id="hompage">
-   
+  <div id="hompage">   
        <router-view/>
-       <lg-preview></lg-preview>
   </div>
 </template>
 
@@ -11,7 +9,6 @@ export default {
   name: 'Home',
   provide() {
     return {
-      reload: this.reload
     }
   },
   data () {
@@ -21,17 +18,7 @@ export default {
 
     }
   },
-  methods:{
-    reload() {
-      this.isRouterAlive = false;
-      this.$nextTick(function() {
-        this.isRouterAlive = true;
-      })
-    },
-    gotest:function(){
-      this.$router.replace('/mainMenu/text2/text2');
-    }
-  }
+  methods:{}
 }
 </script>
 

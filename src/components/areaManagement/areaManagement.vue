@@ -76,18 +76,23 @@
     </el-col>
     <el-col :span="4"  class="tableCol">
      <span>
-            <el-button size="mini" type="primary">添加下级</el-button>
-            <el-button size="mini" type="primary"  @click="editClick(data)">编辑</el-button>
+            <el-button size="mini" type="primary" @click="addChild(data)">添加下级</el-button>
+            <el-button size="mini" type="primary" @click="editClick(data)">编辑</el-button>
             <el-button size="mini" type="danger"  @click="deleteClick(data)">删除</el-button>
         </span>
     </el-col>
-  </el-row>
-       
+  </el-row>       
       </span>
    </el-tree>
+
     <!--添加/修改分部分项-->
     <el-dialog :title="regionObject.id?'修改施工区域':'添加施工区域'" :center="true" :visible.sync="dialog.addArea" width="800px"  @open="$nextTick(()=>$refs['addArea'].update(regionObject))" @close="$refs['addArea'].reset()">
       <addArea ref="addArea" @refreshData="refreshList" @close="dialog.addArea = false" ></addArea>
+    </el-dialog>
+
+     <!--添加/修改分部分项-->
+    <el-dialog title="添加下级'" :center="true" :visible.sync="dialog.addAreaChild" width="800px"  @open="$nextTick(()=>$refs['addAreaChild'].update(regionObject))" @close="$refs['addAreaChild'].reset()">
+      <addAreaChild ref="addAreaChild" @refreshData="refreshList" @close="dialog.addAreaChild = false" ></addAreaChild>
     </el-dialog>
   </div>
 </template>
@@ -95,10 +100,12 @@
 import { mapState, mapActions } from 'vuex';
 import { listRegion, deleteRegionById } from "../api/upload.js";
 import addArea from "../areaManagement/addArea.vue";
+import addAreaChild from "../areaManagement/addAreaChild.vue";
 export default {
   name: "areaManagement",
   components: {
-    addArea
+    addArea,
+    addAreaChild
   },
   data() {
     return {
@@ -109,11 +116,10 @@ export default {
       regionId: null,
       regionIds:null,
       projectIds:null,
-      currentPage: 1,
-      pagesize: 10,
       regionObject: {},
       dialog: {
-        addArea: false
+        addArea: false,
+        addAreaChild:false
       },
       defaultProps: {
         children: "child"
@@ -142,10 +148,6 @@ export default {
       'getReginList',
       'getlistOrgInfoList'
     ]),
-
-    handleClick(tab) {
-      console.log(tab.name);
-    },
 
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -189,7 +191,15 @@ export default {
       this.regionObject = data;
     },
 
-    //分页查询
+    //打开添加下级弹框
+    addChild(data){
+       this.dialog.addAreaChild = true;
+       this.regionObject = {};
+       this.regionObject.id = data.id;
+       console.log(this.regionObject,"addAreaChild");
+    },
+
+    //查询
     refreshList() {
       listRegion({
         current:  this.currentPage,

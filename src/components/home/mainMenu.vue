@@ -12,7 +12,7 @@
               <div class="pre_icon">
                 <i class="icon-appstore-fill iconfont"></i>
               </div>
-              <div class="menu_text">产品与服务</div>
+              <div class="menu_text" style="margin-left: -15px;">产品与服务</div>
               <div class="after_icon">
                 <i class="icon-gengduo1 iconfont"></i>
               </div>

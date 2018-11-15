@@ -149,30 +149,46 @@
           </el-col>
       </el-row>
      
-      <el-table  border :data="tableData" style="width: 100%">
-       <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-       <el-table-column prop="name" label="施工区段" align="center"></el-table-column>
-       <el-table-column prop="name" label="分部分项名称" align="center"></el-table-column>
-       <el-table-column prop="name" label="预算工程量" align="center" min-width="120"></el-table-column>
-       <el-table-column prop="name" label="今日完成工程量" align="center" min-width="120"></el-table-column>
-       <el-table-column prop="name" label="累计完成工程量" align="center"></el-table-column>
-       <el-table-column prop="name" label="累计完成比例" align="center" min-width="120"></el-table-column>
-       <el-table-column prop="name" label="今日完成产值" align="center"></el-table-column>
-       <el-table-column prop="name" label="累计完成产值" align="center"></el-table-column>
-       <el-table-column prop="name" label="累计完成比例" align="center" ></el-table-column>
+    <el-table  border :data="tableDatas" style="width: 100%">
+        <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
+        <el-table-column prop="projectId"  label="项目名称" align="center"></el-table-column>
+        <el-table-column prop="planName"  label="任务名称" align="center" min-width="200"></el-table-column>
+        <el-table-column prop="name"  label="施工区段" align="center" min-width="200"></el-table-column>
+        <el-table-column prop="warningReason"  label="预警原因" align="center" min-width="100">
+            <template slot-scope="scope">
+                <span style="color:red;">{{scope.row.warningReason}}</span>
+            </template>
+        </el-table-column>
+        <el-table-column prop="respUser"  label="责任人" align="center" min-width="120"></el-table-column>
+        <el-table-column prop="relieveTime"  label="预警时间" align="center" min-width="140"></el-table-column>
+        <el-table-column label="操作" align="center">
+            <template  slot-scope="scope">
+                <el-button size="mini" type="text" @click="remindSupervise(scope.row)">督办</el-button>
+            </template>
+       </el-table-column>
       </el-table>
     </div>
+
+      <!--提醒督办-->
+    <el-dialog title="提醒督办" :center="true" :visible.sync="dialog.supervise" width="700px" @open="$nextTick(()=>$refs['supervise'].update(remindData))"  @close="$refs['supervise'].reset()">
+      <supervise ref="supervise" @close="dialog.supervise = false" ></supervise>
+    </el-dialog>
 
   </div>
 </template>
 
 <script>
-import { listVisualStatProgress } from "../api/upload.js";
+import { listVisualStatProgress,getTaskWarningLogPage } from "../api/upload.js";
+import supervise from "../taskWarning/supervise.vue";
 export default {
   name: "commandCentre",
+   components: {
+    supervise
+  },
   data() {
     return {
       tableData: [],
+      tableDatas:[],
       activeName: "first",
       value6: "",
       personalData: {},
@@ -186,6 +202,10 @@ export default {
       dateArr:[],
       dateArrs:[],
       nowWeekDate:"",
+      remindData: {},
+      dialog: {
+        supervise: false,
+      },
 
     };
   },
@@ -218,7 +238,7 @@ export default {
     }
     },
     
-     //列表查询
+     //形象进度任务列表查询
     refreshList() {
       listVisualStatProgress({
         projectId: this.projectId,
@@ -232,6 +252,29 @@ export default {
         .catch(error => {
           console.log(error);
       });
+    },
+
+    //逾期形象进度列表查询
+    refreshLists() {
+      getTaskWarningLogPage({
+        current: 1,
+        offset: 20
+      })
+        .then(response => {
+          this.tableDatas = response.body.rows;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    
+    //小于10天前面拼接0
+     doHandleMonth(month){  
+       var m = month;  
+       if(month.toString().length == 1){  
+          m = "0" + month;  
+       }  
+       return m;  
     },
 
      //输入数字查询日期
@@ -348,14 +391,6 @@ export default {
       }
     },
 
-    doHandleMonth(month){  
-       var m = month;  
-       if(month.toString().length == 1){  
-          m = "0" + month;  
-       }  
-       return m;  
-    },
-
     //获取当天日期
     getThisDays(){
     var data = new Date();
@@ -365,12 +400,18 @@ export default {
     this.endTime   = dayData1 + "-" + dayData2 + "-" + dayData3;
     },
 
+    //提醒督办
+    remindSupervise(data){
+        this.remindData = data;
+        this.dialog.supervise = true;
+    }
   },
   created() {
     this.endTime = this.getDay(0);//当天日期
     this.startTime = this.getDay(-6);//7天前日期
     this.getAllDays(6);
     this.refreshList();
+    this.refreshLists();
   }
 };
 </script>

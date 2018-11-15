@@ -49,7 +49,7 @@
               <span style="background:rgba(144, 144, 144, 0.15);padding:2px 5px;">共{{tableData.length}}条任务</span>
           </div>
           <div v-for="(item,index) in tableData" :key="item.id" @click="lookInfo(item)" class="blackOne" tabindex = "0">
-              <div class="oneFirst">{{item.desp}}</div>
+              <div class="oneFirst">{{item.planName}}</div>
               <div>
                   <el-row>
                       <el-col :span="15">
@@ -62,12 +62,14 @@
                               <el-tag size="small"  type="danger">#{{item.info}}</el-tag >
                           </el-tooltip>
                            <el-tooltip class="item" effect="dark"  placement="top">
-                              <span slot="content">任务负责人：{{item.name}}</span>
-                              <el-tag size="small"  type="info">#{{item.name}}</el-tag >
+                              <span slot="content">任务负责人：{{item.respUserName}}</span>
+                              <el-tag size="small"  type="info">#{{item.respUserName}}</el-tag >
                           </el-tooltip>
                       </el-col>
                       <el-col :span="9" class="rightTag">
-                          <el-tag size="small" style="border-radius:20px;">{{item.stage}}</el-tag >                          
+                          <el-tag  size="small" style="border-radius:20px;" v-if="item.state == '0'">未完成</el-tag >
+                          <el-tag type="success" size="small" style="border-radius:20px;" v-if="item.state == '1'">已完成</el-tag >
+                          <el-tag type="danger" size="small" style="border-radius:20px;" v-if="item.state == '2'">已过期</el-tag >                            
                       </el-col>
                   </el-row>
               </div>
@@ -196,6 +198,16 @@
                      <span>{{item.name}}：</span>
                      <span class="desp_look">{{item.desp}}</span>
                      <span class="desp_look" style="float:right;">2018-10-26</span>
+                    <div class="imgVidevoInfo">
+                     <viewer style="display:inline-block;cursor: pointer;">
+	                    <img src="https://overwatch.nosdn.127.net/a/images/2018/11/5/0e282147eef1db225bbbcc9469efbd6d.jpg" width="150" height="80">
+	                 </viewer>
+                     <div class="videoStyle" @click="dialog.openVideo=true;" >
+                         <img src="http://overwatch.nos.netease.com/1/assets/img/icons/youtube-btn-ylw.png" class="openIcon" width="30" height="30">
+                     </div>
+                    </div>
+                    <aplayer autoplay :music="{title: 'secret base~君がくれたもの~',artist: 'Silent Siren',src: 'https://moeplayer.b0.upaiyun.com/aplayer/secretbase.mp3',pic: 'https://moeplayer.b0.upaiyun.com/aplayer/secretbase.jpg'}"/>
+                     
                  </el-col>               
             </el-row>
 
@@ -219,15 +231,22 @@
             <el-button :disabled="isChoice" @click="commit" size="small" type="primary">保存</el-button>
         </div>
     </el-dialog>
+
+    <el-dialog title="施工视频" :center="true" :visible.sync="dialog.openVideo" width="800px" class="openVideo" @close="closeRest">
+         <video-player  class="video-player vjs-custom-skin" ref="videoPlayer" :playsinline="true" :options="playerOptions"></video-player>
+    </el-dialog >
   </div>
 </template>
 
 <script>
-import addTasks from "../taskManagement/addTasks.vue"
+import addTasks from "../taskManagement/addTasks.vue";
+import { getPlanTaskPage,getConstructPlanDetailById,getConstructLogPage } from "../api/upload.js";
+import Aplayer from 'vue-aplayer';
 export default {
   name: "taskManagement",
   components:{
-     addTasks
+     addTasks,
+     Aplayer
   },
   data() {
     return {
@@ -257,6 +276,7 @@ export default {
           stage: "逾期3天"
         },
       ],
+      tableDatas:[],
       stateData:[
         {
           id: 1,
@@ -280,7 +300,8 @@ export default {
       textarea: "",
       dialog:{
          addTasks:false,
-         changeState:false 
+         changeState:false ,
+         openVideo:false
       },
       visible:false,
       visible2:false,
@@ -290,12 +311,42 @@ export default {
       showButton:false,
       isShowRight:true,
       leftNumber:12,
-      showRoFalse:"隐藏动态"
+      showRoFalse:"隐藏动态",
+      current:1,
+      offset:10,
+      dateId:null,
+      playerOptions : {
+        playbackRates: [0.7, 1.0, 1.5, 2.0], //播放速度
+        autoplay: true, //如果true,浏览器准备好时开始回放。
+        muted: false, // 默认情况下将会消除任何音频。
+        loop: false, // 导致视频一结束就重新开始。
+        preload: 'auto', // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
+        language: 'zh-CN',
+        aspectRatio: '16:9', // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
+        fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
+        sources: [{
+          type: "video/mp4",
+          src: "https://blz-videos.nosdn.127.net/1/OverWatch/OVR-S03_E03_McCree_REUNION_zhCN_1080P_mb78.mp4" //url地址
+        }],
+        poster: "https://overwatch.nosdn.127.net/a/images/2018/11/5/0e282147eef1db225bbbcc9469efbd6d.jpg", //你的封面地址
+        // width: document.documentElement.clientWidth,
+        notSupportedMessage: '此视频暂无法播放，请稍后再试', //允许覆盖Video.js无法播放媒体源时显示的默认信息。
+        controlBar: {
+          timeDivider: true,
+          durationDisplay: true,
+          remainingTimeDisplay: false,
+          fullscreenToggle: true  //全屏按钮
+        }
+    }
     };
   },
   methods: {
     lookInfo(data) {
-      this.personalData = data;
+      this.dateId = data.id;
+      console.log(this.dateId,"data.id");
+      console.log()
+      this.refreshLists();
+
     },
     handleClick(tab) {
       var data = new Date();
@@ -334,6 +385,45 @@ export default {
     focusInput(){
       this.showButton = true;
     },
+
+    //查询
+    refreshList() {
+      getPlanTaskPage({
+          current:this.current,
+          offset:this.offset,
+      })
+        .then(response => {
+          this.tableData = response.body.rows;
+          console.log(this.tableData,"state");
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    
+    //根据id查询进度计划详情
+    refreshLists() {
+      getConstructPlanDetailById(this.dateId )
+        .then(response => {
+          this.personalData = response.body.rows;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+
+       getConstructLogPage({
+           current:this.current,
+           offset:this.offset,
+           planId:this.dateId
+       })
+        .then(response => {
+          this.tableDatas = response.body.rows;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
     hideRight(){
         if( this.isShowRight == false){
             this.isShowRight = true;
@@ -348,10 +438,15 @@ export default {
     },
     showChildMsg(data){
         console.log(data,"这是传的数据");
+    },
+
+    closeRest(){
+        this.$refs.videoPlayer.player.pause()
     }
   },
   created() {
     this.personalData = this.tableData[0];
+    this.refreshList();
   }
 };
 </script>

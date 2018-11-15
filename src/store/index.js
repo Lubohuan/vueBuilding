@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {getVisualStatItemPage,listRegion,getUnitPage,getSubsectionPage,listOrgInfo} from "../components/api/upload.js";
+import {getVisualStatItemPage,listRegion,getUnitPage,getSubsectionPage,listOrgInfo,listUserInfo} from "../components/api/upload.js";
 Vue.use(Vuex)
 export default new Vuex.Store({
   strict: false, // 开发中启用严格模式
@@ -10,7 +10,8 @@ export default new Vuex.Store({
     planList: [], //统计单位列表
     statisList: [], //形象进度统计项列表
     bitemList: [], //分部分项列表
-    listOrgInfoList:[]//项目列表
+    listOrgInfoList:[],//项目列表
+    userList:[]//用户列表
 
   },
   mutations: {
@@ -31,9 +32,13 @@ export default new Vuex.Store({
     },
     updatelistOrgInfoList(state, data) {
       state.listOrgInfoList = data;
-  },
+    },
+    updateUserList(state, data) {
+      state.userList = data;
+    },
   },
   actions: {
+    
     //形象进度下拉框
     getStatisList({commit}) {
       getVisualStatItemPage({
@@ -47,11 +52,10 @@ export default new Vuex.Store({
           console.log(error);
         });
     },
+
     //施工区域下拉框
     getReginList({commit}) {
         listRegion({
-            current: 1,
-            offset: 20,
             projectId: 12
           })
           .then(response => {
@@ -61,20 +65,24 @@ export default new Vuex.Store({
             console.log(error);
           });
       },
-      //查询分部分项下拉框
+
+    //查询分部分项下拉框
     getSubsectionList({commit}) {
+      return new Promise((resolve, reject) => {
         getSubsectionPage({
-            current: 1,
-            offset: 20,
-            projectType: 1
+            projectType: '131073993401696366'
           })
           .then(response => {
-            commit('updatebitemList', response.body)
+            commit('updatebitemList', response.body);
+            resolve()
           })
           .catch(error => {
             console.log(error);
+            reject();
           });
+        })
       },
+
     //查询统计单位下拉框
     getUnitList({commit}) {
         getUnitPage({
@@ -89,7 +97,8 @@ export default new Vuex.Store({
             console.log(error);
           });
       },
-      //查询项目列表下拉框
+
+    //查询项目列表下拉框
     getlistOrgInfoList({commit}) {
       return new Promise((resolve, reject) => {
         listOrgInfo({})
@@ -102,6 +111,17 @@ export default new Vuex.Store({
           reject();
         });
       })
-    }
+    },
+
+    //查询用户列表
+    getUserList({commit}) {
+      listUserInfo()
+        .then(response => {
+          commit('updateUserList', response.body)
+        })
+        .catch(error => {
+            console.log(error);
+        });
+      },
   }
 })

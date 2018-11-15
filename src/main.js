@@ -14,6 +14,14 @@ import 'element-ui/lib/theme-chalk/index.css'
 import locale from 'element-ui/lib/locale/lang/zh-CN' // lang i18n
 import store from './store';
 import './assets/all.scss';
+import Viewer from 'v-viewer';
+import 'viewerjs/dist/viewer.css';
+import VideoPlayer from 'vue-video-player'
+require('video.js/dist/video-js.css')
+require('vue-video-player/src/custom-theme.css')
+import common from'./utils/common.js';
+import VueAplayer from 'vue-aplayer';
+Vue.prototype.$common = common;
 //import VueAxios from 'vue-axios'
 Vue.prototype.$Api = Api;
 Vue.prototype.$axios = axios
@@ -24,9 +32,14 @@ Vue.config.productionTip = false
 
 import vuePicturePreview from 'vue-picture-preview'
 Vue.use(vuePicturePreview)
-
+Vue.use(VideoPlayer)
+Vue.use(VueAplayer)
 Vue.use(ElementUI, { locale })
-
+Vue.use(Viewer, {
+  defaultOptions: {
+      zIndex: 9999
+  }
+})
 /* eslint-disable no-new */
 new Vue({
   el: '#hompage',

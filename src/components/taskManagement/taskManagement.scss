@@ -150,4 +150,26 @@
      .el-tooltip__popper.is-dark{
          opacity: 0.8;
      }
+     .imgVidevoInfo{
+         margin: 10px 0;
+     }
+     .videoStyle{
+        display:inline-block;
+        width:150px;
+        height: 80px;
+        background:url(https://overwatch.nosdn.127.net/a/images/2018/11/5/0e282147eef1db225bbbcc9469efbd6d.jpg);
+        background-size: 150px 80px;
+        vertical-align: top;
+        position: relative;
+        cursor: pointer;
+     }
+     .openIcon{
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        margin: auto;
+     }
+    
 }

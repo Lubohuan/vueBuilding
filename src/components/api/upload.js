@@ -218,14 +218,6 @@ export function getConstructPlanDetail(data) {
     params:data
   })
 }
-// 根据进度计划ID分页查询施工日志信息
-export function getConstructLogPage(data) {
-  return request({
-    url: baseUrl + '/task/getConstructLogPage',
-    method: 'get',
-    params:data
-  })
-}
 // 获取分部分项统计报表
 export function getSubsectionReport(data) {
   return request({
@@ -262,6 +254,83 @@ export function listVisualStatProgress(data) {
 export function listOrgInfo(data) {
   return request({
     url: baseUrl + '/system/listOrgInfo',
+    method: 'get',
+    params:data
+  })
+}
+// 查询项目类型
+export function listProjectType(data) {
+  return request({
+    url: baseUrl + '/basicData/listProjectType',
+    method: 'get',
+    params:data
+  })
+}
+// 删除项目类型
+export function deleteProjectType(data) {
+  return request({
+    url: baseUrl + '/basicData/deleteProjectType/' + data,
+    method: 'delete',
+  })
+}
+// 添加项目类型
+export function addProjectType(data) {
+  return request({
+    url: baseUrl + '/basicData/addProjectType',
+    method: 'post',
+    data:data
+  })
+}
+// 修改项目类型
+export function updateProjectType(data) {
+  return request({
+    url: baseUrl + '/basicData/updateProjectType',
+    method: 'post',
+    data:data
+  })
+}
+//分页查询形象进度任务详请信息(形象进度任务管理分页查询)
+export function getPlanTaskPage(data) {
+  return request({
+    url: baseUrl + '/task/getPlanTaskPage',
+    method: 'get',
+    params:data
+  })
+}
+//根据id查询进度计划详情(形象进度任务管理)
+export function getConstructPlanDetailById(data) {
+  return request({
+    url: baseUrl + '/task/getConstructPlanDetailById/'+ data,
+    method: 'get'
+  })
+}
+//根据进度计划ID分页查询施工日志信息(形象进度任务管理)
+export function getConstructLogPage(data) {
+  return request({
+    url: baseUrl + '/task/getConstructLogPage',
+    method: 'get',
+    params:data
+  })
+}
+// 修改形象进度统计项
+export function updateVisualStatItemById(data) {
+  return request({
+    url: baseUrl + '/project/updateVisualStatItemById',
+    method: 'post',
+    data:data
+  })
+}
+//根据id查询进度计划详情
+export function getConstructPlanById(data) {
+  return request({
+    url: baseUrl + '/task/getConstructPlanById/' + data,
+    method: 'get'
+  })
+}
+//获取当前登录用户所在组织中的所有用户
+export function listUserInfo(data) {
+  return request({
+    url: baseUrl + '/system/listUserInfo',
     method: 'get',
     params:data
   })

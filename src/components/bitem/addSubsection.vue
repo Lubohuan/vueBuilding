@@ -23,8 +23,6 @@ export default {
   data() {
     return {
       dataModel: {
-        // id: null,
-        // parentId: 0,
         projectType: 1,
         remark: "",
         sort: 1,
@@ -43,6 +41,7 @@ export default {
      * 反显数据
      */
     update(data) {
+      this.dataModel.projectType = data.projectType;
       if (!data.id) return;
       this.dataModel = {...data};
     },
@@ -86,7 +85,7 @@ export default {
           }
         })
         .catch(error => {
-          this.$message.error(error);
+          console.log(error);
           return false;
         });
       return true;
@@ -104,7 +103,7 @@ export default {
           }
         })
         .catch(error => {
-          this.$message.error(error);
+          console.log(error);
           return false;
         });
       return true;

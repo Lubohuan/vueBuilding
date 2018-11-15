@@ -7,11 +7,8 @@
     </el-breadcrumb>
    <el-row>
     <el-col :span="20">
-      <el-tabs v-model="activeName" @tab-click="handleClick" type="card">
-      <el-tab-pane label="房建工程" name="first"></el-tab-pane>
-      <el-tab-pane label="路桥工程" name="second"></el-tab-pane>
-      <el-tab-pane label="地铁工程" name="third"></el-tab-pane>
-      <el-tab-pane label="市政工程" name="fourth"></el-tab-pane>
+      <el-tabs v-model="projectType" type="card" @tab-click="handleClick">
+      <el-tab-pane :key="item.id" v-for="item in projectTypeList" :label="item.typeName" :name="item.id"></el-tab-pane>
       </el-tabs>
   </el-col>
   <el-col :span="4" class="bitem_btn">
@@ -45,17 +42,6 @@
         </span>
       </span>
    </el-tree>
-   <el-pagination background v-if="total > 0"
-      class="pageStyle"
-	  layout="prev, pager, next, sizes, total, jumper"
-	  :page-sizes="[5, 10, 15, 20]"
-	  :page-size="pagesize"
-    :current-page.sync="currentPage"
-	  :total="total"
-	  @current-change="handleCurrentChange"
-	  @size-change="handleSizeChange"
-  >
-   </el-pagination>
    <!--类别管理-->
     <el-dialog title="类别管理" :center="true" :visible.sync="dialog.modify" width="800px">
       <categoryManagement ref="categoryManagement" @close="dialog.modify = false" ></categoryManagement>
@@ -75,7 +61,7 @@
 import categoryManagement from "../bitem/categoryManagement.vue";
 import addSubChid from "../bitem/addSubChid.vue";
 import addSubsection from "../bitem/addSubsection.vue";
-import { getSubsectionPage, deleteSubsectionById } from "../api/upload.js";
+import { getSubsectionPage, deleteSubsectionById,listProjectType } from "../api/upload.js";
 export default {
   name: "bitem",
   components: {
@@ -85,13 +71,13 @@ export default {
   },
   data() {
     return {
-      activeName: "first",
       multipleSelection: [],
       tableData: [],
       defaultProps: {
         children: "child"
       },
-      projectType: 1,
+      projectTypeList:[],
+      projectType: "",
       currentPage: 1,
       pagesize: 10,
       subName:null,
@@ -105,23 +91,18 @@ export default {
     };
   },
   methods: {
+    //切换工程标签
     handleClick(tab) {
       console.log(tab.name);
+      this.refreshList();
     },
+
+    //选择框
     handleSelectionChange(val) {
       this.multipleSelection = val;
       console.log(this.multipleSelection, "this.multipleSelection");
     },
-    //切换页码
-    handleCurrentChange(value) {
-      this.currentPage = value;
-      this.refreshList();
-    },
-    //切换每页显示数量
-    handleSizeChange(value) {
-      this.pagesize = value;
-      this.refreshList();
-    },
+
     //删除操作
     deleteClick(data) {
       this.$confirm("确定要删除此区段吗", "提示", {
@@ -146,47 +127,79 @@ export default {
           this.$message.error("已取消删除");
         });
     },
+
     //打开类别管理弹框
     categoryManagement() {
       this.dialog.modify = true;
     },
+
     //新增分部分项
     addSub() {
       this.dialog.addSubsection = true;
       this.subObject = {};
+      this.subObject.projectType = this.projectType;
     },
+
     //添加子项
     addSubChild(data) {
       this.dialog.addSubChid = true;
       this.subObject = data;
+      this.subObject.projectType = this.projectType;
     },
+    
     //编辑分部分项
     editSub(data) {
       this.dialog.addSubsection = true;
       this.subObject = data;
     },
-    //分页查询
+
+    //查询分部分项库
     refreshList() {
-      getSubsectionPage({
-        current: this.currentPage,
-        offset: this.pagesize,
+        getSubsectionPage({
         projectType: this.projectType,
         subName:this.subName
       })
         .then(response => {
-          this.tableData = response.body;
-          this.total = Number(response.body.page.rows);
+          if (response.code == "200") {
+                this.tableData = response.body;
+              } else {
+                this.$message.error(response.msg);
+              }
         })
         .catch(error => {
           console.log(error);
-        });
+      })  
     },
+
+    //查询工程类别
+    refreshLists(){
+       return new Promise((resolve, reject) => {
+        listProjectType({})
+        .then(response => {
+          this.projectTypeList = response.body;
+          resolve()
+        })
+        .catch(error => {
+          console.log(error);
+          reject();
+        });
+      })
+    },
+
+    //等待查询工程类别完成
+    async awaitList(){
+      await this.refreshLists();
+      this.projectType = this.projectTypeList[0].id;
+      this.refreshList();
+    },
+
+    //搜索框
     resarchBitem(){
       this.refreshList();
     }
   },
   created() {
-    this.refreshList();
+    this.awaitList();
   }
 };
 </script>

@@ -2,19 +2,19 @@
 <!-- 新增/修改形象进度统计项 -->
 <div class="addProgress">
   <el-form :model="dataModel" :rules="rules" ref="addProgress" label-width="135px">
-    <el-form-item label="项目名称：" prop="projectId">
-        <el-input v-model="dataModel.projectId" size="small"></el-input>
+    <el-form-item label="项目名称：" prop="projectIdArry">
+       <el-cascader :options="listOrgInfoList" v-model="dataModel.projectIdArry" :props="defaultPropss" size="small" placeholder="请选择项目" style="width:100%;"></el-cascader>
     </el-form-item>
-    <el-form-item label="施工区域" prop="regionId" >
-         <el-cascader :options="reginList" v-model="dataModel.regionId" :props="defaultProps" size="small" style="width:100%;"></el-cascader>
+    <el-form-item label="施工区域" prop="regionIdArry">
+         <el-cascader :options="reginList" v-model="dataModel.regionIdArry" :props="defaultProps" size="small" style="width:100%;"></el-cascader>
     </el-form-item>
     <el-form-item label="形象进度统计项：" prop="statName">
         <el-input v-model="dataModel.statName" size="small"></el-input>
     </el-form-item>
-    <el-form-item label="选择分部分项：" prop="subId" v-if="dataModel.id === null">
-        <el-cascader :options="bitemList" v-model="dataModel.subId" :props="defaultProp" size="small" style="width:100%;" ></el-cascader>
+    <el-form-item label="选择分部分项：" prop="subIdArry">
+        <el-cascader :options="bitemList" v-model="dataModel.subIdArry" :props="defaultProp" size="small" style="width:100%;" ></el-cascader>
     </el-form-item>
-    <el-form-item label="形象单位：" prop="unitId" v-if="dataModel.id === null">
+    <el-form-item label="形象单位：" prop="unitId">
         <el-select size="small" v-model="dataModel.unitId " placeholder="请选择" clearable style="width:100%;">
             <el-option v-for="(item,index) in planList" :label="item.unitName" :value="item.id" :key="index" ></el-option>
         </el-select>      
@@ -49,12 +49,7 @@
 </template>
 
 <script>
-import {
-  addVisualStatItem,
-  listRegion,
-  getSubsectionPage,
-  getUnitPage
-} from "../api/upload.js";
+import { addVisualStatItem,updateVisualStatItemById} from "../api/upload.js";
 import { mapState, mapActions } from 'vuex'
 export default {
   name: "addProgress",
@@ -64,23 +59,22 @@ export default {
         id:null,
         budgetTotal: null,
         outputTotal:null,
-        // finishBudget: 1545,
-        // finishOutput: 1545,
-        projectId: 12,
-        regionId: [],
-        statName: "",
-        // state: "1",
-        subId: [],
+        projectId:null,
+        regionId: null,
+        subId: null,
+        statName: "",    
         unitId: "",
         dataParent:null,
-        parentList:[]
+        projectIdArry:[],
+        regionIdArry:[],
+        subIdArry:[]
       },
       //数据校验
       rules: {
-        projectId: [{ required: true, message: "请输入项目名称", trigger: "blur" }],
-        regionId: [{ required: true, message: "请选择施工区域", trigger: "blur" }],
+        projectIdArry: [{ required: true, message: "请输入项目名称", trigger: "blur" }],
+        regionIdArry: [{ required: true, message: "请选择施工区域", trigger: "blur" }],
         statName: [{ required: true, message: "请输入形象进度统计项名称", trigger: "blur" }],
-        subId: [{ required: true, message: "请选择分部分项", trigger: "blur" }],
+        subIdArry: [{ required: true, message: "请选择分部分项", trigger: "blur" }],
         unitId: [{ required: true, message: "请选择形象单位", trigger: "blur" }],
         budgetTotal: [{ required: true, message: "请输入预算工程量", trigger: "blur" }],
         outputTotal: [{ required: true, message: "请输入工程总产值", trigger: "blur" }]
@@ -95,6 +89,11 @@ export default {
         children: "child",
         label: "subName",
         value: "id"
+      },
+      defaultPropss: {
+        children: "child",
+        label: "name",
+        value: "id"
       }
     };
   },
@@ -102,57 +101,39 @@ export default {
     ...mapState([
      'reginList',
      'bitemList',
-     'planList'
+     'planList',
+     'listOrgInfoList'
     ]),
   },
   methods: {
     ...mapActions([
         'getReginList',
         'getSubsectionList',
-        'getUnitList'
+        'getUnitList',
+        'getlistOrgInfoList'
     ]),
 
-  deepClone(data){
-	let obj = JSON.stringify(data);
-	return JSON.parse(obj);
-  },
-
-  initTree(data){
-	let arr = [];
-	for(let i=data.length;i--;){
-		if(data[i]['child']){
-			arr.push(...this.initTree(data[i]['child']));
-			let a = this.deepClone(data[i]);
-			delete a.child;
-			arr.push(a);
-		}else{
-			arr.push(data[i]);
-		}
-	}
-	return arr;
-  },
-
-  findParent(data,id){
-	let arr = [];
-	for(let i=data.length;i--;){
-		if(id == data[i].id){
-			arr.unshift(id);
-			arr.unshift(...this.findParent(data,data[i].parentId));
-		}
-	  }
-	  return arr;
-  },
     /**
      反显数据
      */
-    update(data) {
+    async update(data) {
       this.getReginList();
-      this.getSubsectionList();
+      await this.getSubsectionList();
       this.getUnitList();
+      this.getlistOrgInfoList();
       if (!data.id) return;
       this.dataModel ={...data};
-      this.dataParent = this.dataModel.id;
-      console.log(this.dataParent,"dataParent");
+      //查找项目父级
+      let object = this.$common.initTree(this.listOrgInfoList);
+      this.dataModel.projectIdArry  = this.$common.findParent(object,data.projectId);
+
+      //查找地区父级
+      let objects = this.$common.initTree(this.reginList);
+      this.dataModel.regionIdArry  = this.$common.findParents(objects,data.regionId);
+
+      //查找分部分项父级
+      let objectss = this.$common.initTree(this.bitemList);
+      this.dataModel.subIdArry  = this.$common.findParents(objectss,data.subId);
     },
 
     //重置方法
@@ -161,12 +142,15 @@ export default {
       AddStat.resetFields();
       this.dataModel.budgetTotal = null;
       this.dataModel.outputTotal = null;
-      this.dataModel.projectId = 12;
-      this.dataModel.regionId = [];
+      this.dataModel.projectId = '';
+      this.dataModel.regionId = '';
       this.dataModel.statName = "";
       this.dataModel.unitId = "";
-      this.dataModel.subId = [];
+      this.dataModel.subId = '';
       this.dataModel.id = null;
+      this.dataModel.regionIdArry = [];
+      this.dataModel.subIdArry = [];
+      this.dataModel.projectIdArry = [];
     },
 
     //关闭弹框
@@ -177,18 +161,16 @@ export default {
 
     //点击提交
     commit() {
-      let object = this.initTree(this.reginList);
-      let arr  = this.findParent(object,"129204981474525294");
-      console.log( object," object")
-      console.log( arr," arr")
+      console.log(this.dataModel.subIdArry,"this.dataModel.subIdArry");
       this.$refs["addProgress"].validate(valid => {
         if (!valid) {
           return;
         }
-        this.dataModel.regionId = this.dataModel.regionId[this.dataModel.regionId.length - 1];
-        this.dataModel.subId    = this.dataModel.subId[this.dataModel.subId.length - 1];
+         this.dataModel.regionId  = this.dataModel.regionIdArry[this.dataModel.regionIdArry.length - 1];
+         this.dataModel.subId     = this.dataModel.subIdArry[this.dataModel.subIdArry.length - 1];
+         this.dataModel.projectId = this.dataModel.projectIdArry[this.dataModel.projectIdArry.length - 1];
         //根据是否有数据传入决定执行新增还是修改
-        const result = this.dataModel.id ? this.updateRegion() : this.addVisualStatItem();
+        const result = this.dataModel.id ? this.updateVisualStatItemById() : this.addVisualStatItem();
       });
     },
 
@@ -212,8 +194,8 @@ export default {
     },
 
     //修改形象进度统计项
-    updateRegion() {
-      updateRegion(this.dataModel)
+    updateVisualStatItemById() {
+      updateVisualStatItemById(this.dataModel)
         .then(response => {
           if (response.code == "200") {
             this.$message.success("修改成功!");
@@ -230,34 +212,7 @@ export default {
       return true;
     }
   },
-  mounted() {   
-    // //查询施工区域
-    // listRegion({current: 1,offset: 10,projectId: 12})
-    // .then(response => {
-    //     this.regionList = response.body;
-    // })
-    // .catch(error => {
-    //     console.log(error);
-    // });
-
-    // //查询分部分项
-    // getSubsectionPage({current: 1,offset: 10,projectType: 1})
-    // .then(response => {
-    //     this.bitem = response.body;
-    // })
-    // .catch(error => {
-    //     console.log(error);
-    // });
-
-    // //查询统计单位
-    // getUnitPage({current: 1,offset: 10})
-    // .then(response => {
-    //     this.stati = response.body.rows;
-    // })
-    // .catch(error => {
-    //     console.log(error);
-    // });
-  }
+  mounted() {}
 };
 </script>
 <style lang="scss" scoped>

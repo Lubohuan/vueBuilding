@@ -3,7 +3,7 @@
 <div class="home">
 <el-container style="height:100%;">
   <el-aside width="180px" class="asideList">
-     <div class="titleSpan">进度可视化管理</div>
+     <div class="titleSpan">生产形象进度</div>
      <el-tree class="treeList" :data="data2" :props="defaultProps" default-expand-all @node-click="handleNodeClick"></el-tree>
   </el-aside>
     <el-main class="elContent">
@@ -33,8 +33,12 @@ export default {
         //   label: "可视化进度",
         //   path:""
         // },
-       
-         {
+        {
+          id: 3,
+          label: "施工区段管理",
+          path:"/areaManagement"
+        },
+        {
           id: 4,
           label: "形象进度管理",
           path:"",
@@ -66,12 +70,8 @@ export default {
             }
           ]
         },
+      
         {
-          id: 3,
-          label: "施工区段管理",
-          path:"/areaManagement"
-        },
-         {
           id: 5,
           label: "预警督办",
           path:"",
@@ -106,7 +106,7 @@ export default {
             },
              {
               id: 63,
-              label: "添加工程类别",
+              label: "工程类别",
               path:"/engineeringcategorymanagement"
             }
           ]

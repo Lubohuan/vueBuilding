@@ -11,15 +11,15 @@
       <el-button size="mini" type="primary" @click="addPlan">+ 编制计划</el-button>
       <el-button size="mini" type="success">导出excel</el-button>
    </el-col>
-   <el-col :span="14" class="planProgress_btn1">
+   <!-- <el-col :span="14" class="planProgress_btn1">
      <el-date-picker size="small" v-model="valueData" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
     </el-date-picker>
-   </el-col>
+   </el-col> -->
   </el-row>
    <el-row class="planProgress_row">
    <el-col :span="18">
-     <el-cascader :options="listOrgInfoList" v-model="projectId" :props="defaultProps" size="small" placeholder="请选择项目"></el-cascader>
-     <el-cascader :options="reginList" v-model="regionId" :props="defaultProp" size="small" placeholder="请选择施工区段"></el-cascader>
+     <el-cascader :options="listOrgInfoList" v-model="projectId" :props="defaultProps" size="small" placeholder="请选择项目" clearable></el-cascader>
+     <el-cascader :options="reginList" v-model="regionId" :props="defaultProp" size="small" placeholder="请选择施工区段" clearable></el-cascader>
      <el-select size="small" v-model="state" placeholder="请选择状态" clearable>
             <el-option v-for="(item,index) in stateList" :label="item.name" :value="item.state" :key="index"></el-option>
      </el-select>
@@ -31,21 +31,21 @@
   </el-row>
   <el-table :data="tableData" style="width: 100%;margin-top:20px;"   @selection-change="handleSelectionChange" border>
     <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
-    <el-table-column prop="projectId"  label="项目名称" align="center"></el-table-column>
-    <el-table-column prop="planName"  label="计划任务名称" align="center" min-width="120"></el-table-column>
-    <el-table-column prop="regionName"  label="施工区段" align="center" min-width="120"></el-table-column>
+    <el-table-column prop="planName"  label="项目名称" align="center" min-width="150"></el-table-column>
+    <el-table-column prop="projectName"  label="计划任务名称" align="center" min-width="200"></el-table-column>
+    <el-table-column prop="regionFullName"  label="施工区段" align="center" min-width="200"></el-table-column>
     <el-table-column prop="planEndTime"  label="完成时间" align="center" min-width="120"></el-table-column>
     <el-table-column prop="budgetTotal"  label="总工程量" align="center"></el-table-column>
-    <el-table-column prop="finishTotal"  label="剩余工程量" align="center" min-width="120"></el-table-column>
-    <el-table-column prop="planFinish"  label="计划工程量" align="center" min-width="120"></el-table-column>
-    <el-table-column prop="planFinishRate"  label="完成比例" align="center" min-width="120"></el-table-column>
-    <el-table-column prop="isForbid"  label="状态" align="center" min-width="120">
+    <el-table-column prop="finishTotal"  label="剩余工程量" align="center" min-width="90"></el-table-column>
+    <el-table-column prop="planFinish"  label="计划工程量" align="center" min-width="90"></el-table-column>
+    <el-table-column prop="planFinishRate"  label="完成比例" align="center" min-width="90"></el-table-column>
+    <el-table-column prop="isForbid"  label="状态" align="center" min-width="50">
        <template slot-scope="scope">
           <span v-if="scope.row.isForbid == 0">启用</span>
           <span v-if="scope.row.isForbid == 1">禁用</span>
        </template>
     </el-table-column>
-    <el-table-column label="操作" align="center" min-width="230">
+    <el-table-column label="操作" align="center" min-width="180">
       <template slot-scope="scope">
          <el-button size="mini" type="primary" @click="editPlan(scope.row)">编辑</el-button>
          <el-button v-if="scope.row.isForbid == 0" size="mini" type="warning" @click="stopClick(scope)">禁用</el-button>

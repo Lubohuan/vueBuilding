@@ -25,7 +25,7 @@ export default {
       dataModel: {
         // id: null,
         parentId: null,
-        projectType: 1,
+        projectType: "",
         remark: "",
         sort: 1,
         subName: ""
@@ -42,7 +42,7 @@ export default {
      */
     update(data) {
       this.dataModel.parentId = data.id;
-      console.log(this.dataModel.parentId,"this.dataModel.parentId");
+      this.dataModel.projectType = data.projectType;
     },
     //重置方法
     reset() {

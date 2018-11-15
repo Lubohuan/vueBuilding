@@ -2,11 +2,11 @@
 <!-- 新增/修改进度计划 -->
 <div class="addPlan">
   <el-form :model="dataModel" :rules="rules" ref="addPlan" label-width="135px">
-    <el-form-item label="项目名称：" prop="projectId">
-        <el-input v-model="dataModel.projectId" size="small"></el-input>
+    <el-form-item label="项目名称：" prop="projectIdArry">
+        <el-cascader :options="listOrgInfoList" v-model="dataModel.projectIdArry" :props="defaultProp" size="small" placeholder="请选择项目" style="width:100%;"></el-cascader>
     </el-form-item>
-    <el-form-item label="选择统计项：" v-if="dataModel.id == null" prop="visualStatId">
-         <el-select  size="small" v-model="dataModel.visualStatId" placeholder="请选择形象进度统计项" clearable style="width:100%;"  @change="changeVisu">
+    <el-form-item label="选择统计项：" prop="visualStatId">
+         <el-select  size="small" v-model="dataModel.visualStatId" placeholder="请选择形象进度统计项"  style="width:100%;"  @change="changeVisu">
             <el-option v-for="(item,index) in statisList" :label="item.statName" :value="item.id" :key="index"></el-option>
         </el-select>
         <span v-if="visualStatObject !== null" style="color:rgb(64, 158, 255);">分部分项：{{visualStatObject.statName}}</span>
@@ -32,8 +32,8 @@
         <el-input v-model.number="dataModel.trackCycle " size="small"></el-input>
     </el-form-item>
     <el-form-item label="施工负责人：" prop="respUser">
-         <el-select size="small" v-model.number="dataModel.respUser" placeholder="请选择负责人" clearable style="width:100%;">
-            <el-option v-for="(item,index) in userList" :label="item.name" :value="item.id" :key="index"></el-option>
+         <el-select size="small" v-model="dataModel.respUser" placeholder="请选择负责人" clearable style="width:100%;">
+            <el-option v-for="(item,index) in userList" :label="item.trueName" :value="item.id" :key="index"></el-option>
          </el-select> 
     </el-form-item>
   </el-form>
@@ -45,36 +45,27 @@
 </template>
 
 <script>
-import { getVisualStatItemPage,addConstructPlan } from "../api/upload.js";
+import { addConstructPlan,updateConstructPlan,getConstructPlanById } from "../api/upload.js";
 import { mapState, mapActions } from 'vuex'
 export default {
   name: "addPlan",
   data() {
     return {
       dataModel: {
-        projectId: 12,
+        projectId: [],
         planEndTime: "",
         planFinish: null,
         planName: "",
         planStartTime: "",
         respUser: null,
         trackCycle: null,
-        visualStatId: null
+        visualStatId: null,
+        projectIdArry:[]
       },
-      userList: [
-        {
-          name: "www",
-          id: 1
-        },
-        {
-          name: "sss",
-          id: 2
-        }
-      ],
       visualStatObject:null,
       //数据校验
       rules: {
-        projectId: [{ required: true, message: "请输入项目名称：", trigger: "blur" }],
+        projectIdArry: [{ required: true, message: "请输入项目名称：", trigger: "blur" }],
         visualStatId: [{ required: true, message: "请选择统计项", trigger: "blur" }],
         planName: [{ required: true, message: "请输入任务名称：", trigger: "blur" }],
         planStartTime: [{ required: true, message: "请选择开始时间", trigger: "blur" }],
@@ -85,55 +76,83 @@ export default {
 
       },
       radio: "",
-      progressList: []
+      progressList: [],
+      defaultProp: {
+        children: "child",
+        label: "name",
+        value: "id"
+      }
     };
   },
   computed: {
     ...mapState([
-     'statisList'
+     'statisList',
+     'listOrgInfoList',
+     'userList'
     ]),
   },
   methods: {
+
     ...mapActions([
-        'getStatisList'
+        'getStatisList',
+        'getlistOrgInfoList',
+        'getUserList'
     ]),
+
     changeVisu(){
     this.visualStatObject = this.statisList.find(
       (v) => v.id === this.dataModel.visualStatId,
     );
      this.dataModel.planName = this.visualStatObject.statName;
     },
+
     /**
      反显数据
      */
-    update(data) {
+    async update(data) {
+      this.getlistOrgInfoList();
       this.getStatisList();
+      this.getUserList();
       if (!data.id) return;
-      this.dataModel = {...data};
-      // this.visualStatObject = {...data}
+      this.dataModel.id = data.id;
+      await this.getInfoPlan();
+
+       //查找项目父级
+      let object = this.$common.initTree(this.listOrgInfoList);
+      console.log(object,"object");
+      console.log(this.dataModel.projectId,"this.dataModel.projectId")
+      this.dataModel.projectIdArry  = this.$common.findParent(object, this.dataModel.projectId);
+      console.log(this.dataModel.projectIdArry," this.dataModel.projectIdArry");
+
     },
+
     //重置方法
     reset() {
       const AddStat = this.$refs["addPlan"];
       AddStat.resetFields();
       this.dataModel = {};
+      this.dataModel.id = null;
       this.visualStatObject = null;
     },
+
     //关闭弹框
     close() {
       this.$emit("close");
       this.reset();
     },
+
     //点击提交
     commit() {
       this.$refs["addPlan"].validate(valid => {
         if (!valid) {
           return;
         }
+        this.dataModel.projectId    = this.dataModel.projectIdArry[this.dataModel.projectIdArry.length - 1];
         //根据是否有数据传入决定执行新增还是修改
         const result = this.dataModel.id ? this.updatePlan() : this.addPlan();
       });
     },
+
     //添加进度计划
     addPlan() {
       addConstructPlan(this.dataModel)
@@ -151,6 +170,7 @@ export default {
         });
       return true;
     },
+
     //修改进度计划
     updatePlan(){
       updateConstructPlan(this.dataModel)
@@ -167,6 +187,25 @@ export default {
           return false;
         });
       return true;
+    },
+
+    //根据id查询进度计划详情
+    getInfoPlan(){
+      return new Promise((resolve,reject)=>{
+         getConstructPlanById(this.dataModel.id)
+        .then(response => {
+          if (response.code == "200") {
+            this.dataModel = response.body;
+            resolve();
+          } else {
+            this.$message.error(response.msg);
+          }
+        })
+        .catch(error => {
+          return false;
+          reject();
+        });
+      })
     }
   }
 };

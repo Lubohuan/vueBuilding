@@ -18,7 +18,7 @@
     </el-table-column>
     <el-table-column prop="respUser"  label="责任人" align="center" min-width="120"></el-table-column>
     <el-table-column prop="relieveTime"  label="预警时间" align="center" min-width="120"></el-table-column>
-    <el-table-column prop="name"  label="操作" align="center" min-width="200">
+    <el-table-column  label="操作" align="center" min-width="200">
       <template slot-scope="scope">
          <el-button size="mini" type="primary" @click="remindSupervise(scope.row)">督办</el-button>
          <el-button size="mini" type="success" @click="relieveReason(scope.row)">解除预警</el-button>

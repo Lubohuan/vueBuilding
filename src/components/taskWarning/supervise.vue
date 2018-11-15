@@ -5,12 +5,12 @@
     <el-form-item label="督办内容" prop="urgeContent">
         <el-input  type="textarea" :autosize="{minRows:3}" v-model="superviseModel.urgeContent" size="small" placeholder="请输入督办内容"></el-input>
     </el-form-item>
-     <el-form-item label="是否短信通知：" prop="radio">
+     <!-- <el-form-item label="是否短信通知：" prop="radio">
         <el-radio-group v-model="radio" style="width:110px;">
             <el-radio label="0">是</el-radio>
             <el-radio label="1">否</el-radio>
         </el-radio-group>
-    </el-form-item>
+    </el-form-item> -->
   </el-form>
   <div class="clickBtn">
     <el-button @click="close"  size="small">取消</el-button>
@@ -26,13 +26,7 @@ export default {
   data() {
     return {
       superviseModel: {
-        createTime: "",
-        createUser: "",
         id: "",
-        isDelete: "",
-        planId: "",
-        respUser: "",
-        state: "",
         urgeContent: "",
       },
       radio: "",
@@ -46,21 +40,25 @@ export default {
     };
   },
   methods: {
+
     update(data) {
-      this.superviseModel.id = data.id;
+      this.superviseModel.planId = data.planId;
       console.log(this.superviseModel.id,"this.superviseModel.id");
     },
+
     //重置方法
     reset() {
       const AddStat = this.$refs["supervise"];
       AddStat.resetFields();
       this.superviseModel= {};
     },
+
     //关闭弹框
     close() {
       this.$emit("close");
       this.reset();
     },
+    
     //点击提交
     commit() {
       this.$refs["supervise"].validate(valid => {
@@ -70,14 +68,14 @@ export default {
         urgeTask(this.superviseModel)
           .then(response => {
             if (response.code == "200") {
-              this.$message.success("提交成功!");
+              this.$message.success("督办成功!");
               this.close();
             } else {
               this.$message.error(response.msg);
             }
           })
           .catch(error => {
-            this.$message.error(error);
+            console.log(error);
           });
       });
     }
