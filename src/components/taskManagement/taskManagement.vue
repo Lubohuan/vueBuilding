@@ -57,13 +57,21 @@
                               <span slot="content">任务id：#{{index}}</span>
                               <el-tag size="small"  type="info">#{{index}}</el-tag >
                           </el-tooltip> -->
-                          <el-tooltip class="item" effect="dark"  placement="top">
-                              <span slot="content">优先级：{{item.level}}</span>
-                              <el-tag size="small"  type="danger">#{{item.level}}</el-tag >
+                          <el-tooltip class="item" effect="dark"  placement="top" v-if="item.level == 0">
+                              <span slot="content">优先级：普通</span>
+                              <el-tag size="small">普通</el-tag >
+                          </el-tooltip>
+                           <el-tooltip class="item" effect="dark"  placement="top"  v-if="item.level == 1">
+                              <span slot="content">优先级：较急</span>
+                              <el-tag size="small"  type="warning">较急</el-tag >
+                          </el-tooltip>
+                           <el-tooltip class="item" effect="dark"  placement="top"  v-if="item.level == 2">
+                              <span slot="content">优先级：紧急</span>
+                              <el-tag size="small"  type="danger">紧急</el-tag >
                           </el-tooltip>
                            <el-tooltip class="item" effect="dark"  placement="top">
                               <span slot="content">任务负责人：{{item.respUserName}}</span>
-                              <el-tag size="small"  type="info">#{{item.respUserName}}</el-tag >
+                              <el-tag size="small"  type="info">{{item.respUserName}}</el-tag >
                           </el-tooltip>
                       </el-col>
                       <el-col :span="9" class="rightTag">

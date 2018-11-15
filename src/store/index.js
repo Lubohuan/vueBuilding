@@ -11,8 +11,8 @@ export default new Vuex.Store({
     statisList: [], //形象进度统计项列表
     bitemList: [], //分部分项列表
     listOrgInfoList:[],//项目列表
-    userList:[]//用户列表
-
+    userList:[],//用户列表
+    userToken:null//用户token
   },
   mutations: {
     updatestatisList(state, data) {
@@ -36,6 +36,9 @@ export default new Vuex.Store({
     updateUserList(state, data) {
       state.userList = data;
     },
+    updateUserToken(state, data) {
+        state.userToken = data;
+    }
   },
   actions: {
     
@@ -97,6 +100,17 @@ export default new Vuex.Store({
             console.log(error);
           });
       },
+      
+    //查询用户列表
+    getUserList({commit}) {
+      listUserInfo()
+        .then(response => {
+          commit('updateUserList', response.body)
+        })
+        .catch(error => {
+            console.log(error);
+        });
+      },
 
     //查询项目列表下拉框
     getlistOrgInfoList({commit}) {
@@ -112,16 +126,9 @@ export default new Vuex.Store({
         });
       })
     },
-
-    //查询用户列表
-    getUserList({commit}) {
-      listUserInfo()
-        .then(response => {
-          commit('updateUserList', response.body)
-        })
-        .catch(error => {
-            console.log(error);
-        });
-      },
+    //更新token
+    getUserToken({commit},data) {
+          commit('updateUserToken', data)
+    }
   }
 })

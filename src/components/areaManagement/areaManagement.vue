@@ -139,7 +139,7 @@ export default {
   computed: {
     ...mapState([
      'reginList',
-     'listOrgInfoList',
+     'listOrgInfoList'
     ]),
   },
   methods: {

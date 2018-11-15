@@ -335,3 +335,11 @@ export function listUserInfo(data) {
     params:data
   })
 }
+//首页表盘
+export function getDashBoard(data) {
+  return request({
+    url: baseUrl + '/workStat/getDashBoard',
+    method: 'get',
+    params:data
+  })
+}

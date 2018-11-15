@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
-//import store from '../store'
+import store from '../store'
 import { getToken } from '@/utils/auth'
 axios.defaults.headers.common['Authorization'] = 'Basic Y29vcGVyYXRpb25BcHA6Y29vcGVyYXRpb25BcHA=';
 // 创建axios实例
@@ -12,10 +12,12 @@ const service = axios.create({
 // request拦截器
 service.interceptors.request.use(
   config => {
-    // if (store.getters.token) {
-    //   var token = getToken()
-    //   config.headers['access_token'] = token // 让每个请求携带自定义token 请根据实际情况自行修改
-    // }
+    //判断stroe中是否有token，如果有给请求头加上token
+    if (store.state.userToken) {
+      axios.defaults.headers.common['userToken'] = store.state.userToken;
+      // var token = getToken()
+      // config.headers['access_token'] = token // 让每个请求携带自定义token 请根据实际情况自行修改
+    }
     return config
   },
   error => {

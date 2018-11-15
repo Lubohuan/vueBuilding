@@ -8,7 +8,7 @@
                 <img src="../../assets/u484.png" alt="" class="despImage">
                 <div class="cradContent">
                     <div class="desp_look">今日完成生产任务</div>
-                    <div class="desp_personal">负责人</div>
+                    <div class="desp_personal">{{panTable.finishTask}}个</div>
                 </div>
              </div>
              <div class="cardFooter">
@@ -35,7 +35,7 @@
             <img src="../../assets/u484.png" alt="" class="despImage">
                        <div  class="cradContent">
                             <div class="desp_look">今日产值</div>
-                            <div class="desp_personal">负责人</div>
+                            <div class="desp_personal">¥{{panTable.finishOutput}}万</div>
                        </div>
             </div>
             <div class="cardFooter">
@@ -178,8 +178,9 @@
 </template>
 
 <script>
-import { listVisualStatProgress,getTaskWarningLogPage } from "../api/upload.js";
+import { listVisualStatProgress,getTaskWarningLogPage,getDashBoard } from "../api/upload.js";
 import supervise from "../taskWarning/supervise.vue";
+import { mapMutations } from 'vuex';
 export default {
   name: "commandCentre",
    components: {
@@ -206,15 +207,24 @@ export default {
       dialog: {
         supervise: false,
       },
+      panTable:{
+        panfinishTask:1
+      }
 
     };
   },
+ 
   methods: {
+    ...mapMutations({
+        updateToken:'updateUserToken'
+    }),
+    
     handleClick(tab) {
       this.activeName = tab.name;
       console.log(this.activeName, "tab");
     },
 
+    //切换最近7天/本周/上周
     tabClick(){ 
     console.log(this.tabPosition,"tabPosition");
         switch(this.tabPosition){
@@ -404,16 +414,44 @@ export default {
     remindSupervise(data){
         this.remindData = data;
         this.dialog.supervise = true;
+    },
+
+    //获取用户token
+    getUrlParam(k) {
+    var regExp = new RegExp('([?]|&)' + k + '=([^&]*)(&|$)');
+    var result = window.location.href.match(regExp);
+    if (result) {
+        return decodeURIComponent(result[2]);
+    } else {
+        return null;
     }
-  },
-  created() {
+    },
+
+    //获取表盘数据
+    refreshPan(){
+     getDashBoard()
+        .then(response => {
+          this.panTable = response.body;
+          console.log( this.panTable," this.panTable");
+        })
+        .catch(error => {
+          console.log(error);
+      });
+    }
+    },
+    created() {
+
+    //有token再更新userToken
+    let url = window.location.href;
+    if(url.indexOf("?")!=-1){
+       this.$store.dispatch('getUserToken',this.getUrlParam('token'));
+    }
     this.endTime = this.getDay(0);//当天日期
     this.startTime = this.getDay(-6);//7天前日期
     this.getAllDays(6);
-    this.refreshList();
+    this.refreshList();//发送请求
     this.refreshLists();
-    var token = window.location.href;
-   alert(token);
+    this.refreshPan(); 
   }
 };
 </script>
