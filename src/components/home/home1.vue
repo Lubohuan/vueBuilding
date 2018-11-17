@@ -1,6 +1,6 @@
 <template>
 <!--布局页面-->
-<div class="home1">
+<div class="home">
 <el-container style="height:100%;">
   <el-aside width="180px" class="asideList">
      <div class="titleSpan">生产计划进度</div>
@@ -15,7 +15,7 @@
 
 <script>
 export default {
-  name: "home1",
+  name: "home",
   data() {
     return {
       defaultProps: {
