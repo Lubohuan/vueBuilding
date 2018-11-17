@@ -110,13 +110,7 @@ export default {
               path:"/engineeringcategorymanagement"
             }
           ]
-        },
-        {
-          id: 7,
-          label: "项目进度计划",
-          path:"/progressPIcture"
-        },
-        
+        }       
       ]
     };
   },

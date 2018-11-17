@@ -108,14 +108,6 @@ export default new Router({
               require(['../components/Imagereport/Imagereport.vue'], resolve)
             }
           },
-          //形象进度甘特图
-          {
-            path: '/progressPIcture',
-            name: 'progressPIcture',
-            component: (resolve) => {
-              require(['../components/progressPIcture/progressPicture.vue'], resolve)
-            }
-          },
           {
             path: '/engineeringcategorymanagement',
             name: 'engineering-category-management',
@@ -124,6 +116,24 @@ export default new Router({
             }
           },
         ]
+      },
+      {
+        path: '/home1',
+        name: 'home1',
+        component: (resolve) => {
+          require(['../components/home/home1.vue'], resolve)
+        },
+        redirect: '/progressPIcture',
+        children:[
+          //形象进度甘特图
+          {
+            path: '/progressPIcture',
+            name: 'progressPIcture',
+            component: (resolve) => {
+              require(['../components/progressPIcture/progressPicture.vue'], resolve)
+            }
+          }
+      ]
       }
     ]
   }]

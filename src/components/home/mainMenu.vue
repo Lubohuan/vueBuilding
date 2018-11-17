@@ -15,7 +15,7 @@
             </div> -->
             <div class="p_menu" @click.stop="main_menuFn">
               <div class="pre_icon">
-                <i class="icon-appstore-fill iconfont"></i>
+                <i class="el-icon-menu iconfont"></i>
               </div>
               <div class="menu_text" style="margin-left: -15px;">产品与服务</div>
               <div class="after_icon">
@@ -143,7 +143,8 @@ export default {
       main_menu:'',
       isScale:false,
       menuData:[
-        {id:'1',icon:'el-icon-edit-outline',text:'进度管理',path:'/home'},
+        {id:'1',icon:'el-icon-edit-outline',text:'生产形象进度',path:'/home'},
+        {id:'2',icon:'el-icon-news',text:'生产计划进度',path:'/home1'},
       ]
     }
   },

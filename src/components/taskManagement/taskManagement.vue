@@ -18,7 +18,7 @@
     </el-col>
   </el-row>
   <el-row class="rowOne">
-      <el-col :span="8" class="elStyle" style="padding:0px;">
+      <el-col :span="7" class="elStyle" style="padding:0px;">
           <el-row class="sortTab">
               <el-col :span="8">
               <el-button type="primary" size="mini" @click="addTask">+任务</el-button>
@@ -83,7 +83,7 @@
               </div>
           </div>
       </el-col>
-      <el-col :span="16" class="elStyle" style="border-right:none;">
+      <el-col :span="17" class="elStyle" style="border-right:none;">
           <el-row class="sortTabs">
             <el-col :span="24" class="showTrueStyle" style="text-align:right;">
                 <span @click="hideRight">{{showRoFalse}}</span>
