@@ -2,6 +2,10 @@
   <div class="mainMenu" @click="initFn">
        <div class="header">
         <div class="log">生产进度管控系统</div>
+        <div class="log" style="font-size:14px;">所属组织：</div>
+        <div class="changeorg">
+            <el-cascader :options="listOrgInfoList" filterable v-model="projectId" :props="defaultPropss" size="small" placeholder="请选择项目" @change="changeProject"></el-cascader>
+        </div>
         <div class="logout" @click="getOut">退出</div>
         <div class="scaleBtn" @click.stop="scaleFn">全屏</div>
       </div>
@@ -122,14 +126,14 @@
     </div>
     <div class="content">
       <div class="right_content">
-       <router-view> </router-view>
+       <router-view v-if="isRouterAlive"> </router-view>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import{ mapState }  from "vuex";
+import { mapState, mapActions } from 'vuex';
 import home from "../home/home.vue";
 export default {
   name: 'mainMenu',
@@ -145,13 +149,25 @@ export default {
       menuData:[
         {id:'1',icon:'el-icon-edit-outline',text:'生产形象进度',path:'/home'},
         {id:'2',icon:'el-icon-news',text:'生产计划进度',path:'/home1'},
-      ]
+      ],
+        defaultPropss:{
+        children: "child",
+        label: "name",
+        value: "id"
+      },
+      projectId:[],
+      isRouterAlive:true
     }
   },
-   props:{
-        message1:String
+  computed: {
+    ...mapState([
+     'listOrgInfoList'
+    ]),
   },
   methods:{
+       ...mapActions([
+      'getlistOrgInfoList'
+      ]),
       initFn:function(){
          this.main_menu = '';
       },
@@ -189,12 +205,18 @@ export default {
           docElm.msRequestFullscreen && docElm.msRequestFullscreen();//IE11
           this.isScale = true;
         }
+      },
+      changeProject(){
+        this.$router.push({
+          name:'loading',
+          params:{
+            token:'5000'
+          }
+        });
       }
   },
-  
-  watch: {
-      message: function (val, oldVal) {
-      }
+  created(){
+    this.getlistOrgInfoList();
   }
 }
 </script>

@@ -415,17 +415,6 @@ export default {
         this.dialog.supervise = true;
     },
 
-    //获取用户token
-    getUrlParam(k) {
-    var regExp = new RegExp('([?]|&)' + k + '=([^&]*)(&|$)');
-    var result = window.location.href.match(regExp);
-    if (result) {
-        return decodeURIComponent(result[2]);
-    } else {
-        return null;
-    }
-    },
-
     //获取表盘数据
     refreshPan(){
      getDashBoard()
@@ -440,11 +429,7 @@ export default {
     },
     created() {
 
-    //有token再更新userToken
-    let url = window.location.href;
-    if(url.indexOf("?")!=-1){
-       this.$store.dispatch('getUserToken',this.getUrlParam('token'));
-    }
+  
     this.endTime = this.getDay(0);//当天日期
     this.startTime = this.getDay(-6);//7天前日期
     this.getAllDays(6);

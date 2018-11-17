@@ -206,7 +206,7 @@
                     </div> 
                     <div class="imgVidevoInfo">
                      <viewer style="display:inline-block;cursor: pointer;">
-	                    <img src="https://overwatch.nosdn.127.net/a/images/2018/11/5/0e282147eef1db225bbbcc9469efbd6d.jpg" width="120" height="70">
+	                    <img src="http://tower-img.1357.cn/file/2018-11-02/716867844360000.jpg?x-oss-process=image/resize,m_lfit,w_640,h_640/watermark,type_ZmFuZ3poZW5na2FpdGk=,color_FFFFFF,type_ZmFuZ3poZW5naGVpdGk,size_22,text_546L5a6PICAyMDE4LTExLTAyIDA5OjEw" width="120" height="70">
 	                 </viewer>
                      <div class="videoStyle" @click="dialog.openVideo=true;" >
                          <img src="http://overwatch.nos.netease.com/1/assets/img/icons/youtube-btn-ylw.png" class="openIcon" width="30" height="30">
@@ -314,7 +314,7 @@ export default {
           type: "video/mp4",
           src: "https://blz-videos.nosdn.127.net/1/OverWatch/OVR-S03_E03_McCree_REUNION_zhCN_1080P_mb78.mp4" //url地址
         }],
-        poster: "https://overwatch.nosdn.127.net/a/images/2018/11/5/0e282147eef1db225bbbcc9469efbd6d.jpg", //你的封面地址
+        poster: "http://tower-img.1357.cn/file/2018-08-31/1224708298227540.jpg?x-oss-process=image/resize,m_lfit,w_640,h_640/watermark,type_ZmFuZ3poZW5na2FpdGk=,color_FFFFFF,type_ZmFuZ3poZW5naGVpdGk,size_22,text_6ZmI5ZSQ6K-X5p6XICAyMDE4LTA4LTMxIDE3OjU3", //你的封面地址
         notSupportedMessage: '此视频暂无法播放，请稍后再试', //允许覆盖Video.js无法播放媒体源时显示的默认信息。
         controlBar: {
           timeDivider: true,

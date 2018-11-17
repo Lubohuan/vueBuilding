@@ -9,8 +9,16 @@ export default new Router({
     component: (resolve) => {
       require(['../components/home/mainMenu.vue'], resolve)
     },
-    redirect: '/home',
+    redirect: '/loginLoading',
     children: [
+      //loading
+      {
+        path: '/loginLoading',
+        name: 'loginLoading',
+        component: (resolve) => {
+          require(['../components/loading/loginLoading.vue'], resolve)
+        }
+      },
       //home页
       {
         path: '/home',
@@ -134,6 +142,14 @@ export default new Router({
             }
           }
       ]
+      },
+       //loading界面
+       {
+        path: '/loading',
+        name: 'loading',
+        component: (resolve) => {
+          require(['../components/loading/loading.vue'], resolve)
+        }
       }
     ]
   }]

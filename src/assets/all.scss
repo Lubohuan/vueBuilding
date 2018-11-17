@@ -20,3 +20,26 @@
         padding: 0px !important;
     }
  }
+ .changeorg{
+     width: 400px;
+     display: inline-block;
+     line-height: 50px;
+    .el-cascader{
+      min-width:70px;
+      height:33px;
+      input.el-input__inner{
+        border:none !important;
+        background-color:transparent !important;
+        text-align: center;
+        color:#fff;
+      }
+      input::-webkit-input-placeholder{
+        color:#fff;
+        }
+      .el-cascader__label{
+        text-align: left;
+        color:#fff;
+        padding-left:0;
+      }
+    }
+  } 

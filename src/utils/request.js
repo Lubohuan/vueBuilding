@@ -14,7 +14,7 @@ service.interceptors.request.use(
   config => {
     //判断stroe中是否有token，如果有给请求头加上token
     if (store.state.userToken) {
-      axios.defaults.headers.common['userToken'] = store.state.userToken;
+      axios.defaults.headers.common['token'] = store.state.userToken;
       // var token = getToken()
       // config.headers['access_token'] = token // 让每个请求携带自定义token 请根据实际情况自行修改
     }

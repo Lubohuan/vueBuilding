@@ -12,7 +12,7 @@ export default new Vuex.Store({
     bitemList: [], //分部分项列表
     listOrgInfoList:[],//项目列表
     userList:[],//用户列表
-    userToken:null//用户token
+    userToken:123456//用户token
   },
   mutations: {
     updatestatisList(state, data) {
