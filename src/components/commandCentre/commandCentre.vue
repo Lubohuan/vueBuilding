@@ -128,7 +128,7 @@
        <el-table-column prop="name" label="累计完成百分比" align="center" min-width="120"></el-table-column>
        <el-table-column prop="monthPlan" label="本月计划" align="center"></el-table-column>
        <el-table-column prop="monthFinish" label="本月完成" align="center"></el-table-column>
-       <el-table-column prop="name" label="完成比例" align="center"></el-table-column>
+       <el-table-column  label="完成比例" align="center"></el-table-column>
        <template v-for="(item,index) in dateArr">
             <el-table-column  :prop="'logMms['+ index +'].finishTotal'"  :label=" item "  :key="index" align="center"></el-table-column>
        </template>

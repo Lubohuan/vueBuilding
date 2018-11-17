@@ -9,11 +9,13 @@
   display:flex;
   justify-content: space-between;
   .header{
+    position: fixed;
     height:50px;
     width:100%;
     color:#fff;
     cursor: pointer;
     background-color:#252a2f;
+    z-index: 5;
     .log{
       height:100%;
       width:auto;
@@ -22,7 +24,7 @@
       text-align: center;
       font-size: 18px;
       line-height:50px;
-      padding-left:20px;
+      padding-left:50px;
     } 
     .changeRole{
       height:100%;
@@ -73,16 +75,18 @@
     }
   }
   .content{
-    width:calc(100% - 51px);
+    width:100%;
     height:100%;
+    padding-left: 51px;
     position: relative;
     box-sizing: border-box;
     transition: width 300ms 100ms;
     -moz-transition:width 300ms 100ms; /* Firefox 4 */
     -webkit-transition:width 300ms 100ms; /* Safari and Chrome */
     -o-transition:width 300ms 100ms; /* Opera */
+    padding-top:50px;
     .right_content{
-      height:calc(100% - 50px);
+      height:100%;
       width:100%;
       overflow: hidden;
     }
@@ -223,13 +227,14 @@
     }
   }
   .left_menu{
-    position: relative;
+    position: fixed;
     width:50px;
     height:100%;
     color:#fff;
     background-color:#252a2f;
     border-right:1px solid hsla(0,0%,100%,.1);
     z-index:5;
+    margin-top:50px;
     cursor: pointer;
     transition: width 300ms 100ms;
     -moz-transition:width 300ms 100ms; /* Firefox 4 */

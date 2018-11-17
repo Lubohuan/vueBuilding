@@ -1,13 +1,18 @@
 <template>
   <div class="mainMenu" @click="initFn">
+       <div class="header">
+        <div class="log">生产进度管控系统</div>
+        <div class="logout" @click="getOut">退出</div>
+        <div class="scaleBtn" @click.stop="scaleFn">全屏</div>
+      </div>
      <div class="left_menu" v-bind:class="main_menu">
         <div class="left_inner_menu">
           <div class="left_show_menu">
-            <div class="menu_logo">
+            <!-- <div class="menu_logo">
              
                  <img src="../../assets/smp.png"  style="height:100%;margin-right:30px;"/>
              
-            </div>
+            </div> -->
             <div class="p_menu" @click.stop="main_menuFn">
               <div class="pre_icon">
                 <i class="icon-appstore-fill iconfont"></i>
@@ -116,12 +121,6 @@
       </div>
     </div>
     <div class="content">
-      <div class="header">
-        <div class="log">智慧工地控制台</div>
-        <div class="logout" @click="getOut">退出</div>
-        <div class="scaleBtn" @click.stop="scaleFn">全屏</div>
-
-      </div>
       <div class="right_content">
        <router-view> </router-view>
       </div>
