@@ -14,8 +14,8 @@ service.interceptors.request.use(
   config => {
     //判断stroe中是否有token，如果有给请求头加上token
     if (store.state.userToken) {
-      // config.headers.common['token'] = store.state.userToken;
-      config.headers.common['token'] = '8b909547e84be2cae0204cbe6534cb45';  
+        config.headers.common['token'] = store.state.userToken;
+      // config.headers.common['token'] = '8b909547e84be2cae0204cbe6534cb45';  
       // var token = getToken()
       // config.headers['access_token'] = token // 让每个请求携带自定义token 请根据实际情况自行修改
     }
