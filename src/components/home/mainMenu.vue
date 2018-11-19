@@ -250,6 +250,7 @@ export default {
     let url = window.location.href;
     if(url.indexOf("?")!=-1){
         this.$store.dispatch('getUserToken',this.getUrlParam('token'));
+        sessionStorage.setItem("userToken",this.getUrlParam('token'));
     };
     this.getlistOrgInfoList();
   }
