@@ -6,14 +6,14 @@
     <el-breadcrumb-item>分部分项库</el-breadcrumb-item>
     </el-breadcrumb>
    <el-row>
-    <el-col :span="20">
+    <el-col :span="24">
       <el-tabs v-model="projectType" type="card" @tab-click="handleClick">
       <el-tab-pane :key="item.id" v-for="item in projectTypeList" :label="item.typeName" :name="item.id"></el-tab-pane>
       </el-tabs>
   </el-col>
-  <el-col :span="4" class="bitem_btn">
+  <!-- <el-col :span="4" class="bitem_btn">
       <el-button  type="text" @click="categoryManagement"><i class="el-icon-edit el-icon--right"></i>类别管理</el-button>
-  </el-col>
+  </el-col> -->
   </el-row>
   <el-row>
    <el-col :span="5">
