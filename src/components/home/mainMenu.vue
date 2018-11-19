@@ -4,7 +4,7 @@
         <div class="log">生产进度管控系统</div>
         <div class="log" style="font-size:14px;">所属组织：</div>
         <div class="changeorg">
-            <el-cascader :options="listOrgInfoList" filterable v-model="projectId" :props="defaultPropss" size="small" placeholder="请选择项目" @change="changeProject"></el-cascader>
+            <el-cascader :options="listOrgInfoList"  expand-trigger="hover" filterable v-model="projectArry" :props="defaultPropss" size="small" placeholder="请选择项目" @change="changeProject"></el-cascader>
         </div>
         <div class="logout" @click="getOut">退出</div>
         <div class="scaleBtn" @click.stop="scaleFn">全屏</div>
@@ -134,7 +134,9 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { changeOrg } from "../api/upload.js";
 import home from "../home/home.vue";
+import { setTimeout } from 'timers';
 export default {
   name: 'mainMenu',
     components:{
@@ -155,8 +157,10 @@ export default {
         label: "name",
         value: "id"
       },
-      projectId:[],
-      isRouterAlive:true
+      projectId:null,
+      isRouterAlive:true,
+      projectArry:[],
+      projectToken:''
     }
   },
   computed: {
@@ -206,12 +210,27 @@ export default {
           this.isScale = true;
         }
       },
+      //切换组织
       changeProject(){
-        this.$router.push({
-          name:'loading',
-          params:{
-            token:'5000'
+         this.projectId = this.projectArry[this.projectArry.length - 1];
+         changeOrg({
+           orgId:this.projectId
+         })
+        .then(response => {
+          if (response.code == "200") {
+              this.isRouterAlive = false;
+              // this.$router.push({name:'loading',params:{token:'123456'}});
+              // this.projectToken = '666666666';
+              // this.$store.dispatch('getUserToken',this.projectToken);
+              this.$nextTick(()=>{
+                this.isRouterAlive = true;
+              })              
+          } else {
+            this.$message.error(response.msg);
           }
+        })
+        .catch(error => {
+          console.log(error);
         });
       }
   },

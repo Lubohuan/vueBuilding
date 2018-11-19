@@ -12,7 +12,7 @@ export default new Vuex.Store({
     bitemList: [], //分部分项列表
     listOrgInfoList:[],//项目列表
     userList:[],//用户列表
-    userToken:123456//用户token
+    userToken:''//用户token
   },
   mutations: {
     updatestatisList(state, data) {
@@ -59,7 +59,7 @@ export default new Vuex.Store({
     //施工区域下拉框
     getReginList({commit}) {
         listRegion({
-            projectId: 12
+            
           })
           .then(response => {
             commit('updatereginList', response.body)

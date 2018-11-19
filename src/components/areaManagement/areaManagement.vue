@@ -112,8 +112,8 @@ export default {
       activeName: "first",
       multipleSelection: [],
       tableData: [],
-      projectId: null,
-      regionId: null,
+      projectId: [],
+      regionId: [],
       regionIds:null,
       projectIds:null,
       regionObject: {},
@@ -218,8 +218,12 @@ export default {
 
      //按钮查询
     resarchInfo(){
-       this.regionIds = this.regionId[this.regionId.length - 1];
-       this.projectIds = this.projectId[this.projectId.length - 1];
+       if(this.regionId.length>0){
+         this.regionIds = this.regionId[this.regionId.length - 1];
+       }
+       if(this.projectId.length>0){
+         this.projectIds = this.projectId[this.projectId.length - 1];
+       }
        this.refreshList();
     },
 

@@ -343,3 +343,11 @@ export function getDashBoard(data) {
     params:data
   })
 }
+//切换用户当前所在的项目
+export function changeOrg(data) {
+  return request({
+    url: baseUrl + '/system/changeOrg',
+    method: 'get',
+    params:data
+  })
+}
