@@ -122,17 +122,28 @@
       <el-table  border :data="tableData" style="width: 100%">
       <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
        <el-table-column prop="regionFullName" label="施工区段" align="center" min-width="200"></el-table-column>
-       <el-table-column prop="subFullName" label="计划任务名称" align="center" min-width="180"></el-table-column>
+       <el-table-column prop="statName" label="计划任务名称" align="center" min-width="180"></el-table-column>
        <el-table-column prop="finishBudget" label="设计工程量" align="center" min-width="120"></el-table-column>
        <el-table-column prop="budgetTotal" label="累计完成" align="center" min-width="120"></el-table-column>
-       <el-table-column prop="name" label="累计完成百分比" align="center" min-width="120"></el-table-column>
+       <el-table-column prop="finishBudgetRate" label="累计完成百分比" align="center" min-width="120"></el-table-column>
        <el-table-column prop="monthPlan" label="本月计划" align="center"></el-table-column>
        <el-table-column prop="monthFinish" label="本月完成" align="center"></el-table-column>
        <el-table-column  label="完成比例" align="center"></el-table-column>
        <template v-for="(item,index) in dateArr">
-            <el-table-column  :prop="'logMms['+ index +'].finishTotal'"  :label=" item "  :key="index" align="center"></el-table-column>
+            <el-table-column  :prop="'logs['+ index +'].finishTotal'"  :label=" item "  :key="index" align="center"></el-table-column>
        </template>
       </el-table>
+       <el-pagination background v-if="total>0"
+            class="pageStyle"
+			layout="prev, pager, next, sizes, total, jumper"
+			:page-sizes="[5, 10, 15, 20]"
+			:page-size="pagesize"
+            :current-page="currentPage"
+			:total="total"
+			@current-change="handleCurrentChange"
+			@size-change="handleSizeChange"
+			>
+      </el-pagination>
     </div>
      <div class="tableDiv" style="border-top:none;">
       <el-row class="tableTitle">
@@ -178,7 +189,7 @@
 </template>
 
 <script>
-import { listVisualStatProgress,getTaskWarningLogPage,getDashBoard } from "../api/upload.js";
+import { getVisualStatProgressPage,getTaskWarningLogPage,getDashBoard } from "../api/upload.js";
 import supervise from "../taskWarning/supervise.vue";
 import { mapMutations } from 'vuex';
 export default {
@@ -209,7 +220,11 @@ export default {
       },
       panTable:{
         panfinishTask:1
-      }
+      },
+      pagesize: 10,
+      currentPage: 1,
+      total:0,
+      queryType:0
 
     };
   },
@@ -224,22 +239,36 @@ export default {
       console.log(this.activeName, "tab");
     },
 
+
+    handleCurrentChange(cpage) {
+      this.currentPage = cpage;
+      this.refreshList();
+    },
+
+    handleSizeChange(psize) {
+      this.pagesize = psize;
+      this.refreshList();
+    },
+
     //切换最近7天/本周/上周
     tabClick(){ 
     console.log(this.tabPosition,"tabPosition");
         switch(this.tabPosition){
         case "最近七天":
+        this.queryType = 0;
         this.endTime   = this.getDay(0);//当天日期
         this.startTime = this.getDay(-6);//7天前日期
         this.getAllDays(6);
         this.refreshList();
         break;
         case "本周":
+        this.queryType = 1;
         this.getMonDate();
         this.getWeekTime();
         this.refreshList();
         break;
         case "上周":
+        this.queryType = 2;
         this.startTime = this.getTimes(7);//上周开始时间
         this.endTime = this.getTimes(1);//上周结束时间
         this.getLastAllDays(7);
@@ -250,13 +279,17 @@ export default {
     
      //形象进度任务列表查询
     refreshList() {
-      listVisualStatProgress({
+      getVisualStatProgressPage({
+        current: this.currentPage,
+        offset: this.pagesize,
         projectId: this.projectId,
         startTime:this.startTime,
-        endTime:this.endTime
+        endTime:this.endTime,
+        queryType:this.queryType
       })
         .then(response => {
-          this.tableData = response.body;
+          this.tableData = response.body.rows;
+          this.total = Number(response.body.page.rows);
         })
         .catch(error => {
           console.log(error);
@@ -314,6 +347,47 @@ export default {
         this.nowWeekDate = d;
     },
 
+     //获取本月时间范围
+    getCurrentMonth(){
+        //起止日期数组  
+        var startStop = new Array();
+        //获取当前时间  
+        var currentDate =new Date;
+        //获得当前月份0-11  
+        var currentMonth = currentDate.getMonth();
+        //获得当前年份4位年  
+        var currentYear = currentDate.getFullYear();
+        //求出本月第一天  
+        var firstDay = new Date(currentYear, currentMonth, 1);
+        var firstDate = firstDay.getDate();
+        if(firstDate<10){
+            firstDate = '0' + firstDate;
+        }
+        var firstDays = firstDay.getFullYear() + '-' + (firstDay.getMonth() + 1) + '-' + firstDate;
+ 
+        //当为12月的时候年份需要加1  
+        //月份需要更新为0 也就是下一年的第一个月  
+        if (currentMonth == 11) {
+            currentYear++;
+            currentMonth = 0; //就为  
+        } else {
+            //否则只是月份增加,以便求的下一月的第一天  
+            currentMonth++;
+        }
+        //一天的毫秒数  
+        var millisecond = 1000 * 60 * 60 * 24;
+        //下月的第一天  
+        var nextMonthDayOne = new Date(currentYear, currentMonth, 1);
+        //求出上月的最后一天  
+        var lastDay = new Date(nextMonthDayOne.getTime() - millisecond);
+        var lastDays = lastDay.getFullYear() + '-' + (lastDay.getMonth() + 1) + '-' + lastDay.getDate();
+        //添加至数组中返回  
+        startStop.push(firstDays);
+        startStop.push(lastDays);
+        //返回  
+        return startStop;
+    },
+    
     /*获取本周从周一开始到当天的的日期*/
     getWeekTime() {
         this.dateArr = [];
@@ -428,12 +502,14 @@ export default {
     }
     },
     created() {
+    //  console.log(this.getCurrentMonth(),'222222222222222'); 
     this.endTime = this.getDay(0);//当天日期
     this.startTime = this.getDay(-6);//7天前日期
     this.getAllDays(6);
     this.refreshList();//发送请求
     this.refreshLists();
     this.refreshPan(); 
+   
   }
 };
 </script>

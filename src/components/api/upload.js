@@ -243,9 +243,9 @@ export function getVisualStatReport(data) {
   })
 }
 // 查询形象进度进展信息列表(指挥中心形象进度进展)
-export function listVisualStatProgress(data) {
+export function getVisualStatProgressPage(data) {
   return request({
-    url: baseUrl + '/workStat/listVisualStatProgress',
+    url: baseUrl + '/workStat/getVisualStatProgressPage',
     method: 'get',
     params:data
   })
