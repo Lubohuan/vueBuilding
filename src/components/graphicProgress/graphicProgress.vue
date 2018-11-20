@@ -17,7 +17,7 @@
   </el-row>
    <el-row class="graphicProgress_row">
    <el-col :span="15">
-      <el-cascader :options="listOrgInfoList" v-model="projectId" :props="defaultProp" size="small" placeholder="请选择项目"></el-cascader>
+      <el-cascader :show-all-levels="false" :options="listOrgInfoList" v-model="projectId" :props="defaultProp" size="small" placeholder="请选择项目" clearable></el-cascader>
    </el-col>
    <el-col :span="9" class="graphicProgress_btn1">
        <el-button size="mini" type="success" @click="resarchInfo">搜索</el-button>

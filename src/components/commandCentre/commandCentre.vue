@@ -236,7 +236,6 @@ export default {
     
     handleClick(tab) {
       this.activeName = tab.name;
-      console.log(this.activeName, "tab");
     },
 
 
@@ -252,7 +251,6 @@ export default {
 
     //切换最近7天/本周/上周
     tabClick(){ 
-    console.log(this.tabPosition,"tabPosition");
         switch(this.tabPosition){
         case "最近七天":
         this.queryType = 0;
@@ -508,7 +506,9 @@ export default {
     this.getAllDays(6);
     this.refreshList();//发送请求
     this.refreshLists();
-    this.refreshPan(); 
+    this.refreshPan();
+    console.log( this.hasPerm(3),11); 
+   
    
   }
 };

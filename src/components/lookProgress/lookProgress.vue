@@ -16,8 +16,8 @@
    </el-row>
    <el-row class="lookProgress_row">
    <el-col :span="15">
-      <el-cascader :options="listOrgInfoList" v-model="projectId" :props="defaultProps" size="small" placeholder="请选择项目"></el-cascader>
-      <el-cascader :options="reginList" v-model="regionId" :props="defaultProp" size="small" placeholder="请选择施工区段" clearable></el-cascader>
+      <el-cascader :show-all-levels="false" :options="listOrgInfoList" v-model="projectId" :props="defaultProps" size="small" placeholder="请选择项目" clearable></el-cascader>
+      <el-cascader :show-all-levels="false" :options="reginList" v-model="regionId" :props="defaultProp" size="small" placeholder="请选择施工区段" clearable></el-cascader>
    </el-col>
    <el-col :span="9" class="lookProgress_btn1">
        <el-button size="mini" type="success" @click="resarchInfo" >搜索</el-button>

@@ -1,7 +1,7 @@
 <template>
 <!-- 新增/修改形象进度统计项 -->
 <div class="addProgress">
-  <el-form :model="dataModel" :rules="rules" ref="addProgress" label-width="135px">
+  <el-form :model="dataModel" :rules="rules" ref="addProgress" label-width="150px">
     <el-form-item label="项目名称：" prop="projectIdArry">
        <el-cascader :options="listOrgInfoList" v-model="dataModel.projectIdArry" :props="defaultPropss" size="small" placeholder="请选择项目" style="width:100%;"></el-cascader>
     </el-form-item>
@@ -22,7 +22,7 @@
     <el-form-item label=" 预算工程量：" prop="budgetTotal">
         <el-input v-model="dataModel.budgetTotal" size="small"></el-input>     
     </el-form-item>
-    <el-form-item label="工程总产值：" prop="outputTotal">
+    <el-form-item label="工程总产值(万元)：" prop="outputTotal">
         <el-input v-model="dataModel.outputTotal" size="small"></el-input>
     </el-form-item>
     <!-- <el-row>

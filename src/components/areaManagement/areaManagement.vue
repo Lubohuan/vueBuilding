@@ -9,8 +9,8 @@
     <el-button size="mini" type="success">导出excel</el-button>
     <el-row class="tableRow">
     <el-col :span="15">
-      <el-cascader :options="listOrgInfoList" v-model="projectId" :props="defaultPropss" size="small" placeholder="请选择项目"></el-cascader>
-      <el-cascader :options="reginList" v-model="regionId" :props="defaultProp" size="small" placeholder="请选择施工区段"></el-cascader>
+      <el-cascader :show-all-levels="false" :options="listOrgInfoList" v-model="projectId" :props="defaultPropss" size="small" placeholder="请选择项目" clearable></el-cascader>
+      <el-cascader :show-all-levels="false" :options="reginList" v-model="regionId" :props="defaultProp" size="small" placeholder="请选择施工区段" clearable></el-cascader>
    </el-col>
    <el-col :span="9" class="lightCol">
        <el-button size="mini" type="success"  @click="resarchInfo">搜索</el-button>
@@ -51,7 +51,7 @@
     <span class="custom-tree-node" slot-scope="{ node, data }">
     <el-row style="width:100%;">
     <el-col :span="2" class="tableCol" style="margin-left:20px;">
-    <span>{{ data.regionName }}</span>
+    <span>{{ data.projectName }}</span>
     </el-col>
     <el-col :span="3" class="tableCol">
        <span>{{ data.regionName }}</span>

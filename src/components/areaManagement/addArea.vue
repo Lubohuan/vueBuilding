@@ -137,7 +137,7 @@ export default {
       });
     },
 
-    //添加分部分项
+    //添加区域
     addRegion() {
       addRegion(this.dataModel)
         .then(response => {
@@ -150,13 +150,12 @@ export default {
           }
         })
         .catch(error => {
-          this.$message.error(error);
           return false;
         });
       return true;
     },
 
-    //修改分部分项
+    //修改区域
     updateRegion() {
       updateRegion(this.dataModel)
         .then(response => {

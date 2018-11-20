@@ -58,11 +58,16 @@ export default new Vuex.Store({
 
     //施工区域下拉框
     getReginList({commit}) {
-        listRegion({
-            
-          })
+        listRegion({})
           .then(response => {
-            commit('updatereginList', response.body)
+            if(!response.body){
+              commit('updatereginList', [{id:1,regionName:'暂无数据',disabled: true}])
+            }
+            else{
+              commit('updatereginList', response.body)
+            }  
+            resolve()
+          
           })
           .catch(error => {
             console.log(error);
@@ -117,7 +122,12 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         listOrgInfo({})
         .then(response => {
-          commit('updatelistOrgInfoList', response.body)
+          if(!response.body){
+            commit('updatelistOrgInfoList', [])
+          }
+          else{
+            commit('updatelistOrgInfoList', response.body)
+          }  
           resolve()
         })
         .catch(error => {

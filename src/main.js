@@ -21,6 +21,8 @@ require('video.js/dist/video-js.css')
 require('vue-video-player/src/custom-theme.css')
 import common from'./utils/common.js';
 import VueAplayer from 'vue-aplayer';
+import {hasPermissions} from "./utils/hasPermissions.js";
+Vue.prototype.hasPerm = hasPermissions;
 Vue.prototype.$common = common;
 //import VueAxios from 'vue-axios'
 Vue.prototype.$Api = Api;

@@ -222,7 +222,8 @@ export default {
    line-height: 10px;
    span{
     color:#999999;
-    margin-right: 10px;
+    display: inline-block;
+    margin:5px 10px 5px 0;
   }
   }
 }

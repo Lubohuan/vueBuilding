@@ -10,10 +10,10 @@
     <el-col :span="24">
       <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="全部任务" name="first"></el-tab-pane>
-      <el-tab-pane label="生产任务" name="second"></el-tab-pane>
+      <!-- <el-tab-pane label="生产任务" name="second"></el-tab-pane> -->
       <el-tab-pane label="形象进度" name="third"></el-tab-pane>
-      <el-tab-pane label="安全" name="fourth"></el-tab-pane>
-      <el-tab-pane label="质量" name="fifth"></el-tab-pane>
+      <!-- <el-tab-pane label="安全" name="fourth"></el-tab-pane> -->
+      <!-- <el-tab-pane label="质量" name="fifth"></el-tab-pane> -->
       </el-tabs>
     </el-col>
   </el-row>
@@ -163,7 +163,7 @@
                           <span class="rightSpan">剩余产值：{{personalData.notFinish}}</span>
                       </div>
                   </el-tab-pane>
-                  <el-tab-pane label="相关任务" name="second1" class="secondtTab">
+                  <!-- <el-tab-pane label="相关任务" name="second1" class="secondtTab">
                       <div>
                           <el-row>
                               <el-col :span="12">子任务</el-col>
@@ -175,8 +175,8 @@
                              <el-col :span="12" class="rightTag">+新增关联任务</el-col>
                           </el-row>
                       </div>
-                  </el-tab-pane>
-                  <el-tab-pane label="文件" name="third1"></el-tab-pane>
+                  </el-tab-pane> -->
+                  <!-- <el-tab-pane label="文件" name="third1"></el-tab-pane> -->
             </el-tabs>
             </el-row>
             </el-col>
@@ -191,9 +191,9 @@
             </el-row>
             <el-tabs v-model="activeName11" @tab-click="handleClick">
                 <el-tab-pane label="全部" name="first11"></el-tab-pane>
-                <el-tab-pane label="进展" name="second12"></el-tab-pane>
+                <!-- <el-tab-pane label="进展" name="second12"></el-tab-pane>
                 <el-tab-pane label="文件" name="third13"></el-tab-pane>
-                <el-tab-pane label="变更记录" name="fourth14"></el-tab-pane>
+                <el-tab-pane label="变更记录" name="fourth14"></el-tab-pane> -->
             </el-tabs>
             <div style="height:90%;overflow:auto;">
             <el-row v-for="item in tableDatas" :key="item.id" style="margin:15px 0;">
@@ -266,20 +266,16 @@ export default {
       stateData:[
         {
           id: 1,
-          name: "已计划",
+          name: "进行中",
         },
          {
           id: 2,
-          name: "开始设计",
+          name: "已超期",
         },
          {
           id: 3,
-          name: "开始研发",
-        },
-         {
-          id: 4,
-          name: "关闭需求",
-        },
+          name: "已完成",
+        }
       ],
       state:"",
       personalData: {},
@@ -401,7 +397,13 @@ export default {
           offset:this.offset,
       })
         .then(response => {
-          this.tableData = response.body.rows;
+          if(response.body.rows == undefined){
+              this.tableData = [];
+          }
+          else{
+              this.tableData = response.body.rows;
+          }
+          
           resolve();
         })
         .catch(error => {
@@ -462,10 +464,10 @@ export default {
   async created() {
     
     await this.refreshList();
-    console.log(this.tableData,"this.tableData");
-    this.dateId = this.tableData[0].planId;
-    console.log(this.dateId,"refreshLists()");
-    this.refreshLists();
+    if(this.tableData.length >= 1){
+        this.dateId = this.tableData[0].planId;
+        this.refreshLists();
+    }
   }
 };
 </script>

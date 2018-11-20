@@ -4,7 +4,7 @@
         <div class="log">生产进度管控系统</div>
         <div class="log" style="font-size:14px;">所属组织：</div>
         <div class="changeorg">
-            <el-cascader :options="listOrgInfoList"  expand-trigger="hover" filterable v-model="projectArry" :props="defaultPropss" size="small" placeholder="请选择项目" @change="changeProject"></el-cascader>
+            <el-cascader change-on-select :options="listOrgInfoList"  :show-all-levels="false" filterable v-model="projectArry" :props="defaultPropss" size="small" placeholder="请选择项目" @change="changeProject"></el-cascader>
         </div>
         <div class="logout" @click="getOut">退出</div>
         <div class="scaleBtn" @click.stop="scaleFn">全屏</div>
@@ -134,7 +134,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { changeOrg } from "../api/upload.js";
+import { changeOrg,listPermissionCode,getSessionInfo} from "../api/upload.js";
 import home from "../home/home.vue";
 import { setTimeout } from 'timers';
 export default {
@@ -213,15 +213,15 @@ export default {
       //切换组织
       changeProject(){
          this.projectId = this.projectArry[this.projectArry.length - 1];
+
+         // 存储值：将对象转换为Json字符串
+        sessionStorage.setItem('selectArry', JSON.stringify(this.projectArry));
          changeOrg({
            orgId:this.projectId
          })
         .then(response => {
           if (response.code == "200") {
               this.isRouterAlive = false;
-              // this.$router.push({name:'loading',params:{token:'123456'}});
-              // this.projectToken = '666666666';
-              // this.$store.dispatch('getUserToken',this.projectToken);
               this.$nextTick(()=>{
                 this.isRouterAlive = true;
               })              
@@ -234,6 +234,43 @@ export default {
         });
       },
 
+      //获取用户权限码
+      // getUserPermission(){
+      //    listPermissionCode({})
+      //   .then(response => {
+      //     if (response.code == "200") {
+      //       console.log(response.body,"response.body")            
+      //     } else {
+      //       this.$message.error(response.msg);
+      //     }
+      //   })
+      //   .catch(error => {
+      //     console.log(error);
+      //   });
+      // },
+
+      //获取登陆用户信息
+      getUserInfo(){
+        getSessionInfo({})
+        .then(response => {
+          if (response.code == "200") {
+
+            //获取父级id
+            let objects = this.$common.initTree(this.listOrgInfoList);
+            this.projectArry  = this.$common.findParent(objects,response.body.chOrgId);
+
+            // 存储值：将对象转换为Json字符串
+            sessionStorage.setItem('selectArry', JSON.stringify(this.projectArry));          
+          } else {
+            this.$message.error(response.msg);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      },
+      
+
       //获取用户token
       getUrlParam(k) {
       var regExp = new RegExp('([?]|&)' + k + '=([^&]*)(&|$)');
@@ -245,14 +282,20 @@ export default {
       }
       }
   },
-  created(){
+  async created(){
      //有token再更新userToken
     let url = window.location.href;
     if(url.indexOf("?")!=-1){
         this.$store.dispatch('getUserToken',this.getUrlParam('token'));
         sessionStorage.setItem("userToken",this.getUrlParam('token'));
     };
-    this.getlistOrgInfoList();
+    
+    await this.getlistOrgInfoList();
+
+    if(sessionStorage.getItem("selectArry")){
+      this.projectArry = JSON.parse(sessionStorage.getItem("selectArry"));
+    }
+    this.getUserInfo();
   }
 }
 </script>

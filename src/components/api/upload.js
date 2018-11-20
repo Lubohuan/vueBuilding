@@ -351,3 +351,19 @@ export function changeOrg(data) {
     params:data
   })
 }
+//获取当前用户的权限码列表
+export function listPermissionCode(data) {
+  return request({
+    url: baseUrl + '/system/listPermissionCode',
+    method: 'get',
+    params:data
+  })
+}
+//获取当前登录用户信息
+export function getSessionInfo(data) {
+  return request({
+    url: baseUrl + '/system/getSessionInfo',
+    method: 'get',
+    params:data
+  })
+}
