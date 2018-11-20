@@ -16,13 +16,13 @@
   </el-col> -->
   </el-row>
   <el-row>
-   <el-col :span="5">
+   <el-col :span="24">
       <el-button size="mini" type="primary" @click="addSub">+ 添加分部</el-button>
       <el-button size="mini" type="success">导出excel</el-button>
    </el-col>
-   <el-col :span="19" class="bitem_btn1">
+   <!-- <el-col :span="19" class="bitem_btn1">
       <el-input v-model="subName" size="small" placeholder="搜索" clearable @change="resarchBitem" style="width:200px;"></el-input>
-   </el-col>
+   </el-col> -->
   </el-row>
   <el-row class="tableHead">
     <el-col :span="20" class="tableCol">

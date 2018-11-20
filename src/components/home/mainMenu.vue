@@ -176,7 +176,7 @@ export default {
          this.main_menu = '';
       },
       getOut(){
-         this.$router.replace('/');
+         window.location.href="http://autobuild.1357.cn/Admin/Login/public_login"; 
       },
       main_menuFn:function(){
         
@@ -289,7 +289,7 @@ export default {
         this.$store.dispatch('getUserToken',this.getUrlParam('token'));
         sessionStorage.setItem("userToken",this.getUrlParam('token'));
     };
-    
+
     await this.getlistOrgInfoList();
 
     if(sessionStorage.getItem("selectArry")){

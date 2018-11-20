@@ -77,9 +77,7 @@ export default new Vuex.Store({
     //查询分部分项下拉框
     getSubsectionList({commit}) {
       return new Promise((resolve, reject) => {
-        getSubsectionPage({
-            projectType: '131073993401696366'
-          })
+        getSubsectionPage({})
           .then(response => {
             commit('updatebitemList', response.body);
             resolve()

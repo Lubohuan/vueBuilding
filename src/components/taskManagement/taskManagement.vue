@@ -21,7 +21,7 @@
       <el-col :span="7" class="elStyle" style="padding:0px;">
           <el-row class="sortTab">
               <el-col :span="8">
-              <el-button type="primary" size="mini" @click="addTask">+任务</el-button>
+              <!-- <el-button type="primary" size="mini" @click="addTask">+任务</el-button> -->
               </el-col>
               <el-col :span="16" style="text-align:right;">    
                 <span>
@@ -128,11 +128,9 @@
                        </div>                      
                         <el-dropdown-menu slot="dropdown" style="width:200px;">
                         <span style="margin:15px 0 15px 20px;font-size:16px;">更改优先级</span>
-                        <el-dropdown-item>最高</el-dropdown-item>
-                        <el-dropdown-item>较高</el-dropdown-item>
                         <el-dropdown-item>普通</el-dropdown-item>
-                        <el-dropdown-item>较低</el-dropdown-item>
-                        <el-dropdown-item>最低</el-dropdown-item>
+                        <el-dropdown-item>较急</el-dropdown-item>
+                        <el-dropdown-item>最急</el-dropdown-item>
                         </el-dropdown-menu>
                         </el-dropdown>
                       
@@ -141,7 +139,7 @@
             <el-row class="despSpans">
             <el-tabs v-model="activeName1" @tab-click="handleClick">
                   <el-tab-pane label="基础信息" name="first1" class="firstTab">
-                      <div>跟踪频率：{{personalData.trackCycle}}/次</div>
+                      <div>起止日期：{{personalData.trackCycle}}</div>
                       <div style="margin:0px;">任务描述</div>
                       <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入任务描述" v-model="textarea" @focus="focusInput"></el-input>
                       <div v-if="showButton" style="text-align:right;">

@@ -6,7 +6,7 @@
        <el-cascader :options="listOrgInfoList" v-model="dataModel.projectIdArry" :props="defaultPropss" size="small" placeholder="请选择项目" style="width:100%;"></el-cascader>
     </el-form-item>
     <el-form-item label="施工区域" prop="regionIdArry">
-         <el-cascader :options="reginList" v-model="dataModel.regionIdArry" :props="defaultProps" size="small" style="width:100%;"></el-cascader>
+         <el-cascader change-on-select :options="reginList" v-model="dataModel.regionIdArry" :props="defaultProps" size="small" style="width:100%;"></el-cascader>
     </el-form-item>
     <el-form-item label="形象进度统计项：" prop="statName">
         <el-input v-model="dataModel.statName" size="small"></el-input>
@@ -134,6 +134,7 @@ export default {
       //查找分部分项父级
       let objectss = this.$common.initTree(this.bitemList);
       this.dataModel.subIdArry  = this.$common.findParents(objectss,data.subId);
+      console.log(this.dataModel.subIdArry,'this.dataModel.subIdArry ');
     },
 
     //重置方法
