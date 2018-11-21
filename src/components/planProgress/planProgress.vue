@@ -31,8 +31,8 @@
   </el-row>
   <el-table :data="tableData" style="width: 100%;margin-top:20px;"   @selection-change="handleSelectionChange" border>
     <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
-    <el-table-column prop="planName"  label="项目名称" align="center" min-width="150"></el-table-column>
-    <el-table-column prop="projectName"  label="计划任务名称" align="center" min-width="200"></el-table-column>
+    <el-table-column prop="projectName"  label="项目名称" align="center" min-width="150"></el-table-column>
+    <el-table-column prop="planName"  label="计划任务名称" align="center" min-width="200"></el-table-column>
     <el-table-column prop="regionFullName"  label="施工区段" align="center" min-width="200"></el-table-column>
     <el-table-column prop="planEndTime"  label="完成时间" align="center" min-width="120"></el-table-column>
     <el-table-column prop="budgetTotal"  label="总工程量" align="center"></el-table-column>
@@ -250,9 +250,9 @@ export default {
     resetForm(){
       this.regionId = [];
       this.projectId = [];
-      this.regionIds = "";
-      this.projectIds = "";
-      this.state = "";
+      this.regionIds = null;
+      this.projectIds = null;
+      this.state = null;
     }
   },
   created(){
