@@ -36,8 +36,9 @@
     <el-table-column prop="regionFullName"  label="施工区段" align="center" min-width="200"></el-table-column>
     <el-table-column prop="planEndTime"  label="完成时间" align="center" min-width="120"></el-table-column>
     <el-table-column prop="budgetTotal"  label="总工程量" align="center"></el-table-column>
-    <el-table-column prop="finishTotal"  label="剩余工程量" align="center" min-width="90"></el-table-column>
+    <el-table-column prop="notFinish"  label="总剩余工程量" align="center" min-width="120"></el-table-column>
     <el-table-column prop="planFinish"  label="计划工程量" align="center" min-width="90"></el-table-column>
+     <el-table-column prop="finishTotal"  label="已完成工程量" align="center" min-width="120"></el-table-column>
     <el-table-column prop="planFinishRate"  label="完成比例" align="center" min-width="90"></el-table-column>
     <el-table-column prop="isForbid"  label="状态" align="center" min-width="50">
        <template slot-scope="scope">

@@ -26,10 +26,10 @@
   </el-row>
   <el-table :data="tableData" style="width: 100%;margin-top:20px;"   @selection-change="handleSelectionChange" border>
     <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-    <el-table-column prop="projectId" label="项目名称" align="center"></el-table-column>
+    <el-table-column prop="projectName" label="项目名称" align="center"></el-table-column>
     <el-table-column prop="regionName" label="施工区段" align="center" min-width="200"></el-table-column>
-    <el-table-column prop="statName" label="分部分项名称" align="center" min-width="120"></el-table-column>
-    <el-table-column prop="name" label="形象进度统计项" align="center" min-width="120"></el-table-column>
+    <el-table-column prop="subName" label="分部分项名称" align="center" min-width="200"></el-table-column>
+    <el-table-column prop="statName" label="形象进度统计项" align="center" min-width="120"></el-table-column>
     <el-table-column prop="unitName" label="形象单位" align="center"></el-table-column>
     <el-table-column prop="budgetTotal" label="预算工程量" align="center" min-width="120"></el-table-column>
     <el-table-column prop="finishBudget" label="累计完成" align="center"></el-table-column>
