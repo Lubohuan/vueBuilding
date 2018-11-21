@@ -8,7 +8,7 @@
                 <img src="../../assets/u484.png" alt="" class="despImage">
                 <div class="cradContent">
                     <div class="desp_look">今日完成生产任务</div>
-                    <div class="desp_personal">1个</div>
+                    <div class="desp_personal">{{panTable.finishTask}}个</div>
                 </div>
              </div>
              <div class="cardFooter">
@@ -35,7 +35,7 @@
             <img src="../../assets/u484.png" alt="" class="despImage">
                        <div  class="cradContent">
                             <div class="desp_look">今日产值</div>
-                            <div class="desp_personal">¥65.2万</div>
+                            <div class="desp_personal">¥{{panTable.dayFinishOutput}}万</div>
                        </div>
             </div>
             <div class="cardFooter">
@@ -84,7 +84,7 @@
         <div class="commandCards">
            <div class="cradContents">
                 <span class="desp_looks">合同工期进度</span>
-                <el-progress :stroke-width="18" :percentage="70"></el-progress>
+                <el-progress :stroke-width="18" :percentage="panTable.contractProRate"></el-progress>
                 </div>
             <div class="cardFooters">
               <span>同周比：
@@ -492,7 +492,12 @@ export default {
      getDashBoard()
         .then(response => {
           this.panTable = response.body;
-          console.log( this.panTable," this.panTable");
+          if(this.panTable.contractProRate.indexOf("%") > -1){
+             this.panTable.contractProRate = this.panTable.contractProRate.substring(0,this.panTable.contractProRate.length-1);
+             console.log(this.panTable.contractProRate,"this.panTable.contractProRate")
+           
+          }
+          
         })
         .catch(error => {
           console.log(error);

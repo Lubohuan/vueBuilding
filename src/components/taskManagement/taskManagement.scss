@@ -163,6 +163,7 @@
         vertical-align: top;
         position: relative;
         cursor: pointer;
+        margin-right:5px;
      }
      .openIcon{
         position: absolute;
@@ -180,5 +181,15 @@
         position:absolute;
         bottom:0;
         right: 0;
+    }
+    .listPlan{
+        height:calc(100% - 49px);
+        overflow:hidden;
+    }
+    .overDiv{
+        height:100%;
+        overflow-y:scroll;
+        overflow-x:hidden;
+        margin-right:-20px;
     }
 }

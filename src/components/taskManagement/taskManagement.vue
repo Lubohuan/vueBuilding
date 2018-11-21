@@ -45,6 +45,8 @@
                 <span>筛选</span>
               </el-col>
           </el-row>
+          <el-row class="listPlan">
+          <div class="overDiv">
           <div style="text-align:center;">
               <span style="background:rgba(144, 144, 144, 0.15);padding:2px 5px;">共{{tableData.length}}条任务</span>
           </div>
@@ -82,6 +84,8 @@
                   </el-row>
               </div>
           </div>
+          </div>
+          </el-row>
       </el-col>
       <el-col :span="17" class="elStyle" style="border-right:none;">
           <el-row class="sortTabs">
@@ -143,7 +147,7 @@
             <el-row class="despSpans">
             <el-tabs v-model="activeName1" @tab-click="handleClick">
                   <el-tab-pane label="基础信息" name="first1" class="firstTab">
-                      <div>起止日期：{{personalData.trackCycle}}</div>
+                      <div>起止日期：{{personalData.startTime}}-{{personalData.endTime}}</div>
                       <!-- <div style="margin:0px;">任务描述</div>
                       <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入任务描述" v-model="textarea" @focus="focusInput"></el-input>
                       <div v-if="showButton" style="text-align:right;">
@@ -152,17 +156,17 @@
                       </div> -->
                       <div>分部分项：{{personalData.subFullName}}</div>
                       <div>
-                          <span>计划工程量：{{personalData.planFinish}}m³</span>
+                          <span>计划工程量：{{personalData.planFinish}}{{personalData.unitName}}</span>
                           <span class="rightNumber">{{personalData.finishRate}}</span>
                       </div>
                        <div>
-                          <span>累计完成量：{{personalData.finishTotal}}m³</span>
-                          <span class="rightSpan">剩余工程量：{{personalData.notFinish}}m³</span>
+                          <span>累计完成量：{{personalData.finishTotal}}{{personalData.unitName}}</span>
+                          <span class="rightSpan">剩余工程量：{{personalData.notFinish}}{{personalData.unitName}}</span>
                       </div>
                        <div>计划产值：{{personalData.planFinish}}</div>
                        <div>
-                          <span>累计完成产值：{{personalData.finishTotal}}m³</span>
-                          <span class="rightSpan">剩余产值：{{personalData.notFinish}}m³</span>
+                          <span>累计完成产值：{{personalData.finishTotal}}{{personalData.unitName}}</span>
+                          <span class="rightSpan">剩余产值：{{personalData.notFinishOutput}}{{personalData.unitName}}</span>
                       </div>
                   </el-tab-pane>
                   <!-- <el-tab-pane label="相关任务" name="second1" class="secondtTab">
@@ -203,18 +207,19 @@
                     <div class="diaryTitle">
                         <i class="el-icon-bell"></i>
                         <span>{{item.createUserName}}：</span>
-                        <span class="desp_look">{{item.remark}}</span>
+                        <span class="desp_look">完成产值{{item.remark}}</span>
                         <div class="desp_look lookTime">{{item.createTime}}</div>
                     </div> 
                     <div class="imgVidevoInfo">
-                     <viewer style="display:inline-block;cursor: pointer;">
-	                    <img src="http://tower-img.1357.cn/file/2018-11-02/716867844360000.jpg?x-oss-process=image/resize,m_lfit,w_640,h_640/watermark,type_ZmFuZ3poZW5na2FpdGk=,color_FFFFFF,type_ZmFuZ3poZW5naGVpdGk,size_22,text_546L5a6PICAyMDE4LTExLTAyIDA5OjEw" width="120" height="70">
+                     <viewer style="display:inline-block;cursor: pointer;margin-right:5px;"   v-for="(items,index) in item.imageUrls" :key="index">
+	                    <img :src="items" width="120" height="70">
 	                 </viewer>
-                     <div class="videoStyle" @click="dialog.openVideo=true;" :style="{backgroundImage: 'url(' + item.url + ')'}">
-                         <img src="http://pic.51yuansu.com/pic2/cover/00/45/31/5814de4d8c6d6_610.jpg" class="openIcon" width="30" height="30">
+                     <div class="videoStyle" @click="openVideos(items)" v-for="(items,index) in item.videoUrls" :key="index"  :style="{backgroundImage: 'url(' + items.img + ')'}">
+                         <img src="http://overwatch.nos.netease.com/1/assets/img/icons/youtube-btn-ylw.png" class="openIcon" width="30" height="30">
                      </div>
                     </div>
-                    <!-- <aplayer autoplay :music="{title: 'secret base~君がくれたもの~',artist: 'Silent Siren',src: 'https://moeplayer.b0.upaiyun.com/aplayer/secretbase.mp3',pic: 'https://moeplayer.b0.upaiyun.com/aplayer/secretbase.jpg'}"/> -->
+                    <audio v-for="(items,index) in item.voiceUrls" :key="index" :src="items" controls="controls"></audio>
+                    <!-- <aplayer v-for="(items,index) in item.voiceUrls" :key="index" autoplay :music="{title: '音频文件',artist: 'Silent Siren',src: 'items'}"/> -->
                      
                  </el-col>               
             </el-row>
@@ -299,6 +304,8 @@ export default {
       current:1,
       offset:10,
       dateId:null,
+      palnId:null,
+      videosInfo:{},
       playerOptions : {
         playbackRates: [0.7, 1.0, 1.5, 2.0], //播放速度
         autoplay: true, //如果true,浏览器准备好时开始播放。
@@ -310,9 +317,9 @@ export default {
         fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
         sources: [{
           type: "video/mp4",
-          src: "https://blz-videos.nosdn.127.net/1/OverWatch/OVR-S03_E03_McCree_REUNION_zhCN_1080P_mb78.mp4" //url地址
+          src: "" //url地址
         }],
-        poster: "http://tower-img.1357.cn/file/2018-08-31/1224708298227540.jpg?x-oss-process=image/resize,m_lfit,w_640,h_640/watermark,type_ZmFuZ3poZW5na2FpdGk=,color_FFFFFF,type_ZmFuZ3poZW5naGVpdGk,size_22,text_6ZmI5ZSQ6K-X5p6XICAyMDE4LTA4LTMxIDE3OjU3", //你的封面地址
+        poster: "", //你的封面地址
         notSupportedMessage: '此视频暂无法播放，请稍后再试', //允许覆盖Video.js无法播放媒体源时显示的默认信息。
         controlBar: {
           timeDivider: true,
@@ -327,7 +334,8 @@ export default {
 
     //点击查看详情
     lookInfo(data) {
-      this.dateId = data.planId;
+      this.dateId = data.id;
+      this.palnId = data.planId;
       console.log(this.dateId,"data.id");
       console.log()
       this.refreshLists();
@@ -391,6 +399,19 @@ export default {
       this.showButton = true;
     },
 
+
+    //打开视频
+    openVideos(item){
+        this.dialog.openVideo=true;
+        this.playerOptions.sources[0].src = item.video;
+        this.playerOptions.poster = item.img;
+    },
+
+    //播放音频
+    openAudio(){
+
+    },
+
     //查询任务列表
     refreshList() {
       return new Promise((resolve,reject)=>{
@@ -429,7 +450,7 @@ export default {
        getConstructLogPage({
            current:this.current,
            offset:this.offset,
-           planId:this.dateId
+           planId:this.palnId
        })
         .then(response => {
           this.tableDatas = response.body.rows;
@@ -467,7 +488,8 @@ export default {
     
     await this.refreshList();
     if(this.tableData.length >= 1){
-        this.dateId = this.tableData[0].planId;
+        this.dateId = this.tableData[0].id;
+        this.palnId = this.tableData[0].planId;
         this.refreshLists();
     }
   }
