@@ -161,7 +161,13 @@ export default {
       })
         .then(response => {
           if (response.code == "200") {
-                this.tableData = response.body;
+                if(response.body){
+                  this.tableData = response.body[0].child;
+                }
+                else{
+                   this.tableData = [];
+                }
+                
               } else {
                 this.$message.error(response.msg);
               }
