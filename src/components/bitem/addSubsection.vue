@@ -5,9 +5,9 @@
         <el-form-item label="分部分项名称：" prop="subName">
           <el-input v-model="dataModel.subName"></el-input>
         </el-form-item>
-         <el-form-item label="备注信息：" prop="remark">
+         <!-- <el-form-item label="备注信息：" prop="remark">
           <el-input v-model="dataModel.remark"></el-input>
-        </el-form-item>
+        </el-form-item> -->
   </el-form>
   <div class="clickBtn">
     <el-button @click="close"  size="small">取消</el-button>
