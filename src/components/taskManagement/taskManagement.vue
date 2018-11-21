@@ -20,10 +20,10 @@
   <el-row class="rowOne">
       <el-col :span="7" class="elStyle" style="padding:0px;">
           <el-row class="sortTab">
-              <el-col :span="8">
-              <!-- <el-button type="primary" size="mini" @click="addTask">+任务</el-button> -->
-              </el-col>
-              <el-col :span="16" style="text-align:right;">    
+              <!-- <el-col :span="8">
+              <el-button type="primary" size="mini" @click="addTask">+任务</el-button>
+              </el-col> -->
+              <el-col :span="24" style="text-align:right;">    
                 <span>
                 <el-popover placement="bottom" width="200" v-model="visible">
                     <el-select  size="small" v-model="state" filterable  placeholder="请选择状态" clearable  @change="changeSort">
@@ -112,7 +112,9 @@
                       <div @click="changeStates">                  
                        <img src="../../assets/u164.png" alt="" class="despImage">
                        <div style="display:inline-block;">
-                            <div>{{personalData.state}}</div>
+                            <div v-if="personalData.state == '0'">未完成</div >
+                            <div v-if="personalData.state == '1'">已完成</div >
+                            <div v-if="personalData.state == '2'">已过期</div >  
                             <div class="desp_look">当前状态</div>
                        </div>
                        </div>
@@ -122,7 +124,9 @@
                        <div>
                             <img src="../../assets/u1899.png" alt="" class="despImage">
                             <div style="display:inline-block;">
-                            <div>{{personalData.level}}</div>
+                            <div v-if="personalData.level == '0'">普通</div >
+                            <div v-if="personalData.level == '1'">较急</div >
+                            <div v-if="personalData.level == '2'">紧急</div >  
                             <div class="desp_look">优先级</div>
                             </div>
                        </div>                      
@@ -140,25 +144,25 @@
             <el-tabs v-model="activeName1" @tab-click="handleClick">
                   <el-tab-pane label="基础信息" name="first1" class="firstTab">
                       <div>起止日期：{{personalData.trackCycle}}</div>
-                      <div style="margin:0px;">任务描述</div>
+                      <!-- <div style="margin:0px;">任务描述</div>
                       <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入任务描述" v-model="textarea" @focus="focusInput"></el-input>
                       <div v-if="showButton" style="text-align:right;">
                           <el-button size="mini" @click="showButton=false">取消</el-button>
                           <el-button size="mini" type="primary" @click="showButton=false">保存</el-button>
-                      </div>
+                      </div> -->
                       <div>分部分项：{{personalData.subFullName}}</div>
                       <div>
-                          <span>计划工程量：{{personalData.planFinish}}</span>
+                          <span>计划工程量：{{personalData.planFinish}}m³</span>
                           <span class="rightNumber">{{personalData.finishRate}}</span>
                       </div>
                        <div>
-                          <span>累计完成量：{{personalData.finishTotal}}</span>
-                          <span class="rightSpan">剩余工程量：{{personalData.notFinish}}</span>
+                          <span>累计完成量：{{personalData.finishTotal}}m³</span>
+                          <span class="rightSpan">剩余工程量：{{personalData.notFinish}}m³</span>
                       </div>
                        <div>计划产值：{{personalData.planFinish}}</div>
                        <div>
-                          <span>累计完成产值：{{personalData.finishTotal}}</span>
-                          <span class="rightSpan">剩余产值：{{personalData.notFinish}}</span>
+                          <span>累计完成产值：{{personalData.finishTotal}}m³</span>
+                          <span class="rightSpan">剩余产值：{{personalData.notFinish}}m³</span>
                       </div>
                   </el-tab-pane>
                   <!-- <el-tab-pane label="相关任务" name="second1" class="secondtTab">
@@ -206,8 +210,8 @@
                      <viewer style="display:inline-block;cursor: pointer;">
 	                    <img src="http://tower-img.1357.cn/file/2018-11-02/716867844360000.jpg?x-oss-process=image/resize,m_lfit,w_640,h_640/watermark,type_ZmFuZ3poZW5na2FpdGk=,color_FFFFFF,type_ZmFuZ3poZW5naGVpdGk,size_22,text_546L5a6PICAyMDE4LTExLTAyIDA5OjEw" width="120" height="70">
 	                 </viewer>
-                     <div class="videoStyle" @click="dialog.openVideo=true;" >
-                         <img src="http://overwatch.nos.netease.com/1/assets/img/icons/youtube-btn-ylw.png" class="openIcon" width="30" height="30">
+                     <div class="videoStyle" @click="dialog.openVideo=true;" :style="{backgroundImage: 'url(' + item.url + ')'}">
+                         <img src="http://pic.51yuansu.com/pic2/cover/00/45/31/5814de4d8c6d6_610.jpg" class="openIcon" width="30" height="30">
                      </div>
                     </div>
                     <!-- <aplayer autoplay :music="{title: 'secret base~君がくれたもの~',artist: 'Silent Siren',src: 'https://moeplayer.b0.upaiyun.com/aplayer/secretbase.mp3',pic: 'https://moeplayer.b0.upaiyun.com/aplayer/secretbase.jpg'}"/> -->

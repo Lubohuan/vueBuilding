@@ -67,8 +67,8 @@
    </el-pagination>
 
  <!--新增/修改进度计划-->
-    <el-dialog :title="dataObj.id?'修改计划进度':'新增形计划进度'" :center="true" :visible.sync="dialog.addPlan" width="700px" @open="$nextTick(()=>$refs['addPlan'].update(dataObj))" @close="$refs['addPlan'].reset()">
-      <addPlan ref="addPlan"  @refreshData="refreshList"  @close="dialog.addPlan = false" ></addPlan>
+    <el-dialog  :title="dataObj.id?'修改形象进度月计划':'新增形象进度月计划'" :center="true" :visible.sync="dialog.addPlan" width="700px" @open="$nextTick(()=>$refs['addPlan'].update(dataObj))" @close="$refs['addPlan'].reset()">
+      <addPlan v-if="dialog.addPlan" ref="addPlan"  @refreshData="refreshList"  @close="dialog.addPlan = false" ></addPlan>
     </el-dialog>
 
   </div>

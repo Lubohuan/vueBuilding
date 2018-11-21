@@ -3,17 +3,17 @@
 <div class="addPlan">
   <el-form :model="dataModel" :rules="rules" ref="addPlan" label-width="135px">
     <el-form-item label="项目名称：" prop="projectIdArry">
-        <el-cascader :options="listOrgInfoList" v-model="dataModel.projectIdArry" :props="defaultProp" size="small" placeholder="请选择项目" style="width:100%;"></el-cascader>
+        <el-cascader :options="listOrgInfoList" v-model="dataModel.projectIdArry" :props="defaultProp" size="small" placeholder="请选择项目" style="width:100%;" @change="changeProject" clearable></el-cascader>
     </el-form-item>
     <el-form-item label="选择统计项：" prop="visualStatId">
-         <el-select  size="small" v-model="dataModel.visualStatId" placeholder="请选择形象进度统计项"  style="width:100%;"  @change="changeVisu">
-            <el-option v-for="(item,index) in statisList" :label="item.statName" :value="item.id" :key="index"></el-option>
+         <el-select  size="small" v-model="dataModel.visualStatId" placeholder="请选择形象进度统计项"  style="width:100%;"  @change="changeVisu" clearable>
+            <el-option v-for="(item,index) in statisList" :label="item.statName" :value="item.id" :key="index" ></el-option>
         </el-select>
         <span v-if="visualStatObject !== null" style="color:rgb(64, 158, 255);">分部分项：{{visualStatObject.statName}}</span>
         <div  v-if="visualStatObject !== null" class="visualSpan">
         <span>预算工程量：{{visualStatObject.budgetTotal}}m³</span>
-        <span>已完成工程量：{{visualStatObject.finishOutput}}m³</span>
-        <span>剩余工程量：{{visualStatObject.budgetTotal - visualStatObject.finishOutput}}m³</span>
+        <span>已完成工程量：{{visualStatObject.finishBudget}}m³</span>
+        <span>剩余工程量：{{visualStatObject.budgetTotal - visualStatObject.finishBudget}}m³</span>
         </div> 
     </el-form-item>
     <el-form-item label="任务名称：" prop="planName">
@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { addConstructPlan,updateConstructPlan,getConstructPlanById } from "../api/upload.js";
+import { addConstructPlan,updateConstructPlan,getConstructPlanById,getVisualStatItemList} from "../api/upload.js";
 import { mapState, mapActions } from 'vuex'
 export default {
   name: "addPlan",
@@ -63,6 +63,7 @@ export default {
         projectIdArry:[]
       },
       visualStatObject:null,
+      statisList:[],
       //数据校验
       rules: {
         projectIdArry: [{ required: true, message: "请输入项目名称：", trigger: "blur" }],
@@ -86,7 +87,6 @@ export default {
   },
   computed: {
     ...mapState([
-     'statisList',
      'listOrgInfoList',
      'userList'
     ]),
@@ -94,7 +94,6 @@ export default {
   methods: {
 
     ...mapActions([
-        'getStatisList',
         'getlistOrgInfoList',
         'getUserList'
     ]),
@@ -111,18 +110,14 @@ export default {
      */
     async update(data) {
       this.getlistOrgInfoList();
-      this.getStatisList();
       this.getUserList();
       if (!data.id) return;
       this.dataModel.id = data.id;
       await this.getInfoPlan();
-
+      this.getVisitLIst();
        //查找项目父级
       let object = this.$common.initTree(this.listOrgInfoList);
-      console.log(object,"object");
-      console.log(this.dataModel.projectId,"this.dataModel.projectId")
       this.dataModel.projectIdArry  = this.$common.findParent(object, this.dataModel.projectId);
-      console.log(this.dataModel.projectIdArry," this.dataModel.projectIdArry");
 
     },
 
@@ -147,7 +142,7 @@ export default {
         if (!valid) {
           return;
         }
-        this.dataModel.projectId    = this.dataModel.projectIdArry[this.dataModel.projectIdArry.length - 1];
+        this.dataModel.projectId = this.dataModel.projectIdArry[this.dataModel.projectIdArry.length - 1];
         //根据是否有数据传入决定执行新增还是修改
         const result = this.dataModel.id ? this.updatePlan() : this.addPlan();
       });
@@ -206,6 +201,36 @@ export default {
           reject();
         });
       })
+    },
+
+    //查询形象进度统计项
+    getVisitLIst(){
+      getVisualStatItemList({
+        projectId:this.dataModel.projectId
+      })
+        .then(response => {
+          if (response.code == "200") {
+           this.statisList = response.body;
+          }
+          else {
+            this.$message.error(response.msg);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
+    //切换项目查询形象进度统计项
+    changeProject(){
+      if(this.dataModel.projectIdArry.length >= 1){
+         this.dataModel.projectId = this.dataModel.projectIdArry[this.dataModel.projectIdArry.length - 1];
+         this.getVisitLIst(); 
+      }
+      else{
+        this.statisList = [];
+      }
+    
     }
   }
 };

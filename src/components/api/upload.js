@@ -367,3 +367,11 @@ export function getSessionInfo(data) {
     params:data
   })
 }
+//根据项目id获取分部分项信息
+export function getVisualStatItemList(data) {
+  return request({
+    url: baseUrl + '/project/getVisualStatItemList',
+    method: 'get',
+    params:data
+  })
+}
