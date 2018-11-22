@@ -163,10 +163,10 @@
                           <span>累计完成量：{{personalData.finishTotal}}{{personalData.unitName}}</span>
                           <span class="rightSpan">剩余工程量：{{personalData.notFinish}}{{personalData.unitName}}</span>
                       </div>
-                       <div>计划产值：{{personalData.planFinish}}</div>
+                       <div>计划产值：{{personalData.planFinish}}万元</div>
                        <div>
-                          <span>累计完成产值：{{personalData.finishTotal}}{{personalData.unitName}}</span>
-                          <span class="rightSpan">剩余产值：{{personalData.notFinishOutput}}{{personalData.unitName}}</span>
+                          <span>累计完成产值：{{personalData.finishTotal}}万元</span>
+                          <span class="rightSpan">剩余产值：{{personalData.notFinishOutput}}万元</span>
                       </div>
                   </el-tab-pane>
                   <!-- <el-tab-pane label="相关任务" name="second1" class="secondtTab">
@@ -207,8 +207,8 @@
                     <div class="diaryTitle">
                         <i class="el-icon-bell"></i>
                         <span>{{item.createUserName}}：</span>
-                        <span class="desp_look">完成工程量{{item.finishAmount}}，</span>
-                        <span class="desp_look">完成产值{{item.finishOutput}}</span>
+                        <span class="desp_look">完成工程量{{item.finishAmount}}{{item.unitName}}</span>
+                        <span class="desp_look">完成产值{{item.finishOutput}}万元</span>
                         <div class="desp_look lookTime">{{item.createTime}}</div>
                     </div> 
                     <div class="imgVidevoInfo">

@@ -14,7 +14,7 @@
     <el-table-column prop="respUserName"  label="责任人" align="center" min-width="120"></el-table-column>
     <el-table-column prop="createTime"  label="预警时间" align="center" min-width="120"></el-table-column>
     <el-table-column prop="relieveReason"  label="预警解除原因" align="center"></el-table-column>
-    <el-table-column prop="name"  label="预警解除人" align="center" min-width="120"></el-table-column>
+    <el-table-column prop="updateUser"  label="预警解除人" align="center" min-width="120"></el-table-column>
     <el-table-column prop="relieveTime"  label="预警解除时间" align="center" min-width="120"></el-table-column>
   </el-table>
   <el-pagination background v-if="total > 0"
