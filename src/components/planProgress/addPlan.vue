@@ -29,7 +29,9 @@
         <el-input v-model.number="dataModel.planFinish " size="small"></el-input>
     </el-form-item>
     <el-form-item label="跟踪频率：" prop="trackCycle">
-        <el-input v-model.number="dataModel.trackCycle " size="small"></el-input>
+         <el-select size="small" v-model="dataModel.trackCycle" placeholder="请选择跟踪频率：" clearable style="width:100%;">
+            <el-option v-for="(item,index) in trackList" :label="item.name" :value="item.number" :key="index"></el-option>
+         </el-select>
     </el-form-item>
     <el-form-item label="施工负责人：" prop="respUser">
          <el-select size="small" v-model="dataModel.respUser" placeholder="请选择负责人" clearable style="width:100%;">
@@ -66,16 +68,46 @@ export default {
       statisList:[],
       //数据校验
       rules: {
-        projectIdArry: [{ required: true, message: "请输入项目名称：", trigger: "blur" }],
-        visualStatId: [{ required: true, message: "请选择统计项", trigger: "blur" }],
+        projectIdArry: [{ required: true, message: "请选择项目", trigger: "change" }],
+        visualStatId: [{ required: true, message: "请选择统计项", trigger: "change" }],
         planName: [{ required: true, message: "请输入任务名称：", trigger: "blur" }],
         planStartTime: [{ required: true, message: "请选择开始时间", trigger: "blur" }],
         planEndTime: [{ required: true, message: "请选择完成时间", trigger: "blur" }],
         planFinish: [{ required: true, message: "请输入计划完成工程量：", trigger: "blur" }],
-        trackCycle: [{ required: true, message: "请输入跟踪频率：", trigger: "blur" }],
-        respUser: [{ required: true, message: "请选择负责人", trigger: "blur" }]
+        trackCycle: [{ required: true, message: "请选择跟踪频率", trigger: "change" }],
+        respUser: [{ required: true, message: "请选择负责人", trigger: "change" }]
 
       },
+      trackList:[
+        {
+          name:'1天一次',
+          number:1
+        },
+         {
+          name:'2天一次',
+          number:2
+        },
+         {
+          name:'3天一次',
+          number:3
+        },
+         {
+          name:'4天一次',
+          number:4
+        },
+         {
+          name:'5天一次',
+          number:5
+        },
+         {
+          name:'6天一次',
+          number:6
+        },
+         {
+          name:'7天一次',
+          number:7
+        }
+        ],
       radio: "",
       progressList: [],
       defaultProp: {

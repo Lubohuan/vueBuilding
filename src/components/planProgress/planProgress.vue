@@ -36,17 +36,11 @@
     <el-table-column prop="regionFullName"  label="施工区段" align="center" min-width="200"></el-table-column>
     <el-table-column prop="planEndTime"  label="完成时间" align="center" min-width="120"></el-table-column>
     <el-table-column prop="budgetTotal"  label="总工程量" align="center"></el-table-column>
-    <el-table-column prop="notFinish"  label="总剩余工程量" align="center" min-width="120"></el-table-column>
     <el-table-column prop="planFinish"  label="计划工程量" align="center" min-width="90"></el-table-column>
-     <el-table-column prop="finishTotal"  label="已完成工程量" align="center" min-width="120"></el-table-column>
+    <el-table-column prop="finishTotal"  label="已完成工程量" align="center" min-width="120"></el-table-column>
+    <el-table-column prop="notFinish"  label="计划剩余工程量" align="center" min-width="120"></el-table-column>
     <el-table-column prop="planFinishRate"  label="完成比例" align="center" min-width="90"></el-table-column>
-    <el-table-column prop="isForbid"  label="状态" align="center" min-width="50">
-       <template slot-scope="scope">
-          <span v-if="scope.row.isForbid == 0">启用</span>
-          <span v-if="scope.row.isForbid == 1">禁用</span>
-       </template>
-    </el-table-column>
-    <el-table-column prop="state"  label="进行状态" align="center" min-width="80">
+    <el-table-column prop="state"  label="状态" align="center" min-width="80">
        <template slot-scope="scope">
           <span v-if="scope.row.state == 0">进行中</span>
           <span v-if="scope.row.state == 1">已完成</span>

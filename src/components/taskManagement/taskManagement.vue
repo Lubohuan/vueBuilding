@@ -207,7 +207,8 @@
                     <div class="diaryTitle">
                         <i class="el-icon-bell"></i>
                         <span>{{item.createUserName}}：</span>
-                        <span class="desp_look">完成产值{{item.remark}}</span>
+                        <span class="desp_look">完成工程量{{item.finishAmount}}，</span>
+                        <span class="desp_look">完成产值{{item.finishOutput}}</span>
                         <div class="desp_look lookTime">{{item.createTime}}</div>
                     </div> 
                     <div class="imgVidevoInfo">

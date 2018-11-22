@@ -208,7 +208,7 @@ export default {
       imageData:"up",
       tabPosition:"最近七天",
       tabPositions:"最近七天",
-      projectId:12,
+    //   projectId:12,
       startTime:"",
       endTime:"",
       dateArr:[],
@@ -280,7 +280,7 @@ export default {
       getVisualStatProgressPage({
         current: this.currentPage,
         offset: this.pagesize,
-        projectId: this.projectId,
+        // projectId: this.projectId,
         startTime:this.startTime,
         endTime:this.endTime,
         queryType:this.queryType

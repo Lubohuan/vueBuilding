@@ -8,10 +8,11 @@
   </el-breadcrumb>
   <el-table :data="tableData" style="width: 100%;margin-top:20px;"   @selection-change="handleSelectionChange" border>
     <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-    <el-table-column prop="planName"  label="项目名称" align="center"></el-table-column>
+    <el-table-column prop="projectName"  label="项目名称" align="center"></el-table-column>
+     <el-table-column prop="planName"  label="计划名称" align="center"></el-table-column>
     <el-table-column prop="warningReason"  label="预警原因" align="center"></el-table-column>
     <el-table-column prop="respUser"  label="责任人" align="center" min-width="120"></el-table-column>
-    <el-table-column prop="name"  label="预警时间" align="center" min-width="120"></el-table-column>
+    <el-table-column prop="createTime"  label="预警时间" align="center" min-width="120"></el-table-column>
     <el-table-column prop="name"  label="预警解除原因" align="center"></el-table-column>
     <el-table-column prop="name"  label="预警解除人" align="center" min-width="120"></el-table-column>
     <el-table-column prop="name"  label="预警解除时间" align="center" min-width="120"></el-table-column>

@@ -17,7 +17,7 @@
                  <img src="../../assets/smp.png"  style="height:100%;margin-right:30px;"/>
              
             </div> -->
-            <div class="p_menu" @click.stop="main_menuFn">
+            <!-- <div class="p_menu" @click.stop="main_menuFn">
               <div class="pre_icon">
                 <i class="el-icon-menu iconfont"></i>
               </div>
@@ -25,7 +25,7 @@
               <div class="after_icon">
                 <i class="icon-gengduo1 iconfont"></i>
               </div>
-            </div>
+            </div> -->
             <div class="n_menu_container">
               <div class="n_menu" v-for="some in menuData" :key="some.id" @click="showChild(some.path)">
                  <div class="pre_icon"><i :class="some.icon"></i></div>

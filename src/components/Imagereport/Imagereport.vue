@@ -374,8 +374,7 @@ export default {
     refreshList() {
       getVisualStatReport({
            startTime: this.start,
-           endTime:this.end,
-           projectId:12
+           endTime:this.end
       })
         .then(response => {
           this.tableData2 = response.body;
@@ -385,8 +384,7 @@ export default {
       });
       getSubsectionReport({
            startTime: this.start,
-           endTime:this.end,
-           projectId:12
+           endTime:this.end
       })
         .then(response => {
           this.tableData3 = response.body;
