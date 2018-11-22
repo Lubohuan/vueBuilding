@@ -43,7 +43,7 @@ export function deleteSubsectionById(data) {
 // 分页查询任务预警记录
 export function getTaskWarningLogPage(data) {
   return request({
-    url: baseUrl + '/warning/getPlanWarningLogPage',
+    url: baseUrl + '/warning/getPlanWarningPage',
     method: 'get',
     params: data
   })
@@ -51,7 +51,7 @@ export function getTaskWarningLogPage(data) {
 // 分页查询进度预警
 export function getTaskWarningPage(data) {
   return request({
-    url: baseUrl + '/warning/getPlanWarningPage',
+    url: baseUrl + '/warning/getPlanWarningLogPage',
     method: 'get',
     params: data
   })

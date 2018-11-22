@@ -40,10 +40,10 @@
       <span class="blueBlock"></span>
       <span class="spanBlock">产值进度</span>
       <el-table  border :data="tableData1" style="width: 100%" max-height="500">
-       <el-table-column prop="name" label="名称" align="center" width="50" ></el-table-column>
-       <el-table-column prop="name"  label="今日完成产值" align="center"></el-table-column>
-       <el-table-column prop="name"  label="累计完成产值" align="center"></el-table-column>
-       <el-table-column prop="name"  label="累计完成比例" align="center" min-width="120"></el-table-column>
+       <el-table-column prop="regionName" label="区域名称" align="center" min-width="200" ></el-table-column>
+       <el-table-column prop="currentFinish"  label="今日完成产值" align="center"></el-table-column>
+       <el-table-column prop="finishOutput"  label="累计完成产值" align="center"></el-table-column>
+       <el-table-column prop="finishBudgetRate"  label="累计完成比例" align="center" min-width="120"></el-table-column>
       </el-table>
     </div>
      <div class="tableDiv">
@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import { getVisualStatReport,getSubsectionReport } from "../api/upload.js";
+import { getVisualStatReport,getSubsectionReport,getRegionOutputReport } from "../api/upload.js";
 export default {
   name: "Imagereport",
   data() {
@@ -388,6 +388,16 @@ export default {
       })
         .then(response => {
           this.tableData3 = response.body;
+        })
+        .catch(error => {
+          console.log(error);
+      });
+       getRegionOutputReport({
+           startTime: this.start,
+           endTime:this.end
+      })
+        .then(response => {
+          this.tableData1 = response.body;
         })
         .catch(error => {
           console.log(error);

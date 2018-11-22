@@ -178,6 +178,17 @@
             </template>
        </el-table-column>
       </el-table>
+       <el-pagination background v-if="totals>0"
+            class="pageStyle"
+			layout="prev, pager, next, sizes, total, jumper"
+			:page-sizes="[5, 10, 15, 20]"
+			:page-size="pagesizes"
+            :current-page="currentPages"
+			:total="totals"
+			@current-change="handleCurrentChanges"
+			@size-change="handleSizeChanges"
+			>
+      </el-pagination>
     </div>
 
       <!--提醒督办-->
@@ -224,6 +235,9 @@ export default {
       pagesize: 10,
       currentPage: 1,
       total:0,
+      totals:0,
+      currentPages: 1,
+      pagesizes: 10,
       queryType:0
 
     };
@@ -247,6 +261,16 @@ export default {
     handleSizeChange(psize) {
       this.pagesize = psize;
       this.refreshList();
+    },
+
+    handleCurrentChanges(cpage) {
+      this.currentPages = cpage;
+      this.refreshLists();
+    },
+
+    handleSizeChanges(psize) {
+      this.pagesizes = psize;
+      this.refreshLists();
     },
 
     //切换最近7天/本周/上周
@@ -297,11 +321,12 @@ export default {
     //逾期形象进度列表查询
     refreshLists() {
       getTaskWarningLogPage({
-        current: 1,
-        offset: 20
+        current: this.currentPages,
+        offset: this.pagesizes
       })
         .then(response => {
           this.tableDatas = response.body.rows;
+           this.totals = Number(response.body.page.rows);
         })
         .catch(error => {
           console.log(error);
