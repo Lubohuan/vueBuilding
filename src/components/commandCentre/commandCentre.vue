@@ -162,16 +162,16 @@
      
     <el-table  border :data="tableDatas" style="width: 100%">
         <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
-        <el-table-column prop="projectId"  label="项目名称" align="center"></el-table-column>
+        <el-table-column prop="projectName"  label="项目名称" align="center"></el-table-column>
         <el-table-column prop="planName"  label="任务名称" align="center" min-width="200"></el-table-column>
-        <el-table-column prop="name"  label="施工区段" align="center" min-width="200"></el-table-column>
+        <el-table-column prop="regionFullName"  label="施工区段" align="center" min-width="200"></el-table-column>
         <el-table-column prop="warningReason"  label="预警原因" align="center" min-width="100">
             <template slot-scope="scope">
                 <span style="color:red;">{{scope.row.warningReason}}</span>
             </template>
         </el-table-column>
-        <el-table-column prop="respUser"  label="责任人" align="center" min-width="120"></el-table-column>
-        <el-table-column prop="relieveTime"  label="预警时间" align="center" min-width="140"></el-table-column>
+        <el-table-column prop="respUserName"  label="责任人" align="center" min-width="120"></el-table-column>
+        <el-table-column prop="createTime"  label="预警时间" align="center" min-width="140"></el-table-column>
         <el-table-column label="操作" align="center">
             <template  slot-scope="scope">
                 <el-button size="mini" type="text" @click="remindSupervise(scope.row)">督办</el-button>
