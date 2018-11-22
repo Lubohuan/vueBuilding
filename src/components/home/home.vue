@@ -78,7 +78,7 @@ export default {
           children: [
             {
               id: 51,
-              label: "任务预警",
+              label: "计划预警",
               path:"/taskWarning"
             },
             {

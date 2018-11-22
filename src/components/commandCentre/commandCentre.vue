@@ -2,7 +2,7 @@
 <!--指挥中心-->
 <div class="commandCentre">    
     <el-row :gutter="20">
-        <el-col :span="6" >
+        <el-col :span="8" >
         <div class="commandCard">
             <div>
                 <img src="../../assets/u484.png" alt="" class="despImage">
@@ -29,7 +29,7 @@
              </div>
         </div>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="8">
         <div class="commandCard">
             <div>
             <img src="../../assets/u484.png" alt="" class="despImage">
@@ -56,7 +56,7 @@
             </div>
         </div>
     </el-col>
-    <el-col :span="6" >
+    <el-col :span="8" >
         <div class="commandCards">
             <div class="cradContents">
                 <span class="desp_looks">产值完成情况</span>
@@ -80,7 +80,7 @@
                 </div>
             </div>
     </el-col>
-    <el-col :span="6" >
+    <!-- <el-col :span="6" >
         <div class="commandCards">
            <div class="cradContents">
                 <span class="desp_looks">合同工期进度</span>
@@ -103,7 +103,7 @@
                 </span>
             </div>
       </div>
-    </el-col>
+    </el-col> -->
 </el-row>
 <div class="tableDiv">
     <el-row class="tableTitle">

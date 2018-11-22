@@ -43,7 +43,7 @@ export function deleteSubsectionById(data) {
 // 分页查询任务预警记录
 export function getTaskWarningLogPage(data) {
   return request({
-    url: baseUrl + '/warning/getTaskWarningLogPage',
+    url: baseUrl + '/warning/getPlanWarningLogPage',
     method: 'get',
     params: data
   })
@@ -51,7 +51,7 @@ export function getTaskWarningLogPage(data) {
 // 分页查询进度预警
 export function getTaskWarningPage(data) {
   return request({
-    url: baseUrl + '/warning/getTaskWarningPage',
+    url: baseUrl + '/warning/getPlanWarningPage',
     method: 'get',
     params: data
   })
@@ -59,7 +59,7 @@ export function getTaskWarningPage(data) {
 // 解除任务预警
 export function relieveTaskWarning(data) {
   return request({
-    url: baseUrl + '/warning/relieveTaskWarning',
+    url: baseUrl + '/warning/relievePlanWarning',
     method: 'put',
     data: data
   })
@@ -371,6 +371,14 @@ export function getSessionInfo(data) {
 export function getVisualStatItemList(data) {
   return request({
     url: baseUrl + '/project/getVisualStatItemList',
+    method: 'get',
+    params:data
+  })
+}
+//获取区域产值统计分析
+export function getRegionOutputReport(data) {
+  return request({
+    url: baseUrl + '/workStat/getRegionOutputReport',
     method: 'get',
     params:data
   })

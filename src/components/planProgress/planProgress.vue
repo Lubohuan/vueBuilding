@@ -46,6 +46,13 @@
           <span v-if="scope.row.isForbid == 1">禁用</span>
        </template>
     </el-table-column>
+    <el-table-column prop="state"  label="进行状态" align="center" min-width="80">
+       <template slot-scope="scope">
+          <span v-if="scope.row.state == 0">进行中</span>
+          <span v-if="scope.row.state == 1">已完成</span>
+          <span v-if="scope.row.state == 2">已逾期</span>
+       </template>
+    </el-table-column>
     <el-table-column label="操作" align="center" min-width="180">
       <template slot-scope="scope">
          <el-button size="mini" type="primary" @click="editPlan(scope.row)">编辑</el-button>
@@ -98,12 +105,16 @@ export default {
       state:"",
       stateList:[
         {
-          name:"启用",
+          name:"进行中",
           state: 0
         },
         {
-          name:"禁用",
+          name:"已完成",
           state: 1
+        },
+        {
+          name:"已逾期",
+          state: 2
         }
       ],
       total:0,
