@@ -198,7 +198,7 @@
                 <el-tab-pane label="文件" name="third13"></el-tab-pane>
                 <el-tab-pane label="变更记录" name="fourth14"></el-tab-pane> -->
             </el-tabs>
-            <div style="height:90%;overflow:auto;">
+            <div class="recordList">
             <el-row v-for="item in tableDatas" :key="item.id" style="margin:15px 0;">
                  <el-col>
                     <div class="diaryTitle">

@@ -113,7 +113,7 @@
         height:100%;
      }
      .despRowHeight{
-        height:calc(100% - 69px);
+        height:calc(100% - 49px);
      }
      .clickBtn{
          margin-top: 20px;
@@ -191,5 +191,9 @@
         overflow-y:scroll;
         overflow-x:hidden;
         margin-right:-20px;
+    }
+    .recordList{
+        height:calc(100% - 80px);
+        overflow:auto;
     }
 }
