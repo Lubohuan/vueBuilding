@@ -9,7 +9,11 @@ export default {
     let obj = JSON.stringify(data);
     return JSON.parse(obj);
   },
-
+  //转换百分比
+  fomatPrecent(data){
+    let datas = data*100 + '%';
+    return datas;
+  },
   //转化数组
   initTree(data) {
     let arr = [];

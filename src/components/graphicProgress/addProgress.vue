@@ -3,27 +3,27 @@
 <div class="addProgress">
   <el-form :model="dataModel" :rules="rules" ref="addProgress" label-width="150px">
     <el-form-item label="项目名称：" prop="projectIdArry">
-       <el-cascader :options="listOrgInfoList" v-model="dataModel.projectIdArry" :props="defaultPropss" size="small" placeholder="请选择项目" style="width:100%;"></el-cascader>
+       <el-cascader :options="listOrgInfoList" v-model="dataModel.projectIdArry" :props="defaultPropss" size="small" placeholder="请选择项目" style="width:100%;" :disabled="isUp"></el-cascader>
     </el-form-item>
-    <el-form-item label="施工区域" prop="regionIdArry">
-         <el-cascader change-on-select :options="reginList" v-model="dataModel.regionIdArry" :props="defaultProps" size="small" style="width:100%;"></el-cascader>
+    <el-form-item label="施工区域" prop="regionIdArry" >
+         <el-cascader change-on-select :options="reginList" v-model="dataModel.regionIdArry" :props="defaultProps" size="small" style="width:100%;" :disabled="isUp"></el-cascader>
     </el-form-item>
     <el-form-item label="形象进度统计项：" prop="statName">
         <el-input v-model="dataModel.statName" size="small"></el-input>
     </el-form-item>
     <el-form-item label="选择分部分项：" prop="subIdArry">
-        <el-cascader :options="bitemList" v-model="dataModel.subIdArry" :props="defaultProp" size="small" style="width:100%;" ></el-cascader>
+        <el-cascader :options="bitemList" v-model="dataModel.subIdArry" :props="defaultProp" size="small" style="width:100%;" :disabled="isUp"></el-cascader>
     </el-form-item>
-    <el-form-item label="形象单位：" prop="unitId">
-        <el-select size="small" v-model="dataModel.unitId " placeholder="请选择" clearable style="width:100%;">
+    <el-form-item label="形象单位：" prop="unitId" class="unitem">
+        <el-select :disabled="isUp" size="small" v-model="dataModel.unitId " placeholder="请选择" clearable style="width:100%;">
             <el-option v-for="(item,index) in planList" :label="item.unitName" :value="item.id" :key="index" ></el-option>
         </el-select>      
     </el-form-item>
     <el-form-item label=" 预算工程量：" prop="budgetTotal">
         <el-input v-model="dataModel.budgetTotal" size="small"></el-input>     
     </el-form-item>
-    <el-form-item label="工程总产值(万元)：" prop="outputTotal">
-        <el-input v-model="dataModel.outputTotal" size="small"></el-input>
+    <el-form-item label="工程总产值(万元)：" prop="outputTotal" >
+        <el-input v-model="dataModel.outputTotal" size="small" :disabled="isUp"></el-input>
     </el-form-item>
     <!-- <el-row>
           <el-col :span="17">
@@ -94,7 +94,8 @@ export default {
         children: "child",
         label: "name",
         value: "id"
-      }
+      },
+      isUp:false
     };
   },
   computed: {
@@ -123,6 +124,7 @@ export default {
       this.getlistOrgInfoList();
       if (!data.id) return;
       this.dataModel ={...data};
+      this.isUp = true;
       //查找项目父级
       let object = this.$common.initTree(this.listOrgInfoList);
       this.dataModel.projectIdArry  = this.$common.findParent(object,data.projectId);

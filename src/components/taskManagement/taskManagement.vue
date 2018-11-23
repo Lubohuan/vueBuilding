@@ -76,7 +76,7 @@
                               <el-tag size="small"  type="info">{{item.respUserName}}</el-tag >
                           </el-tooltip>
                       </el-col>
-                      <el-col :span="9" class="rightTag">
+                      <el-col :span="9" class="rightTag raduisTag">
                           <el-tag  size="small" style="border-radius:20px;" v-if="item.state == '0'">未完成</el-tag >
                           <el-tag type="success" size="small" style="border-radius:20px;" v-if="item.state == '1'">已完成</el-tag >
                           <el-tag type="danger" size="small" style="border-radius:20px;" v-if="item.state == '2'">已过期</el-tag >                            
@@ -99,10 +99,10 @@
           <el-row class="despInfon">
                 <el-col :span="8">
                 <el-popover placement="bottom" width="200" v-model="visible3">
-                    <el-select  size="small" v-model="state" filterable  placeholder="请选择状态" clearable  @change="changePeople">
+                    <!-- <el-select  size="small" v-model="state" filterable  placeholder="请选择状态" clearable  @change="changePeople">
                       <el-option v-for="(item,index) in tableData" :label="item.name" :value="item.id" :key="index">
                       </el-option>
-                    </el-select>
+                    </el-select> -->
                     <div slot="reference">
                         <img src="../../assets/u1886.png" alt="" class="despImage">
                         <div style="display:inline-block;">
@@ -122,10 +122,10 @@
                             <div class="desp_look">当前状态</div>
                        </div>
                        </div>
-                  </el-col>
-                   <el-col :span="8">
-                       <el-dropdown trigger="click"  style="width:100%;">
-                       <div>
+                </el-col>
+                <el-col :span="8">
+                    <el-dropdown trigger="click"  style="width:100%;" @command="changeLevel">
+                        <div>
                             <img src="../../assets/u1899.png" alt="" class="despImage">
                             <div style="display:inline-block;">
                             <div v-if="personalData.level == '0'">普通</div >
@@ -133,16 +133,13 @@
                             <div v-if="personalData.level == '2'">紧急</div >  
                             <div class="desp_look">优先级</div>
                             </div>
-                       </div>                      
+                        </div>                      
                         <el-dropdown-menu slot="dropdown" style="width:200px;">
-                        <span style="margin:15px 0 15px 20px;font-size:16px;">更改优先级</span>
-                        <el-dropdown-item>普通</el-dropdown-item>
-                        <el-dropdown-item>较急</el-dropdown-item>
-                        <el-dropdown-item>最急</el-dropdown-item>
+                            <span style="margin:15px 0 15px 20px;font-size:16px;">更改优先级</span>
+                            <el-dropdown-item v-for="(item,index) in leaveList" :command="item.level" :key="index">{{item.name}}</el-dropdown-item>
                         </el-dropdown-menu>
-                        </el-dropdown>
-                      
-                  </el-col>
+                    </el-dropdown> 
+                </el-col>
             </el-row>
             <el-row class="despSpans">
             <el-tabs v-model="activeName1" @tab-click="handleClick">
@@ -157,7 +154,7 @@
                       <div>分部分项：{{personalData.subFullName}}</div>
                       <div>
                           <span>计划工程量：{{personalData.planFinish}}{{personalData.unitName}}</span>
-                          <span class="rightNumber">{{personalData.finishRate}}</span>
+                          <span class="rightNumber">{{personalData.finishRate}}%</span>
                       </div>
                        <div>
                           <span>累计完成量：{{personalData.finishTotal}}{{personalData.unitName}}</span>
@@ -205,14 +202,14 @@
             <el-row v-for="item in tableDatas" :key="item.id" style="margin:15px 0;">
                  <el-col>
                     <div class="diaryTitle">
-                        <i class="el-icon-bell"></i>
+                        <img src="../../assets/record.png" style="width: 15px; height: 15px;margin-top:-5px;">
                         <span>{{item.createUserName}}：</span>
                         <span class="desp_look">完成工程量{{item.finishAmount}}{{item.unitName}}</span>
                         <span class="desp_look">完成产值{{item.finishOutput}}万元</span>
                         <div class="desp_look lookTime">{{item.createTime}}</div>
                     </div> 
                     <div class="imgVidevoInfo">
-                     <viewer style="display:inline-block;cursor: pointer;margin-right:5px;"   v-for="(items,index) in item.imageUrls" :key="index">
+                     <viewer style="display:inline-block;cursor: pointer;margin-right:5px;"   v-for="items in item.imageUrls" :key="items">
 	                    <img :src="items" width="120" height="70">
 	                 </viewer>
                      <div class="videoStyle" @click="openVideos(items)" v-for="(items,index) in item.videoUrls" :key="index"  :style="{backgroundImage: 'url(' + items.img + ')'}">
@@ -255,7 +252,7 @@
 
 <script>
 import addTasks from "../taskManagement/addTasks.vue";
-import { getPlanTaskPage,getConstructPlanDetailById,getConstructLogPage } from "../api/upload.js";
+import { getPlanTaskPage,getConstructPlanDetailById,getConstructLogPage,updateTaskPriority } from "../api/upload.js";
 import Aplayer from 'vue-aplayer';
 import { rejects } from 'assert';
 export default {
@@ -284,6 +281,20 @@ export default {
           id: 3,
           name: "已完成",
         }
+      ],
+      leaveList:[
+        {
+          level: 0,
+          name: "普通",
+        },
+        {
+          level: 1,
+          name: "较急",
+        },
+        {
+          level: 2,
+          name: "最急",
+        } 
       ],
       state:"",
       personalData: {},
@@ -371,8 +382,7 @@ export default {
 
     //打开步骤
     changeStates(){
-        console.log(111);
-       this.dialog.changeState = true;
+    //    this.dialog.changeState = true;
     },
 
     //选择步骤
@@ -406,6 +416,25 @@ export default {
         this.dialog.openVideo=true;
         this.playerOptions.sources[0].src = item.video;
         this.playerOptions.poster = item.img;
+    },
+
+    //更改优先级
+    changeLevel(command){
+        updateTaskPriority({
+            id:this.dateId,
+            level:command
+        })
+        .then(response => {
+          if (response.code == "200") {
+            this.$message.success("修改成功!");
+            this.refreshLists();
+          } else {
+            this.$message.error(response.msg);
+          }
+        })
+        .catch(error => {
+            console.log(error);
+        });
     },
 
     //播放音频

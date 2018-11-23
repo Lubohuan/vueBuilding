@@ -2,9 +2,6 @@
 <!-- 新增子项施工区域 -->
 <div class="addAreaChild">
   <el-form :model="dataModel" :rules="rules" ref="addAreaChild" label-width="120px">
-        <el-form-item label="项目名称：" prop="projectArry">
-           <el-cascader :options="listOrgInfoList" v-model="dataModel.projectArry" :props="defaultProp" size="small" placeholder="请选择项目" style="width:100%;"></el-cascader>
-        </el-form-item>
         <el-form-item label="区域名称：" prop="regionName">
           <el-input v-model="dataModel.regionName" size="small"></el-input>
         </el-form-item>
@@ -25,8 +22,7 @@ export default {
     return {
       dataModel: {
         regionName: null,
-        projectId: [],
-        projectArry:[],
+        projectId: null,
         parentId:""
       },
       defaultProp:{
@@ -36,9 +32,7 @@ export default {
       },
       //数据校验
       rules: {
-        regionName:  [{ required: true, message: "请输入区域名称", trigger: "blur" }],
-        projectArry:   [{ required: true, message:  "请选择项目", trigger: "blur" }]
-      
+        regionName:  [{ required: true, message: "请输入区域名称", trigger: "blur" }]      
       }
     };
   },
@@ -59,6 +53,7 @@ export default {
       await this.getlistOrgInfoList();
       if (!data.id) return;     
       this.dataModel.parentId= data.id;
+      this.dataModel.projectId = data.projectId;
 
     },
 
@@ -68,8 +63,7 @@ export default {
       addAreaChild.resetFields();
       this.dataModel.parentId = null;
       this.dataModel.regionName = "";
-      this.dataModel.projectId = "";
-      this.dataModel.projectArry = []
+      this.dataModel.projectId = null;
     },
 
     //关闭弹框
@@ -84,7 +78,6 @@ export default {
         if (!valid) {
           return;
         }
-        this.dataModel.projectId = this.dataModel.projectArry[this.dataModel.projectArry.length - 1];
         addRegion(this.dataModel)
         .then(response => {
           if (response.code == "200") {

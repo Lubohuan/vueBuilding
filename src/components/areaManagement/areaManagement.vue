@@ -196,6 +196,7 @@ export default {
        this.dialog.addAreaChild = true;
        this.regionObject = {};
        this.regionObject.id = data.id;
+       this.regionObject.projectId = data.projectId;
        console.log(this.regionObject,"addAreaChild");
     },
 

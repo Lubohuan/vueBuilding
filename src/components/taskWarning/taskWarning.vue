@@ -44,7 +44,7 @@
    
    <!--解除预警-->
     <el-dialog title="解除预警" :center="true" :visible.sync="dialog.relieveReason" width="600px" @close="relieveReasonReset()">
-      <el-form :model="relieveReasons"  label-width="100px" ref="relieveReason">
+      <el-form :model="relieveReasons" :rules="rules"  label-width="110px" ref="relieveReason">
         <el-form-item prop="reason" label="解除预警原因:">
           <el-input v-model="relieveReasons.reason" size="small" placeholder="请输入解除预警原因"></el-input>
         </el-form-item>
@@ -72,12 +72,17 @@ export default {
       tableData: [],
       relieveReasons: {
         id: "",
-        relieveReason: ""
+        reason: ""
       },
       remindData: {},
       dialog: {
         supervise: false,
         relieveReason: false
+      },
+      rules: {
+        reason: [
+          { required: true, message: "请输入预警原因", trigger: "blur" }
+        ]
       },
       pagesize: 10,
       currentPage: 1,
@@ -94,11 +99,13 @@ export default {
     //页码变化
     handleCurrentChange(cpage) {
       this.currentPage = cpage;
+      this.refreshList();
     },
 
     //每页显示数量变化
     handleSizeChange(psize) {
       this.pagesize = psize;
+      this.refreshList();
     },
 
     //解除预警
@@ -145,7 +152,11 @@ export default {
 
     //提交解除预警
     commit() {
-      relieveTaskWarning(this.relieveReasons)
+      this.$refs["relieveReason"].validate(valid => {
+        if (!valid) {
+          return;
+        }
+        relieveTaskWarning(this.relieveReasons)
         .then(response => {
           if (response.code == "200") {
             this.$message.success("提交成功!");
@@ -157,6 +168,7 @@ export default {
         .catch(error => {
            console.log(error);
         });
+      });
     }
   },
   created() {

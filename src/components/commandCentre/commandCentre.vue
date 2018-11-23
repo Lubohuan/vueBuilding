@@ -2,13 +2,13 @@
 <!--指挥中心-->
 <div class="commandCentre">    
     <el-row :gutter="20">
-        <el-col :span="8" >
+        <el-col :span="6" >
         <div class="commandCard">
             <div>
                 <img src="../../assets/u484.png" alt="" class="despImage">
                 <div class="cradContent">
                     <div class="desp_look">今日完成生产任务</div>
-                    <div class="desp_personal">{{panTable.finishTask}}个</div>
+                    <div class="desp_personal">{{panTable.dayTask}}个</div>
                 </div>
              </div>
              <div class="cardFooter">
@@ -29,7 +29,7 @@
              </div>
         </div>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="6">
         <div class="commandCard">
             <div>
             <img src="../../assets/u484.png" alt="" class="despImage">
@@ -56,11 +56,12 @@
             </div>
         </div>
     </el-col>
-    <el-col :span="8" >
+    <el-col :span="6" >
         <div class="commandCards">
             <div class="cradContents">
                 <span class="desp_looks">产值完成情况</span>
-                <el-progress :stroke-width="18" :percentage="70"></el-progress>
+                <!-- <el-progress :stroke-width="18" :percentage="$common.fomatPrecent(panTable.finishOutputRate)"></el-progress> -->
+                <el-progress :stroke-width="18" :percentage="panTable.finishOutputRate"></el-progress>
                 </div>
                 <div class="cardFooters">
                 <span>同周比：
@@ -80,10 +81,11 @@
                 </div>
             </div>
     </el-col>
-    <!-- <el-col :span="6" >
+    <el-col :span="6" >
         <div class="commandCards">
            <div class="cradContents">
                 <span class="desp_looks">合同工期进度</span>
+                <!-- <el-progress :stroke-width="18" :percentage="$common.fomatPrecent(panTable.contractProRate)"></el-progress> -->
                 <el-progress :stroke-width="18" :percentage="panTable.contractProRate"></el-progress>
                 </div>
             <div class="cardFooters">
@@ -103,7 +105,7 @@
                 </span>
             </div>
       </div>
-    </el-col> -->
+    </el-col>
 </el-row>
 <div class="tableDiv">
     <el-row class="tableTitle">

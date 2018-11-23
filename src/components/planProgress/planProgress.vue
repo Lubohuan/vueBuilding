@@ -32,6 +32,13 @@
   <el-table :data="tableData" style="width: 100%;margin-top:20px;"   @selection-change="handleSelectionChange" border>
     <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
     <el-table-column prop="projectName"  label="项目名称" align="center" min-width="150"></el-table-column>
+    <el-table-column prop="state"  label="状态" align="center" min-width="80">
+       <template slot-scope="scope">
+          <span v-if="scope.row.state == 0"><span class="starting"></span>进行中</span>
+          <span v-if="scope.row.state == 1" ><span class="finish"></span>已完成</span>
+          <span v-if="scope.row.state == 2" ><span class="overTime"></span>已逾期</span>
+       </template>
+    </el-table-column>
     <el-table-column prop="planName"  label="计划任务名称" align="center" min-width="200"></el-table-column>
     <el-table-column prop="regionFullName"  label="施工区段" align="center" min-width="200"></el-table-column>
     <el-table-column prop="planEndTime"  label="完成时间" align="center" min-width="120"></el-table-column>
@@ -41,13 +48,6 @@
     <el-table-column prop="finishTotal"  label="已完成工程量" align="center" min-width="120"></el-table-column>
     <el-table-column prop="notFinish"  label="计划剩余工程量" align="center" min-width="120"></el-table-column>
     <el-table-column prop="planFinishRate"  label="完成比例" align="center" min-width="90"></el-table-column>
-    <el-table-column prop="state"  label="状态" align="center" min-width="80">
-       <template slot-scope="scope">
-          <span v-if="scope.row.state == 0">进行中</span>
-          <span v-if="scope.row.state == 1">已完成</span>
-          <span v-if="scope.row.state == 2">已逾期</span>
-       </template>
-    </el-table-column>
     <el-table-column label="操作" align="center" min-width="180">
       <template slot-scope="scope">
          <el-button size="mini" type="primary" @click="editPlan(scope.row)">编辑</el-button>

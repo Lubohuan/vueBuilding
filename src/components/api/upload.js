@@ -384,3 +384,10 @@ export function getRegionOutputReport(data) {
     params:data
   })
 }
+// 修改任务的优先级
+export function updateTaskPriority(data) {
+  return request({
+    url: baseUrl + '/task/updateTaskPriority/' + data.id + '/' + data.level,
+    method: 'put'
+  })
+}
