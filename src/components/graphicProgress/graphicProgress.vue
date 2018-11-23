@@ -95,8 +95,8 @@ export default {
       },
       pagesize: 10,
       currentPage: 1,
-      projectId: null,
-      regionId: null,
+      projectId: [],
+      regionId: [],
       total: 0,
       regionIds:null,
       projectIds:null

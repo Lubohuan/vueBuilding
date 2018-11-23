@@ -91,7 +91,7 @@
     </el-dialog>
 
      <!--添加/修改分部分项-->
-    <el-dialog title="添加下级'" :center="true" :visible.sync="dialog.addAreaChild" width="800px"  @open="$nextTick(()=>$refs['addAreaChild'].update(regionObject))" @close="$refs['addAreaChild'].reset()">
+    <el-dialog title="添加下级" :center="true" :visible.sync="dialog.addAreaChild" width="800px"  @open="$nextTick(()=>$refs['addAreaChild'].update(regionObject))" @close="$refs['addAreaChild'].reset()">
       <addAreaChild ref="addAreaChild" @refreshData="refreshList" @close="dialog.addAreaChild = false" ></addAreaChild>
     </el-dialog>
   </div>
