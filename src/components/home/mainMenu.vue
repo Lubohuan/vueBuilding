@@ -176,7 +176,7 @@ export default {
          this.main_menu = '';
       },
       getOut(){
-         window.location.href="http://autobuild.1357.cn/Admin/Login/public_login"; 
+          window.location.href= this.$common.spmUrl();
       },
       main_menuFn:function(){
         

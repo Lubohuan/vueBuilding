@@ -1,5 +1,10 @@
 export default {
 
+  spmUrl(){
+    const spmUrl = 'http://spm.1357.cn/Admin/Login/public_login';
+    return  spmUrl;
+  },
+
   deepClone(data) {
     let obj = JSON.stringify(data);
     return JSON.parse(obj);
@@ -43,5 +48,5 @@ export default {
       }
     }
     return arr;
-  },
+  }
 }
