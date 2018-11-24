@@ -33,10 +33,14 @@
     <el-table-column prop="unitName" label="形象单位" align="center"></el-table-column>
     <el-table-column prop="budgetTotal" label="预算工程量" align="center" min-width="120"></el-table-column>
     <el-table-column prop="finishBudget" label="累计完成" align="center"></el-table-column>
-    <el-table-column prop="finishBudgetRate" label="完成比例" align="center"></el-table-column>
+    <el-table-column prop="finishBudgetRate" label="完成比例" align="center">
+      <template slot-scope="scope">
+        <span v-if="scope.row.finishBudgetRate">{{$common.fomatPrecent(scope.row.finishBudgetRate)}}%</span>
+       </template>
+    </el-table-column>
     <template v-for="(item,index) in indexArry">
-            <el-table-column  :prop="'logMms['+ index +'].planFinish'"  :label=" item + '月计划'"  :key="index  + 0.1"></el-table-column>
-            <el-table-column  :prop="'logMms['+ index +'].finishTotal'" :label=" item + '月完成'"  :key="index  + 0.2"></el-table-column>
+      <el-table-column  :prop="'logMms['+ index +'].planFinish'"  :label=" item + '月计划'"  :key="index  + 0.1"></el-table-column>
+      <el-table-column  :prop="'logMms['+ index +'].finishTotal'" :label=" item + '月完成'"  :key="index  + 0.2"></el-table-column>
     </template>
   </el-table>
   <el-pagination background v-if="total>0"

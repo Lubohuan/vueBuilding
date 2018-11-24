@@ -154,7 +154,7 @@
                       <div>分部分项：{{personalData.subFullName}}</div>
                       <div>
                           <span>计划工程量：{{personalData.planFinish}}{{personalData.unitName}}</span>
-                          <span class="rightNumber">{{personalData.finishRate}}%</span>
+                          <span class="rightNumber">{{$common.fomatPrecent(personalData.finishRate)}}%</span>
                       </div>
                        <div>
                           <span>累计完成量：{{personalData.finishTotal}}{{personalData.unitName}}</span>
@@ -162,7 +162,7 @@
                       </div>
                        <div>计划产值：{{personalData.planFinish}}万元</div>
                        <div>
-                          <span>累计完成产值：{{personalData.finishTotal}}万元</span>
+                          <span>累计完成产值：{{personalData.finishOutput}}万元</span>
                           <span class="rightSpan">剩余产值：{{personalData.notFinishOutput}}万元</span>
                       </div>
                   </el-tab-pane>
@@ -293,7 +293,7 @@ export default {
         },
         {
           level: 2,
-          name: "最急",
+          name: "紧急",
         } 
       ],
       state:"",
@@ -427,6 +427,7 @@ export default {
         .then(response => {
           if (response.code == "200") {
             this.$message.success("修改成功!");
+            this.refreshList();
             this.refreshLists();
           } else {
             this.$message.error(response.msg);

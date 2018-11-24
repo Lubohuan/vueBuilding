@@ -11,8 +11,11 @@ export default {
   },
   //转换百分比
   fomatPrecent(data){
-    let datas = data*100;
-    return datas;
+    var data2 = 100;
+    var m=0,s1=data.toString(),s2=data2.toString(); 
+    try{m+=s1.split(".")[1].length}catch(e){} 
+    try{m+=s2.split(".")[1].length}catch(e){} 
+    return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m) 
   },
   //转化数组
   initTree(data) {

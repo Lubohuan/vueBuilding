@@ -47,7 +47,11 @@
     <el-table-column prop="planFinish"  label="计划工程量" align="center" min-width="90"></el-table-column>
     <el-table-column prop="finishTotal"  label="已完成工程量" align="center" min-width="120"></el-table-column>
     <el-table-column prop="notFinish"  label="计划剩余工程量" align="center" min-width="120"></el-table-column>
-    <el-table-column prop="planFinishRate"  label="完成比例" align="center" min-width="90"></el-table-column>
+    <el-table-column prop="planFinishRate"  label="完成比例" align="center" min-width="90">
+        <template slot-scope="scope">
+          <span v-if="scope.row.planFinishRate">{{$common.fomatPrecent(scope.row.planFinishRate)}}%</span>
+       </template>
+    </el-table-column>
     <el-table-column label="操作" align="center" min-width="180">
       <template slot-scope="scope">
          <el-button size="mini" type="primary" @click="editPlan(scope.row)">编辑</el-button>

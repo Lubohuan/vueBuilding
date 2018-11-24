@@ -36,7 +36,11 @@
     <el-table-column prop="finishBudget" label="累计完成" align="center"></el-table-column>
     <el-table-column prop="outputTotal" label="总产值（万元）" align="center"  min-width="120"></el-table-column>
     <el-table-column prop="finishOutput" label="完成产值（万元）" align="center" min-width="120"></el-table-column>
-    <el-table-column prop="finishBudgetRate" label="完成比例" align="center"></el-table-column>
+    <el-table-column prop="finishBudgetRate" label="完成比例" align="center">
+        <template slot-scope="scope">
+          <span v-if="scope.row.finishBudgetRate">{{$common.fomatPrecent(scope.row.finishBudgetRate)}}%</span>
+       </template>
+    </el-table-column>
     <el-table-column label="操作" align="center" min-width="190">
       <template slot-scope="scope">
             <el-button size="mini" type="primary" @click="editClick(scope)">编辑</el-button>

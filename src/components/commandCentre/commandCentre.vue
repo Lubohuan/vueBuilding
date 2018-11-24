@@ -60,8 +60,8 @@
         <div class="commandCards">
             <div class="cradContents">
                 <span class="desp_looks">产值完成情况</span>
-                <!-- <el-progress :stroke-width="18" :percentage="$common.fomatPrecent(panTable.finishOutputRate)"></el-progress> -->
-                <el-progress :stroke-width="18" :percentage="panTable.finishOutputRate"></el-progress>
+                <el-progress :stroke-width="18" :percentage="$common.fomatPrecent(panTable.finishOutputRate)"></el-progress>
+                <!-- <el-progress :stroke-width="18" :percentage="panTable.finishOutputRate"></el-progress> -->
                 </div>
                 <div class="cardFooters">
                 <span>同周比：
@@ -85,8 +85,8 @@
         <div class="commandCards">
            <div class="cradContents">
                 <span class="desp_looks">合同工期进度</span>
-                <!-- <el-progress :stroke-width="18" :percentage="$common.fomatPrecent(panTable.contractProRate)"></el-progress> -->
-                <el-progress :stroke-width="18" :percentage="panTable.contractProRate"></el-progress>
+                <el-progress :stroke-width="18" :percentage="$common.fomatPrecent(panTable.contractProRate)"></el-progress>
+                <!-- <el-progress :stroke-width="18" :percentage="panTable.contractProRate"></el-progress> -->
                 </div>
             <div class="cardFooters">
               <span>同周比：

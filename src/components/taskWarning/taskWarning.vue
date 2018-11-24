@@ -45,8 +45,8 @@
    <!--解除预警-->
     <el-dialog title="解除预警" :center="true" :visible.sync="dialog.relieveReason" width="600px" @close="relieveReasonReset()">
       <el-form :model="relieveReasons" :rules="rules"  label-width="110px" ref="relieveReason">
-        <el-form-item prop="reason" label="解除预警原因:">
-          <el-input v-model="relieveReasons.reason" size="small" placeholder="请输入解除预警原因"></el-input>
+        <el-form-item prop="relieveReason" label="解除预警原因:">
+          <el-input v-model="relieveReasons.relieveReason" size="small" placeholder="请输入解除预警原因"></el-input>
         </el-form-item>
       </el-form>
       <div class="clickBtn">
@@ -72,7 +72,7 @@ export default {
       tableData: [],
       relieveReasons: {
         id: "",
-        reason: ""
+        relieveReason: ""
       },
       remindData: {},
       dialog: {
@@ -80,7 +80,7 @@ export default {
         relieveReason: false
       },
       rules: {
-        reason: [
+        relieveReason: [
           { required: true, message: "请输入预警原因", trigger: "blur" }
         ]
       },
