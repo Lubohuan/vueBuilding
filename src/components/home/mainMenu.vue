@@ -28,7 +28,7 @@
             </div> -->
             <div class="n_menu_container">
               <div class="n_menu" v-for="some in menuData" :key="some.id" @click="showChild(some.path)">
-                 <div class="pre_icon"><i :class="some.icon"></i></div>
+                <div class="pre_icon"><img :src="some.icon" alt=""></div>
                 <div class="menu_text">{{some.text}}</div>
                 <!-- <div class="after_icon">
                   <span class="close_icon">{{some.close}}</span>
@@ -149,8 +149,8 @@ export default {
       main_menu:'',
       isScale:false,
       menuData:[
-        {id:'1',icon:'el-icon-edit-outline',text:'生产形象进度',path:'/home'},
-        {id:'2',icon:'el-icon-news',text:'生产计划进度',path:'/home1'},
+        {id:'1',icon:require('../../assets/progressmenu.png'),text:'生产形象进度',path:'/home'},
+        {id:'2',icon:require('../../assets/planProgress.png'),text:'生产计划进度',path:'/home1'},
       ],
         defaultPropss:{
         children: "child",

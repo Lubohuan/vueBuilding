@@ -152,7 +152,7 @@
                           <el-button size="mini" type="primary" @click="showButton=false">保存</el-button>
                       </div> -->
                       <div>分部分项：{{personalData.subFullName}}</div>
-                      <div>
+                      <div style="margin-top:20px;">
                           <span>计划工程量：{{personalData.planFinish}}{{personalData.unitName}}</span>
                           <span class="rightNumber">{{$common.fomatPrecent(personalData.finishRate)}}%</span>
                       </div>
@@ -160,7 +160,7 @@
                           <span>累计完成量：{{personalData.finishTotal}}{{personalData.unitName}}</span>
                           <span class="rightSpan">剩余工程量：{{personalData.notFinish}}{{personalData.unitName}}</span>
                       </div>
-                       <div>计划产值：{{personalData.planFinish}}万元</div>
+                       <div style="margin-top:20px;">计划产值：{{personalData.planFinish}}万元</div>
                        <div>
                           <span>累计完成产值：{{personalData.finishOutput}}万元</span>
                           <span class="rightSpan">剩余产值：{{personalData.notFinishOutput}}万元</span>
@@ -202,7 +202,7 @@
             <el-row v-for="item in tableDatas" :key="item.id" style="margin:15px 0;">
                  <el-col>
                     <div class="diaryTitle">
-                        <img src="../../assets/record.png" style="width: 15px; height: 15px;margin-top:-5px;">
+                        <img src="../../assets/11.png" style="width: 14px; height: 14px;margin-top:-3px;">
                         <span>{{item.createUserName}}：</span>
                         <span class="desp_look">完成工程量{{item.finishAmount}}{{item.unitName}}</span>
                         <span class="desp_look">完成产值{{item.finishOutput}}万元</span>

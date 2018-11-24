@@ -43,16 +43,8 @@
     </el-dialog>
    
    <!--解除预警-->
-    <el-dialog title="解除预警" :center="true" :visible.sync="dialog.relieveReason" width="600px" @close="relieveReasonReset()">
-      <el-form :model="relieveReasons" :rules="rules"  label-width="110px" ref="relieveReason">
-        <el-form-item prop="relieveReason" label="解除预警原因:">
-          <el-input v-model="relieveReasons.relieveReason" size="small" placeholder="请输入解除预警原因"></el-input>
-        </el-form-item>
-      </el-form>
-      <div class="clickBtn">
-        <el-button  @click="close"  size="small">取消</el-button>
-        <el-button  size="small" type="primary" @click="commit">确定</el-button>
-      </div>
+    <el-dialog title="解除预警" :center="true" :visible.sync="dialog.earlyWarning" width="700px"  @open="$nextTick(()=>$refs['earlywarning'].update(relieveReasons))"  @close="$refs['earlywarning'].reset()">
+      <earlywarning ref="earlywarning" @refreshData="refreshList" @close="dialog.earlyWarning = false" ></earlywarning>
     </el-dialog>
   </div>
 </template>
@@ -60,10 +52,12 @@
 <script>
 import { getTaskWarningLogPage, relieveTaskWarning } from "../api/upload.js";
 import supervise from "../taskWarning/supervise.vue";
+import earlywarning from "../taskWarning/earlyWarning.vue";
 export default {
   name: "taskWarning",
   components: {
-    supervise
+    supervise,
+    earlywarning
   },
   data() {
     return {
@@ -71,18 +65,13 @@ export default {
       valueData: "",
       tableData: [],
       relieveReasons: {
-        id: "",
-        relieveReason: ""
+        id:null,
+        planId:null
       },
       remindData: {},
       dialog: {
         supervise: false,
-        relieveReason: false
-      },
-      rules: {
-        relieveReason: [
-          { required: true, message: "请输入预警原因", trigger: "blur" }
-        ]
+        earlyWarning: false
       },
       pagesize: 10,
       currentPage: 1,
@@ -111,15 +100,8 @@ export default {
     //解除预警
     relieveReason(data) {
       this.relieveReasons.id = data.id;
-      this.dialog.relieveReason = true;
-    },
-
-     //解除预警弹框表单重置
-    relieveReasonReset() {
-      const RelieveReason = this.$refs["relieveReason"];
-      RelieveReason.resetFields();
-      this.relieveReasons.id = "";
-      this.relieveReasons.relieveReason = "";
+      this.relieveReasons.planId = data.planId;
+      this.dialog.earlyWarning = true;
     },
 
     //提醒督办
@@ -142,33 +124,6 @@ export default {
         .catch(error => {
           console.log(error);
         });
-    },
-
-    //关闭解除预警弹框
-    close() {
-      this.dialog.relieveReason = false;
-      this.relieveReasonReset();
-    },
-
-    //提交解除预警
-    commit() {
-      this.$refs["relieveReason"].validate(valid => {
-        if (!valid) {
-          return;
-        }
-        relieveTaskWarning(this.relieveReasons)
-        .then(response => {
-          if (response.code == "200") {
-            this.$message.success("提交成功!");
-            this.close();
-          } else {
-            this.$message.error(response.msg);
-          }
-        })
-        .catch(error => {
-           console.log(error);
-        });
-      });
     }
   },
   created() {

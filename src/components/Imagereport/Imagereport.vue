@@ -85,7 +85,7 @@
           </template>
        </el-table-column>
        <el-table-column prop="finishOutput" label="今日完成产值" align="center"></el-table-column>
-       <el-table-column prop="outputTotal" label="累计完成产值" align="center"></el-table-column>
+       <el-table-column prop="finishOutputTotal" label="累计完成产值" align="center"></el-table-column>
        <el-table-column prop="finishOutputTotalRate" label="累计完成比例" align="center" >
            <template slot-scope="scope">
             <span v-if="scope.row.finishOutputTotalRate">{{$common.fomatPrecent(scope.row.finishOutputTotalRate)}}%</span>

@@ -5,7 +5,7 @@
         <el-col :span="6" >
         <div class="commandCard">
             <div>
-                <img src="../../assets/u484.png" alt="" class="despImage">
+                <img src="../../assets/task.png" alt="" class="despImage">
                 <div class="cradContent">
                     <div class="desp_look">今日完成生产任务</div>
                     <div class="desp_personal">{{panTable.dayTask}}个</div>
@@ -32,7 +32,7 @@
         <el-col :span="6">
         <div class="commandCard">
             <div>
-            <img src="../../assets/u484.png" alt="" class="despImage">
+            <img src="../../assets/todayTask.png" alt="" class="despImage">
                        <div  class="cradContent">
                             <div class="desp_look">今日产值</div>
                             <div class="desp_personal">¥{{panTable.dayFinishOutput}}万</div>
@@ -127,10 +127,18 @@
        <el-table-column prop="statName" label="计划任务名称" align="center" min-width="180"></el-table-column>
        <el-table-column prop="finishBudget" label="设计工程量" align="center" min-width="120"></el-table-column>
        <el-table-column prop="budgetTotal" label="累计完成" align="center" min-width="120"></el-table-column>
-       <el-table-column prop="finishBudgetRate" label="累计完成百分比" align="center" min-width="120"></el-table-column>
+       <el-table-column prop="finishBudgetRate" label="累计完成百分比" align="center" min-width="120">
+            <template slot-scope="scope">
+                <span v-if="scope.row.finishBudgetRate">{{$common.fomatPrecent(scope.row.finishBudgetRate)}}%</span>
+            </template>
+       </el-table-column>
        <el-table-column prop="monthPlan" label="本月计划" align="center"></el-table-column>
        <el-table-column prop="monthFinish" label="本月完成" align="center"></el-table-column>
-       <el-table-column  label="完成比例" align="center"></el-table-column>
+       <el-table-column  label="完成比例" align="center" prop="monthFinishRate">
+            <template slot-scope="scope">
+                <span v-if="scope.row.monthFinishRate">{{$common.fomatPrecent(scope.row.monthFinishRate)}}%</span>
+            </template>
+       </el-table-column>
        <template v-for="(item,index) in dateArr">
             <el-table-column  :prop="'logs['+ index +'].finishTotal'"  :label=" item "  :key="index" align="center"></el-table-column>
        </template>
