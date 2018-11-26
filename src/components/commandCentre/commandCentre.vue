@@ -125,8 +125,8 @@
       <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
        <el-table-column prop="regionFullName" label="施工区段" align="center" min-width="200"></el-table-column>
        <el-table-column prop="statName" label="计划任务名称" align="center" min-width="180"></el-table-column>
-       <el-table-column prop="finishBudget" label="设计工程量" align="center" min-width="120"></el-table-column>
-       <el-table-column prop="budgetTotal" label="累计完成" align="center" min-width="120"></el-table-column>
+       <el-table-column prop="budgetTotal" label="设计工程量" align="center" min-width="120"></el-table-column>
+       <el-table-column prop="finishBudget" label="累计完成" align="center" min-width="120"></el-table-column>
        <el-table-column prop="finishBudgetRate" label="累计完成百分比" align="center" min-width="120">
             <template slot-scope="scope">
                 <span v-if="scope.row.finishBudgetRate">{{$common.fomatPrecent(scope.row.finishBudgetRate)}}%</span>

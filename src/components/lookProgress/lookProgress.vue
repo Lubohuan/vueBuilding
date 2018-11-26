@@ -39,8 +39,18 @@
        </template>
     </el-table-column>
     <template v-for="(item,index) in indexArry">
-      <el-table-column  :prop="'logMms['+ index +'].planFinish'"  :label=" item + '月计划'"  :key="index  + 0.1"></el-table-column>
-      <el-table-column  :prop="'logMms['+ index +'].finishTotal'" :label=" item + '月完成'"  :key="index  + 0.2"></el-table-column>
+      <el-table-column align="center" :prop="'logMms['+ index +'].planFinish'"  :label=" item + '月计划'"  :key="index  + 0.1">
+           <template slot-scope="scope">
+             <span v-if="scope.row.logMms[index].planFinish">{{scope.row.logMms[index].planFinish}}</span>
+             <span v-else>--</span>
+           </template>
+      </el-table-column>
+      <el-table-column align="center"  :prop="'logMms['+ index +'].finishTotal'" :label=" item + '月完成'"  :key="index  + 0.2">
+           <template slot-scope="scope">
+             <span v-if="scope.row.logMms[index].finishTotal">{{scope.row.logMms[index].finishTotal}}</span>
+             <span v-else>--</span>
+           </template>
+      </el-table-column>
     </template>
   </el-table>
   <el-pagination background v-if="total>0"

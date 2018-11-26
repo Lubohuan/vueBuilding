@@ -13,9 +13,24 @@
     <el-table-column prop="warningReason"  label="预警原因" align="center"></el-table-column>
     <el-table-column prop="respUserName"  label="责任人" align="center" min-width="120"></el-table-column>
     <el-table-column prop="createTime"  label="预警时间" align="center" min-width="120"></el-table-column>
-    <el-table-column prop="relieveReason"  label="预警解除原因" align="center"></el-table-column>
-    <el-table-column prop="respUserName"  label="预警解除人" align="center" min-width="120"></el-table-column>
-    <el-table-column prop="relieveTime"  label="预警解除时间" align="center" min-width="120"></el-table-column>
+    <el-table-column prop="relieveReason"  label="预警解除原因" align="center">
+        <template slot-scope="scope">
+             <span v-if="scope.row.relieveReason">{{scope.row.relieveReason}}</span>
+             <span v-else>--</span>
+        </template>
+    </el-table-column>
+    <el-table-column prop="respUserName"  label="预警解除人" align="center" min-width="120">
+        <template slot-scope="scope">
+             <span v-if="scope.row.respUserName">{{scope.row.respUserName}}</span>
+             <span v-else>--</span>
+        </template>
+    </el-table-column>
+    <el-table-column prop="relieveTime"  label="预警解除时间" align="center" min-width="120">
+        <template slot-scope="scope">
+             <span v-if="scope.row.relieveTime">{{scope.row.relieveTime}}</span>
+             <span v-else>--</span>
+        </template>
+    </el-table-column>
   </el-table>
   <el-pagination background v-if="total > 0"
       class="pageStyle"

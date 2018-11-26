@@ -160,7 +160,7 @@
                           <span>累计完成量：{{personalData.finishTotal}}{{personalData.unitName}}</span>
                           <span class="rightSpan">剩余工程量：{{personalData.notFinish}}{{personalData.unitName}}</span>
                       </div>
-                       <div style="margin-top:20px;">计划产值：{{personalData.planFinish}}万元</div>
+                       <div style="margin-top:20px;">计划产值：{{personalData.planOutput}}万元</div>
                        <div>
                           <span>累计完成产值：{{personalData.finishOutput}}万元</span>
                           <span class="rightSpan">剩余产值：{{personalData.notFinishOutput}}万元</span>
