@@ -20,10 +20,10 @@
         <el-input v-model="dataModel.planName" size="small"></el-input>
     </el-form-item>
     <el-form-item label="开始时间：" prop="planStartTime">
-         <el-date-picker value-format="yyyy-MM-dd"  format="yyyy 年 MM 月 dd 日" size="small" v-model="dataModel.planStartTime" type="date" placeholder="选择日期" style="width:100%;"></el-date-picker>
+         <el-date-picker :picker-options="pickerOptions0" value-format="yyyy-MM-dd"  format="yyyy 年 MM 月 dd 日" size="small" v-model="dataModel.planStartTime" type="date" placeholder="选择日期" style="width:100%;"></el-date-picker>
     </el-form-item>
     <el-form-item label="完成时间：" prop="planEndTime">
-        <el-date-picker value-format="yyyy-MM-dd"  format="yyyy 年 MM 月 dd 日" size="small" v-model="dataModel.planEndTime " type="date" placeholder="选择日期" style="width:100%;"></el-date-picker>
+        <el-date-picker  :picker-options="pickerOptions1" value-format="yyyy-MM-dd"  format="yyyy 年 MM 月 dd 日" size="small" v-model="dataModel.planEndTime " type="date" placeholder="选择日期" style="width:100%;"></el-date-picker>
     </el-form-item> 
     <el-form-item label="计划完成工程量：" prop="planFinish">
         <el-input v-model.number="dataModel.planFinish " size="small"></el-input>
@@ -114,6 +114,16 @@ export default {
         children: "child",
         label: "name",
         value: "id"
+      },
+      pickerOptions0: {
+          disabledDate:(time)=> {
+            return time.getTime() < Date.now();
+          }
+      },
+      pickerOptions1: {
+           disabledDate:(time) => {
+            return time.getTime() <Date.now();
+          }
       }
     };
   },
