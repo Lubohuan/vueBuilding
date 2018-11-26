@@ -69,6 +69,9 @@ export default {
      */
     async update(data) {
       await this.getlistOrgInfoList();
+      if(!data.id){
+        this.dataModel.projectArry = JSON.parse(sessionStorage.getItem("selectArry"));
+      }
       if (!data.id) return;
       
       this.dataModel.id = data.id;
