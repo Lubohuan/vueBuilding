@@ -118,6 +118,9 @@ export default {
      反显数据
      */
     async update(data) {
+      if(!data.id){
+        this.dataModel.projectIdArry = JSON.parse(sessionStorage.getItem("selectArry"));
+      }
       this.getReginList();
       await this.getSubsectionList();
       this.getUnitList();
