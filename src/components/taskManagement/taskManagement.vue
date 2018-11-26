@@ -50,7 +50,7 @@
           <div style="text-align:center;">
               <span style="background:rgba(144, 144, 144, 0.15);padding:2px 5px;">共{{tableData.length}}条任务</span>
           </div>
-          <div v-for="item in tableData" :key="item.id" @click="lookInfo(item)" class="blackOne" tabindex = "0">
+          <div v-for="(item,index) in tableData" :key="item.id" @click="lookInfo(item,index)" class="blackOne" :class="{ checkEdColor:changeList == index}" tabindex = "0">
               <div class="oneFirst">{{item.planName}}</div>
               <div>
                   <el-row>
@@ -266,6 +266,7 @@ export default {
       activeName: "first",
       activeName1: "first1",
       activeName11: "first11",
+      changeList:-1,
       tableData: [],
       tableDatas:[],
       stateData:[
@@ -345,9 +346,10 @@ export default {
   methods: {
 
     //点击查看详情
-    lookInfo(data) {
+    lookInfo(data,index) {
       this.dateId = data.id;
       this.palnId = data.planId;
+      this.changeList = index;
       console.log(this.dateId,"data.id");
       console.log()
       this.refreshLists();
@@ -528,4 +530,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "taskManagement.scss";
+.checkEdColor{
+    background-color: rgba(64,158,255,.1);
+}
 </style>

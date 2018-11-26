@@ -25,7 +25,7 @@ export default {
       data2: [
         {
           id: 1,
-          label: "指挥中心",
+          label: "项目管理看板",
           path:"/commandCentre"
         },
         // {

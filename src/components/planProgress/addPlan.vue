@@ -150,10 +150,9 @@ export default {
         'getUserList'
     ]),
 
+    //根据选中的统计项id获取项目信息
     changeVisu(){
-    this.visualStatObject = this.statisList.find(
-      (v) => v.id === this.dataModel.visualStatId,
-    );
+     this.visualStatObject = this.statisList.find((v) => v.id === this.dataModel.visualStatId);
      this.dataModel.planName = this.visualStatObject.statName;
     },
 

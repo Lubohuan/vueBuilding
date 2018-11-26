@@ -64,37 +64,6 @@ export default {
       'getlistOrgInfoList'
     ]),
 
-    deepClone(data){
-    let obj = JSON.stringify(data);
-    return JSON.parse(obj);
-    },
-
-    initTree(data){
-    let arr = [];
-    for(let i=data.length;i--;){
-      if(data[i]['child']){
-        arr.push(...this.initTree(data[i]['child']));
-        let a = this.deepClone(data[i]);
-        delete a.child;
-        arr.push(a);
-      }else{
-        arr.push(data[i]);
-      }
-    }
-    return arr;
-    },
-
-    findParent(data,id){
-    let arr = [];
-    for(let i=data.length;i--;){
-      if(id == data[i].id){
-        arr.unshift(id);
-        arr.unshift(...this.findParent(data,data[i].pid));
-      }
-      }
-      return arr;
-    },
-
     /**
      * 反显数据
      */
@@ -104,9 +73,9 @@ export default {
       
       this.dataModel.id = data.id;
       this.dataModel.regionName = data.regionName;
-      let object = this.initTree(this.listOrgInfoList);
-      this.dataModel.projectArry  = this.findParent(object,data.projectId);
-     
+       //查找项目父级
+      let object = this.$common.initTree(this.listOrgInfoList);
+      this.dataModel.projectArry  = this.$common.findParent(object, data.projectId);
     },
 
     //重置方法
