@@ -20,10 +20,10 @@
         <el-input v-model="dataModel.planName" size="small"></el-input>
     </el-form-item>
     <el-form-item label="开始时间：" prop="planStartTime">
-         <el-date-picker :picker-options="pickerOptions0" value-format="yyyy-MM-dd"  format="yyyy 年 MM 月 dd 日" size="small" v-model="dataModel.planStartTime" type="date" placeholder="选择日期" style="width:100%;"></el-date-picker>
+         <el-date-picker format="yyyy 年 MM 月 dd 日"  size="small" v-model="dataModel.planStartTime" type="date" placeholder="选择日期" style="width:100%;"></el-date-picker>
     </el-form-item>
     <el-form-item label="完成时间：" prop="planEndTime">
-        <el-date-picker  :picker-options="pickerOptions1" value-format="yyyy-MM-dd"  format="yyyy 年 MM 月 dd 日" size="small" v-model="dataModel.planEndTime " type="date" placeholder="选择日期" style="width:100%;"></el-date-picker>
+        <el-date-picker  :picker-options="pickerOptions1"  format="yyyy 年 MM 月 dd 日"  size="small" v-model="dataModel.planEndTime " type="date" placeholder="选择日期" style="width:100%;"></el-date-picker>
     </el-form-item> 
     <el-form-item label="计划完成工程量：" prop="planFinish">
         <el-input v-model.number="dataModel.planFinish " size="small"></el-input>
@@ -115,14 +115,24 @@ export default {
         label: "name",
         value: "id"
       },
-      pickerOptions0: {
-          disabledDate:(time)=> {
-            return time.getTime() < Date.now();
-          }
-      },
+      // pickerOptions0: {
+      //     disabledDate:(time)=> {
+      //       return time.getTime() < Date.now();
+      //     }
+      // },
       pickerOptions1: {
            disabledDate:(time) => {
-            return time.getTime() <Date.now();
+            var date =  new Date(this.dataModel.planStartTime);
+            var y = 1900+date.getYear();
+            var m = "0"+(date.getMonth()+1);
+            var d = "0"+date.getDate();
+            var satrtTime = y+"-"+ m.substring(m.length-2,m.length)+"-"+d.substring(d.length-2,d.length);
+            var arr = satrtTime.split("-"); //将获取的时间按“-”拆分成字符串数组
+            var year = parseInt(arr[0]); //开分字符串数组的第一个地址的内容是年份
+            var month = parseInt(arr[1]); //开分字符串数组的第二个地址的内容是月份
+            var prevmonthLastday = (new Date(year, month, 1)).getTime() - 86400000;
+            var valueData = new Date(prevmonthLastday); //结束时间
+            return time.getTime() <this.dataModel.planStartTime || time.getTime() > valueData;
           }
       }
     };
