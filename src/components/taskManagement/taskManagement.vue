@@ -154,7 +154,7 @@
                       <div>分部分项：{{personalData.subFullName}}</div>
                       <div style="margin-top:20px;">
                           <span>计划工程量：{{personalData.planFinish}}{{personalData.unitName}}</span>
-                          <span class="rightNumber">{{$common.fomatPrecent(personalData.finishRate)}}%</span>
+                          <span v-if="personalData.finishRate" class="rightNumber">{{$common.fomatPrecent(personalData.finishRate)}}%</span>
                       </div>
                        <div>
                           <span>累计完成量：{{personalData.finishTotal}}{{personalData.unitName}}</span>
