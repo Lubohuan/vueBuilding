@@ -79,7 +79,7 @@
                       <el-col :span="9" class="rightTag raduisTag">
                           <el-tag  size="small" style="border-radius:20px;" v-if="item.state == '0'">未完成</el-tag >
                           <el-tag type="success" size="small" style="border-radius:20px;" v-if="item.state == '1'">已完成</el-tag >
-                          <el-tag type="danger" size="small" style="border-radius:20px;" v-if="item.state == '2'">已过期</el-tag >                            
+                          <el-tag type="danger" size="small" style="border-radius:20px;" v-if="item.state == '2'">逾期{{item.remainDay}}天</el-tag >                            
                       </el-col>
                   </el-row>
               </div>
