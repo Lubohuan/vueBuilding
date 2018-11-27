@@ -51,28 +51,36 @@
     <span class="custom-tree-node" slot-scope="{ node, data }">
     <el-row style="width:100%;">
     <el-col :span="2" class="tableCol" style="margin-left:20px;">
-    <span>{{ data.projectName }}</span>
+      <span v-if="data.projectName == null">--</span>
+      <span v-else>{{ data.projectName }}</span>
     </el-col>
     <el-col :span="3" class="tableCol">
-       <span>{{ data.regionName }}</span>
+       <span v-if="data.regionName == null">--</span>
+       <span v-else>{{ data.regionName }}</span> 
+    </el-col>
+    <el-col :span="2" class="tableCol">
+       <span v-if="data.taskTotal == null">--</span>
+       <span v-else>{{ data.taskTotal }}</span> 
     </el-col>
       <el-col :span="2" class="tableCol">
-       <span>{{ data.taskTotal }}</span>
+       <span v-if="data.finishCount == null">--</span>
+       <span v-else>{{ data.finishCount }}</span>
     </el-col>
-      <el-col :span="2" class="tableCol">
-      <span>{{ data.finishCount }}</span>
+    <el-col :span="3" class="tableCol" style="margin-left:-15px;">
+       <span v-if="data.startCount == null">--</span>
+       <span v-else>{{ data.startCount }}</span>
     </el-col>
-      <el-col :span="3" class="tableCol" style="margin-left:-15px;">
-      <span>{{ data.startCount }}</span>
-    </el-col>
-      <el-col :span="3" class="tableCol" style="margin-left:-40px;color:red;">
-       <span>{{ data.expiryCount }}</span>
+    <el-col :span="3" class="tableCol" style="margin-left:-40px;color:red;">
+       <span v-if="data.expiryCount == null">--</span>
+       <span v-else>{{ data.expiryCount }}</span>
     </el-col>
     <el-col :span="2" class="tableCol" style="margin-left:10px;">
-       <span>{{ data.expiryRate }}</span>
+       <span v-if="data.expiryRate == null">--</span>
+       <span v-else>{{ data.expiryRate }}</span>
     </el-col>
     <el-col :span="3" class="tableCol">
-      <span>{{ data.notStartCount }}</span>
+       <span v-if="data.notStartCount == null">--</span>
+       <span v-else>{{ data.notStartCount }}</span>
     </el-col>
     <el-col :span="4"  class="tableCol">
      <span>

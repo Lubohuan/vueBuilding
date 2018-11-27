@@ -11,13 +11,14 @@
       <el-button size="mini" type="primary" @click="addProgress">+新增形象进度统计项</el-button>
       <el-button size="mini" type="success">导出excel</el-button>
    </el-col>
-   <el-col :span="14" class="graphicProgress_btn1">
+   <!-- <el-col :span="14" class="graphicProgress_btn1">
       <el-cascader placeholder="请选择施工区段" :options="reginList" v-model="regionId" :props="defaultProps" size="small" @change="reserchList" clearable></el-cascader>
-   </el-col>
+   </el-col> -->
   </el-row>
    <el-row class="graphicProgress_row">
    <el-col :span="15">
       <el-cascader :show-all-levels="false" :options="listOrgInfoList" v-model="projectId" :props="defaultProp" size="small" placeholder="请选择项目" clearable></el-cascader>
+      <el-cascader placeholder="请选择施工区段" :options="reginList" v-model="regionId" :props="defaultProps" size="small"  clearable></el-cascader>
    </el-col>
    <el-col :span="9" class="graphicProgress_btn1">
        <el-button size="mini" type="success" @click="resarchInfo">搜索</el-button>
@@ -212,6 +213,7 @@ export default {
 
     //查询按钮
     resarchInfo(){
+       this.regionIds = this.regionId[this.regionId.length - 1];
        this.projectIds = this.projectId[this.projectId.length - 1];
        this.refreshList();
     },
@@ -225,7 +227,9 @@ export default {
     //重置搜索框
     resetForm(){
       this.projectId = []; 
-      this.projectIds = null;   
+      this.projectIds = null;
+      this.regionIds = null;
+      this.regionId = [];   
     }
   },
   created() {
