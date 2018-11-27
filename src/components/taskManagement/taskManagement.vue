@@ -266,7 +266,7 @@ export default {
       activeName: "first",
       activeName1: "first1",
       activeName11: "first11",
-      changeList:-1,
+      changeList:0,
       tableData: [],
       tableDatas:[],
       stateData:[
