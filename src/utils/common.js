@@ -10,6 +10,14 @@ export default {
     let obj = JSON.stringify(data);
     return JSON.parse(obj);
   },
+  //日期转化
+  fomatDate(data){
+    var date =  new Date(data);
+    var y = 1900+date.getYear();
+    var m = "0"+(date.getMonth()+1);
+    var d = "0"+date.getDate();
+    return y+"-"+ m.substring(m.length-2,m.length)+"-"+d.substring(d.length-2,d.length);
+  },
   //转换百分比
   fomatPrecent(data){
     var data2 = 100;

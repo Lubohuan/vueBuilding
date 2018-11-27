@@ -196,6 +196,8 @@ export default {
         if (!valid) {
           return;
         }
+        this.dataModel.planStartTime = this.$common.fomatDate(this.dataModel.planStartTime);
+        this.dataModel.planEndTime = this.$common.fomatDate(this.dataModel.planEndTime);
         this.dataModel.projectId = this.dataModel.projectIdArry[this.dataModel.projectIdArry.length - 1];
         //根据是否有数据传入决定执行新增还是修改
         const result = this.dataModel.id ? this.updatePlan() : this.addPlan();

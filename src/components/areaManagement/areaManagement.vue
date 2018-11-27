@@ -18,7 +18,7 @@
    </el-col>
   </el-row>
   <el-row class="tableHead">
-    <el-col :span="2" class="tableCol" style="margin-left:50px;">
+    <el-col :span="2" class="tableCol" style="margin-left:45px;">
       <span>项目名称</span>
     </el-col>
     <el-col :span="3" class="tableCol">
@@ -33,7 +33,7 @@
       <el-col :span="2" class="tableCol">
       <span>进行中</span>
     </el-col>
-      <el-col :span="3" class="tableCol">
+     <el-col :span="3" class="tableCol" style="margin-left: -10px;">
       <span>逾期任务数</span>
     </el-col>
       <el-col :span="2" class="tableCol">
@@ -46,11 +46,10 @@
       <span>操作</span>
     </el-col>
   </el-row>
-  <el-tree :data="tableData" show-checkbox node-key="id" :default-expand-all="false" draggable :expand-on-click-node="false" :props="defaultProps" style="overflow:auto;">
-
-    <span class="custom-tree-node" slot-scope="{ node, data }">
-    <el-row style="width:100%;">
-    <el-col :span="2" class="tableCol" style="margin-left:20px;">
+  <el-tree :data="tableData" show-checkbox node-key="id" :default-expand-all="false" draggable :expand-on-click-node="false" :props="defaultProps" style="overflow:auto;" :indent="5">
+    <span class="custom-tree-node" slot-scope="{ node, data }" :style="'margin-left:'+ node.level*(-9.1) + 'px'">
+    <el-row style="width:100%;" :style="'margin-left:'+ (30 + node.level*2.1) + 'px'">
+    <el-col :span="2" class="tableCol">
       <span v-if="data.projectName == null">--</span>
       <span v-else>{{ data.projectName }}</span>
     </el-col>
@@ -84,13 +83,13 @@
     </el-col>
     <el-col :span="4"  class="tableCol">
      <span>
-            <el-button size="mini" type="primary" @click="addChild(data)">添加下级</el-button>
+            <el-button size="mini" type="primary" @click="addChild(data,node)">添加下级</el-button>
             <el-button size="mini" type="primary" @click="editClick(data)">编辑</el-button>
             <el-button size="mini" type="danger"  @click="deleteClick(data)">删除</el-button>
         </span>
     </el-col>
   </el-row>       
-      </span>
+  </span>
    </el-tree>
 
     <!--添加/修改分部分项-->
@@ -200,12 +199,12 @@ export default {
     },
 
     //打开添加下级弹框
-    addChild(data){
+    addChild(data,node){
        this.dialog.addAreaChild = true;
        this.regionObject = {};
        this.regionObject.id = data.id;
        this.regionObject.projectId = data.projectId;
-       console.log(this.regionObject,"addAreaChild");
+       console.log(node,"addAreaChild");
     },
 
     //查询
@@ -253,4 +252,7 @@ export default {
 </script>
 <style lang="scss">
 @import "areaManagement.scss";
+.el-tree-node__children .el-tree-node__expand-icon{
+  padding-left:10px;
+}
 </style>

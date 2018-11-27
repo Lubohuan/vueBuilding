@@ -116,8 +116,8 @@ export default {
         label: "name",
         value: "id"
       },
-      projectId: null,
-      regionId: null,
+      projectId: [],
+      regionId: [],
       regionIds:null,
       projectIds:null,   
       monthIndex:'',
@@ -232,8 +232,8 @@ export default {
   resetForm(){
      this.regionId = [];
      this.projectId = [];
-     this.regionIds = "";
-     this.projectIds = "";
+     this.regionIds = null;
+     this.projectIds = null;
     },
   
   //获取月份数组
@@ -288,8 +288,12 @@ export default {
 
     //按钮查询
     resarchInfo(){
-       this.regionIds = this.regionId[this.regionId.length - 1];
-       this.projectIds = this.projectId[this.projectId.length - 1];
+       if(this.regionId.length >0){
+          this.regionIds = this.regionId[this.regionId.length - 1];
+       }
+       if(this.projectId.length>0){
+         this.projectIds = this.projectId[this.projectId.length - 1];
+       } 
        this.refreshList();
     },
   },

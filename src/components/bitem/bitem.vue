@@ -28,7 +28,7 @@
     <el-col :span="20" class="tableCol">
       <div>分部分项划分名称</div>
     </el-col>
-    <el-col :span="4"  class="tableCol">
+    <el-col :span="4"  class="tableCol" style="border-left:1px solid #e4e7ed;">
       <div>操作</div>
     </el-col>
   </el-row>
