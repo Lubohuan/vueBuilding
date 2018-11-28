@@ -6,13 +6,13 @@
        <el-cascader :options="listOrgInfoList" v-model="dataModel.projectIdArry" :props="defaultPropss" size="small" placeholder="请选择项目" style="width:100%;" :disabled="isUp"></el-cascader>
     </el-form-item>
     <el-form-item label="施工区域" prop="regionIdArry" >
-         <el-cascader change-on-select :options="reginList" v-model="dataModel.regionIdArry" :props="defaultProps" size="small" style="width:100%;" :disabled="isUp"></el-cascader>
-    </el-form-item>
-    <el-form-item label="形象进度统计项：" prop="statName">
-        <el-input v-model="dataModel.statName" size="small"></el-input>
+         <el-cascader ref="checkRegion" change-on-select :options="reginList" v-model="dataModel.regionIdArry" :props="defaultProps" size="small" style="width:100%;" :disabled="isUp" @change="changeCheckRegion"></el-cascader>
     </el-form-item>
     <el-form-item label="选择分部分项：" prop="subIdArry">
-        <el-cascader :options="bitemList" v-model="dataModel.subIdArry" :props="defaultProp" size="small" style="width:100%;" :disabled="isUp"></el-cascader>
+        <el-cascader ref="checkBitem" :options="bitemList" v-model="dataModel.subIdArry" :props="defaultProp" size="small" style="width:100%;" :disabled="isUp" @change="changeCheckBitem"></el-cascader>
+    </el-form-item>
+     <el-form-item label="形象进度统计项：" prop="statName">
+        <el-input v-model="dataModel.statName" size="small"></el-input>
     </el-form-item>
     <el-form-item label="形象单位：" prop="unitId" class="unitem">
         <el-select :disabled="isUp" size="small" v-model="dataModel.unitId " placeholder="请选择" clearable style="width:100%;">
@@ -95,7 +95,9 @@ export default {
         label: "name",
         value: "id"
       },
-      isUp:false
+      isUp:false,
+      checkReginLabel:'',
+      checkBitemLabel:'',
     };
   },
   computed: {
@@ -113,7 +115,15 @@ export default {
         'getUnitList',
         'getlistOrgInfoList'
     ]),
+    changeCheckRegion(){   
+      this.checkReginLabel = this.$refs["checkRegion"].currentLabels.join("/");
+      this.dataModel.statName = this.checkReginLabel + '/' + this.checkBitemLabel;      
+    },
 
+    changeCheckBitem(){
+      this.checkBitemLabel = this.$refs["checkBitem"].currentLabels.join("/");
+      this.dataModel.statName = this.checkReginLabel + '/' + this.checkBitemLabel;
+    },
     /**
      反显数据
      */
