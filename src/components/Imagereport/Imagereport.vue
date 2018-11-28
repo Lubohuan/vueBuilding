@@ -58,14 +58,14 @@
        <el-table-column prop="regionFullName" label="施工区段" align="center" min-width="200"></el-table-column>
        <el-table-column prop="subFullName" label="分部分项名称" align="center" min-width="200"></el-table-column>
        <el-table-column prop="budgetTotal" label="预算工程量" align="center" min-width="100"></el-table-column>
-       <el-table-column prop="outputTotal" :label="ifTimeOutPut" align="center" min-width="100"></el-table-column>
+       <el-table-column prop="finishAmount" :label="ifTimeOutPut" align="center" min-width="100"></el-table-column>
        <el-table-column prop="finishBudgetTotal" label="累计完成工程量" align="center"></el-table-column>
        <el-table-column prop="finishBudgetTotalRate" label="累计完成比例" align="center" min-width="80">
           <template slot-scope="scope">
             <span v-if="scope.row.finishBudgetTotalRate">{{$common.fomatPrecent(scope.row.finishBudgetTotalRate)}}%</span>
           </template>
        </el-table-column>
-       <el-table-column prop="finishAmount" :label="ifTime" align="center"></el-table-column>
+       <el-table-column prop="finishOutput" :label="ifTime" align="center"></el-table-column>
        <el-table-column prop="finishOutputTotal" label="累计完成产值" align="center"></el-table-column>
        <el-table-column prop="finishOutputTotalRate" label="累计完成比例" align="center" >
           <template slot-scope="scope">
