@@ -46,7 +46,7 @@ export default {
           { required: true, message: "请输入解除预警原因", trigger: "blur" }
         ],
         planEndTime: [
-          { required: true, message: "请输入解除预警原因", trigger: "blur" }
+          { required: true, message: "请选择解除预警时间", trigger: "blur" }
         ]
       },
     };
