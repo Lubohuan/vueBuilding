@@ -38,6 +38,7 @@
           <span v-if="scope.row.state == 0"><span class="starting"></span>进行中</span>
           <span v-if="scope.row.state == 1" ><span class="finish"></span>已完成</span>
           <span v-if="scope.row.state == 2" ><span class="overTime"></span>已逾期</span>
+          <span v-if="scope.row.state == 3" ><span class="notStatr"></span>未开始</span>
        </template>
     </el-table-column>
     <el-table-column prop="planName"  label="计划任务名称" align="center" min-width="200"></el-table-column>

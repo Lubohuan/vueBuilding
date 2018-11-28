@@ -71,6 +71,14 @@
     background: #f25643;
     border-radius: 50%;
     margin-right: 5px;
+}
+.notStatr{
+    width: 10px;
+    display: inline-block;
+    height: 10px;
+    background: #3296fa;
+    border-radius: 50%;
+    margin-right: 5px;
 } 
 .el-button--primary{
     background-color: #3296fa;
@@ -109,5 +117,8 @@
         border-color: #f25643;
         color: #f25643;
     }
+}
+.pageStyle{
+    text-align: right;
 }
 

@@ -77,13 +77,25 @@
                           </el-tooltip>
                       </el-col>
                       <el-col :span="9" class="rightTag raduisTag">
-                          <el-tag  size="small" style="border-radius:20px;" v-if="item.state == '0'">未完成</el-tag >
+                          <el-tag  size="small" style="border-radius:20px;" v-if="item.state == '0'">剩余{{item.remainDay}}天</el-tag >
                           <el-tag type="success" size="small" style="border-radius:20px;" v-if="item.state == '1'">已完成</el-tag >
                           <el-tag type="danger" size="small" style="border-radius:20px;" v-if="item.state == '2'">逾期{{item.remainDay}}天</el-tag >                            
                       </el-col>
                   </el-row>
               </div>
           </div>
+           <el-pagination v-if="total > 0"
+            class="pageStyle"
+            small
+			layout="prev, pager, next"
+			:page-sizes="[5, 10, 15, 20]"
+			:page-size="pagesize"
+            :current-page.sync="currentPage"
+			:total="total"
+			@current-change="handleCurrentChange"
+			@size-change="handleSizeChange"
+			>
+	      </el-pagination>
           </div>
           </el-row>
       </el-col>
@@ -267,6 +279,9 @@ export default {
       activeName1: "first1",
       activeName11: "first11",
       changeList:0,
+      pagesize: 10,
+      total: 0,
+      currentPage: 1,
       tableData: [],
       tableDatas:[],
       stateData:[
@@ -314,8 +329,6 @@ export default {
       isShowRight:true,
       leftNumber:12,
       showRoFalse:"隐藏动态",
-      current:1,
-      offset:10,
       dateId:null,
       palnId:null,
       videosInfo:{},
@@ -344,6 +357,18 @@ export default {
     };
   },
   methods: {
+
+     //页码改变
+    handleCurrentChange(cpage) {
+      this.currentPage = cpage;
+      this.refreshList();
+    },
+
+    //每页显示数量改变
+    handleSizeChange(psize) {
+      this.pagesize = psize;
+      this.refreshList();
+    },
 
     //点击查看详情
     lookInfo(data,index) {
@@ -449,8 +474,8 @@ export default {
     refreshList() {
       return new Promise((resolve,reject)=>{
         getPlanTaskPage({
-          current:this.current,
-          offset:this.offset,
+          current:this.currentPage,
+          offset:this.pagesize,
       })
         .then(response => {
           if(response.body.rows == undefined){
@@ -458,6 +483,10 @@ export default {
           }
           else{
               this.tableData = response.body.rows;
+              this.total = Number(response.body.page.rows);
+              this.dateId = this.tableData[0].id;
+              this.palnId = this.tableData[0].planId;
+              this.refreshLists();
           }
           
           resolve();

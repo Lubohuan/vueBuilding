@@ -43,7 +43,11 @@
        <el-table-column prop="regionName" label="名称" align="center" min-width="200" ></el-table-column>
        <el-table-column prop="currentFinish"  label="今日完成产值" align="center"></el-table-column>
        <el-table-column prop="finishOutput"  label="累计完成产值" align="center"></el-table-column>
-       <el-table-column prop="finishBudgetRate"  label="累计完成比例" align="center" min-width="120"></el-table-column>
+       <el-table-column prop="finishBudgetRate"  label="累计完成比例" align="center" min-width="120">
+          <template slot-scope="scope">
+            <span v-if="scope.row.finishBudgetRate">{{$common.fomatPrecent(scope.row.finishBudgetRate)}}%</span>
+          </template>
+       </el-table-column>
       </el-table>
     </div>
      <div class="tableDiv">
