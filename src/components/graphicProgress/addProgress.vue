@@ -9,7 +9,7 @@
          <el-cascader ref="checkRegion" change-on-select :options="reginList" v-model="dataModel.regionIdArry" :props="defaultProps" size="small" style="width:100%;" :disabled="isUp" @change="changeCheckRegion"></el-cascader>
     </el-form-item>
     <el-form-item label="选择分部分项：" prop="subIdArry">
-        <el-cascader ref="checkBitem" :options="bitemList" v-model="dataModel.subIdArry" :props="defaultProp" size="small" style="width:100%;" :disabled="isUp" @change="changeCheckBitem"></el-cascader>
+        <el-cascader ref="checkBitem"  change-on-select :options="bitemList" v-model="dataModel.subIdArry" :props="defaultProp" size="small" style="width:100%;" :disabled="isUp" @change="changeCheckBitem"></el-cascader>
     </el-form-item>
      <el-form-item label="形象进度统计项：" prop="statName">
         <el-input v-model="dataModel.statName" size="small"></el-input>
