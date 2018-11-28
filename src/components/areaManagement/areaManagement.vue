@@ -25,7 +25,7 @@
       <span>区域名称</span>
     </el-col>
       <el-col :span="2" class="tableCol">
-      <span>任务总数</span>
+      <span>计划总数</span>
     </el-col>
       <el-col :span="2" class="tableCol">
       <span>已完成</span>
@@ -34,10 +34,10 @@
       <span>进行中</span>
     </el-col>
      <el-col :span="3" class="tableCol" style="margin-left: -10px;">
-      <span>逾期任务数</span>
+      <span>逾期计划数</span>
     </el-col>
       <el-col :span="2" class="tableCol">
-      <span>逾期任务占比</span>
+      <span>逾期计划占比</span>
     </el-col>
       <el-col :span="3" class="tableCol">
       <span>未开始</span>
