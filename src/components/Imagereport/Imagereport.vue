@@ -41,7 +41,7 @@
       <span class="spanBlock">产值进度</span>
       <el-table  border :data="tableData1" style="width: 100%" max-height="500">
        <el-table-column prop="regionName" label="名称" align="center" min-width="200" ></el-table-column>
-       <el-table-column prop="currentFinish"  label="今日完成产值" align="center"></el-table-column>
+       <el-table-column prop="currentFinish" :label="ifTime" align="center"></el-table-column>
        <el-table-column prop="finishOutput"  label="累计完成产值" align="center"></el-table-column>
        <el-table-column prop="finishBudgetRate"  label="累计完成比例" align="center" min-width="120">
           <template slot-scope="scope">
@@ -58,14 +58,14 @@
        <el-table-column prop="regionFullName" label="施工区段" align="center" min-width="200"></el-table-column>
        <el-table-column prop="subFullName" label="分部分项名称" align="center" min-width="200"></el-table-column>
        <el-table-column prop="budgetTotal" label="预算工程量" align="center" min-width="100"></el-table-column>
-       <el-table-column prop="outputTotal" label="今日完成工程量" align="center" min-width="100"></el-table-column>
+       <el-table-column prop="outputTotal" :label="ifTimeOutPut" align="center" min-width="100"></el-table-column>
        <el-table-column prop="finishBudgetTotal" label="累计完成工程量" align="center"></el-table-column>
        <el-table-column prop="finishBudgetTotalRate" label="累计完成比例" align="center" min-width="80">
           <template slot-scope="scope">
             <span v-if="scope.row.finishBudgetTotalRate">{{$common.fomatPrecent(scope.row.finishBudgetTotalRate)}}%</span>
           </template>
        </el-table-column>
-       <el-table-column prop="finishAmount" label="今日完成产值" align="center"></el-table-column>
+       <el-table-column prop="finishAmount" :label="ifTime" align="center"></el-table-column>
        <el-table-column prop="finishOutputTotal" label="累计完成产值" align="center"></el-table-column>
        <el-table-column prop="finishOutputTotalRate" label="累计完成比例" align="center" >
           <template slot-scope="scope">
@@ -81,14 +81,14 @@
        <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
        <el-table-column prop="subFullName" label="分部分项名称" align="center" min-width="150"></el-table-column>
        <el-table-column prop="budgetTotal" label="预算工程量" align="center" min-width="100"></el-table-column>
-       <el-table-column prop="finishAmount" label="今日完成工程量" align="center" min-width="100"></el-table-column>
+       <el-table-column prop="finishAmount" :label="ifTimeOutPut" align="center" min-width="100"></el-table-column>
        <el-table-column prop="finishBudgetTotal" label="累计完成工程量" align="center"></el-table-column>
        <el-table-column prop="finishBudgetTotalRate" label="累计完成比例" align="center" min-width="80">
           <template slot-scope="scope">
             <span v-if="scope.row.finishBudgetTotalRate">{{$common.fomatPrecent(scope.row.finishBudgetTotalRate)}}%</span>
           </template>
        </el-table-column>
-       <el-table-column prop="finishOutput" label="今日完成产值" align="center"></el-table-column>
+       <el-table-column prop="finishOutput" :label="ifTime" align="center"></el-table-column>
        <el-table-column prop="finishOutputTotal" label="累计完成产值" align="center"></el-table-column>
        <el-table-column prop="finishOutputTotalRate" label="累计完成比例" align="center" >
            <template slot-scope="scope">
@@ -114,7 +114,10 @@ export default {
       monthData: "",
       dayData: "",
       weekData: "",
-      newestData: ""
+      newestData: "",
+      ifTime:"今日完成产值",
+      ifTimeOutPut:'今日完成工程量',
+
     };
   },
   methods: {
@@ -122,10 +125,14 @@ export default {
       this.activeName = tab.name;
       switch(this.activeName){
       case "first":
+      this.ifTime = "今日完成产值";
+      this.ifTimeOutPut = "今日完成工程量";
       this.getThisDays();
       this.refreshList();
       break;
       case "second":
+      this.ifTime = "本周完成产值";
+      this.ifTimeOutPut = "本周完成工程量";
       this.getWeek();
       this.getWeekTime();
       this.start = this.dataArr[0];
@@ -133,12 +140,16 @@ export default {
       this.refreshList();
       break;
       case "third":
+      this.ifTime = "本月完成产值";
+      this.ifTimeOutPut = "本月完成工程量";
       this.getMonths(); 
       this.refreshList();
       break;
-      // case "fourth":
-      //   执行代码块 4
-      // break;
+      case "fourth":
+      this.ifTime = "本期完成产值";
+      this.ifTimeOutPut = "本期完成工程量";
+      this.refreshList();
+      break;
     }
     },
 
@@ -162,11 +173,18 @@ export default {
 
     //天数加
     addDay() {
-      var addDate  = this.$common.addDay(this.dayData);
-      this.dayData = addDate;
-      this.start = addDate;
-      this.end = addDate;
-      this.refreshList();
+      var newThisData =  this.$common.getThisDays();
+      if(newThisData == this.dayData){
+        this.$message.success("已经是最新的了 !");
+        return
+      }
+      else{
+        var addDate  = this.$common.addDay(this.dayData);
+        this.dayData = addDate;
+        this.start = addDate;
+        this.end = addDate;
+        this.refreshList();
+      } 
     },
 
     //天数减

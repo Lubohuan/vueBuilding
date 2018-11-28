@@ -207,6 +207,9 @@ export default {
     } else {
       date = date - 1;
     }
+    if(date.toString().length == 1) {
+      date = "0" + date;
+    }
     return year + "-" + mouth + "-" + date; //拼接字符串
   },
 
@@ -286,6 +289,9 @@ export default {
       }
     } else {
       date += 1;
+    }
+    if (date.toString().length == 1) {
+      date = "0" + date;
     }
     return year + "-" + mouth + "-" + date;
   },
