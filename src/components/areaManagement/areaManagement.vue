@@ -46,7 +46,7 @@
       <span>操作</span>
     </el-col>
   </el-row>
-  <el-tree :data="tableData" show-checkbox node-key="id" :default-expand-all="false" draggable :expand-on-click-node="false" :props="defaultProps" style="overflow:auto;" :indent="5">
+  <el-tree :data="tableData" show-checkbox node-key="id" :default-expand-all="false" :expand-on-click-node="false" :props="defaultProps" style="overflow:auto;" :indent="5">
     <span class="custom-tree-node" slot-scope="{ node, data }" :style="'margin-left:'+ node.level*(-8.8) + 'px'">
     <el-row style="width:100%;" :style="'margin-left:'+ (30 + node.level*2.1) + 'px'">
     <el-col :span="2" class="tableCol">

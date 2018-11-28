@@ -32,7 +32,7 @@
       <div>操作</div>
     </el-col>
   </el-row>
-  <el-tree :data="tableData" show-checkbox node-key="id" :default-expand-all="false" draggable :expand-on-click-node="false" :props="defaultProps">
+  <el-tree :data="tableData" show-checkbox node-key="id" :default-expand-all="false" :expand-on-click-node="false" :props="defaultProps">
       <span class="custom-tree-node" slot-scope="{ node, data }">
         <span style="margin-left:100px;font-size:12px;">{{ data.subName }}</span>
         <span>
