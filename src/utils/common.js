@@ -308,6 +308,9 @@ export default {
     } else {
       month = month + 1;
     }
+    if (month.toString().length == 1) {
+      month = "0" + month;
+    }
     return year + "-" + month;
   },
 
@@ -322,6 +325,9 @@ export default {
       month = 12;
     } else {
       month = month - 1;
+    }
+    if(month.toString().length == 1) {
+      month = "0" + month;
     }
     return year + "-" + month;
   },

@@ -204,9 +204,20 @@ export default {
         this.weekData = this.weekData - 1;
       }
         this.getWeekTime();
-        this.start = this.dataArr[0];
-        this.end = this.dataArr[this.dataArr.length - 1];
+        this.start = this.changeDate(this.dataArr[0]);
+        this.end  = this.changeDate(this.dataArr[this.dataArr.length - 1]);
         this.refreshList();
+    },
+
+    //转换日期
+    changeDate(dayData){
+       var arr = dayData.split("-"); //将获取的数组按“-”拆分成字符串数组
+       var year = parseInt(arr[0]); //开分字符串数组的第一个地址的内容是年份
+       var month = parseInt(arr[1]); //开分字符串数组的第二个地址的内容是月份
+       var date = parseInt(arr[arr.length - 1]); //开分字符串数组的第三个地址的内容是日期
+       month = this.$common.doHandleMonth(month);
+       date  = this.$common.doHandleMonth(date);
+       return year + "-" + month + "-" + date;
     },
 
     //周数加
@@ -216,10 +227,10 @@ export default {
         return;
       } else {
         this.weekData = this.weekData + 1;
-      }
+      }     
         this.getWeekTime();
-        this.start = this.dataArr[0];
-        this.end = this.dataArr[this.dataArr.length - 1];
+        this.start = this.changeDate(this.dataArr[0]);
+        this.end  = this.changeDate(this.dataArr[this.dataArr.length - 1]);
         this.refreshList();
     },
 
