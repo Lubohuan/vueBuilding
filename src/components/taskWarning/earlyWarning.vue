@@ -3,7 +3,7 @@
 <div class="earlywarning">
   <el-form :model="relieveReasons" :rules="rules" ref="earlywarning" label-width="125px">
     <div class="infoPlanTitle" style="margin-left: 20px;line-height: 25px;color:#999999;margin-bottom:10px;">
-        <div class="visualSpan">项目名称：{{planlData.projectName}}</div>
+        <!-- <div class="visualSpan">项目名称：{{planlData.projectName}}</div>
         <div class="visualSpan">计划名称：{{planlData.planName}}</div>
         <div class="visualSpan">
             <span>计划工程量：{{planlData.planName}}</span>
@@ -11,7 +11,7 @@
             <span style="color:rgb(64, 158, 255)">剩余工程量：</span>
         </div>
         <div class="visualSpan">计划开始时间：</div>
-        <div class="visualSpan">计划完成时间：</div>
+        <div class="visualSpan">计划完成时间：</div> -->
     </div>
     <el-form-item prop="relieveReason" label="解除预警原因：">     
         <el-input v-model="relieveReasons.relieveReason" size="small" placeholder="请输入解除预警原因"></el-input>
