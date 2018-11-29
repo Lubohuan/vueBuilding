@@ -16,6 +16,11 @@
 
   <script src="libs/jquery/jquery.livequery.1.1.1.min.js"></script>
   <script src="libs/jquery/jquery.timers.js"></script>
+  <!-- 引入样式 -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui@2.4.11/lib/theme-chalk/index.css">
+  <!-- 引入组件库 -->
+  <script src="https://unpkg.com/element-ui@2.4.11/lib/index.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
 
   <script src="libs/utilities.js"></script>
   <script src="libs/forms.js"></script>
@@ -36,6 +41,7 @@
   <script src="ganttZoom.js"></script>
   <script src="ganttGridEditor.js"></script>
   <script src="ganttMaster.js"></script>  
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 
   <!--<script src="libs/profiling.js"></script>-->
@@ -70,14 +76,16 @@
 
 </style>
 
-<form id="gimmeBack" style="display:none;" action="../gimmeBack.jsp" method="post" target="_blank"><input type="hidden" name="prj" id="gimBaPrj"></form>
+<form id="gimmeBack" style="display:none;" action="../gimmeBack.jsp" method="post" target="_blank"><input type="hidden" name="prj" id="gimBaPrj">
+</form>
 
 <script type="text/javascript">
 
 var ge;
-$(function() {
+var rets;
+window.onload = async function() {
   var canWrite=true; //this is the default for test purposes
-
+  var project;
   // here starts gantt initialization
   ge = new GanttMaster();
   ge.set100OnClose=true;
@@ -89,16 +97,70 @@ $(function() {
 
   //in order to force compute the best-fitting zoom level
   delete ge.gantt.zoom;
-
-  var project=loadFromLocalStorage();
+  await getInfoFrom();
+  project =  rets;
+  console.log(project,"project");
 
   if (!project.canWrite)
     $(".ganttButtonBar button.requireWrite").attr("disabled","true");
 
   ge.loadProject(project);
   ge.checkpoint(); //empty the undo stack
-});
+};
 
+function getInfoFrom(){
+  // "tasks" : [ {
+  //     "id" : "132458099226181742",
+  //     "num" : 1,
+  //     "name" : "Gantt editor",
+  //     "parentId" : "0",
+  //     "planId" : "132452525432374382",
+  //     "orgId" : "220",
+  //     "regionId" : "131616240539009134",
+  //     "level" : 0,
+  //     "start" : "1543384601634",
+  //     "end" : "1399586399999",
+  //     "duration" : 20,
+  //     "startIsMilestone" : false,
+  //     "endIsMilestone" : false,
+  //     "status" : "STATUS_ACTIVE",
+  //     "progress" : 0,
+  //     "hasChild" : true,
+  //     "relevance": 0,
+  //     "type": "",
+	// 		"typeId": "",
+  //   }],
+  //   "selectedRow" : 0,
+  //   "canAdd" : true,
+  //   "canWrite" : true,
+  //   "canDelete" : true,
+  //   "canWriteOnParent" : true
+  // }
+  return new Promise((resolve, reject) => {
+    axios.get('http://autobuild.jiguantong.com/bimScheduleService/v1/projectPlan/gantt/132452525432374382').then(function (response) {
+        rets = response.data.body;
+
+        var offset=new Date().getTime()-rets.tasks[0].start;
+        for (var i=0;i<rets.tasks.length;i++) {
+          rets.tasks[i].start = rets.tasks[i].start + offset;
+        } 
+
+        resolve();
+    }).catch(function (error) {
+      console.log(error);
+      reject();
+    });
+  })
+}
+
+async function loadFromLocalStorage() {
+  await getInfoFrom();
+  //if not found create a new example task
+  if (!rets || !rets.tasks || rets.tasks.length == 0){
+    rets = getDemoProject();
+  }
+  console.log(rets,"rets");
+}
 
 
 function getDemoProject(){
@@ -125,7 +187,34 @@ ret= {"tasks":    [
       {"id": "tmp_3", "name": "监督者"},
       {"id": "tmp_4", "name": "客户"}
     ], "canWrite":    true, "canDelete":true, "canWriteOnParent": true, canAdd:true}
-
+  // ret = {
+  //   "tasks" : [ {
+  //     "id" : "132458099226181742",
+  //     "num" : 1,
+  //     "name" : "Gantt editor",
+  //     "parentId" : "0",
+  //     "planId" : "132452525432374382",
+  //     "orgId" : "220",
+  //     "regionId" : "131616240539009134",
+  //     "level" : 0,
+  //     "start" : "1543384601634",
+  //     "end" : "1399586399999",
+  //     "duration" : 20,
+  //     "startIsMilestone" : false,
+  //     "endIsMilestone" : false,
+  //     "status" : "STATUS_ACTIVE",
+  //     "progress" : 0,
+  //     "hasChild" : true,
+  //     "relevance": 0,
+  //     "type": "",
+	// 		"typeId": "",
+  //   }],
+  //   "selectedRow" : 0,
+  //   "canAdd" : true,
+  //   "canWrite" : true,
+  //   "canDelete" : true,
+  //   "canWriteOnParent" : true
+  // }
 
     //actualize data
     var offset=new Date().getTime()-ret.tasks[0].start;
@@ -140,7 +229,7 @@ ret= {"tasks":    [
 function loadGanttFromServer(taskId, callback) {
 
   //this is a simulation: load data from the local storage if you have already played with the demo or a textarea with starting demo data
-  var ret=loadFromLocalStorage();
+  var ret = rets;
 
   //this is the real implementation
   /*
@@ -237,23 +326,6 @@ function getFile() {
   /*  var uriContent = "data:text/html;charset=utf-8," + encodeURIComponent(JSON.stringify(prj));
    neww=window.open(uriContent,"dl");*/
 }
-
-
-function loadFromLocalStorage() {
-  var ret;
-  if (localStorage) {
-    if (localStorage.getObject("teamworkGantDemo")) {
-      ret = localStorage.getObject("teamworkGantDemo");
-    }
-  }
-
-  //if not found create a new example task
-  if (!ret || !ret.tasks || ret.tasks.length == 0){
-    ret=getDemoProject();
-  }
-  return ret;
-}
-
 
 function saveInLocalStorage() {
   var prj = ge.saveProject();
