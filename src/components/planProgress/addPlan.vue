@@ -9,7 +9,7 @@
          <el-select  size="small" v-model="dataModel.visualStatId" placeholder="请选择形象进度统计项"  style="width:100%;"  @change="changeVisu" clearable>
             <el-option v-for="(item,index) in statisList" :label="item.statName" :value="item.id" :key="index" ></el-option>
         </el-select>
-        <span v-if="visualStatObject !== null" style="color:rgb(64, 158, 255);">分部分项：{{visualStatObject.statName}}</span>
+        <span v-if="visualStatObject !== null" style="color:rgb(64, 158, 255);">分部分项：{{visualStatObject.subName}}</span>
         <div  v-if="visualStatObject !== null" class="visualSpan">
         <span>预算工程量：{{visualStatObject.budgetTotal}}m³</span>
         <span>已完成工程量：{{visualStatObject.finishBudget}}m³</span>
