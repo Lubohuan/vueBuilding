@@ -40,7 +40,7 @@
   <script src="ganttDrawerSVG.js"></script>
   <script src="ganttZoom.js"></script>
   <script src="ganttGridEditor.js"></script>
-  <script src="ganttMaster.js"></script>  
+  <script src="ganttMaster.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 
@@ -100,6 +100,7 @@ window.onload = async function() {
   await getInfoFrom();
   project =  rets;
   console.log(project,"project");
+  console.log(JSON.stringify(project));
 
   if (!project.canWrite)
     $(".ganttButtonBar button.requireWrite").attr("disabled","true");
@@ -109,42 +110,15 @@ window.onload = async function() {
 };
 
 function getInfoFrom(){
-  // "tasks" : [ {
-  //     "id" : "132458099226181742",
-  //     "num" : 1,
-  //     "name" : "Gantt editor",
-  //     "parentId" : "0",
-  //     "planId" : "132452525432374382",
-  //     "orgId" : "220",
-  //     "regionId" : "131616240539009134",
-  //     "level" : 0,
-  //     "start" : "1543384601634",
-  //     "end" : "1399586399999",
-  //     "duration" : 20,
-  //     "startIsMilestone" : false,
-  //     "endIsMilestone" : false,
-  //     "status" : "STATUS_ACTIVE",
-  //     "progress" : 0,
-  //     "hasChild" : true,
-  //     "relevance": 0,
-  //     "type": "",
-	// 		"typeId": "",
-  //   }],
-  //   "selectedRow" : 0,
-  //   "canAdd" : true,
-  //   "canWrite" : true,
-  //   "canDelete" : true,
-  //   "canWriteOnParent" : true
-  // }
   return new Promise((resolve, reject) => {
     axios.get('http://autobuild.jiguantong.com/bimScheduleService/v1/projectPlan/gantt/132452525432374382').then(function (response) {
         rets = response.data.body;
 
         var offset=new Date().getTime()-rets.tasks[0].start;
         for (var i=0;i<rets.tasks.length;i++) {
-          rets.tasks[i].start = rets.tasks[i].start + offset;
-        } 
-
+          rets.tasks[i].start = parseInt(rets.tasks[i].start) + offset;
+          rets.tasks[i].end = parseInt(rets.tasks[i].end);
+        }
         resolve();
     }).catch(function (error) {
       console.log(error);
@@ -187,34 +161,6 @@ ret= {"tasks":    [
       {"id": "tmp_3", "name": "监督者"},
       {"id": "tmp_4", "name": "客户"}
     ], "canWrite":    true, "canDelete":true, "canWriteOnParent": true, canAdd:true}
-  // ret = {
-  //   "tasks" : [ {
-  //     "id" : "132458099226181742",
-  //     "num" : 1,
-  //     "name" : "Gantt editor",
-  //     "parentId" : "0",
-  //     "planId" : "132452525432374382",
-  //     "orgId" : "220",
-  //     "regionId" : "131616240539009134",
-  //     "level" : 0,
-  //     "start" : "1543384601634",
-  //     "end" : "1399586399999",
-  //     "duration" : 20,
-  //     "startIsMilestone" : false,
-  //     "endIsMilestone" : false,
-  //     "status" : "STATUS_ACTIVE",
-  //     "progress" : 0,
-  //     "hasChild" : true,
-  //     "relevance": 0,
-  //     "type": "",
-	// 		"typeId": "",
-  //   }],
-  //   "selectedRow" : 0,
-  //   "canAdd" : true,
-  //   "canWrite" : true,
-  //   "canDelete" : true,
-  //   "canWriteOnParent" : true
-  // }
 
     //actualize data
     var offset=new Date().getTime()-ret.tasks[0].start;
@@ -332,6 +278,9 @@ function saveInLocalStorage() {
   alert(JSON.stringify(prj));
   if (localStorage) {
     localStorage.setObject("teamworkGantDemo", prj);
+
+
+
   }
 }
 
