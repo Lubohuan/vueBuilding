@@ -134,7 +134,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { changeOrg,listPermissionCode,getSessionInfo} from "../api/upload.js";
+import { changeOrg,listPermissionCode,getSessionInfo,loginUrl} from "../api/upload.js";
 import home from "../home/home.vue";
 import { setTimeout } from 'timers';
 export default {
@@ -176,7 +176,7 @@ export default {
          this.main_menu = '';
       },
       getOut(){
-          window.location.href= this.$common.spmUrl();
+          window.location.href= loginUrl();
       },
       main_menuFn:function(){
         

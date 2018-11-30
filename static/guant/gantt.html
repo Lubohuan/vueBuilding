@@ -80,7 +80,8 @@
 </form>
 
 <script type="text/javascript">
-
+var baseUrl = 'http://autobuild.jiguantong.com/bimScheduleService';
+//var baseUrl = 'http://spm.jiguantong.com/bimScheduleService';
 var ge;
 var rets;
 window.onload = async function() {
@@ -99,6 +100,7 @@ window.onload = async function() {
   delete ge.gantt.zoom;
   await getInfoFrom();
   project =  rets;
+  // project =  getDemoProject();
   console.log(project,"project");
   console.log(JSON.stringify(project));
 
@@ -111,9 +113,10 @@ window.onload = async function() {
 
 function getInfoFrom(){
   return new Promise((resolve, reject) => {
-    axios.get('http://autobuild.jiguantong.com/bimScheduleService/v1/projectPlan/gantt/132452525432374382').then(function (response) {
+    axios.get( baseUrl + '/v1/projectPlan/gantt/132452525432374382').then(function (response) {
         rets = response.data.body;
-
+        rets.resources = [{"id": "tmp_1", "name": "张三"},{"id": "tmp_2", "name": "李四"},{"id": "tmp_3", "name": "王二麻子"}];
+        rets.roles = [{"id": "tmp_1", "name": "任务负责人"},{"id": "tmp_2", "name": "主要工作者"},{"id": "tmp_3", "name": "协助者"},{"id": "tmp_3", "name": "监督者"},{"id": "tmp_4", "name": "客户"}];
         var offset=new Date().getTime()-rets.tasks[0].start;
         for (var i=0;i<rets.tasks.length;i++) {
           rets.tasks[i].start = parseInt(rets.tasks[i].start) + offset;
@@ -206,31 +209,38 @@ function loadGanttFromServer(taskId, callback) {
 
 function saveGanttOnServer() {
   //this is a simulation: save data to the local storage or to the textarea
-  saveInLocalStorage();
+  // saveInLocalStorage();
 
-  /*
+  
   var prj = ge.saveProject();
 
   delete prj.resources;
   delete prj.roles;
-
-  var prof = new Profiler("saveServerSide");
-  prof.reset();
+  for(var i = 0;i<prj.tasks.length;i++){
+    prj.tasks[i].num = i + 1;
+    prj.tasks[i].planId = "132452525432374382";	
+    prj.tasks[i].orgId = "220";
+    prj.tasks[i].regionId = "131616240539009134";
+  };
+  // var prof = new Profiler("saveServerSide");
+  // prof.reset();
 
   if (ge.deletedTaskIds.length>0) {
     if (!confirm("TASK_THAT_WILL_BE_REMOVED\n"+ge.deletedTaskIds.length)) {
       return;
     }
   }
-
-  $.ajax("ganttAjaxController.jsp", {
-    dataType:"json",
-    data: {CM:"SVPROJECT",prj:JSON.stringify(prj)},
+  
+  $.ajax( baseUrl+"/v1/projectPlan/gantt", {
+    contentType: 'application/json;charset=UTF-8',
+    data: JSON.stringify(prj),
+    beforeSend: function(request) {
+        request.setRequestHeader("token", sessionStorage.getItem("userToken"));
+    },
     type:"POST",
-
     success: function(response) {
       if (response.ok) {
-        prof.stop();
+        // prof.stop();
         if (response.project) {
           ge.loadProject(response.project); //must reload as "tmp_" ids are now the good ones
         } else {
@@ -250,8 +260,9 @@ function saveGanttOnServer() {
       }
     }
 
-  });
-  */
+  }
+);
+
 }
 
 function newProject(){
@@ -540,7 +551,7 @@ function showBaselineInfo (event,element){
     <td class="gdfCell"><input type="text" name="code" value="(#=obj.code?obj.code:''#)" placeholder="施工区段"></td>
     <td class="gdfCell indentCell" style="padding-left:(#=obj.level*10+18#)px;">
       <div class="exp-controller" align="center"></div>
-      <input type="text" name="name" value="(#=obj.name#)" placeholder="name">
+      <input type="text" name="name" placeholder="name">
     </td>
     <td class="gdfCell" align="center"><input type="checkbox" name="startIsMilestone"></td>
     <td class="gdfCell"><input type="text" name="start"  value="" class="date"></td>

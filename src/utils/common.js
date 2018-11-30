@@ -1,11 +1,5 @@
 export default {
 
-  spmUrl() {
-    //const spmUrl = 'http://spm.1357.cn/Admin/Login/public_login';
-    const spmUrl = 'http://autobuild.1357.cn/Admin/Login/public_login';
-    return spmUrl;
-  },
-
   //获取本周一日期
   getMonDate() {
     var d = new Date(),

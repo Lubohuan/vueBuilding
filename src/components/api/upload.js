@@ -1,8 +1,18 @@
 import request from '@/utils/request'
 // const baseUrl = 'http://172.16.7.135:8081';
 // const baseUrl = 'http://172.16.7.135';
+
+//请求url
 const baseUrl = 'http://autobuild.jiguantong.com/bimScheduleService';
 //const baseUrl = 'http://spm.jiguantong.com/bimScheduleService';
+
+//退出url
+const spmUrl = 'http://autobuild.1357.cn/Admin/Login/public_login';
+//const spmUrl = 'http://spm.1357.cn/Admin/Login/public_login';
+
+export function loginUrl(){
+  return spmUrl;
+}
 // 查询统计单位接口
 export function getUnitPage(data) {
   return request({
