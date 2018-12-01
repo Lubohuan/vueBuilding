@@ -123,8 +123,16 @@ export default new Router({
         component: (resolve) => {
           require(['../components/home/home1.vue'], resolve)
         },
-        redirect: '/progressPIcture',
+        redirect: '/planhomePage',
         children:[
+           //形象进度首页
+           {
+            path: '/planhomePage',
+            name: 'planhomePage',
+            component: (resolve) => {
+              require(['../components/planhomePage/planhomePage.vue'], resolve)
+            }
+          },
           //形象进度甘特图
           {
             path: '/progressPIcture',

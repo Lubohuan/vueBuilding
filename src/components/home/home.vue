@@ -6,6 +6,11 @@
      <div class="titleSpan">生产形象进度</div>
      <el-tree class="treeList" :data="data2" :props="defaultProps" default-expand-all @node-click="handleNodeClick"></el-tree>
   </el-aside>
+   <!-- <el-tree  :data="data2" :props="defaultProps" default-expand-all @node-click="handleNodeClick">
+          <span style="width:100%;height:100%;" class="treeList" slot-scope="{ node, data }">
+            <span>{{ data.label }}</span>
+          </span>
+  </el-tree> -->
     <el-main class="elContent">
       <router-view> </router-view>
     </el-main>

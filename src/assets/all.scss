@@ -121,4 +121,21 @@
 .pageStyle{
     text-align: right;
 }
+.blueBlock{
+    width:12px;
+    height:32px;
+    background:rgba(16, 142, 255, 1);
+    display:inline-block;
+    margin-bottom: 15px;
+}
+.spanBlock{
+    display:inline-block;
+    vertical-align:top;
+    margin-top: 6px;
+    margin-left: 10px;
+    font-family: "\5FAE\8F6F\96C5\9ED1 Bold", 微软雅黑;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 16px;
+}
 

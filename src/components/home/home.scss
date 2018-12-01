@@ -3,6 +3,12 @@
   .asideList{
     background: #EAEDF1;
   }
+  // .treeList:hover{
+  //   background: white !important;
+  // }
+  // .el-tree-node__content:hover{
+  //   background: white !important;
+  // }
   .treeList {
     background: #EAEDF1;
     .el-tree-node__content:hover {
@@ -45,6 +51,9 @@
   .el-tree-node__content{
     color: #333;
     height: 36px !important;
+  }
+  .el-tree{
+    background: #EAEDF1;
   }
   
 }

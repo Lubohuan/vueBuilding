@@ -58,8 +58,8 @@
 			layout="prev, pager, next, sizes, total, jumper"
 			:page-sizes="[5, 10, 15, 20]"
 			:page-size="pagesize"
-      :current-page="currentPage"
-			:total="tableData.length"
+      :current-page.sync="currentPage"
+			:total="total"
 			@current-change="handleCurrentChange"
 			@size-change="handleSizeChange"
 			>

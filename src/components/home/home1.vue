@@ -25,7 +25,12 @@ export default {
       data2: [
         {
           id: 1,
-          label: "项目进度计划",
+          label: "项目进度计划首页",
+          path:"/planhomePage"
+        },
+        {
+          id: 2,
+          label: "进度计划",
           path:"/progressPIcture"
         }
       ]
