@@ -28,6 +28,14 @@ export default new Router({
               require(['../components/commandCentre/commandCentre.vue'], resolve)
             }
           },
+           //企业指挥中心
+           {
+            path: '/enterpriseCommandCenter',
+            name: 'enterpriseCommandCenter',
+            component: (resolve) => {
+              require(['../components/enterpriseCommandCenter/enterpriseCommandCenter.vue'], resolve)
+            }
+          },
           //分部分项库
           {
             path: '/bitem',

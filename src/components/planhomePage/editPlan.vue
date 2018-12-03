@@ -17,7 +17,7 @@
         <el-form-item label="项目编码：" prop="typeName">
           <el-input size="small" v-model="dataModel.typeName"></el-input>
         </el-form-item>
-        <el-form-item label="是否为重点项目：" prop="radio">
+        <el-form-item label="是否为重点项目：" prop="radio" style="margin-bottom:0;">
           <el-radio-group v-model="radio" style="width:110px;">
             <el-radio label="0">是</el-radio>
             <el-radio label="1">否</el-radio>
@@ -26,8 +26,23 @@
         <el-form-item label="备注：" prop="typeName">
           <el-input size="small" v-model="dataModel.typeName"></el-input>
         </el-form-item>
-         <el-form-item label="项目效果图：" prop="typeName">
+        <el-form-item label="项目效果图：" prop="typeName">
+          <el-upload  list-type="picture"  action="" :http-request="uploadImg" :on-remove="handleRemove" :on-change="handleImgChange" :file-list="imgList"><el-button size="small" type="primary">点击上传</el-button></el-upload>
+        </el-form-item>
+        <el-form-item label="项目地址：" prop="typeName">
           <el-input size="small" v-model="dataModel.typeName"></el-input>
+        </el-form-item>
+        <el-form-item label="" prop="typeName">
+          <el-input size="small" v-model="dataModel.typeName" placeholder="请填写详细地址"></el-input>
+        </el-form-item>
+         <el-form-item label="" prop="typeName">
+          <el-input size="small" v-model="dataModel.typeName" placeholder="工程类别"></el-input>
+        </el-form-item>
+        <el-form-item label="" prop="typeName">
+          <el-input size="small" v-model="dataModel.typeName" placeholder="工程规模"></el-input>
+        </el-form-item>
+        <el-form-item label="" prop="typeName">
+          <el-input size="small" v-model="dataModel.typeName" placeholder="工程规模"></el-input>
         </el-form-item>
   </el-form>
   <div class="clickBtn">

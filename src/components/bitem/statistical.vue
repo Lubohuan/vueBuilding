@@ -8,7 +8,7 @@
   <el-row>
    <el-col :span="10">
       <el-button size="mini" type="primary" @click="addStat">+ 添加统计单位</el-button>
-      <el-button size="mini" type="success">导出excel</el-button>
+      <el-button size="mini" type="success" @click="exportExcel">导出excel</el-button>
    </el-col>
    <el-col :span="14" class="statistical_btn1">
       <el-input v-model="unitName" size="small" placeholder="搜索" @change="changeRefs" style="width:200px;" clearable></el-input>
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { getUnitPage, deleteUnitById } from "../api/upload.js";
+import { getUnitPage, deleteUnitById,exportUnitByIds } from "../api/upload.js";
 import addStat from "../bitem/addStat.vue";
 export default {
   name: "statistical",
@@ -66,7 +66,26 @@ export default {
   methods: {
     //选择项变化
     handleSelectionChange(val) {
-      this.multipleSelection = val;
+      // this.multipleSelection = val.map(v=>v.id);
+      for(var i=0;i<val.length;i++){
+        this.multipleSelection.push(val[i].id)
+      }
+      console.log(this.multipleSelection);
+    },
+    exportExcel(){
+       exportUnitByIds({
+         unitIdList:this.multipleSelection
+       })
+            .then(response => {
+              if (response.code == "200") {
+                this.refreshList();
+              } else {
+                this.$message.error(response.msg);
+              }
+            })
+            .catch(error => {
+              console.log(error);
+            });
     },
     //删除单位
     deleteClick(scope) {

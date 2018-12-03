@@ -1,9 +1,10 @@
 import request from '@/utils/request'
 // const baseUrl = 'http://172.16.7.135:8081';
 // const baseUrl = 'http://172.16.7.135';
+const baseUrl = 'http://172.16.7.157:8080/bimScheduleService';
 
 //请求url
-const baseUrl = 'http://autobuild.jiguantong.com/bimScheduleService';
+// const baseUrl = 'http://autobuild.jiguantong.com/bimScheduleService';
 //const baseUrl = 'http://spm.jiguantong.com/bimScheduleService';
 
 //退出url
@@ -399,5 +400,13 @@ export function updateTaskPriority(data) {
   return request({
     url: baseUrl + '/task/updateTaskPriority/' + data.id + '/' + data.level,
     method: 'put'
+  })
+}
+// 修改任务的优先级
+export function exportUnitByIds(data) {
+  return request({
+    url: baseUrl + 'web/export/exportUnitByIds',
+    method: 'post',
+    data:data
   })
 }

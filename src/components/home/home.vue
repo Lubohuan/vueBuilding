@@ -30,14 +30,14 @@ export default {
       data2: [
         {
           id: 1,
+          label: "企业级管理看板",
+          path:"/enterpriseCommandCenter"
+        },
+        {
+          id: 2,
           label: "项目管理看板",
           path:"/commandCentre"
         },
-        // {
-        //   id: 2,
-        //   label: "可视化进度",
-        //   path:""
-        // },
         {
           id: 3,
           label: "施工区段管理",

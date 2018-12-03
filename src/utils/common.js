@@ -14,6 +14,53 @@ export default {
     return d;
   },
 
+//根据月份获取最后一天
+getLastDay(data){
+    var arr = data.split("-"); //将获取的数组按“-”拆分成字符串数组
+    var year = parseInt(arr[0]); //开分字符串数组的第一个地址的内容是年份
+    var month = parseInt(arr[1]); //开分字符串数组的第二个地址的内容是月份   
+    var new_year = year;  //取当前的年份   
+    var new_month = month++;//取下一个月的第一天，方便计算（最后一天不固定）   
+    if(month>12)      //如果当前大于12月，则年份转到下一年   
+    {   
+    new_month -=12;    //月份减   
+    new_year++;      //年份增   
+    }   
+    var new_date = new Date(new_year,new_month,1);        //取当年当月中的第一天   
+    return year + '-' + parseInt(arr[1]) + '-' + (new Date(new_date.getTime()-1000*60*60*24)).getDate();//获取当月最后一天日期   
+ },  
+
+   //按周查询
+  getWeekAll(begin,end){
+    var dateAllArr = new Array();
+    var ab = begin.split("-");
+    var ae = end.split("-");
+    var db = new Date();
+    db.setUTCFullYear(ab[0], ab[1]-1, ab[2]);
+    var de = new Date();
+    de.setUTCFullYear(ae[0], ae[1]-1, ae[2]);
+    var unixDb=db.getTime();
+    var unixDe=de.getTime();
+    for(var k=unixDb;k<=unixDe;){
+        dateAllArr.push(this.getDateWeek(this.fomatDate((new Date(parseInt(k))).toString())));
+        k=k+7*24*60*60*1000;
+    }
+    return dateAllArr;
+  },
+
+  //根据日期获取是当年的第几周
+  getDateWeek(dt){
+    let d1 = new Date(dt);
+    let d2 = new Date(dt);
+    d2.setMonth(0);
+    d2.setDate(1);
+    let rq = d1-d2;
+    let days = Math.ceil(rq/(24*60*60*1000));
+    let num = Math.ceil(days/7);
+    return num;
+  },
+
+
   //小于10天前面拼接0
   doHandleMonth(month) {
     var m = month;

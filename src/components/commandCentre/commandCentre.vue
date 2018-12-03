@@ -355,7 +355,7 @@ export default {
         this.dateArrs = [];
         var arr=[];
         for(var i=0; i<7; i++){
-        arr.push(this.nowWeekDate.getFullYear()+'-'+(this.nowWeekDate.getMonth()+1)+'-'+this.nowWeekDate.getDate());
+        arr.push(this.nowWeekDate.getFullYear() + '-' + this.$common.doHandleMonth(this.nowWeekDate.getMonth()+1) + '-' + this.$common.doHandleMonth(this.nowWeekDate.getDate()));
         this.nowWeekDate.setDate(this.nowWeekDate.getDate()+1);
         }
         this.dateArrs = arr;

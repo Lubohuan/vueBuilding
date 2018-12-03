@@ -26,7 +26,7 @@
           <span>{{weekData}}周</span>
           <i @click="addWeek" class="el-icon-arrow-right"></i>
        </div>
-         <div v-if="activeName === 'third'" class="reportTab">
+        <div v-if="activeName === 'third'" class="reportTab">
           <i @click="reduceMonth" class="el-icon-arrow-left"></i>
           <span>{{monthData}}</span>
           <i @click="addMonth" class="el-icon-arrow-right"></i>
