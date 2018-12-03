@@ -117,7 +117,7 @@
             </template> -->
        </el-table-column>
        <template v-for="(item,index) in dateArr">
-            <el-table-column  type="index"  :label=" item.toString() "  :key="index" align="center"></el-table-column>
+            <el-table-column  type="index"  :label=" '第' + item.toString() + '周' "  :key="index" align="center" width="100"></el-table-column>
        </template>
       </el-table>
        <el-pagination background v-if="total>0"
