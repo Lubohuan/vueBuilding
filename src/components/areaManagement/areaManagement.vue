@@ -75,7 +75,7 @@
     </el-col>
     <el-col :span="2" class="tableCol" style="margin-left:10px;">
        <span v-if="data.expiryRate == null">--</span>
-       <span v-else>{{ data.expiryRate }}</span>
+       <span v-else>{{ $common.fomatPrecent(data.expiryRate) }}%</span>
     </el-col>
     <el-col :span="3" class="tableCol">
        <span v-if="data.notStartCount == null">--</span>

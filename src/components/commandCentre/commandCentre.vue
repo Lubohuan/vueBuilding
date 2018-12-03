@@ -8,7 +8,8 @@
                 <img src="../../assets/task.png" alt="" class="despImage">
                 <div class="cradContent">
                     <div class="desp_look">今日完成生产任务</div>
-                    <div class="desp_personal">{{panTable.dayTask}}个</div>
+                    <div v-if="!panTable.dayTask">0个</div>
+                    <div v-else class="desp_personal">{{panTable.dayTask}}个</div>
                 </div>
              </div>
              <div class="cardFooter">
@@ -17,14 +18,16 @@
                        <img v-if="imageData === 'up'" src="../../assets/u489.png" alt="" class="upDownImage" >
                        <img v-else src="../../assets/u493.png" alt="" class="upDownImage downImage">
                     </span>
-                   <span>2.23%</span> 
+                   <span v-if="!panTable.dayTaskRate">0%</span>
+                   <span v-else>{{$common.fomatPrecent(panTable.dayTaskRate)}}%</span> 
                 </span>
                 <span class="footerRight">日环比:
                     <span>
                        <img v-if="imageData === 'up'" src="../../assets/u489.png" alt="" class="upDownImage" >
                        <img v-else src="../../assets/u493.png" alt="" class="upDownImage downImage">
                     </span>
-                    <span>23%</span>
+                    <span v-if="!panTable.dayTaskRate">0%</span>
+                    <span v-else>{{$common.fomatPrecent(panTable.dayTaskRate)}}%</span> 
                 </span>
              </div>
         </div>
@@ -35,7 +38,8 @@
             <img src="../../assets/todayTask.png" alt="" class="despImage">
                        <div  class="cradContent">
                             <div class="desp_look">今日产值</div>
-                            <div class="desp_personal">¥{{panTable.dayFinishOutput}}万</div>
+                            <div v-if="!panTable.dayFinishOutput">¥0万</div>
+                            <div v-else class="desp_personal">¥{{panTable.dayFinishOutput}}万</div>
                        </div>
             </div>
             <div class="cardFooter">
@@ -44,14 +48,16 @@
                        <img v-if="imageData === 'up'" src="../../assets/u489.png" alt="" class="upDownImage" >
                        <img v-else src="../../assets/u493.png" alt="" class="upDownImage downImage">
                     </span>
-                   <span>2.23%</span> 
+                    <span v-if="!panTable.weekOutputRate">0%</span>
+                    <span v-else>{{$common.fomatPrecent(panTable.weekOutputRate)}}%</span>  
                 </span>
                 <span class="footerRight">日环比:
                     <span>
                        <img v-if="imageData === 'up'" src="../../assets/u489.png" alt="" class="upDownImage" >
                        <img v-else src="../../assets/u493.png" alt="" class="upDownImage downImage">
                     </span>
-                    <span>23%</span>
+                    <span v-if="!panTable.dayOutputRate">0%</span>
+                    <span v-else>{{$common.fomatPrecent(panTable.dayOutputRate)}}%</span>
                 </span>
             </div>
         </div>

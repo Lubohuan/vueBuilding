@@ -342,6 +342,8 @@ export default {
     var dayData1 = data.getFullYear();
     var dayData2 = data.getMonth() + 1;
     var dayData3 = data.getDate();
+    dayData2 = this.doHandleMonth(dayData2);
+    dayData3 = this.doHandleMonth(dayData3);
     return dayData1 + "-" + dayData2 + "-" + dayData3;
   },
 
@@ -350,6 +352,7 @@ export default {
     var data = new Date();
     var monthData1 = data.getFullYear();
     var monthData2 = data.getMonth() + 1;
+    monthData2 = this.doHandleMonth(monthData2);
     return monthData1 + "-" + monthData2;
   },
 

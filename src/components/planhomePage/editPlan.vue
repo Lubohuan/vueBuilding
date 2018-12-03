@@ -17,8 +17,11 @@
         <el-form-item label="项目编码：" prop="typeName">
           <el-input size="small" v-model="dataModel.typeName"></el-input>
         </el-form-item>
-         <el-form-item label="是否为重点项目：" prop="typeName">
-          <el-input size="small" v-model="dataModel.typeName"></el-input>
+        <el-form-item label="是否为重点项目：" prop="radio">
+          <el-radio-group v-model="radio" style="width:110px;">
+            <el-radio label="0">是</el-radio>
+            <el-radio label="1">否</el-radio>
+          </el-radio-group>
         </el-form-item>
         <el-form-item label="备注：" prop="typeName">
           <el-input size="small" v-model="dataModel.typeName"></el-input>
@@ -44,6 +47,7 @@ export default {
         typeName: "",
         id: ""
       },
+      radio: "",
       //数据校验
       rules: {
         typeName: [
