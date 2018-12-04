@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { listProjectType,deleteProjectType} from "../api/upload.js";
+import { listProjectType,deleteProjectType} from "../api/system_interface.js";
 import addEng from "../engineering-category-management/addEng.vue";
 export default {
   name: "engineering-category-management",

@@ -15,7 +15,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { addRegion} from "../api/upload.js";
+import { addRegion} from "../api/system_interface.js";
 export default {
   name: "addAreaChild",
   data() {

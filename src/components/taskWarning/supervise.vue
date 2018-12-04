@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { urgeTask } from "../api/upload.js";
+import { urgeTask } from "../api/system_interface.js";
 export default {
   name: "supervise",
   data() {

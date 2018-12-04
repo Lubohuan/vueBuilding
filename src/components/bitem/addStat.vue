@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { addUnit, updateUnitById } from "../api/upload.js";
+import { addUnit, updateUnitById } from "../api/system_interface.js";
 export default {
   name: "addStat",
   data() {

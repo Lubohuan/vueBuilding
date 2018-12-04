@@ -105,7 +105,7 @@
 </template>
 <script>
 import { mapState, mapActions } from 'vuex';
-import { listRegion, deleteRegionById } from "../api/upload.js";
+import { listRegion, deleteRegionById } from "../api/system_interface.js";
 import addArea from "../areaManagement/addArea.vue";
 import addAreaChild from "../areaManagement/addAreaChild.vue";
 export default {

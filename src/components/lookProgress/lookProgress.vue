@@ -85,7 +85,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { getVisualStatMonitorPage } from "../api/upload.js";
+import { getVisualStatMonitorPage } from "../api/system_interface.js";
 export default {
   name: "lookProgress",
   data() {

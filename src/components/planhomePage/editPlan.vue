@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { addProjectType, updateProjectType } from "../api/upload.js";
+import { addProjectType, updateProjectType } from "../api/system_interface.js";
 export default {
   name: "editPlan",
   data() {

@@ -134,7 +134,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { changeOrg,listPermissionCode,getSessionInfo,loginUrl} from "../api/upload.js";
+import { changeOrg,listPermissionCode,getSessionInfo,loginUrl} from "../api/system_interface.js";
 import home from "../home/home.vue";
 import { setTimeout } from 'timers';
 export default {

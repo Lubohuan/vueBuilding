@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { addVisualStatItem,updateVisualStatItemById} from "../api/upload.js";
+import { addVisualStatItem,updateVisualStatItemById} from "../api/system_interface.js";
 import { mapState, mapActions } from 'vuex'
 export default {
   name: "addProgress",

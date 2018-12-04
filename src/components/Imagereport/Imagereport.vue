@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import { getVisualStatReport,getSubsectionReport,getRegionOutputReport } from "../api/upload.js";
+import { getVisualStatReport,getSubsectionReport,getRegionOutputReport } from "../api/system_interface.js";
 export default {
   name: "Imagereport",
   data() {

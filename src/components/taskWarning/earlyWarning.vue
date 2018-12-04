@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { relieveTaskWarning,getConstructPlanById } from "../api/upload.js";
+import { relieveTaskWarning,getConstructPlanById } from "../api/system_interface.js";
 export default {
   name: "earlywarning",
   data() {

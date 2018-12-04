@@ -73,7 +73,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import {getVisualStatItemPage,startVisualStatItem,stopVisualStatItems} from "../api/upload.js";
+import {getVisualStatItemPage,startVisualStatItem,stopVisualStatItems} from "../api/system_interface.js";
 import addProgress from "../graphicProgress/addProgress.vue";
 export default {
   name: "graphicProgress",

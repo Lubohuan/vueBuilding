@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {getVisualStatItemPage,listRegion,getUnitPage,getSubsectionPage,listOrgInfo,listUserInfo} from "../components/api/upload.js";
+import {getVisualStatItemPage,listRegion,getUnitPage,getSubsectionPage,listOrgInfo,listUserInfo} from "../components/api/system_interface.js";
 Vue.use(Vuex)
 export default new Vuex.Store({
   strict: false, // 开发中启用严格模式

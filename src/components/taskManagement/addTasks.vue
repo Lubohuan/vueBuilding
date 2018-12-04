@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { getVisualStatItemPage,addConstructPlan } from "../api/upload.js";
+import { getVisualStatItemPage,addConstructPlan } from "../api/system_interface.js";
 import { mapState, mapActions } from 'vuex'
 export default {
   name: "addTasks",

@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { getTaskWarningLogPage, relieveTaskWarning } from "../api/upload.js";
+import { getTaskWarningLogPage, relieveTaskWarning } from "../api/system_interface.js";
 import supervise from "../taskWarning/supervise.vue";
 import earlywarning from "../taskWarning/earlyWarning.vue";
 export default {

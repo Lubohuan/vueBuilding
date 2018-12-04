@@ -30,7 +30,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { addRegion, updateRegion } from "../api/upload.js";
+import { addRegion, updateRegion } from "../api/system_interface.js";
 export default {
   name: "addArea",
   data() {

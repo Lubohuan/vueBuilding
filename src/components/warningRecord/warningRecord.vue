@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { getTaskWarningPage} from "../api/upload.js";
+import { getTaskWarningPage} from "../api/system_interface.js";
 export default {
   name: "warningRecord",
   data() {

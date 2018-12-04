@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { addConstructPlan,updateConstructPlan,getConstructPlanById,getVisualStatItemList} from "../api/upload.js";
+import { addConstructPlan,updateConstructPlan,getConstructPlanById,getVisualStatItemList} from "../api/system_interface.js";
 import { mapState, mapActions } from 'vuex'
 export default {
   name: "addPlan",

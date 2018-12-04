@@ -61,7 +61,7 @@
 import categoryManagement from "../bitem/categoryManagement.vue";
 import addSubChid from "../bitem/addSubChid.vue";
 import addSubsection from "../bitem/addSubsection.vue";
-import { getSubsectionPage, deleteSubsectionById,listProjectType } from "../api/upload.js";
+import { getSubsectionPage, deleteSubsectionById,listProjectType } from "../api/system_interface.js";
 export default {
   name: "bitem",
   components: {

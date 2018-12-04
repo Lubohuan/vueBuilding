@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { getUnitPage, deleteUnitById,exportUnitByIds } from "../api/upload.js";
+import { getUnitPage, deleteUnitById,exportUnitByIds } from "../api/system_interface.js";
 import addStat from "../bitem/addStat.vue";
 export default {
   name: "statistical",

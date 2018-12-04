@@ -85,7 +85,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import {getConstructPlanPage,startConstructPlan,stopVisualStatItem,deleteConstructPlanById} from "../api/upload.js";
+import {getConstructPlanPage,startConstructPlan,stopVisualStatItem,deleteConstructPlanById} from "../api/system_interface.js";
 import addPlan from "../planProgress/addPlan.vue";
 export default {
   name: "planProgress",

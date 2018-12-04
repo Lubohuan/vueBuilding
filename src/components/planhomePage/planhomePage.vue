@@ -111,7 +111,7 @@
 
 <script>
 import editPlan from"../planhomePage/editPlan.vue";
-import { getPlanTaskPage,getConstructPlanDetailById,getConstructLogPage,updateTaskPriority } from "../api/upload.js";
+import { getPlanTaskPage,getConstructPlanDetailById,getConstructLogPage,updateTaskPriority } from "../api/system_interface.js";
 export default {
   name: "planhomePage",
   components:{

@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { addSubsection, updateSubsection } from "../api/upload.js";
+import { addSubsection, updateSubsection } from "../api/system_interface.js";
 export default {
   name: "addSubsection",
   data() {

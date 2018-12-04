@@ -1,10 +1,10 @@
 import request from '@/utils/request'
 // const baseUrl = 'http://172.16.7.135:8081';
 // const baseUrl = 'http://172.16.7.135';
-const baseUrl = 'http://172.16.7.157:8080/bimScheduleService';
+// const baseUrl = 'http://172.16.7.157:8080/bimScheduleService';
 
 //请求url
-// const baseUrl = 'http://autobuild.jiguantong.com/bimScheduleService';
+const baseUrl = 'http://autobuild.jiguantong.com/bimScheduleService';
 //const baseUrl = 'http://spm.jiguantong.com/bimScheduleService';
 
 //退出url

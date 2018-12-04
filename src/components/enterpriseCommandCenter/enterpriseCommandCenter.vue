@@ -66,9 +66,9 @@
             <span class="blueBlock"></span>
             <span class="spanBlock">产值排行榜</span>
             <div class="outputranking">
-                <div><img src="../../assets/u1116.png" alt="">深圳经理部<span>本月完成56万</span></div>
-                <div><img src="../../assets/u1119.png" alt="">广西经理部<span>本月完成56万</span></div>
-                <div><img src="../../assets/u1125.png" alt="">云南经理部<span>本月完成56万</span></div>
+                <div><img src="../../assets/分组@2x.png" alt="">深圳经理部<span>本月完成56万</span></div>
+                <div><img src="../../assets/分组 2@2x.png" alt="">广西经理部<span>本月完成56万</span></div>
+                <div><img src="../../assets/分组 3@2x.png" alt="">云南经理部<span>本月完成56万</span></div>
             </div>
         </div>
     </el-col>
@@ -181,7 +181,7 @@
 </template>
 
 <script>
-import { getVisualStatProgressPage,getTaskWarningLogPage,getDashBoard } from "../api/upload.js";
+import { getVisualStatProgressPage,getTaskWarningLogPage,getDashBoard } from "../api/system_interface.js";
 import supervise from "../taskWarning/supervise.vue";
 import { mapMutations } from 'vuex';
 export default {

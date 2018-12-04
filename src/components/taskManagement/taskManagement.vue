@@ -264,7 +264,7 @@
 
 <script>
 import addTasks from "../taskManagement/addTasks.vue";
-import { getPlanTaskPage,getConstructPlanDetailById,getConstructLogPage,updateTaskPriority } from "../api/upload.js";
+import { getPlanTaskPage,getConstructPlanDetailById,getConstructLogPage,updateTaskPriority } from "../api/system_interface.js";
 import Aplayer from 'vue-aplayer';
 export default {
   name: "taskManagement",

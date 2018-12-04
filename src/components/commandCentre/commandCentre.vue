@@ -216,7 +216,7 @@
 </template>
 
 <script>
-import { getVisualStatProgressPage,getTaskWarningLogPage,getDashBoard } from "../api/upload.js";
+import { getVisualStatProgressPage,getTaskWarningLogPage,getDashBoard } from "../api/system_interface.js";
 import supervise from "../taskWarning/supervise.vue";
 import { mapMutations } from 'vuex';
 export default {
