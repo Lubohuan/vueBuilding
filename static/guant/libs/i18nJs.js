@@ -128,8 +128,8 @@ var workingDaysPerWeek =5;
 
 function isHoliday(date) {
   var friIsHoly =false;
-  var satIsHoly =true;
-  var sunIsHoly =true;
+  var satIsHoly =false;
+  var sunIsHoly =false;
 
   var pad = function (val) {
     val = "0" + val;
