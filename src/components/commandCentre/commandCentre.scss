@@ -23,9 +23,11 @@
   .tableDiv {
     padding: 32px 20px;
     border: 1px solid #e4e7ed;
-    .tableTitle{
-        margin-bottom: 12px;
+
+    .tableTitle {
+      margin-bottom: 12px;
     }
+
     .el-table th.is-leaf {
       padding: 6px 0 !important;
     }
@@ -73,30 +75,50 @@
     margin-left: 26px;
   }
 
-  .el-progress-bar__outer {
-    border-radius: 0;
-    height: 12px !important;
+  .cradContents {
+    .el-progress-bar__outer {
+      border-radius: 0;
+      height: 12px !important;
+    }
+
+    .el-progress-bar__inner {
+      // width:100%;
+      border-radius: 0;
+      height: 12px;
+    }
+
+    .el-progress__text {
+      margin-top: -60px;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-family: 微软雅黑;
+      font-weight: 400;
+      font-style: normal;
+      font-size: 30px !important;
+    }
+
+    .el-progress-bar {
+      padding-right: 0px !important;
+      width: 100%;
+    }
   }
 
-  .el-progress-bar__inner {
-    // width:100%;
+  .el-progress-bar{
+    width: 110%;
+  }
+  .el-progress-bar__outer {
     border-radius: 0;
-    height: 12px;
   }
 
   .el-progress__text {
-    margin-top: -60px;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-family: 微软雅黑;
-    font-weight: 400;
-    font-style: normal;
-    font-size: 30px !important;
+    font-size: 12px !important;
   }
-  .el-progress-bar{
-      padding-right: 0px !important;
+
+  .el-progress-bar__inner {
+    border-radius: 0;
   }
+
   .commandCards {
     padding: 30px 20px 20px 20px;
     height: 106px;
@@ -106,27 +128,32 @@
       width: 100%;
       display: inline-block;
     }
-    .desp_looks{
-        display: inline-block;
-        color: rgba(0, 0, 0, 0.427450980392157);
-        margin-bottom: 20px;
+
+    .desp_looks {
+      display: inline-block;
+      color: rgba(0, 0, 0, 0.427450980392157);
+      margin-bottom: 20px;
     }
-    .cardFooters{
-        margin-top: 32px;
-        border-top: 1px solid #e4e7ed;
-        padding-top: 15px;
+
+    .cardFooters {
+      margin-top: 32px;
+      border-top: 1px solid #e4e7ed;
+      padding-top: 15px;
     }
   }
-  .upDownImage{
-      width: 14px;
-      height: 15px;
+
+  .upDownImage {
+    width: 14px;
+    height: 15px;
   }
-  .downImage{
-    transform:rotate(180deg);
-    margin-bottom:5px;
+
+  .downImage {
+    transform: rotate(180deg);
+    margin-bottom: 5px;
   }
-  .pageStyle{
-        margin-top: 20px;
-        text-align: right;
+
+  .pageStyle {
+    margin-top: 20px;
+    text-align: right;
   }
 }

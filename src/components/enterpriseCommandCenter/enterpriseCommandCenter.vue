@@ -66,9 +66,9 @@
             <span class="blueBlock"></span>
             <span class="spanBlock">产值排行榜</span>
             <div class="outputranking">
-                <div><img src="../../assets/分组@2x.png" alt="">深圳经理部<span>本月完成56万</span></div>
-                <div><img src="../../assets/分组 2@2x.png" alt="">广西经理部<span>本月完成56万</span></div>
-                <div><img src="../../assets/分组 3@2x.png" alt="">云南经理部<span>本月完成56万</span></div>
+                <div><img src="../../assets/分组@2x.png" alt=""><span>深圳经理部</span><span>本月完成56万</span></div>
+                <div><img src="../../assets/分组 2@2x.png" alt=""><span>广西经理部</span><span>本月完成56万</span></div>
+                <div><img src="../../assets/分组 3@2x.png" alt=""><span>云南经理部</span><span>本月完成56万</span></div>
             </div>
         </div>
     </el-col>
@@ -78,7 +78,7 @@
             <span class="spanBlock">月度产值预警</span>
             <el-table  border :data="tableData2" style="width: 100%" min-height="125">
             <el-table-column type="index" label="序号" align="center"></el-table-column>
-            <el-table-column prop="type" label="经理部名称" align="center" min-width="80"></el-table-column>
+            <el-table-column prop="type" label="经理部名称" align="center" min-width="100"></el-table-column>
             <el-table-column prop="num" label="项目总数" align="center" min-width="80"></el-table-column>
             <el-table-column prop="num" label="未完成产值项目数" align="center" min-width="200"></el-table-column>
             <el-table-column prop="num" label="占比" align="center"></el-table-column>
@@ -100,7 +100,7 @@
             </div>
           </el-col>
       </el-row>
-      <el-table  border :data="tableData2" style="width: 100%">
+      <el-table  border :data="tableData2" style="width: 100%" :header-cell-style="rowClass">
       <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
        <el-table-column prop="type" label="经理部名称" align="center" min-width="200"></el-table-column>
        <el-table-column prop="type" label="月计划产值（万元）" align="center" min-width="180"></el-table-column>
@@ -111,13 +111,14 @@
                 <span v-if="scope.row.type">{{$common.fomatPrecent(scope.row.finishBudgetRate)}}%</span>
             </template> -->
        </el-table-column>
-       <el-table-column  label="完成比例" align="center" prop="type">
-            <!-- <template slot-scope="scope">
-                <span v-if="scope.row.monthFinishRate">{{$common.fomatPrecent(scope.row.monthFinishRate)}}%</span>
-            </template> -->
+       <el-table-column  label="完成比例" prop="num" min-width="150">
+            <template slot-scope="scope">
+                <el-progress v-if="!scope.row.num" :stroke-width="13"  :percentage="0"></el-progress>
+                <el-progress v-else :stroke-width="13"  :percentage="$common.fomatPrecent(scope.row.num)"></el-progress>
+            </template>
        </el-table-column>
        <template v-for="(item,index) in dateArr">
-            <el-table-column  type="index"  :label=" '第' + item.toString() + '周' "  :key="index" align="center" width="100"></el-table-column>
+            <el-table-column  type="index"  :label=" '第' + item.weekNum.toString() + '周 '+ item.weekStart + '~' + item.weekEnd "  :key="index" align="center" width="130" :render-header="renderHeader"></el-table-column>
        </template>
       </el-table>
        <el-pagination background v-if="total>0"
@@ -152,7 +153,7 @@
         <el-table-column prop="type"  label="经理部名称" align="center"></el-table-column>
         <el-table-column prop="type"  label="上月未完成项目数" align="center" min-width="200"></el-table-column>
         <el-table-column prop="type"  label="本月未完成项目数" align="center" min-width="200"></el-table-column>
-        <el-table-column prop="type"  label="占所有项目比例" align="center" min-width="100">
+        <el-table-column prop="type"  label="占所有项目比例" align="center" min-width="110">
             <!-- <template slot-scope="scope">
                 <span style="color:red;">{{scope.row.warningReason}}</span>
             </template> -->
@@ -191,7 +192,7 @@ export default {
   },
   data() {
     return {
-      tableData2:[{type:'你',num:'2'},{type:'好',num:'3'}],
+      tableData2:[{type:'你',num:'0.3'},{type:'好',num:'0.5'}],
       tableData: [],
       tableDatas:[],
       value6: "",
@@ -216,6 +217,32 @@ export default {
  
   methods: {
     
+    rowClass({ row, rowIndex}) {
+      console.log(rowIndex) //表头行标号为0
+      return 'text-align:center'
+    },
+
+    renderHeader(createElement, { column, _self }) {
+            let label = column.label;
+            let labelArr = label.split(' ');
+             return createElement(
+                'div',
+                {
+                'class': 'header-center'
+                },
+                [
+                    createElement('div', {
+                            attrs: { type: 'text' },
+                        }, [labelArr[0]]
+                        ),
+                    createElement('div', {
+                            attrs: { type: 'text' },
+                    }, [labelArr[1] || '']
+                    )
+                ]
+            );
+    },
+    
     handleCurrentChange(cpage) {
       this.currentPage = cpage;
       this.refreshList();
@@ -236,35 +263,67 @@ export default {
       this.refreshLists();
     },
 
+    /*传入年，周数，获取周数对应的所有日期*/
+    getWeekTime(index) {
+      var data = new Date();
+      var year = data.getFullYear();
+      var dataArr = this.$common.getWeekTime(year,index);
+      return dataArr
+    },
+
     //获取年月
     getMonths(){
     this.monthData = this.$common.getMonths();
     this.start = this.$common.getMonths() + "-" + '01';
     this.end   = this.$common.getLastDay(this.monthData);
-    this.dateArr = this.$common.getWeekAll(this.start,this.end);
+    var weekArr = this.$common.getWeekAll(this.start,this.end);
+    for(var i = 0;i < weekArr.length;i++){
+          var weekData = {};
+          weekData.weekNum = weekArr[i];
+          weekData.weekStart = this.$common.changeDate(this.getWeekTime(weekArr[i])[0]).substring(5,10)  ;
+          weekData.weekEnd =   this.$common.changeDate(this.getWeekTime(weekArr[i])[6]).substring(5,10) ;
+          this.dateArr.push(weekData);
+    }
     },
 
      //月份减
     reduceMonth() {
+      this.dateArr = [];
       let addMon = this.$common.reduceMonth(this.monthData);
       this.monthData = addMon;
       this.start = addMon + "-" + '01';
       this.end   = this.$common.getLastDay(this.monthData);
-      this.dateArr = this.$common.getWeekAll(this.start,this.end);
+      var weekArr = this.$common.getWeekAll(this.start,this.end);
+      for(var i = 0;i < weekArr.length;i++){
+          var weekData = {};
+          weekData.weekNum = weekArr[i];
+          weekData.weekStart = this.$common.changeDate(this.getWeekTime(weekArr[i])[0]).substring(5,10)  ;
+          weekData.weekEnd =   this.$common.changeDate(this.getWeekTime(weekArr[i])[6]).substring(5,10) ;
+          this.dateArr.push(weekData);
+      }
     },
 
     //月份加
     addMonth() {
+      this.dateArr = [];
       let addMon = this.$common.addMonth(this.monthData);
       this.monthData = addMon;
       this.start = addMon + "-" + '01';
       this.end   = this.$common.getLastDay(this.monthData);
-      this.dateArr = this.$common.getWeekAll(this.start,this.end);
+      var weekArr = this.$common.getWeekAll(this.start,this.end);
+      for(var i = 0;i < weekArr.length;i++){
+          var weekData = {};
+          weekData.weekNum = weekArr[i];
+          weekData.weekStart = this.$common.changeDate(this.getWeekTime(weekArr[i])[0]).substring(5,10)  ;
+          weekData.weekEnd =   this.$common.changeDate(this.getWeekTime(weekArr[i])[6]).substring(5,10) ;
+          this.dateArr.push(weekData);
+      }
     }
     },
     created() {
     this.endTime = this.$common.getDay(0);//当天日期
     this.getMonths();
+    console.log(this.getWeekTime('48'),"88888")
   }
 };
 </script>

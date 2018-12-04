@@ -127,7 +127,7 @@
             </el-radio-group>
           </el-col>
       </el-row>
-      <el-table  border :data="tableData" style="width: 100%">
+      <el-table  border :data="tableData" style="width: 100%" :header-cell-style="rowClass">
       <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
        <el-table-column prop="regionFullName" label="施工区段" align="center" min-width="200"></el-table-column>
        <el-table-column prop="statName" label="计划任务名称" align="center" min-width="180"></el-table-column>
@@ -140,9 +140,10 @@
        </el-table-column>
        <el-table-column prop="monthPlan" label="本月计划" align="center"></el-table-column>
        <el-table-column prop="monthFinish" label="本月完成" align="center"></el-table-column>
-       <el-table-column  label="完成比例" align="center" prop="monthFinishRate">
+       <el-table-column  label="完成比例"  prop="monthFinishRate" min-width="150">
             <template slot-scope="scope">
-                <span v-if="scope.row.monthFinishRate">{{$common.fomatPrecent(scope.row.monthFinishRate)}}%</span>
+                <el-progress v-if="!scope.row.monthFinishRate" :stroke-width="13"  :percentage="0"></el-progress>
+                <el-progress v-else :stroke-width="13"  :percentage="$common.fomatPrecent(scope.row.monthFinishRate)"></el-progress>
             </template>
        </el-table-column>
        <template v-for="(item,index) in dateArr">
@@ -264,6 +265,11 @@ export default {
         updateToken:'updateUserToken'
     }),
     
+    rowClass({ row, rowIndex}) {
+      console.log(rowIndex) //表头行标号为0
+      return 'text-align:center'
+    },
+
     handleClick(tab) {
       this.activeName = tab.name;
     },

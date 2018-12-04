@@ -16,7 +16,7 @@
     height:50px;
     width:100%;
     color:#fff;
-    cursor: pointer;
+    // cursor: pointer;
     background-color:#252a2f;
     z-index: 5;
     .log{
@@ -49,11 +49,13 @@
       line-height:50px;
       text-align: center;
       float:right;
+      cursor: pointer;
     }
     .logout:hover{
       background-color:#c33;
     }
     .scaleBtn{
+      cursor: pointer;
       width:50px;
       height:100%;
       float:right;

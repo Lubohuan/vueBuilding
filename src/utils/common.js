@@ -1,5 +1,16 @@
 export default {
 
+   //转换日期
+   changeDate(dayData){
+    var arr = dayData.split("-"); //将获取的数组按“-”拆分成字符串数组
+    var year = parseInt(arr[0]); //开分字符串数组的第一个地址的内容是年份
+    var month = parseInt(arr[1]); //开分字符串数组的第二个地址的内容是月份
+    var date = parseInt(arr[arr.length - 1]); //开分字符串数组的第三个地址的内容是日期
+    month = this.doHandleMonth(month);
+    date  = this.doHandleMonth(date);
+    return year + "-" + month + "-" + date;
+ },
+
   //获取本周一日期
   getMonDate() {
     var d = new Date(),

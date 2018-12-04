@@ -142,3 +142,18 @@
     margin-bottom: 15px;
 }
 
+.el-progress-bar{
+    width: 100%;
+  }
+  .el-progress-bar__outer {
+    border-radius: 0;
+  }
+
+  .el-progress__text {
+    font-size: 12px !important;
+  }
+
+  .el-progress-bar__inner {
+    border-radius: 0;
+  }
+

@@ -29,10 +29,10 @@
        <el-button size="mini"  @click="resetForm">重置</el-button>
    </el-col>
   </el-row>
-  <el-table :data="tableData" style="width: 100%;margin-top:20px;"   @selection-change="handleSelectionChange" border>
+  <el-table :data="tableData" style="width: 100%;margin-top:20px;"   @selection-change="handleSelectionChange" border :header-cell-style="rowClass">
     <el-table-column type="selection" width="50" align="center"></el-table-column>
     <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
-    <el-table-column prop="projectName"  label="项目名称" align="center" min-width="150"></el-table-column>
+    <el-table-column prop="projectName"  label="项目名称" align="center" min-width="120"></el-table-column>
     <el-table-column prop="state"  label="状态" align="center" min-width="80">
        <template slot-scope="scope">
           <span v-if="scope.row.state == 0"><span class="starting"></span>进行中</span>
@@ -43,18 +43,25 @@
     </el-table-column>
     <el-table-column prop="planName"  label="计划任务名称" align="center" min-width="200"></el-table-column>
     <el-table-column prop="regionFullName"  label="施工区段" align="center" min-width="200"></el-table-column>
-    <el-table-column prop="planEndTime"  label="完成时间" align="center" min-width="120"></el-table-column>
+    <el-table-column prop="planEndTime"  label="完成时间" align="center" min-width="90"></el-table-column>
     <el-table-column prop="budgetTotal"  label="总工程量" align="center"></el-table-column>
-    <el-table-column prop="notFinishBudget"  label="总剩余工程量" align="center" min-width="120"></el-table-column>
+    <el-table-column prop="notFinishBudget"  label="总剩余工程量" align="center" min-width="100"></el-table-column>
     <el-table-column prop="planFinish"  label="计划工程量" align="center" min-width="90"></el-table-column>
-    <el-table-column prop="finishTotal"  label="已完成工程量" align="center" min-width="120"></el-table-column>
-    <el-table-column prop="notFinish"  label="计划剩余工程量" align="center" min-width="120"></el-table-column>
-    <el-table-column prop="planFinishRate"  label="完成比例" align="center" min-width="90">
-        <template slot-scope="scope">
+    <el-table-column prop="finishTotal"  label="已完成工程量" align="center" min-width="100"></el-table-column>
+    <el-table-column prop="notFinish"  label="计划剩余工程量" align="center" min-width="110"></el-table-column>
+    <el-table-column prop="planFinishRate"  label="完成比例"  min-width="200" header-cell-style="tr_title">
+        <!-- <template slot-scope="scope">
           <span v-if="scope.row.planFinishRate">{{$common.fomatPrecent(scope.row.planFinishRate)}}%</span>
-       </template>
+       </template> -->
+       <template slot-scope="scope" style="text-align:left;">
+                <el-progress v-if="!scope.row.planFinishRate" :stroke-width="13"  :percentage="0"></el-progress>
+                <el-progress v-else-if="scope.row.state == 0" :stroke-width="13"  :percentage="$common.fomatPrecent(scope.row.planFinishRate)" color="#ff943e"></el-progress>
+                <el-progress v-else-if="scope.row.state == 1" :stroke-width="13"  :percentage="$common.fomatPrecent(scope.row.planFinishRate)" color="#15bc83"></el-progress>
+                <el-progress v-else-if="scope.row.state == 2" :stroke-width="13"  :percentage="$common.fomatPrecent(scope.row.planFinishRate)" color="#f25643"></el-progress>
+                <el-progress v-else-if="scope.row.state == 3" :stroke-width="13"  :percentage="$common.fomatPrecent(scope.row.planFinishRate)" color="#3296fa"></el-progress>
+        </template>
     </el-table-column>
-    <el-table-column label="操作" align="center" min-width="180">
+    <el-table-column label="操作" align="center" min-width="160">
       <template slot-scope="scope">
          <el-button size="mini" type="primary" @click="editPlan(scope.row)">编辑</el-button>
          <el-button v-if="scope.row.isForbid == 0" size="mini" type="warning" @click="stopClick(scope)">禁用</el-button>
@@ -146,6 +153,12 @@ export default {
       'getReginList',
       'getlistOrgInfoList'
     ]),
+  
+    rowClass({ row, rowIndex}) {
+        console.log(rowIndex) //表头行标号为0
+        return 'text-align:center'
+    },
+
     //选择项变化
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -277,4 +290,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "planProgress.scss";
+.tr_title{
+  text-align: center;
+}
 </style>
