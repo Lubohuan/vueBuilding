@@ -1,4 +1,5 @@
-import request from '@/utils/request'
+import request from '@/utils/request';
+import uploadRequest from '@/utils/uploadRequest';
 // const baseUrl = 'http://172.16.7.135:8081';
 // const baseUrl = 'http://172.16.7.135';
 // const baseUrl = 'http://172.16.7.157:8080/bimScheduleService';
@@ -426,3 +427,12 @@ export function plan(data) {
     data:data
   })
 }
+// 上传计划
+export function mpp(data) {
+  return uploadRequest({
+    url: baseUrl + '/v1/projectPlan/import/mpp',
+    method: 'post',
+    data:data
+  })
+}
+

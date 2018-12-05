@@ -11,10 +11,10 @@ const service = axios.create({
 // request拦截器
 service.interceptors.request.use(
   config => {
-   
     //判断session中是否有token，如果有给请求头加上token
     if (sessionStorage.getItem("userToken")) {
         config.headers.common['token'] = sessionStorage.getItem("userToken");
+        config.headers.common['Content-Type'] = 'multipart/form-data';
     }
     return config
   },
