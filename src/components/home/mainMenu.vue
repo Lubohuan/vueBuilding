@@ -211,20 +211,14 @@ export default {
         }
       },
       //切换组织
-      changeProject(){
+    async changeProject(){
          this.projectId = this.projectArry[this.projectArry.length - 1];
-
-         // 存储值：将对象转换为Json字符串
-        sessionStorage.setItem('selectArry', JSON.stringify(this.projectArry));
          changeOrg({
            orgId:this.projectId
          })
         .then(response => {
-          if (response.code == "200") {
-              this.isRouterAlive = false;
-              this.$nextTick(()=>{
-                this.isRouterAlive = true;
-              })              
+          if (response.code == "200") {     
+             this.refreshRouter();
           } else {
             this.$message.error(response.msg);
           }
@@ -232,6 +226,16 @@ export default {
         .catch(error => {
           console.log(error);
         });
+      },
+
+    async refreshRouter(){
+        await this.getUserInfo();
+        // 存储值：将对象转换为Json字符串
+        sessionStorage.setItem('selectArry', JSON.stringify(this.projectArry));
+        this.isRouterAlive = false;
+        this.$nextTick(()=>{
+                this.isRouterAlive = true;
+        })              
       },
 
       //获取用户权限码
@@ -251,23 +255,46 @@ export default {
 
       //获取登陆用户信息
       getUserInfo(){
+
+        return new Promise((resolve, reject) => {
         getSessionInfo({})
-        .then(response => {
-          if (response.code == "200") {
-
-            //获取父级id
-            let objects = this.$common.initTree(this.listOrgInfoList);
-            this.projectArry  = this.$common.findParent(objects,response.body.chOrgId);
-
-            // 存储值：将对象转换为Json字符串
-            sessionStorage.setItem('selectArry', JSON.stringify(this.projectArry));          
-          } else {
-            this.$message.error(response.msg);
-          }
+          .then(response => {
+              if (response.code == "200") {
+              //获取父级id
+              let objects = this.$common.initTree(this.listOrgInfoList);
+              this.projectArry  = this.$common.findParent(objects,response.body.chOrgId);
+              // 存储值：将对象转换为Json字符串
+              sessionStorage.setItem('selectArry', JSON.stringify(this.projectArry));
+              sessionStorage.setItem('companyType', response.body.chOrgType); 
+              resolve();          
+            } else {
+              this.$message.error(response.msg);
+            }
+          })
+          .catch(error => {
+            console.log(error);
+            reject();
+          });
         })
-        .catch(error => {
-          console.log(error);
-        });
+
+        // getSessionInfo({})
+        // .then(response => {
+        //   if (response.code == "200") {
+
+        //     //获取父级id
+        //     let objects = this.$common.initTree(this.listOrgInfoList);
+        //     this.projectArry  = this.$common.findParent(objects,response.body.chOrgId);
+
+        //     // 存储值：将对象转换为Json字符串
+        //     sessionStorage.setItem('selectArry', JSON.stringify(this.projectArry));
+        //     sessionStorage.setItem('companyType', response.body.chOrgType);           
+        //   } else {
+        //     this.$message.error(response.msg);
+        //   }
+        // })
+        // .catch(error => {
+        //   console.log(error);
+        // });
       },
       
 
@@ -295,7 +322,7 @@ export default {
     if(sessionStorage.getItem("selectArry")){
       this.projectArry = JSON.parse(sessionStorage.getItem("selectArry"));
     }
-    this.getUserInfo();
+    await this.getUserInfo();
   }
 }
 </script>

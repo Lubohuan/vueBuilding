@@ -11,6 +11,21 @@ export default {
     return year + "-" + month + "-" + date;
  },
 
+  //获取上个月的一号
+  getLastMonth(){
+    var nowdays = new Date();
+    var year = nowdays.getFullYear();
+    var month = nowdays.getMonth();
+    if(month==0){
+            month=12;
+            year=year-1;
+    }
+    if (month < 10) {
+            month = "0" + month;
+    }
+    return year + "-" + month + "-" + "01";//上个月的第一天
+  },
+
   //获取本周一日期
   getMonDate() {
     var d = new Date(),

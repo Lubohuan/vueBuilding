@@ -117,7 +117,12 @@ export default {
     //等待查询所有计划完成
     async awaitList(){
       await this.refreshLists();
-      this.projectType = this.projectTypeList[0].id;
+      if(this.projectTypeList.length > 1){
+         this.projectType = this.projectTypeList[0].id;
+      }
+      else{
+        this.projectType = '';
+      }     
       sessionStorage.setItem("planID",this.projectType);
     },
 

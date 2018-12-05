@@ -435,4 +435,36 @@ export function mpp(data) {
     data:data
   })
 }
+// 获取企业级管理看板统计信息
+export function getCompanyOutputBoard(data) {
+  return uploadRequest({
+    url: baseUrl + '/company/getCompanyOutputBoard',
+    method: 'get',
+    params:data
+  })
+}
+//获取产值进展统计分页对象(企业级管理看板)
+export function listOutputProgress(data) {
+  return uploadRequest({
+    url: baseUrl + '/company/listOutputProgress',
+    method: 'get',
+    params:data
+  })
+}
+//产值未完成情况分析(企业级管理看板)
+export function getUnfinishedOutputAnalyze(data) {
+  return uploadRequest({
+    url: baseUrl + '/company/getUnfinishedOutputAnalyze',
+    method: 'get',
+    params:data
+  })
+}
+//获取项目级产值未完成预警列表(企业级管理看板)
+export function listProjectOutputWarning(data) {
+  return uploadRequest({
+    url: baseUrl + '/company/listProjectOutputWarning',
+    method: 'get',
+    params:data
+  })
+}
 
