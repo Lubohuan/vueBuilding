@@ -402,10 +402,26 @@ export function updateTaskPriority(data) {
     method: 'put'
   })
 }
-// 修改任务的优先级
+// 导出excel
 export function exportUnitByIds(data) {
   return request({
     url: baseUrl + 'web/export/exportUnitByIds',
+    method: 'post',
+    data:data
+  })
+}
+// 查询所有计划
+export function plans(data) {
+  return request({
+    url: baseUrl + '/v1/projectPlan/plans',
+    method: 'get',
+    params:data
+  })
+}
+// 新增计划
+export function plan(data) {
+  return request({
+    url: baseUrl + '/v1/projectPlan/plan',
     method: 'post',
     data:data
   })

@@ -84,9 +84,18 @@ var baseUrl = 'http://autobuild.jiguantong.com/bimScheduleService';
 //var baseUrl = 'http://spm.jiguantong.com/bimScheduleService';
 var ge;
 var rets;
+var project;
+var projectId = '132452525432374382';
+$(function(){
+  window.addEventListener("message", function(event){
+      var data = event.data;
+      projectId = data.projectId;
+      getInfoFrom(projectId);
+        
+  });
+});
 window.onload = async function() {
   var canWrite=true; //this is the default for test purposes
-  var project;
   // here starts gantt initialization
   ge = new GanttMaster();
   ge.set100OnClose=true;
@@ -98,11 +107,9 @@ window.onload = async function() {
 
   //in order to force compute the best-fitting zoom level
   delete ge.gantt.zoom;
-  await getInfoFrom();
+  await getInfoFrom(projectId);
   project =  rets;
   // project =  getDemoProject();
-  console.log(project,"project");
-  console.log(JSON.stringify(project));
 
   if (!project.canWrite)
     $(".ganttButtonBar button.requireWrite").attr("disabled","true");
@@ -111,9 +118,9 @@ window.onload = async function() {
   ge.checkpoint(); //empty the undo stack
 };
 
-function getInfoFrom(){
+function getInfoFrom(dataId){
   return new Promise((resolve, reject) => {
-    axios.get( baseUrl + '/v1/projectPlan/gantt/132452525432374382').then(function (response) {
+    axios.get( baseUrl + '/v1/projectPlan/gantt/'+ dataId).then(function (response) {
         rets = response.data.body;
         rets.resources = [{"id": "tmp_1", "name": "张三"},{"id": "tmp_2", "name": "李四"},{"id": "tmp_3", "name": "王二麻子"}];
         rets.roles = [{"id": "tmp_1", "name": "任务负责人"},{"id": "tmp_2", "name": "主要工作者"},{"id": "tmp_3", "name": "协助者"},{"id": "tmp_3", "name": "监督者"},{"id": "tmp_4", "name": "客户"}];
@@ -139,6 +146,14 @@ async function loadFromLocalStorage() {
   console.log(rets,"rets");
 }
 
+// 接受父页面发来的信息
+window.addEventListener("message", function(event){
+      var data = event.data;
+      console.log(data);
+      projectId = data.projectId;
+      getInfoFrom(data.projectId); 
+      project =  rets;      
+});
 
 function getDemoProject(){
   //console.debug("getDemoProject")
@@ -539,6 +554,7 @@ function showBaselineInfo (event,element){
       <th class="gdfColHeader gdfResizable" style="width:100px;">任务进度（%）</th>
       <th class="gdfColHeader gdfResizable requireCanSeeDep" style="width:80px;">前置任务</th>
       <th class="gdfColHeader gdfResizable" style="width:1000px; text-align: left; padding-left: 10px;">责任人</th>
+      
     </tr>
     </thead>
   </table>

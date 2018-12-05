@@ -311,13 +311,15 @@ export default {
       this.start = addMon + "-" + '01';
       this.end   = this.$common.getLastDay(this.monthData);
       var weekArr = this.$common.getWeekAll(this.start,this.end);
+      console.log(weekArr,22);
       for(var i = 0;i < weekArr.length;i++){
           var weekData = {};
           weekData.weekNum = weekArr[i];
-          weekData.weekStart = this.$common.changeDate(this.getWeekTime(weekArr[i])[0]).substring(5,10)  ;
-          weekData.weekEnd =   this.$common.changeDate(this.getWeekTime(weekArr[i])[6]).substring(5,10) ;
+          weekData.weekStart = this.$common.changeDate(this.getWeekTime(weekArr[i])[0]).substring(5,10);
+          weekData.weekEnd =   this.$common.changeDate(this.getWeekTime(weekArr[i])[6]).substring(5,10);
           this.dateArr.push(weekData);
       }
+      
     }
     },
     created() {

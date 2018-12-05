@@ -133,14 +133,18 @@
        <el-table-column prop="statName" label="计划任务名称" align="center" min-width="180"></el-table-column>
        <el-table-column prop="budgetTotal" label="设计工程量" align="center" min-width="120"></el-table-column>
        <el-table-column prop="finishBudget" label="累计完成" align="center" min-width="120"></el-table-column>
-       <el-table-column prop="finishBudgetRate" label="累计完成百分比" align="center" min-width="120">
-            <template slot-scope="scope">
+       <el-table-column prop="finishBudgetRate" label="累计完成百分比" min-width="200">
+            <!-- <template slot-scope="scope">
                 <span v-if="scope.row.finishBudgetRate">{{$common.fomatPrecent(scope.row.finishBudgetRate)}}%</span>
+            </template> -->
+            <template slot-scope="scope">
+                <el-progress v-if="!scope.row.finishBudgetRate" :stroke-width="13"  :percentage="0"></el-progress>
+                <el-progress v-else :stroke-width="13"  :percentage="$common.fomatPrecent(scope.row.finishBudgetRate)"></el-progress>
             </template>
        </el-table-column>
        <el-table-column prop="monthPlan" label="本月计划" align="center"></el-table-column>
        <el-table-column prop="monthFinish" label="本月完成" align="center"></el-table-column>
-       <el-table-column  label="完成比例"  prop="monthFinishRate" min-width="150">
+       <el-table-column  label="完成比例"  prop="monthFinishRate" min-width="200">
             <template slot-scope="scope">
                 <el-progress v-if="!scope.row.monthFinishRate" :stroke-width="13"  :percentage="0"></el-progress>
                 <el-progress v-else :stroke-width="13"  :percentage="$common.fomatPrecent(scope.row.monthFinishRate)"></el-progress>
