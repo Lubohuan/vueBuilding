@@ -185,7 +185,7 @@
     <div  v-if="companyType == 2">
     <el-table  border :data="tableData2" style="width: 100%">
         <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
-        <el-table-column prop="name"  label="经理部名称" align="center"></el-table-column>
+        <el-table-column prop="name"  label="经理部名称" align="center" min-width="150"></el-table-column>
         <el-table-column prop="projectNum"  label="总项目数" align="center"></el-table-column>
         <el-table-column prop="LastMonthUnfinishedProjectNum"  label="上月未完成项目数" align="center" min-width="200"></el-table-column>
         <el-table-column prop="MonthUnfinishedProjectNum"  label="本月未完成项目数" align="center" min-width="200"></el-table-column>
