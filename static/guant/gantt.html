@@ -116,11 +116,16 @@ function getInfoFrom(dataId){
         rets.resources = [{"id": "tmp_1", "name": "张三"},{"id": "tmp_2", "name": "李四"},{"id": "tmp_3", "name": "王二麻子"}];
         rets.roles = [{"id": "tmp_1", "name": "任务负责人"},{"id": "tmp_2", "name": "主要工作者"},{"id": "tmp_3", "name": "协助者"},{"id": "tmp_3", "name": "监督者"},{"id": "tmp_4", "name": "客户"}];
         // var offset=new Date().getTime()-rets.tasks[0].start;
-        for (var i=0;i<rets.tasks.length;i++) {
-          rets.tasks[i].start = parseInt(rets.tasks[i].start);
-          rets.tasks[i].end = parseInt(rets.tasks[i].end);
-        }
-        project =  rets;  
+        // if (!rets || !rets.tasks || rets.tasks.length == 0){
+        //     project = getDemoProject();
+        // }
+        // else{
+          for (var i=0;i<rets.tasks.length;i++) {
+            rets.tasks[i].start = parseInt(rets.tasks[i].start);
+            rets.tasks[i].end = parseInt(rets.tasks[i].end);
+          }
+        project =  rets; 
+        // }
         resolve();
     }).catch(function (error) {
       console.log(error);
@@ -132,9 +137,7 @@ function getInfoFrom(dataId){
 async function loadFromLocalStorage() {
   await getInfoFrom(projectId);
   //if not found create a new example task
-  if (!rets || !rets.tasks || rets.tasks.length == 0){
-    rets = getDemoProject();
-  }
+  
   if (!project.canWrite)
         $(".ganttButtonBar button.requireWrite").attr("disabled","true");
   ge.loadProject(project);
@@ -142,16 +145,16 @@ async function loadFromLocalStorage() {
 }
 
 function getDemoProject(){
-  //console.debug("getDemoProject")
+var ret;
 ret= {"tasks":    [
       {"id": -1, "name": "任务1", "progress": 0, "progressByWorklog": false, "relevance": 0, "type": "", "typeId": "", "description": "", "code": "", "level": 0, "status": "STATUS_ACTIVE", "depends": "", "canWrite": true, "start": 1396994400000, "duration": 20, "end": 1399586399999, "startIsMilestone": false, "endIsMilestone": false, "collapsed": false, "assigs": [], "hasChild": true},
-      {"id": -2, "name": "任务2", "progress": 0, "progressByWorklog": false, "relevance": 0, "type": "", "typeId": "", "description": "", "code": "", "level": 1, "status": "STATUS_ACTIVE", "depends": "", "canWrite": true, "start": 1396994400000, "duration": 10, "end": 1398203999999, "startIsMilestone": false, "endIsMilestone": false, "collapsed": false, "assigs": [], "hasChild": true},
-      {"id": -3, "name": "任务3", "progress": 0, "progressByWorklog": false, "relevance": 0, "type": "", "typeId": "", "description": "", "code": "", "level": 2, "status": "STATUS_ACTIVE", "depends": "", "canWrite": true, "start": 1396994400000, "duration": 2, "end": 1397167199999, "startIsMilestone": false, "endIsMilestone": false, "collapsed": false, "assigs": [], "hasChild": false},
-      {"id": -4, "name": "任务4", "progress": 0, "progressByWorklog": false, "relevance": 0, "type": "", "typeId": "", "description": "", "code": "", "level": 2, "status": "STATUS_SUSPENDED", "depends": "3", "canWrite": true, "start": 1397167200000, "duration": 4, "end": 1397685599999, "startIsMilestone": false, "endIsMilestone": false, "collapsed": false, "assigs": [], "hasChild": false},
-      {"id": -5, "name": "任务5", "progress": 0, "progressByWorklog": false, "relevance": 0, "type": "", "typeId": "", "description": "", "code": "", "level": 1, "status": "STATUS_SUSPENDED", "depends": "2:5", "canWrite": true, "start": 1398981600000, "duration": 5, "end": 1399586399999, "startIsMilestone": false, "endIsMilestone": false, "collapsed": false, "assigs": [], "hasChild": true},
-      {"id": -6, "name": "任务6", "progress": 0, "progressByWorklog": false, "relevance": 0, "type": "", "typeId": "", "description": "", "code": "", "level": 2, "status": "STATUS_SUSPENDED", "depends": "", "canWrite": true, "start": 1398981600000, "duration": 2, "end": 1399327199999, "startIsMilestone": false, "endIsMilestone": false, "collapsed": false, "assigs": [], "hasChild": false},
-      {"id": -7, "name": "任务7", "progress": 0, "progressByWorklog": false, "relevance": 0, "type": "", "typeId": "", "description": "", "code": "", "level": 2, "status": "STATUS_SUSPENDED", "depends": "6", "canWrite": true, "start": 1399327200000, "duration": 3, "end": 1399586399999, "startIsMilestone": false, "endIsMilestone": false, "collapsed": false, "assigs": [], "hasChild": false},
-      {"id": -8, "name": "任务8", "progress": 0, "progressByWorklog": false, "relevance": 0, "type": "", "typeId": "", "description": "", "code": "", "level": 2, "status": "STATUS_SUSPENDED", "depends": "6", "canWrite": true, "start": 1399327200000, "duration": 2, "end": 1399499999999, "startIsMilestone": false, "endIsMilestone": false, "collapsed": false, "assigs": [], "hasChild": false}
+      // {"id": -2, "name": "任务2", "progress": 0, "progressByWorklog": false, "relevance": 0, "type": "", "typeId": "", "description": "", "code": "", "level": 1, "status": "STATUS_ACTIVE", "depends": "", "canWrite": true, "start": 1396994400000, "duration": 10, "end": 1398203999999, "startIsMilestone": false, "endIsMilestone": false, "collapsed": false, "assigs": [], "hasChild": true},
+      // {"id": -3, "name": "任务3", "progress": 0, "progressByWorklog": false, "relevance": 0, "type": "", "typeId": "", "description": "", "code": "", "level": 2, "status": "STATUS_ACTIVE", "depends": "", "canWrite": true, "start": 1396994400000, "duration": 2, "end": 1397167199999, "startIsMilestone": false, "endIsMilestone": false, "collapsed": false, "assigs": [], "hasChild": false},
+      // {"id": -4, "name": "任务4", "progress": 0, "progressByWorklog": false, "relevance": 0, "type": "", "typeId": "", "description": "", "code": "", "level": 2, "status": "STATUS_SUSPENDED", "depends": "3", "canWrite": true, "start": 1397167200000, "duration": 4, "end": 1397685599999, "startIsMilestone": false, "endIsMilestone": false, "collapsed": false, "assigs": [], "hasChild": false},
+      // {"id": -5, "name": "任务5", "progress": 0, "progressByWorklog": false, "relevance": 0, "type": "", "typeId": "", "description": "", "code": "", "level": 1, "status": "STATUS_SUSPENDED", "depends": "2:5", "canWrite": true, "start": 1398981600000, "duration": 5, "end": 1399586399999, "startIsMilestone": false, "endIsMilestone": false, "collapsed": false, "assigs": [], "hasChild": true},
+      // {"id": -6, "name": "任务6", "progress": 0, "progressByWorklog": false, "relevance": 0, "type": "", "typeId": "", "description": "", "code": "", "level": 2, "status": "STATUS_SUSPENDED", "depends": "", "canWrite": true, "start": 1398981600000, "duration": 2, "end": 1399327199999, "startIsMilestone": false, "endIsMilestone": false, "collapsed": false, "assigs": [], "hasChild": false},
+      // {"id": -7, "name": "任务7", "progress": 0, "progressByWorklog": false, "relevance": 0, "type": "", "typeId": "", "description": "", "code": "", "level": 2, "status": "STATUS_SUSPENDED", "depends": "6", "canWrite": true, "start": 1399327200000, "duration": 3, "end": 1399586399999, "startIsMilestone": false, "endIsMilestone": false, "collapsed": false, "assigs": [], "hasChild": false},
+      // {"id": -8, "name": "任务8", "progress": 0, "progressByWorklog": false, "relevance": 0, "type": "", "typeId": "", "description": "", "code": "", "level": 2, "status": "STATUS_SUSPENDED", "depends": "6", "canWrite": true, "start": 1399327200000, "duration": 2, "end": 1399499999999, "startIsMilestone": false, "endIsMilestone": false, "collapsed": false, "assigs": [], "hasChild": false}
     ], "selectedRow": 2, "任务9": [],
       "resources": [
       {"id": "tmp_1", "name": "张三"},
@@ -163,8 +166,8 @@ ret= {"tasks":    [
       {"id": "tmp_2", "name": "主要工作者"},
       {"id": "tmp_3", "name": "协助者"},
       {"id": "tmp_3", "name": "监督者"},
-      {"id": "tmp_4", "name": "客户"}
-    ], "canWrite":    true, "canDelete":true, "canWriteOnParent": true, canAdd:true}
+      {"id": "tmp_4", "name": "客户"}],
+      "canWrite":    true, "canDelete":true, "canWriteOnParent": true, canAdd:true}
 
     //actualize data
     var offset=new Date().getTime()-ret.tasks[0].start;
@@ -232,13 +235,13 @@ function saveGanttOnServer() {
     }
   }
   
-  $.ajax( baseUrl+"/v1/projectPlan/gantt", {
+  $.ajax( baseUrl+"/v1/projectPlan/gantt/"+projectId, {
     contentType: 'application/json;charset=UTF-8',
     data: JSON.stringify(prj),
     beforeSend: function(request) {
         request.setRequestHeader("token", sessionStorage.getItem("userToken"));
     },
-    type:"POST",
+    type:"PUT",
     success: function(response) {
       if (response.ok) {
         // prof.stop();
@@ -539,8 +542,7 @@ function showBaselineInfo (event,element){
       <th class="gdfColHeader gdfResizable" style="width:50px;">工期</th>
       <th class="gdfColHeader gdfResizable" style="width:100px;">任务进度（%）</th>
       <th class="gdfColHeader gdfResizable requireCanSeeDep" style="width:80px;">前置任务</th>
-      <th class="gdfColHeader gdfResizable" style="width:1000px; text-align: left; padding-left: 10px;">责任人</th>
-      
+      <th class="gdfColHeader gdfResizable" style="width:1000px; text-align: left; padding-left: 10px;">责任人</th>  
     </tr>
     </thead>
   </table>
