@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import {getSessionInfo} from "../api/system_interface.js";
 export default {
   name: "home",
   data() {
@@ -40,16 +41,6 @@ export default {
           path:"/commandCentre"
       },
       data2: [
-        {
-          id: 1,
-          label: "企业级管理看板",
-          path:"/enterpriseCommandCenter"
-        },
-        {
-          id: 2,
-          label: "项目管理看板",
-          path:"/commandCentre"
-        },
         {
           id: 3,
           label: "施工区段管理",
@@ -134,25 +125,45 @@ export default {
   methods: {
       handleNodeClick(data){
         this.$router.push(data.path);
-      }
+      },
+      //获取登陆用户信息
+      getUserInfo(){
+        return new Promise((resolve, reject) => {
+        getSessionInfo({})
+          .then(response => {
+              if (response.code == "200") {
+              this.orangeType = response.body.orgType; 
+              this.companyType = response.body.chOrgType;  
+              resolve();          
+            } else {
+              this.$message.error(response.msg);
+            }
+          })
+          .catch(error => {
+            console.log(error);
+            reject();
+          });
+        })
+    },
   },
-  mounted(){
-    this.companyType = sessionStorage.getItem("companyType");
-    this.orangeType = sessionStorage.getItem("orgType");
-    console.log(this.orangeType,"sss");
-    // if(this.orangeType== 2||this.orangeType== 3||this.orangeType== 1){
-    //   this.$router.push({path:'/enterpriseCommandCenter'});
-    // }
-    // if(this.companyType == 2||this.companyType == 3){
-    //   this.data2.unshift(this.company);
-    // }
-    // else if(this.companyType == 4){
-    //   this.data2.unshift(this.project);
-    // }
-    // else if(this.companyType == 1){
-    //   this.data2.unshift(this.project);
-    //    this.data2.unshift(this.company);
-    // }
+  async created(){
+    await this.getUserInfo();
+    if(this.orangeType == 2||this.orangeType== 3||this.orangeType== 1){
+       this.$router.push({path:'/enterpriseCommandCenter'});
+    }
+    else{
+       this.$router.push({path:'/commandCentre'});
+    }      
+    if(this.companyType == 2||this.companyType == 3){
+      this.data2.unshift(this.company);
+    }
+    else if(this.companyType == 4){
+      this.data2.unshift(this.project);
+    }
+    else if(this.companyType == 1){
+      this.data2.unshift(this.project);
+       this.data2.unshift(this.company);
+    }
   }
 };
 </script>

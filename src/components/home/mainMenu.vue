@@ -266,9 +266,7 @@ export default {
               this.projectArry  = this.$common.findParent(objects,response.body.chOrgId);
               // 存储值：将对象转换为Json字符串
               sessionStorage.setItem('selectArry', JSON.stringify(this.projectArry));
-              sessionStorage.setItem('companyType', response.body.chOrgType); 
-              sessionStorage.setItem('orgType', response.body.orgType);
-              this.orangeType = response.body.orgType;        
+              sessionStorage.setItem('companyType', response.body.chOrgType);       
               resolve();          
             } else {
               this.$message.error(response.msg);
@@ -326,12 +324,6 @@ export default {
       this.projectArry = JSON.parse(sessionStorage.getItem("selectArry"));
     }
     await this.getUserInfo();
-    if(this.orangeType == 2||this.orangeType== 3||this.orangeType== 1){
-       this.$router.push({path:'/enterpriseCommandCenter'});
-    }
-    else{
-       this.$router.push({path:'/commandCentre'});
-    } 
   }
 }
 </script>
