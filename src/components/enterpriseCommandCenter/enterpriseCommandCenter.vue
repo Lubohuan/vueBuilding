@@ -260,7 +260,7 @@
     <div v-if="companyType == 3">
     <el-table  border :data="tableData2" style="width: 100%" max-height="300" :header-cell-style="rowClass">
         <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
-        <el-table-column prop="name"  label="经理部名称" align="center"></el-table-column>
+        <el-table-column prop="name"  label="项目名称" align="center"></el-table-column>
         <el-table-column prop="lastMonthPlanOutput"  label="上月计划产值" align="center" min-width="140"></el-table-column>
         <el-table-column prop="lastMonthUnfinishedOutput"  label="上月未完成产值" align="center" min-width="140"></el-table-column>
         <el-table-column prop="monthPlanOutput"  label="本月计划完成产值" align="center" min-width="140"></el-table-column>
