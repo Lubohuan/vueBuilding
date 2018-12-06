@@ -155,9 +155,9 @@ export default {
     if(this.orangeType == 2||this.orangeType== 3||this.orangeType== 1){
        this.$router.push({path:'/enterpriseCommandCenter'});
     }
-    else{
+    if(this.companyType == 4){
        this.$router.push({path:'/commandCentre'});
-    }      
+    }  
     if(this.companyType == 2||this.companyType == 3){
       this.data2.unshift(this.company);
     }

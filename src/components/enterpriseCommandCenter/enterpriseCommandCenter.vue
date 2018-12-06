@@ -119,9 +119,13 @@
             <el-table  border :data="tableDatas" style="width: 100%" max-height="129">
             <el-table-column type="index" label="序号" align="center"></el-table-column>
             <el-table-column prop="name" label="经理部名称" align="center" min-width="180"></el-table-column>
-            <el-table-column prop="num" label="计划产值" align="center" min-width="80"></el-table-column>
-            <el-table-column prop="num" label="未完成产值" align="center" min-width="100"></el-table-column>
-            <el-table-column prop="num" label="占比" align="center"></el-table-column>
+            <el-table-column prop="planOutput" label="计划产值" align="center" min-width="80"></el-table-column>
+            <el-table-column prop="notFinishOutput" label="未完成产值" align="center" min-width="100"></el-table-column>
+            <el-table-column prop="notFinishOutputRate" label="占比" align="center">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.notFinishOutputRate">{{$common.fomatPrecent(scope.row.notFinishOutputRate)}}%</span>
+                </template>
+            </el-table-column>
             </el-table>  
         </div>
     </el-col>

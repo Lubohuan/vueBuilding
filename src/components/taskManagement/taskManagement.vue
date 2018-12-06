@@ -219,7 +219,8 @@
                         <span class="desp_look">完成工程量{{item.finishAmount}}{{item.unitName}}</span>
                         <span class="desp_look">完成产值{{item.finishOutput}}万元</span>
                         <div class="desp_look lookTime">{{item.createTime}}</div>
-                    </div> 
+                    </div>
+                    <div class="desp_look" style="padding-left:20px;" v-if="item.remark">描述：{{item.remark}}</div> 
                     <div class="imgVidevoInfo">
                      <viewer style="display:inline-block;cursor: pointer;margin-right:5px;"   v-for="items in item.imageUrls" :key="items">
 	                    <img :src="items" width="120" height="70">

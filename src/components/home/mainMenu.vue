@@ -288,7 +288,7 @@ export default {
               this.projectArry  = this.$common.findParent(objects,response.body.chOrgId);
               // 存储值：将对象转换为Json字符串
               sessionStorage.setItem('selectArry', JSON.stringify(this.projectArry));
-              sessionStorage.setItem('companyType', response.body.chOrgType); 
+              sessionStorage.setItem('companyType', response.body.chOrgType);
               this.orgType =  response.body.chOrgType;     
               resolve();          
             } else {
