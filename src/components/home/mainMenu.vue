@@ -129,6 +129,16 @@
        <router-view v-if="isRouterAlive"> </router-view>
       </div>
     </div>
+    <el-dialog :center="true" :visible.sync="dialog.checkList" width="500px" :close-on-click-modal="false" :close-on-press-escape="false" :show-close="false">
+      <el-form  :model="projectArry" :rules="rules" ref="checkList" label-width="100px" style="width:100%;">
+        <el-form-item label="请选择组织:" prop="typeName" >
+          <el-cascader change-on-select :options="listOrgInfoList"  :show-all-levels="false" filterable v-model="projectArry" :props="defaultPropss" size="small" placeholder="请选择项目" style="width:100%;"></el-cascader>
+        </el-form-item>
+      </el-form>
+      <div class="clickBtn">
+        <el-button @click="commit" size="small" type="primary">保存</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -157,11 +167,19 @@ export default {
         label: "name",
         value: "id"
       },
+      rules: {
+        projectArry: [
+          { required: true, message: "请选择组织", trigger: "blur" }
+        ]
+      },
       projectId:null,
       isRouterAlive:true,
       projectArry:[],
       projectToken:'',
-      orangeType:''
+      orangeType:'',
+      dialog:{
+        checkList:false
+      }
     }
   },
   computed: {
@@ -210,6 +228,10 @@ export default {
           docElm.msRequestFullscreen && docElm.msRequestFullscreen();//IE11
           this.isScale = true;
         }
+      },
+      commit(){
+        this.dialog.checkList = false;
+        this.changeProject();       
       },
       //切换组织
     async changeProject(){
@@ -266,7 +288,8 @@ export default {
               this.projectArry  = this.$common.findParent(objects,response.body.chOrgId);
               // 存储值：将对象转换为Json字符串
               sessionStorage.setItem('selectArry', JSON.stringify(this.projectArry));
-              sessionStorage.setItem('companyType', response.body.chOrgType);       
+              sessionStorage.setItem('companyType', response.body.chOrgType); 
+              this.orgType =  response.body.chOrgType;     
               resolve();          
             } else {
               this.$message.error(response.msg);
@@ -316,6 +339,7 @@ export default {
     if(url.indexOf("?")!=-1){
         this.$store.dispatch('getUserToken',this.getUrlParam('token'));
         sessionStorage.setItem("userToken",this.getUrlParam('token'));
+        console.log(this.getUrlParam('token'),"this.getUrlParam('token')");
     };
 
     await this.getlistOrgInfoList();
@@ -324,6 +348,9 @@ export default {
       this.projectArry = JSON.parse(sessionStorage.getItem("selectArry"));
     }
     await this.getUserInfo();
+    if(this.orgType == 1){
+      this.dialog.checkList = true;
+    }
   }
 }
 </script>
