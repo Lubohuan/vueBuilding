@@ -136,7 +136,7 @@
         </el-form-item>
       </el-form>
       <div class="clickBtn">
-        <el-button @click="commit" size="small" type="primary">保存</el-button>
+        <el-button @click="commit" size="small" type="primary">确定</el-button>
       </div>
     </el-dialog>
   </div>
