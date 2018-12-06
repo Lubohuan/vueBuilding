@@ -334,7 +334,8 @@ export default {
       monthDatass:'',
       companyType:'',
       lastMonth:'',
-      todayMonth:''
+      todayMonth:'',
+      
 
     };
   },

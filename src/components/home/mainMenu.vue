@@ -132,7 +132,7 @@
     <el-dialog title="请切换租户"  :visible.sync="dialog.checkList" width="500px" :close-on-click-modal="false" :close-on-press-escape="false" :show-close="false">
       <el-form  :rules="rules" ref="checkList" label-width="90px" style="width:100%;">
         <el-form-item label="请选择组织:" prop="typeName" >
-          <el-cascader change-on-select :options="listOrgInfoList"  :show-all-levels="false" filterable v-model="projectArry" :props="defaultPropss" size="small" placeholder="请选择项目" style="width:100%;"></el-cascader>
+          <el-cascader change-on-select :options="secondTypeList"  :show-all-levels="false" filterable v-model="projectArry" :props="defaultPropss" size="small" placeholder="请选择项目" style="width:100%;"></el-cascader>
         </el-form-item>
       </el-form>
       <div class="clickBtn">
@@ -180,7 +180,8 @@ export default {
       dialog:{
         checkList:false
       },
-      firstProject:[]
+      firstProject:[],
+      secondTypeList:[]
     }
   },
   computed: {
@@ -281,6 +282,16 @@ export default {
       //   });
       // },
 
+      getSecondTypeLIst(data){
+        var dataArr = data;
+        for(var i=0;i<dataArr.length;i++){
+          if(dataArr[i].type == 2){
+            this.secondTypeList.push(dataArr[i]);
+          }
+        }
+        console.log(this.secondTypeList,"this.secondTypeList");
+      },
+
       //获取登陆用户信息
       getUserInfo(){
 
@@ -290,6 +301,7 @@ export default {
               if (response.code == "200") {
               //获取父级id
               let objects = this.$common.initTree(this.listOrgInfoList);
+              this.getSecondTypeLIst(objects);
               this.projectArry  = this.$common.findParent(objects,response.body.chOrgId);
               // 存储值：将对象转换为Json字符串
               sessionStorage.setItem('selectArry', JSON.stringify(this.projectArry));
