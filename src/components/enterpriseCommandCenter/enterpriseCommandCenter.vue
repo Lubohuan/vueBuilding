@@ -585,17 +585,20 @@ export default {
     },
     async mounted() {
     // this.start = this.$common.getDay(0);//当天日期
-    this.getMonths();
-    this.refreshPan();
-    this.refreshList();
-    this.refreshLists();
-    this.refreshListss();
     if(!sessionStorage.getItem("companyType")){
         await this.getUserInfo();
     }
     else{
         this.companyType = sessionStorage.getItem("companyType");
-    }   
+    }
+    if(this.companyType==2||this.companyType==3){
+        this.getMonths();
+        this.refreshPan();
+        this.refreshList();
+        this.refreshLists();
+        this.refreshListss();
+    }
+   
     // console.log( this.companyType," this.companyType");
   }
 };
