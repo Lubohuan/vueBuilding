@@ -117,7 +117,7 @@ export default {
     //等待查询所有计划完成
     async awaitList(){
       await this.refreshLists();
-      if(this.projectTypeList.length > 1){
+      if(this.projectTypeList.length >= 1){
          this.projectType = this.projectTypeList[0].id;
       }
       else{
