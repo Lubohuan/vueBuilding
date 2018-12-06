@@ -160,7 +160,7 @@
                 <span v-else>--</span>
             </template>
        </el-table-column>
-       <el-table-column  label="完成比例" prop="monthFinishRate" min-width="150">
+       <el-table-column  label="完成比例" prop="monthFinishRate" min-width="170">
             <template slot-scope="scope">
                 <el-progress v-if="!scope.row.monthFinishRate" :stroke-width="13"  :percentage="0"></el-progress>
                 <el-progress v-else :stroke-width="13"  :percentage="$common.fomatPrecent(scope.row.monthFinishRate)"></el-progress>
@@ -254,14 +254,19 @@
     </el-pagination>
     </div>
     <div v-if="companyType == 3">
-    <el-table  border :data="tableData2" style="width: 100%" max-height="300">
+    <el-table  border :data="tableData2" style="width: 100%" max-height="300" :header-cell-style="rowClass">
         <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
         <el-table-column prop="name"  label="经理部名称" align="center"></el-table-column>
         <el-table-column prop="lastMonthPlanOutput"  label="上月计划产值" align="center" min-width="140"></el-table-column>
         <el-table-column prop="lastMonthUnfinishedOutput"  label="上月未完成产值" align="center" min-width="140"></el-table-column>
         <el-table-column prop="monthPlanOutput"  label="本月计划完成产值" align="center" min-width="140"></el-table-column>
         <el-table-column prop="monthUnfinishedOutput"  label="本月未完成产值" align="center" min-width="140"></el-table-column>
-        <el-table-column prop="monthUnfinishedOutputRate"  label="占月度产值比例" align="center" min-width="140"></el-table-column>
+        <el-table-column prop="monthUnfinishedOutputRate"  label="占月度产值比例"  min-width="140">
+            <template slot-scope="scope">
+                <el-progress v-if="!scope.row.monthUnfinishedOutputRate" :stroke-width="13"  :percentage="0"></el-progress>
+                <el-progress v-else :stroke-width="13"  :percentage="$common.fomatPrecent(scope.row.monthUnfinishedOutputRate)"></el-progress>
+            </template>
+        </el-table-column>
         <el-table-column prop="unfinishedOutputQoQ"  label="月环比" align="center" min-width="140">
             <template slot-scope="scope">
                 <span>

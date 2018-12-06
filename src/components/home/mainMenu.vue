@@ -130,7 +130,7 @@
       </div>
     </div>
     <el-dialog :center="true" :visible.sync="dialog.checkList" width="500px" :close-on-click-modal="false" :close-on-press-escape="false" :show-close="false">
-      <el-form  :model="projectArry" :rules="rules" ref="checkList" label-width="100px" style="width:100%;">
+      <el-form  :rules="rules" ref="checkList" label-width="100px" style="width:100%;">
         <el-form-item label="请选择组织:" prop="typeName" >
           <el-cascader change-on-select :options="listOrgInfoList"  :show-all-levels="false" filterable v-model="projectArry" :props="defaultPropss" size="small" placeholder="请选择项目" style="width:100%;"></el-cascader>
         </el-form-item>
@@ -179,7 +179,8 @@ export default {
       orangeType:'',
       dialog:{
         checkList:false
-      }
+      },
+      firstProject:[]
     }
   },
   computed: {
@@ -230,6 +231,10 @@ export default {
         }
       },
       commit(){
+        if(JSON.stringify(this.firstProject) == JSON.stringify(this.projectArry)){
+          this.$message.error('请切换层级!');
+          return
+        }     
         this.dialog.checkList = false;
         this.changeProject();       
       },
@@ -289,7 +294,8 @@ export default {
               // 存储值：将对象转换为Json字符串
               sessionStorage.setItem('selectArry', JSON.stringify(this.projectArry));
               sessionStorage.setItem('companyType', response.body.chOrgType);
-              this.orgType =  response.body.chOrgType;     
+              this.orgType =  response.body.chOrgType;
+              this.openDialodg();     
               resolve();          
             } else {
               this.$message.error(response.msg);
@@ -300,7 +306,6 @@ export default {
             reject();
           });
         })
-
         // getSessionInfo({})
         // .then(response => {
         //   if (response.code == "200") {
@@ -319,6 +324,13 @@ export default {
         // .catch(error => {
         //   console.log(error);
         // });
+      },
+
+      // 打开弹框
+       openDialodg(){
+        if(this.orgType == 1){
+          this.dialog.checkList = true;
+        }
       },
       
 
@@ -348,9 +360,8 @@ export default {
       this.projectArry = JSON.parse(sessionStorage.getItem("selectArry"));
     }
     await this.getUserInfo();
-    if(this.orgType == 1){
-      this.dialog.checkList = true;
-    }
+    this.firstProject = this.projectArry;
+    this.openDialodg();
   }
 }
 </script>
