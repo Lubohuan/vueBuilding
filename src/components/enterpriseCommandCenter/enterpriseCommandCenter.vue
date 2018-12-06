@@ -150,7 +150,7 @@
       </el-row>
       <el-table  border :data="tableData" style="width: 100%" :header-cell-style="rowClass" max-height="315">
       <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-       <el-table-column prop="name" label="经理部名称" align="center" min-width="200"></el-table-column>
+       <el-table-column prop="name" :label="companyType == 2 ?'经理部名称':'项目名称'" align="center" min-width="200"></el-table-column>
        <el-table-column prop="monthPlanOutput" label="月计划产值（万元）" align="center" min-width="180"></el-table-column>
        <el-table-column prop="monthFinishOutput" label="月完成产值（万元" align="center" min-width="120"></el-table-column>
        <el-table-column prop="monthOutputRate" label="月环比" align="center" min-width="120">
