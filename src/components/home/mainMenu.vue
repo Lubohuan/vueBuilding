@@ -129,8 +129,8 @@
        <router-view v-if="isRouterAlive"> </router-view>
       </div>
     </div>
-    <el-dialog :center="true" :visible.sync="dialog.checkList" width="500px" :close-on-click-modal="false" :close-on-press-escape="false" :show-close="false">
-      <el-form  :rules="rules" ref="checkList" label-width="100px" style="width:100%;">
+    <el-dialog title="请切换租户"  :visible.sync="dialog.checkList" width="500px" :close-on-click-modal="false" :close-on-press-escape="false" :show-close="false">
+      <el-form  :rules="rules" ref="checkList" label-width="90px" style="width:100%;">
         <el-form-item label="请选择组织:" prop="typeName" >
           <el-cascader change-on-select :options="listOrgInfoList"  :show-all-levels="false" filterable v-model="projectArry" :props="defaultPropss" size="small" placeholder="请选择项目" style="width:100%;"></el-cascader>
         </el-form-item>
