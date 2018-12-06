@@ -153,7 +153,7 @@
                     <img v-else src="../../assets/u493.png" alt="" class="upDownImage downImage">
                 </span>
                 <span v-if="scope.row.monthOutputRate">{{$common.fomatPrecent(scope.row.monthOutputRate)}}%</span>
-                <span v-else>0%</span>
+                <span v-else>--</span>
             </template>
        </el-table-column>
        <el-table-column  label="完成比例" prop="monthFinishRate" min-width="150">
@@ -204,7 +204,17 @@
                 <span style="color:red;">{{scope.row.warningReason}}</span>
             </template> -->
         </el-table-column>
-        <el-table-column prop="unfinishedProjectQoQ"  label="月环比" align="center" min-width="80"></el-table-column>
+        <el-table-column prop="unfinishedProjectQoQ"  label="月环比" align="center" min-width="80">
+            <template slot-scope="scope">
+                <span>
+                    <img v-if="!scope.row.unfinishedOutputQoQ"  src="" alt="">
+                    <img v-else-if="scope.row.unfinishedOutputQoQ>=0" src="../../assets/u489.png" alt="" class="upDownImage" >
+                    <img v-else src="../../assets/u493.png" alt="" class="upDownImage downImage">
+                </span>
+                <span v-if="scope.row.unfinishedOutputQoQ">{{$common.fomatPrecent(scope.row.unfinishedOutputQoQ)}}%</span>
+                <span v-else>--</span>
+            </template>
+        </el-table-column>
         <el-table-column prop="outputTotal"  label="总产值" align="center" min-width="100"></el-table-column>
         <el-table-column prop="lastMonthPlanOutput"  label="上月计划产值" align="center" min-width="100"></el-table-column>
         <el-table-column prop="lastMonthUnfinishedOutput"  label="上月未完成产值" align="center" min-width="110"></el-table-column>
@@ -223,7 +233,7 @@
                     <img v-else src="../../assets/u493.png" alt="" class="upDownImage downImage">
                 </span>
                 <span v-if="scope.row.unfinishedOutputQoQ">{{$common.fomatPrecent(scope.row.unfinishedOutputQoQ)}}%</span>
-                <span v-else>0%</span>
+                <span v-else>--</span>
             </template>
         </el-table-column>
     </el-table>
@@ -256,7 +266,7 @@
                     <img v-else src="../../assets/u493.png" alt="" class="upDownImage downImage">
                 </span>
                 <span v-if="scope.row.unfinishedOutputQoQ">{{$common.fomatPrecent(scope.row.unfinishedOutputQoQ)}}%</span>
-                <span v-else>0%</span>
+                <span v-else>--</span>
             </template>
         </el-table-column>
     </el-table>
@@ -277,7 +287,7 @@
 </template>
 
 <script>
-import { getCompanyOutputBoard,listOutputProgress,getUnfinishedOutputAnalyze,listProjectOutputWarning} from "../api/system_interface.js";
+import { getCompanyOutputBoard,listOutputProgress,getUnfinishedOutputAnalyze,listProjectOutputWarning,getSessionInfo} from "../api/system_interface.js";
 import supervise from "../taskWarning/supervise.vue";
 import { mapMutations } from 'vuex';
 export default {
@@ -539,17 +549,41 @@ export default {
           this.dateArr.push(weekData);
       }
       this.refreshList();       
-    }
+    },
+    //获取登陆用户信息
+    getUserInfo(){
+        return new Promise((resolve, reject) => {
+        getSessionInfo({})
+          .then(response => {
+              if (response.code == "200") {
+              this.companyType = response.body.chOrgType;  
+              resolve();          
+            } else {
+              this.$message.error(response.msg);
+            }
+          })
+          .catch(error => {
+            console.log(error);
+            reject();
+          });
+        })
+    },
     
     },
-    mounted() {
+    async mounted() {
     // this.start = this.$common.getDay(0);//当天日期
     this.getMonths();
     this.refreshPan();
     this.refreshList();
     this.refreshLists();
     this.refreshListss();
-    this.companyType = sessionStorage.getItem("companyType");
+    if(!sessionStorage.getItem("companyType")){
+        await this.getUserInfo();
+    }
+    else{
+        this.companyType = sessionStorage.getItem("companyType");
+    }   
+    // console.log( this.companyType," this.companyType");
   }
 };
 </script>

@@ -132,6 +132,7 @@ export default {
         getSessionInfo({})
           .then(response => {
               if (response.code == "200") {
+              // sessionStorage.setItem('orgType', response.body.orgType);            
               this.orangeType = response.body.orgType; 
               this.companyType = response.body.chOrgType;  
               resolve();          
@@ -148,6 +149,9 @@ export default {
   },
   async created(){
     await this.getUserInfo();
+    // if(sessionStorage.getItem("orgType")){
+    //   this.orangeType = sessionStorage.getItem("orgType");
+    // }
     if(this.orangeType == 2||this.orangeType== 3||this.orangeType== 1){
        this.$router.push({path:'/enterpriseCommandCenter'});
     }
