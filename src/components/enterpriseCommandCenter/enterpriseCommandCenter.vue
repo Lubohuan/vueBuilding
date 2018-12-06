@@ -75,10 +75,14 @@
                     <img src="../../assets/分组 3@2x.png" alt="">
                 </span>
                 <span v-if="panTable.child" style="vertical-align: top;">
-                   <div v-for="(item,index) in panTable.child" :key="index">{{item.name}}</div>
+                      <el-tooltip v-for="(item,index) in panTable.child" :key="index"  effect="dark" :content="item.name" placement="top-start">
+                               <div>{{item.name}}</div>
+                      </el-tooltip>                
                 </span>
                 <span v-if="panTable.child" style="vertical-align: top;" class="monthFinish">
-                    <div v-for="(item,index) in panTable.child" :key="index">本月完成{{item.monthFinishOutput}}万元</div>
+                     <el-tooltip v-for="(item,index) in panTable.child" :key="index"  effect="dark" :content="'本月完成'+ item.monthFinishOutput +'万元'" placement="top-start">
+                               <div>本月完成{{item.monthFinishOutput}}万元</div>
+                      </el-tooltip> 
                 </span>
                 <!-- <div v-if="panTable.child.length > 0"><img src="../../assets/分组@2x.png" alt=""><span>{{panTable.child[0].name}}</span><span>本月完成{{panTable.child[0].monthFinishOutput}}万</span></div>
                 <div v-if="panTable.child[1]"><img src="../../assets/分组 2@2x.png" alt=""><span>{{panTable.child[1].name}}</span><span>本月完成{{panTable.child[1].monthFinishOutput}}万</span></div>
