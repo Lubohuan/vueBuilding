@@ -55,7 +55,7 @@
                             <img v-if="!panTable.monthOutputRate"  src="" alt="">
                             <img v-else-if="panTable.monthOutputRate>=0" src="../../assets/u489.png" alt="" class="upDownImage" >
                             <img v-else src="../../assets/u493.png" alt="" class="upDownImage downImage">
-                            </span>
+                        </span>
                         <span v-if="!panTable.monthOutputRate">0%</span>
                         <span v-else>{{$common.fomatPrecent(panTable.monthOutputRate)}}%</span> 
                         </span>
@@ -93,9 +93,13 @@
             <el-table  border :data="tableDatas" style="width: 100%"  max-height="129">
             <el-table-column type="index" label="序号" align="center"></el-table-column>
             <el-table-column prop="name" label="经理部名称" align="center" min-width="180"></el-table-column>
-            <el-table-column prop="num" label="项目总数" align="center" ></el-table-column>
-            <el-table-column prop="num" label="未完成产值项目数" align="center" min-width="150"></el-table-column>
-            <el-table-column prop="num" label="占比" align="center" ></el-table-column>
+            <el-table-column prop="projectCount" label="项目总数" align="center" ></el-table-column>
+            <el-table-column prop="notFinishCount" label="未完成产值项目数" align="center" min-width="150"></el-table-column>
+            <el-table-column prop="notFinishRate" label="占比" align="center" >
+                <template slot-scope="scope">
+                    <span v-if="scope.row.notFinishRate">{{$common.fomatPrecent(scope.row.notFinishRate)}}%</span>
+                </template>
+            </el-table-column>
             </el-table>  
         </div>
         <div v-if="companyType == 3"  class="commandCard">
@@ -136,15 +140,21 @@
             </div>
           </el-col>
       </el-row>
-      <el-table  border :data="tableData" style="width: 100%" :header-cell-style="rowClass" max-height="500">
+      <el-table  border :data="tableData" style="width: 100%" :header-cell-style="rowClass" max-height="315">
       <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
        <el-table-column prop="name" label="经理部名称" align="center" min-width="200"></el-table-column>
        <el-table-column prop="monthPlanOutput" label="月计划产值（万元）" align="center" min-width="180"></el-table-column>
        <el-table-column prop="monthFinishOutput" label="月完成产值（万元" align="center" min-width="120"></el-table-column>
        <el-table-column prop="monthOutputRate" label="月环比" align="center" min-width="120">
-            <!-- <template slot-scope="scope">
-                <span v-if="scope.row.type">{{$common.fomatPrecent(scope.row.finishBudgetRate)}}%</span>
-            </template> -->
+            <template slot-scope="scope">
+                <span>
+                    <img v-if="!scope.row.monthOutputRate"  src="" alt="">
+                    <img v-else-if="scope.row.monthOutputRate>=0" src="../../assets/u489.png" alt="" class="upDownImage" >
+                    <img v-else src="../../assets/u493.png" alt="" class="upDownImage downImage">
+                </span>
+                <span v-if="scope.row.monthOutputRate">{{$common.fomatPrecent(scope.row.monthOutputRate)}}%</span>
+                <span v-else>0%</span>
+            </template>
        </el-table-column>
        <el-table-column  label="完成比例" prop="monthFinishRate" min-width="150">
             <template slot-scope="scope">
@@ -168,7 +178,7 @@
 			>
       </el-pagination>
     </div>
-     <div class="tableDiv" style="border-top:none;">
+     <div class="tableDiv" style="border-top:none;" v-if="companyType==2||companyType==3">
       <el-row class="tableTitle">
           <el-col :span="18">
              <span class="blueBlock"></span>
@@ -183,25 +193,39 @@
           </el-col>
       </el-row>
     <div  v-if="companyType == 2">
-    <el-table  border :data="tableData2" style="width: 100%">
+    <el-table  border :data="tableData2" style="width: 100%" max-height="300">
         <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
         <el-table-column prop="name"  label="经理部名称" align="center" min-width="150"></el-table-column>
         <el-table-column prop="projectNum"  label="总项目数" align="center"></el-table-column>
-        <el-table-column prop="LastMonthUnfinishedProjectNum"  label="上月未完成项目数" align="center" min-width="200"></el-table-column>
-        <el-table-column prop="MonthUnfinishedProjectNum"  label="本月未完成项目数" align="center" min-width="200"></el-table-column>
+        <el-table-column prop="LastMonthUnfinishedProjectNum"  label="上月未完成项目数" align="center" min-width="150"></el-table-column>
+        <el-table-column prop="MonthUnfinishedProjectNum"  label="本月未完成项目数" align="center" min-width="150"></el-table-column>
         <el-table-column prop="type"  label="占所有项目比例" align="center" min-width="110">
             <!-- <template slot-scope="scope">
                 <span style="color:red;">{{scope.row.warningReason}}</span>
             </template> -->
         </el-table-column>
-        <el-table-column prop="type"  label="月环比" align="center" min-width="120"></el-table-column>
-        <el-table-column prop="outputTotal"  label="总产值" align="center" min-width="120"></el-table-column>
-        <el-table-column prop="type"  label="上月计划产值" align="center" min-width="140"></el-table-column>
-        <el-table-column prop="type"  label="上月未完成产值" align="center" min-width="140"></el-table-column>
-        <el-table-column prop="type"  label="计划完成产值" align="center" min-width="140"></el-table-column>
-        <el-table-column prop="type"  label="本月未完成产值" align="center" min-width="140"></el-table-column>
-        <el-table-column prop="type"  label="占月度产值比例" align="center" min-width="140"></el-table-column>
-        <el-table-column prop="type"  label="月环比" align="center" min-width="140"></el-table-column>
+        <el-table-column prop="unfinishedProjectQoQ"  label="月环比" align="center" min-width="80"></el-table-column>
+        <el-table-column prop="outputTotal"  label="总产值" align="center" min-width="100"></el-table-column>
+        <el-table-column prop="lastMonthPlanOutput"  label="上月计划产值" align="center" min-width="100"></el-table-column>
+        <el-table-column prop="lastMonthUnfinishedOutput"  label="上月未完成产值" align="center" min-width="110"></el-table-column>
+        <el-table-column prop="monthPlanOutput"  label="计划完成产值" align="center" min-width="140"></el-table-column>
+        <el-table-column prop="monthUnfinishedOutput"  label="本月未完成产值" align="center" min-width="140"></el-table-column>
+        <el-table-column prop="monthUnfinishedOutputRate"  label="占月度产值比例" align="center" min-width="140">
+            <template slot-scope="scope">
+                <span v-if="scope.row.unfinishedOutputQoQ">{{$common.fomatPrecent(scope.row.monthUnfinishedOutputRate)}}%</span>
+            </template>
+        </el-table-column>
+        <el-table-column prop="unfinishedOutputQoQ"  label="月环比" align="center" min-width="80">
+            <template slot-scope="scope">
+                <span>
+                    <img v-if="!scope.row.unfinishedOutputQoQ"  src="" alt="">
+                    <img v-else-if="scope.row.unfinishedOutputQoQ>=0" src="../../assets/u489.png" alt="" class="upDownImage" >
+                    <img v-else src="../../assets/u493.png" alt="" class="upDownImage downImage">
+                </span>
+                <span v-if="scope.row.unfinishedOutputQoQ">{{$common.fomatPrecent(scope.row.unfinishedOutputQoQ)}}%</span>
+                <span v-else>0%</span>
+            </template>
+        </el-table-column>
     </el-table>
     <el-pagination background v-if="totals>0"
             class="pageStyle"
@@ -216,7 +240,7 @@
     </el-pagination>
     </div>
     <div v-if="companyType == 3">
-    <el-table  border :data="tableData2" style="width: 100%">
+    <el-table  border :data="tableData2" style="width: 100%" max-height="300">
         <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
         <el-table-column prop="name"  label="经理部名称" align="center"></el-table-column>
         <el-table-column prop="lastMonthPlanOutput"  label="上月计划产值" align="center" min-width="140"></el-table-column>
@@ -224,7 +248,17 @@
         <el-table-column prop="monthPlanOutput"  label="本月计划完成产值" align="center" min-width="140"></el-table-column>
         <el-table-column prop="monthUnfinishedOutput"  label="本月未完成产值" align="center" min-width="140"></el-table-column>
         <el-table-column prop="monthUnfinishedOutputRate"  label="占月度产值比例" align="center" min-width="140"></el-table-column>
-        <el-table-column prop="unfinishedOutputQoQ"  label="月环比" align="center" min-width="140"></el-table-column>
+        <el-table-column prop="unfinishedOutputQoQ"  label="月环比" align="center" min-width="140">
+            <template slot-scope="scope">
+                <span>
+                    <img v-if="!scope.row.unfinishedOutputQoQ"  src="" alt="">
+                    <img v-else-if="scope.row.unfinishedOutputQoQ>=0" src="../../assets/u489.png" alt="" class="upDownImage" >
+                    <img v-else src="../../assets/u493.png" alt="" class="upDownImage downImage">
+                </span>
+                <span v-if="scope.row.unfinishedOutputQoQ">{{$common.fomatPrecent(scope.row.unfinishedOutputQoQ)}}%</span>
+                <span v-else>0%</span>
+            </template>
+        </el-table-column>
     </el-table>
     <el-pagination background v-if="totals>0"
             class="pageStyle"
@@ -516,7 +550,6 @@ export default {
     this.refreshLists();
     this.refreshListss();
     this.companyType = sessionStorage.getItem("companyType");
-    console.log(this.$common.getWeekAll('2018-02-01','2018-02-28') ," this.companyType ");
   }
 };
 </script>

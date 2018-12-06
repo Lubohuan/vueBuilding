@@ -33,6 +33,10 @@
     .outputranking div{
         line-height: 44px;
         font-size: 15px;
+        width: 120px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
     .outputranking span{
         // margin-left:20px;
@@ -47,6 +51,10 @@
     }
     .monthFinish div{
         margin-left: 20px;
+        width: 120px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
     .spanBlock {
       display: inline-block;
@@ -183,9 +191,23 @@
     .outTrank img{
         display: block;
     }
+    @media screen and (max-width: 1789px) {
+        .outputranking  div{
+            font-size: 12px;
+            width:100px;  
+        }
+        .monthFinish div{
+            margin-left: 0px;
+            width: 100px;
+        }
+        .outputranking span {
+            margin-left:8px;
+        }
+    }
     @media screen and (max-width: 1701px) {
         .outputranking  div{
             font-size: 12px;
+            width: 90px;  
         }
         .outputranking span{
             margin-left:8px;
@@ -202,12 +224,15 @@
             margin-left: 15px;
         }
         .monthFinish div{
-            margin-left: 10px;
+            margin-left: 0px;
+            width: 90px;
+           
         }
     }
-    @media screen and (max-width: 1400px) {
+    @media screen and (max-width: 1489px) {
         .outputranking  div{
             font-size: 12px;
+            width: 70px;
         }
         .outputranking span{
             margin-left:0px;
@@ -215,25 +240,22 @@
         .outputranking img{
             height: 30px;
             width:30px;
-            margin-right:-5px;
+            margin-right:10px;
         }
         .commandCard {
             padding: 5px;
         }
         .footerRight {
-            margin-left: 15px;
+            margin-left: 0px;
         }
         .monthFinish div{
             margin-left: 0px;
+            width: 70px;
         }
         .outputranking span {
             margin-left:0px;
         }
     }
-    @media screen and (max-width: 1789px) {
-        .outputranking span {
-            margin-left:8px;
-        }
-    }
+   
   }
   

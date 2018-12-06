@@ -44,6 +44,24 @@ Vue.use(Viewer, {
       zIndex: 9999
   }
 })
+
+// router.beforeEach((to, from, next) => {
+//   var orgType = store.state.orangType;//获取浏览器缓存的公司信息
+//   if (orgType == 4) {//项目级的话到项目看板
+//       if (to.path !== '/commandCentre') {
+//           return next({path: '/commandCentre'});
+//       }else {         
+//           next();
+//       }
+//   }else{ //如果是高层级到企业级看板
+//       if (to.path === '/commandCentre') {
+//           return next({path: '/enterpriseCommandCenter'});
+//       }
+//       next();
+//   }
+// });
+
+
 /* eslint-disable no-new */
 new Vue({
   el: '#hompage',

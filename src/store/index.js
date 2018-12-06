@@ -12,7 +12,8 @@ export default new Vuex.Store({
     bitemList: [], //分部分项列表
     listOrgInfoList:[],//项目列表
     userList:[],//用户列表
-    userToken:''//用户token
+    userToken:'',//用户token
+    orangType:''
   },
   mutations: {
     updatestatisList(state, data) {
@@ -38,7 +39,10 @@ export default new Vuex.Store({
     },
     updateUserToken(state, data) {
         state.userToken = data;
-    }
+    },
+    updateOrangType(state, data) {
+      state.orangType = data;
+  }
   },
   actions: {
     
@@ -137,6 +141,10 @@ export default new Vuex.Store({
     //更新token
     getUserToken({commit},data) {
           commit('updateUserToken', data)
+    },
+    //更新公司类别
+    getOrangeType({commit},data) {
+      commit('updateOrangType', data)
     }
   }
 })

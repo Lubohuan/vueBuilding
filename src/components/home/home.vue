@@ -23,9 +23,21 @@ export default {
   name: "home",
   data() {
     return {
+      companyType:'',
+      orangeType:'',
       defaultProps: {
         children: "children",
         label: "label"
+      },
+      company:{
+          id: 1,
+          label: "企业级管理看板",
+          path:"/enterpriseCommandCenter"
+      },
+      project: {
+          id: 2,
+          label: "项目管理看板",
+          path:"/commandCentre"
       },
       data2: [
         {
@@ -121,9 +133,26 @@ export default {
   },
   methods: {
       handleNodeClick(data){
-        console.log(data,"data");
         this.$router.push(data.path);
       }
+  },
+  mounted(){
+    this.companyType = sessionStorage.getItem("companyType");
+    this.orangeType = sessionStorage.getItem("orgType");
+    console.log(this.orangeType,"sss");
+    // if(this.orangeType== 2||this.orangeType== 3||this.orangeType== 1){
+    //   this.$router.push({path:'/enterpriseCommandCenter'});
+    // }
+    // if(this.companyType == 2||this.companyType == 3){
+    //   this.data2.unshift(this.company);
+    // }
+    // else if(this.companyType == 4){
+    //   this.data2.unshift(this.project);
+    // }
+    // else if(this.companyType == 1){
+    //   this.data2.unshift(this.project);
+    //    this.data2.unshift(this.company);
+    // }
   }
 };
 </script>

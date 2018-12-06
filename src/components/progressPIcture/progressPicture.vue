@@ -16,7 +16,7 @@
           <el-tab-pane :key="item.id" v-for="item in projectTypeList" :label="item.name" :name="item.id"></el-tab-pane>
         </el-tabs>
       </el-col>
-     <iframe ref="iframe" id="iframe" src="static/guant/gantt.html" frameborder="0" width="100%" height="100%" ></iframe>
+     <iframe ref="iframe" id="iframe" src="static/guant/gantt.html" frameborder="0" width="100%" height="90%" ></iframe>
 
      <!--新增计划-->
     <el-dialog  title="新增计划'" :center="true" :visible.sync="dialog.addProgress" width="700px" @close="$refs['addProgress'].reset()">
