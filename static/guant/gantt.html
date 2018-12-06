@@ -116,9 +116,9 @@ function getInfoFrom(dataId){
         rets.resources = [{"id": "tmp_1", "name": "张三"},{"id": "tmp_2", "name": "李四"},{"id": "tmp_3", "name": "王二麻子"}];
         rets.roles = [{"id": "tmp_1", "name": "任务负责人"},{"id": "tmp_2", "name": "主要工作者"},{"id": "tmp_3", "name": "协助者"},{"id": "tmp_3", "name": "监督者"},{"id": "tmp_4", "name": "客户"}];
         // var offset=new Date().getTime()-rets.tasks[0].start;
-        // if (!rets || !rets.tasks || rets.tasks.length == 0){
-        //     project = getDemoProject();
-        // }
+        if (!rets || !rets.tasks || rets.tasks.length == 0){
+            project = getDemoProject();
+        }
         // else{
           for (var i=0;i<rets.tasks.length;i++) {
             rets.tasks[i].start = parseInt(rets.tasks[i].start);
