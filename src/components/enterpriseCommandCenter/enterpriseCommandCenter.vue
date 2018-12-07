@@ -205,8 +205,8 @@
         <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
         <el-table-column prop="name"  label="经理部名称" align="center" min-width="150"></el-table-column>
         <el-table-column prop="projectNum"  label="总项目数" align="center"></el-table-column>
-        <el-table-column prop="LastMonthUnfinishedProjectNum"  label="上月未完成项目数" align="center" min-width="150"></el-table-column>
-        <el-table-column prop="MonthUnfinishedProjectNum"  label="本月未完成项目数" align="center" min-width="150"></el-table-column>
+        <el-table-column prop="lastMonthUnfinishedProjectNum"  label="上月未完成项目数" align="center" min-width="150"></el-table-column>
+        <el-table-column prop="monthUnfinishedProjectNum"  label="本月未完成项目数" align="center" min-width="150"></el-table-column>
         <el-table-column prop="unfinishedProjectRate"  label="占所有项目比例" align="center" min-width="110">
             <template slot-scope="scope">
                 <span>{{$common.fomatPrecent(scope.row.unfinishedProjectRate)}}%</span>
@@ -230,7 +230,8 @@
         <el-table-column prop="monthUnfinishedOutput"  label="本月未完成产值" align="center" min-width="140"></el-table-column>
         <el-table-column prop="monthUnfinishedOutputRate"  label="占月度产值比例" align="center" min-width="140">
             <template slot-scope="scope">
-                <span v-if="scope.row.unfinishedOutputQoQ">{{$common.fomatPrecent(scope.row.monthUnfinishedOutputRate)}}%</span>
+                <span v-if="scope.row.monthUnfinishedOutputRate">{{$common.fomatPrecent(scope.row.monthUnfinishedOutputRate)}}%</span>
+                <span v-else>0%</span>
             </template>
         </el-table-column>
         <el-table-column prop="unfinishedOutputQoQ"  label="月环比" align="center" min-width="80">
