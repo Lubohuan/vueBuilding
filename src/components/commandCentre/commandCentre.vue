@@ -1,6 +1,6 @@
 <template>
 <!--指挥中心-->
-<div class="commandCentre">    
+<div class="commandCentre">
     <el-row :gutter="20">
         <el-col :span="6" >
         <div class="commandCard">
@@ -20,7 +20,7 @@
                         <img v-else src="../../assets/u493.png" alt="" class="upDownImage downImage">
                     </span>
                     <span v-if="!panTable.dayTaskRate">0%</span>
-                    <span v-else>{{$common.fomatPrecent(panTable.dayTaskRate)}}%</span> 
+                    <span v-else>{{$common.fomatPrecent(panTable.dayTaskRate)}}%</span>
                 </span>
                 <span class="footerRight">周环比：
                    <span>
@@ -29,9 +29,9 @@
                         <img v-else src="../../assets/u493.png" alt="" class="upDownImage downImage">
                     </span>
                    <span v-if="!panTable.weekTaskRate">0%</span>
-                   <span v-else>{{$common.fomatPrecent(panTable.weekTaskRate)}}%</span> 
+                   <span v-else>{{$common.fomatPrecent(panTable.weekTaskRate)}}%</span>
                 </span>
-                
+
              </div>
         </div>
         </el-col>
@@ -45,7 +45,7 @@
                             <div v-else class="desp_personal">¥{{panTable.dayFinishOutput}}万</div>
                        </div>
             </div>
-            <div class="cardFooter">              
+            <div class="cardFooter">
                 <span>日环比:
                     <span>
                       <img v-if="!panTable.dayOutputRate"  src="" alt="">
@@ -62,7 +62,7 @@
                       <img v-else src="../../assets/u493.png" alt="" class="upDownImage downImage">
                     </span>
                     <span v-if="!panTable.weekOutputRate">0%</span>
-                    <span v-else>{{$common.fomatPrecent(panTable.weekOutputRate)}}%</span>  
+                    <span v-else>{{$common.fomatPrecent(panTable.weekOutputRate)}}%</span>
                 </span>
             </div>
         </div>
@@ -74,7 +74,7 @@
                 <el-progress v-if="!panTable.finishOutputRate" :stroke-width="18" :percentage="0"></el-progress>
                 <el-progress v-else :stroke-width="18" :percentage="$common.fomatPrecent(panTable.finishOutputRate)"></el-progress>
                 </div>
-                <div class="cardFooters">             
+                <div class="cardFooters">
                 <span >日环比:
                     <span>
                        <img v-if="imageData === 'up'" src="../../assets/u514.png" alt="" class="upDownImage" >
@@ -87,7 +87,7 @@
                        <img v-if="imageData === 'up'" src="../../assets/u514.png" alt="" class="upDownImage" >
                        <img v-else src="../../assets/u518.png" alt="" class="upDownImage downImage">
                     </span>
-                   <span>2.23%</span> 
+                   <span>2.23%</span>
                 </span>
                 </div>
             </div>
@@ -105,7 +105,7 @@
                        <img v-if="imageData === 'up'" src="../../assets/u514.png" alt="" class="upDownImage" >
                        <img v-else src="../../assets/u518.png" alt="" class="upDownImage downImage">
                     </span>
-                   <span>2.23%</span> 
+                   <span>2.23%</span>
                 </span>
                 <span class="footerRight">日环比:
                     <span>
@@ -185,7 +185,7 @@
             </el-radio-group>
           </el-col>
       </el-row>
-     
+
     <el-table  border :data="tableDatas" style="width: 100%">
         <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
         <el-table-column prop="projectName"  label="项目名称" align="center"></el-table-column>
@@ -268,12 +268,12 @@ export default {
 
     };
   },
- 
+
   methods: {
     ...mapMutations({
         updateToken:'updateUserToken'
     }),
-    
+
     rowClass({ row, rowIndex}) {
       console.log(rowIndex) //表头行标号为0
       return 'text-align:center'
@@ -305,7 +305,7 @@ export default {
     },
 
     //切换最近7天/本周/上周
-    tabClick(){ 
+    tabClick(){
         switch(this.tabPosition){
         case "最近七天":
         this.queryType = 0;
@@ -328,7 +328,7 @@ export default {
         break;
     }
     },
-    
+
      //形象进度任务列表查询
     refreshList() {
       getVisualStatProgressPage({
@@ -362,7 +362,7 @@ export default {
           console.log(error);
         });
     },
-      
+
     /*获取本周从周一开始到当天的的日期*/
     getWeekTime() {
         this.nowWeekDate = this.$common.getMonDate();
@@ -397,7 +397,7 @@ export default {
         }
     },
 
-    
+
     //获取最近7天内所有的天数
     getAllDays(index){
       this.dateArr = [];
@@ -429,9 +429,9 @@ export default {
           this.panTable = response.body;
         //   if(this.panTable.contractProRate.indexOf("%") > -1){
         //      this.panTable.contractProRate = this.panTable.contractProRate.substring(0,this.panTable.contractProRate.length-1);
-        //      console.log(this.panTable.contractProRate,"this.panTable.contractProRate")         
+        //      console.log(this.panTable.contractProRate,"this.panTable.contractProRate")
         //   }
-          
+
         })
         .catch(error => {
           console.log(error);
@@ -446,9 +446,9 @@ export default {
     this.refreshLists();
     this.refreshPan();
     console.log(this.$common.getMonDate(),"22222");
-    console.log( this.hasPerm(3),11); 
-   
-   
+    console.log( this.hasPerm(3),11);
+
+
   }
 };
 </script>
