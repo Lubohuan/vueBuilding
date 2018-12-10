@@ -1,6 +1,6 @@
 <template>
 <!--指挥中心-->
-<div class="enterpriseCommandCenter">    
+<div class="enterpriseCommandCenter">
     <el-row :gutter="20">
         <el-col :span="9" >
         <div class="commandCard">
@@ -16,7 +16,7 @@
                         <div v-if="!panTable"></div>
                         <div v-else-if="!panTable.dayFinishOutput">0万</div>
                         <div v-else class="desp_personal">{{panTable.dayFinishOutput}}万</div>
-                    </div> 
+                    </div>
                 </el-col>
                 <el-col :span="9" class="cradContent">
                     <div class="contentInfo">
@@ -89,13 +89,13 @@
                 <span v-else-if="panTable.child" style="vertical-align: top;">
                       <el-tooltip v-for="(item,index) in panTable.child" :key="index"  effect="dark" :content="item.name" placement="top-start">
                                <div>{{item.name}}</div>
-                      </el-tooltip>                
+                      </el-tooltip>
                 </span>
                 <span v-if="!panTable"></span>
                 <span v-else-if="panTable.child" style="vertical-align: top;" class="monthFinish">
                      <el-tooltip v-for="(item,index) in panTable.child" :key="index"  effect="dark" :content="'本月完成'+ item.monthFinishOutput +'万元'" placement="top-start">
                                <div>本月完成{{item.monthFinishOutput}}万元</div>
-                      </el-tooltip> 
+                      </el-tooltip>
                 </span>
                 <!-- <div v-if="panTable.child.length > 0"><img src="../../assets/分组@2x.png" alt=""><span>{{panTable.child[0].name}}</span><span>本月完成{{panTable.child[0].monthFinishOutput}}万</span></div>
                 <div v-if="panTable.child[1]"><img src="../../assets/分组 2@2x.png" alt=""><span>{{panTable.child[1].name}}</span><span>本月完成{{panTable.child[1].monthFinishOutput}}万</span></div>
@@ -117,7 +117,7 @@
                     <span v-if="scope.row.notFinishRate">{{$common.fomatPrecent(scope.row.notFinishRate)}}%</span>
                 </template>
             </el-table-column>
-            </el-table>  
+            </el-table>
         </div>
         <div v-if="companyType == 3"  class="commandCard">
             <el-row class="tableTitle">
@@ -143,7 +143,7 @@
                     <span v-if="scope.row.notFinishOutputRate">{{$common.fomatPrecent(scope.row.notFinishOutputRate)}}%</span>
                 </template>
             </el-table-column>
-            </el-table>  
+            </el-table>
         </div>
     </el-col>
 </el-row>
@@ -218,21 +218,21 @@
         <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
         <el-table-column prop="name"  label="经理部名称" align="center" min-width="150"></el-table-column>
         <el-table-column prop="projectNum"  label="总项目数" align="center"></el-table-column>
-        <el-table-column prop="LastMonthUnfinishedProjectNum"  label="上月未完成项目数" align="center" min-width="150"></el-table-column>
-        <el-table-column prop="MonthUnfinishedProjectNum"  label="本月未完成项目数" align="center" min-width="150"></el-table-column>
-        <el-table-column prop="type"  label="占所有项目比例" align="center" min-width="110">
-            <!-- <template slot-scope="scope">
-                <span style="color:red;">{{scope.row.warningReason}}</span>
-            </template> -->
+        <el-table-column prop="lastMonthUnfinishedProjectNum"  label="上月未完成项目数" align="center" min-width="150"></el-table-column>
+        <el-table-column prop="monthUnfinishedProjectNum"  label="本月未完成项目数" align="center" min-width="150"></el-table-column>
+        <el-table-column prop="unfinishedProjectRate"  label="占所有项目比例" align="center" min-width="110">
+            <template slot-scope="scope">
+                <span>{{$common.fomatPrecent(scope.row.unfinishedProjectRate)}}%</span>
+            </template>
         </el-table-column>
         <el-table-column prop="unfinishedProjectQoQ"  label="月环比" align="center" min-width="80">
             <template slot-scope="scope">
                 <span>
-                    <img v-if="!scope.row.unfinishedOutputQoQ"  src="" alt="">
-                    <img v-else-if="scope.row.unfinishedOutputQoQ>=0" src="../../assets/u489.png" alt="" class="upDownImage" >
+                    <img v-if="!scope.row.unfinishedProjectQoQ"  src="" alt="">
+                    <img v-else-if="scope.row.unfinishedProjectQoQ>=0" src="../../assets/u489.png" alt="" class="upDownImage" >
                     <img v-else src="../../assets/u493.png" alt="" class="upDownImage downImage">
                 </span>
-                <span v-if="scope.row.unfinishedOutputQoQ">{{$common.fomatPrecent(scope.row.unfinishedOutputQoQ)}}%</span>
+                <span v-if="scope.row.unfinishedProjectQoQ">{{$common.fomatPrecent(scope.row.unfinishedProjectQoQ)}}%</span>
                 <span v-else>--</span>
             </template>
         </el-table-column>
@@ -243,7 +243,8 @@
         <el-table-column prop="monthUnfinishedOutput"  label="本月未完成产值" align="center" min-width="140"></el-table-column>
         <el-table-column prop="monthUnfinishedOutputRate"  label="占月度产值比例" align="center" min-width="140">
             <template slot-scope="scope">
-                <span v-if="scope.row.unfinishedOutputQoQ">{{$common.fomatPrecent(scope.row.monthUnfinishedOutputRate)}}%</span>
+                <span v-if="scope.row.monthUnfinishedOutputRate">{{$common.fomatPrecent(scope.row.monthUnfinishedOutputRate)}}%</span>
+                <span v-else>0%</span>
             </template>
         </el-table-column>
         <el-table-column prop="unfinishedOutputQoQ"  label="月环比" align="center" min-width="80">
@@ -348,13 +349,13 @@ export default {
       companyType:'',
       lastMonth:'',
       todayMonth:'',
-      
+
 
     };
   },
- 
+
   methods: {
-    
+
     rowClass({ row, rowIndex}) {
     //   console.log(rowIndex) //表头行标号为0
       return 'text-align:center'
@@ -380,7 +381,7 @@ export default {
                 ]
             );
     },
-    
+
     handleCurrentChange(cpage) {
       this.currentPage = cpage;
       this.refreshList();
@@ -413,7 +414,7 @@ export default {
     refreshPan(){
      getCompanyOutputBoard()
         .then(response => {
-          this.panTable = response.body;      
+          this.panTable = response.body;
         })
         .catch(error => {
           console.log(error);
@@ -425,8 +426,8 @@ export default {
              startTime:this.start
          })
         .then(response => {
-          this.tableData = response.body;  
-        //   this.total = Number(response.body.page.rows);    
+          this.tableData = response.body;
+        //   this.total = Number(response.body.page.rows);
         })
         .catch(error => {
           console.log(error);
@@ -439,8 +440,8 @@ export default {
              endTime:this.ends
          })
         .then(response => {
-          this.tableData2 = response.body;  
-        //   this.total = Number(response.body.page.rows);    
+          this.tableData2 = response.body;
+        //   this.total = Number(response.body.page.rows);
         })
         .catch(error => {
           console.log(error);
@@ -452,17 +453,17 @@ export default {
              startTime:this.startss,
          })
         .then(response => {
-          this.tableDatas = response.body;  
-        //   this.total = Number(response.body.page.rows);    
+          this.tableDatas = response.body;
+        //   this.total = Number(response.body.page.rows);
         })
         .catch(error => {
           console.log(error);
-      });       
+      });
     },
 
     //获取年月
     getMonths(){
-    this.monthData = this.$common.getMonths(); 
+    this.monthData = this.$common.getMonths();
     this.start = this.$common.getMonths() + "-" + '01';
     this.starts = this.$common.getLastMonth();
     this.startss = this.$common.getLastMonth();
@@ -508,7 +509,7 @@ export default {
 
      //月份减
     reduceMonths() {
-      let addMon = this.$common.reduceMonth(this.monthDatas);    
+      let addMon = this.$common.reduceMonth(this.monthDatas);
       this.monthDatas = addMon;
       this.starts = addMon + "-" + '01';
       this.ends   = this.$common.getLastDay(this.monthDatas);
@@ -517,7 +518,7 @@ export default {
 
       //月份减
     reduceMonthss() {
-      let addMon = this.$common.reduceMonth(this.monthDatass);    
+      let addMon = this.$common.reduceMonth(this.monthDatass);
       this.monthDatass = addMon;
       this.startss = addMon + "-" + '01';
     //   this.ends   = this.$common.getLastDay(this.monthDatas);
@@ -534,7 +535,7 @@ export default {
       this.monthDatass = addMon;
       this.startss = addMon + "-" + '01';
     //   this.ends   = this.$common.getLastDay(this.monthDatas);
-      this.refreshListss();     
+      this.refreshListss();
     },
 
     //月份加
@@ -547,7 +548,7 @@ export default {
       this.monthDatas = addMon;
       this.starts = addMon + "-" + '01';
       this.ends   = this.$common.getLastDay(this.monthDatas);
-      this.refreshLists();     
+      this.refreshLists();
     },
 
     //月份加
@@ -561,7 +562,7 @@ export default {
       this.monthData = addMon;
       this.start = addMon + "-" + '01';
       this.end   = this.$common.getLastDay(this.monthData);
-      var weekArr = this.$common.getWeekAll(this.start,this.end);    
+      var weekArr = this.$common.getWeekAll(this.start,this.end);
       if(weekArr.includes(0)){
           weekArr = [1,2,3,4,5];
       }
@@ -575,7 +576,7 @@ export default {
           weekData.weekEnd =   this.$common.changeDate(this.getWeekTime(weekArr[i])[6]).substring(5,10);
           this.dateArr.push(weekData);
       }
-      this.refreshList();       
+      this.refreshList();
     },
     //获取登陆用户信息
     getUserInfo(){
@@ -583,8 +584,8 @@ export default {
         getSessionInfo({})
           .then(response => {
               if (response.code == "200") {
-              this.companyType = response.body.chOrgType;  
-              resolve();          
+              this.companyType = response.body.chOrgType;
+              resolve();
             } else {
               this.$message.error(response.msg);
             }
@@ -595,7 +596,7 @@ export default {
           });
         })
     },
-    
+
     },
     async mounted() {
     // this.start = this.$common.getDay(0);//当天日期
@@ -612,7 +613,7 @@ export default {
         this.refreshLists();
         this.refreshListss();
     }
-   
+
     // console.log( this.companyType," this.companyType");
   }
 };
