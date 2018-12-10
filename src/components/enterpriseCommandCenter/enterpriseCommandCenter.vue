@@ -79,10 +79,13 @@
             <div class="outputranking">
                 <span class="outTrank">
                     <img v-if="!panTable" src="" alt="">
+                    <img v-else-if="!panTable.child" src="" alt="">
                     <img v-else-if="panTable.child.length>=1" src="../../assets/分组@2x.png" alt=""  style="margin-top: 5px;">
                     <img v-if="!panTable" src="" alt="">
+                    <img v-else-if="!panTable.child" src="" alt="">
                     <img v-else-if="panTable.child.length>=2" src="../../assets/分组 2@2x.png" alt="" style="margin-top: 13px;">
                     <img v-if="!panTable" src="" alt="">
+                    <img v-else-if="!panTable.child" src="" alt="">
                     <img v-else-if="panTable.child.length>=3" src="../../assets/分组 3@2x.png" alt="" style="margin-top: 13px;">
                 </span>
                 <span v-if="!panTable"></span>
