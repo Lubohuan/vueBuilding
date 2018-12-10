@@ -406,7 +406,7 @@ export function updateTaskPriority(data) {
 // 导出excel
 export function exportUnitByIds(data) {
   return request({
-    url: baseUrl + 'web/export/exportUnitByIds',
+    url: baseUrl + '/web/export/exportUnitByIds',
     method: 'post',
     data:data
   })
@@ -465,6 +465,29 @@ export function listProjectOutputWarning(data) {
     url: baseUrl + '/company/listProjectOutputWarning',
     method: 'get',
     params:data
+  })
+}
+//删除形象进度统计项
+export function deleteVisualStatItem(data) {
+  return uploadRequest({
+    url: baseUrl + '/project/deleteVisualStatItem/' + data,
+    method: 'get'
+  })
+}
+//查询项目信息
+export function projectInfo(data) {
+  return uploadRequest({
+    url: baseUrl + '/v1/projectPlan/projectInfo/' + data,
+    method: 'get'
+  })
+}
+1222
+//更新项目信息
+export function updateProjectInfo(data) {
+  return uploadRequest({
+    url: baseUrl + '/v1/projectPlan/projectInfo/' + data.id,
+    method: 'get',
+    data:data.projectInfo
   })
 }
 
