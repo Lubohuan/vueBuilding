@@ -18,10 +18,12 @@
             </el-col>
           </el-row>
           <el-row class="listPlan">
-              <div>项目名称：华筑科技智慧工地项目</div>
+              <div v-if="!projeInfo">项目名称：</div>
+              <div v-else>项目名称：{{projeInfo.projectName}}</div>
               <div>合同工期：2018年5月4日-2019年9月18日</div>
               <div class="Workproress"><span>工期进度：</span><el-progress style="width:60%;border:none;display: inline-block;" :stroke-width="13" :percentage="80"></el-progress></div>
-              <div>项目经理：刘骅德</div>
+              <div v-if="!projeInfo">项目经理：</div>
+              <div v-else>项目经理：{{projeInfo.projectManager}}</div>
               <div style="border-bottom:none;">
                   <p>项目概括：</p>
                   <p>商业工程占地面积约78400平方米，总建筑面积53600 m²。主要功能：办公、地下车库及附属商业配套设施。本工程主体结构嵌固在五棵松地下停车库负二层顶板上，停车库基坑南北长287m，东西宽252m。本工程±0.00=59.50m，负二层顶板标高为-9.1m，以此标高进行界面划分。</p>
@@ -35,7 +37,7 @@
                 <span class="spanBlock">项目进度计划/最近浏览</span>
             </el-col>          
             <el-col :span="9" class="middleAdd" style="text-align:right;">
-                 <el-button size="mini" type="text">+新增计划</el-button>
+                 <el-button size="mini" type="text" @click="addPlan">+新增计划</el-button>
                  <el-button size="mini" type="text" @click="linePlan">+关联计划</el-button>    
             </el-col>
         </el-row>
@@ -111,18 +113,25 @@
     <el-dialog title="关联计划" :center="true" :visible.sync="dialog.associationPlan" width="700px" @open="$nextTick(()=>$refs['associationPlan'].update(dataObj))" @close="$refs['associationPlan'].reset()" >
         <associationPlan ref="associationPlan" @refreshData="refreshList"  @close="dialog.associationPlan = false" ></associationPlan>
     </el-dialog>
+
+    <!-- 新增计划 -->
+    <el-dialog title="新增计划" :center="true" :visible.sync="dialog.addImportPlan" width="700px" @close="$refs['addImportPlan'].reset()">
+        <addImportPlan ref="addImportPlan" @refreshData="refreshList"  @close="dialog.addImportPlan = false" ></addImportPlan>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import editPlan from"../planhomePage/editPlan.vue";
 import associationPlan from"../planhomePage/associationPlan.vue";
+import addImportPlan from"../planhomePage/addImportPlan.vue";
 import { plans,projectInfo } from "../api/system_interface.js";
 export default {
   name: "planhomePage",
   components:{
       editPlan,
-      associationPlan
+      associationPlan,
+      addImportPlan
   },
   data() {
     return {
@@ -131,10 +140,13 @@ export default {
         ],
         dialog:{
             editPlan:false,
-            associationPlan:false
+            associationPlan:false,
+            addImportPlan:false
+
         },
         dataObj:{},
-        projectList:[]
+        projectList:[],
+        projeInfo:{}
     };
   },
   methods:{
@@ -144,6 +156,9 @@ export default {
       linePlan(){
         this.dialog.associationPlan = true;
       },
+      addPlan(){
+        this.dialog.addImportPlan = true;
+      },
       openProgressPicture(data){
           this.$router.push({
             name: 'progressPIcture',
@@ -151,7 +166,6 @@ export default {
             planID: data
             }
         })
-        // this.$router.push({path:'/progressPIcture'});
       },
       //查询所有计划
       refreshList(){
@@ -165,8 +179,7 @@ export default {
         
         projectInfo(lastProject)
         .then(response => {
-        //   this.projectList = response.body;
-        console.log(response.body,'response.body');
+          this.projeInfo = response.body;
         })
         .catch(error => {});
         

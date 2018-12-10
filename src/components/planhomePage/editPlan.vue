@@ -117,7 +117,9 @@ export default {
       this.$emit("close");
       this.reset();
     },
-
+    handleImgChange(){
+      
+    },
     //点击提交
     commit() {
       this.$refs["editPlan"].validate(valid => {

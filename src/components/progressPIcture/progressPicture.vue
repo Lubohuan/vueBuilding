@@ -1,11 +1,12 @@
 <template>
-<!--任务预警-->
+<!--计划任务甘特图-->
 <div class="progressPicture" style="height:100%;">
       <el-breadcrumb separator-class="el-icon-arrow-right" class="breadTitle">
         <el-breadcrumb-item :to="{ path: '/' }">生产形象进度  </el-breadcrumb-item>
         <el-breadcrumb-item>形象进度管理</el-breadcrumb-item>
         <el-breadcrumb-item>形象进度月计划</el-breadcrumb-item>
       </el-breadcrumb>
+      <el-button  size="small" type="primary" @click="gaBack">返回</el-button>
       <el-button  size="small" type="primary" @click="addPlan">+ 新增计划</el-button>
       <el-upload accept=".mpp" style="display:inline-block;vertical-align: top;" action="" :http-request="uploadImg" :on-success="uploadImgSuccess" :on-remove="handleRemove">
         <el-button size="small" type="success">导入计划</el-button>
@@ -49,7 +50,6 @@ export default {
   methods: {
 
     uploadImg (f) {
-         console.log(f.file);
          let param = new FormData(); //创建form对象
          param.append('file',f.file);//通过append向form对象添加数据
          param.append('planId',this.projectType);//添加form表单中其他数据
@@ -97,6 +97,10 @@ export default {
     //打开新增计划弹框
     addPlan(){
       this.dialog.addProgress = true;
+    },
+
+    gaBack(){
+      this.$router.go(-1);
     },
 
      //查询所有计划

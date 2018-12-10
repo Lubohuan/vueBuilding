@@ -1,17 +1,18 @@
 <template>
-<!-- 新增/修改分部分项 -->
-<div class="associationPlan">
-  <el-form :model="dataModel" :rules="rules" ref="associationPlan" label-width="100px">
-        <el-form-item label="计划名称：" prop="projectArry">
-            <el-input v-model.number="dataModel.name" size="small"></el-input>
+<!-- 新增计划 -->
+<div class="addImportPlan">
+  <el-form :model="dataModel" :rules="rules" ref="addImportPlan" label-width="120px">
+        <el-form-item label="项目名称：" prop="projectArry">
+            <el-cascader :options="listOrgInfoList" v-model="dataModel.projectArry" :props="defaultProp" size="small" placeholder="请选择项目" style="width:100%;" clearable></el-cascader>
         </el-form-item>
-        <el-form-item label="任务名称：" prop="level">
-            <el-input v-model.number="dataModel.name" size="small"></el-input>           
-        </el-form-item>
-        <el-form-item label="关联计划：" prop="name">
-            <el-select size="small" v-model="dataModel.level" placeholder="请选择：" clearable style="width:100%;">
+        <el-form-item label="计划级别：" prop="level">
+            <el-select size="small" v-model="dataModel.level" placeholder="请选择计划级别：" clearable style="width:100%;">
                 <el-option v-for="(item,index) in trackList" :label="item.name" :value="item.number" :key="index"></el-option>
             </el-select>
+            <span class="warnInfo" v-if="dataModel.level==1">一级进度计划匹配项目总工期，项目下只可建立一个，请确认后再添加！</span>
+        </el-form-item>
+        <el-form-item label="计划名称：" prop="name">
+          <el-input v-model.number="dataModel.name" size="small"></el-input>
         </el-form-item>        
   </el-form>
   <div class="clickBtn">
@@ -25,7 +26,7 @@
 import { mapState, mapActions } from 'vuex';
 import { plan} from "../api/system_interface.js";
 export default {
-  name: "associationPlan",
+  name: "addImportPlan",
   data() {
     return {
       dataModel: {
@@ -56,9 +57,9 @@ export default {
         ],
       //数据校验
       rules: {
-        projectArry:   [{ required: true, message:  "请选择项目", trigger: "blur" }],
-        name:   [{ required: true, message:  "请输入计划名称", trigger: "blur" }],
-        level:   [{ required: true, message:  "请选择计划级别", trigger: "blur" }]
+        projectArry: [{ required: true, message:  "请选择项目", trigger: "blur" }],
+        name:  [{ required: true, message:  "请输入计划名称", trigger: "blur" }],
+        level: [{ required: true, message:  "请选择计划级别", trigger: "blur" }]
       
       }
     };
@@ -77,16 +78,12 @@ export default {
 
     //重置方法
     reset() {
-      const associationPlan = this.$refs["associationPlan"];
-      associationPlan.resetFields();
+      const addImportPlan = this.$refs["addImportPlan"];
+      addImportPlan.resetFields();
       this.dataModel.projectId = null;
       this.dataModel.name = '';
       this.dataModel.level = '';
       this.dataModel.projectArry = [];
-    },
-
-    update(data){
-      console.log(data,"data");
     },
 
     //关闭弹框
@@ -97,23 +94,23 @@ export default {
 
     //点击提交
     commit() {
-      this.$refs["associationPlan"].validate(valid => {
+      this.$refs["addImportPlan"].validate(valid => {
         if (!valid) {
           return;
         }
-        // this.dataModel.projectId = this.dataModel.projectArry[this.dataModel.projectArry.length - 1];
-        //  plan(this.dataModel)
-        // .then(response => {
-        //   if (response.code == "200") {
-        //     this.$message.success("添加成功!");
-        //     this.close();
-        //     this.$emit("refreshData");
-        //   } else {
-        //     this.$message.error(response.msg);
-        //   }
-        // })
-        // .catch(error => {
-        // });
+        this.dataModel.projectId = this.dataModel.projectArry[this.dataModel.projectArry.length - 1];
+         plan(this.dataModel)
+        .then(response => {
+          if (response.code == "200") {
+            this.$message.success("添加成功!");
+            this.close();
+            this.$emit("refreshData");
+          } else {
+            this.$message.error(response.msg);
+          }
+        })
+        .catch(error => {
+        });
       });
     },
 

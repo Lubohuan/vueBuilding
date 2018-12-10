@@ -73,11 +73,12 @@ export default {
       console.log(this.multipleSelection);
     },
     exportExcel(){
-       exportUnitByIds({
-         unitIdList:this.multipleSelection
-       })
+       exportUnitByIds(
+         this.multipleSelection
+       )
             .then(response => {
               if (response.code == "200") {
+                window.location.href=response.body;
                 this.refreshList();
               } else {
                 this.$message.error(response.msg);

@@ -403,10 +403,18 @@ export function updateTaskPriority(data) {
     method: 'put'
   })
 }
-// 导出excel
+// 导出单位excel
 export function exportUnitByIds(data) {
   return request({
     url: baseUrl + '/web/export/exportUnitByIds',
+    method: 'post',
+    data:data
+  })
+}
+// 导出工程类别excel
+export function exportEngineerSortByIds(data) {
+  return request({
+    url: baseUrl + '/web/export/exportEngineerSortByIds',
     method: 'post',
     data:data
   })
