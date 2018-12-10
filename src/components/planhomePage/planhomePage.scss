@@ -183,6 +183,11 @@
     }
     .middleList{
         padding: 10px;
+        height:calc(100% - 68px);
+        overflow: auto;
+        .el-col{
+            cursor: pointer;
+        }
         .blockList{
             padding: 10px;
             margin-bottom: 20px;

@@ -1,18 +1,17 @@
 <template>
 <!-- 新增/修改分部分项 -->
-<div class="addProgress">
-  <el-form :model="dataModel" :rules="rules" ref="addProgress" label-width="120px">
-        <el-form-item label="项目名称：" prop="projectArry">
-            <el-cascader :options="listOrgInfoList" v-model="dataModel.projectArry" :props="defaultProp" size="small" placeholder="请选择项目" style="width:100%;" clearable></el-cascader>
+<div class="associationPlan">
+  <el-form :model="dataModel" :rules="rules" ref="associationPlan" label-width="100px">
+        <el-form-item label="计划名称：" prop="projectArry">
+            <el-input v-model.number="dataModel.name" size="small"></el-input>
         </el-form-item>
-        <el-form-item label="计划级别：" prop="level">
-            <el-select size="small" v-model="dataModel.level" placeholder="请选择计划级别：" clearable style="width:100%;">
+        <el-form-item label="任务名称：" prop="level">
+            <el-input v-model.number="dataModel.name" size="small"></el-input>           
+        </el-form-item>
+        <el-form-item label="关联计划：" prop="name">
+            <el-select size="small" v-model="dataModel.level" placeholder="请选择：" clearable style="width:100%;">
                 <el-option v-for="(item,index) in trackList" :label="item.name" :value="item.number" :key="index"></el-option>
             </el-select>
-            <span class="warnInfo" v-if="dataModel.level==1">一级进度计划匹配项目总工期，项目下只可建立一个，请确认后再添加！</span>
-        </el-form-item>
-        <el-form-item label="计划名称：" prop="name">
-          <el-input v-model.number="dataModel.name" size="small"></el-input>
         </el-form-item>        
   </el-form>
   <div class="clickBtn">
@@ -26,7 +25,7 @@
 import { mapState, mapActions } from 'vuex';
 import { plan} from "../api/system_interface.js";
 export default {
-  name: "addProgress",
+  name: "associationPlan",
   data() {
     return {
       dataModel: {
@@ -78,8 +77,8 @@ export default {
 
     //重置方法
     reset() {
-      const addProgress = this.$refs["addProgress"];
-      addProgress.resetFields();
+      const associationPlan = this.$refs["associationPlan"];
+      associationPlan.resetFields();
       this.dataModel.projectId = null;
       this.dataModel.name = '';
       this.dataModel.level = '';
@@ -94,23 +93,23 @@ export default {
 
     //点击提交
     commit() {
-      this.$refs["addProgress"].validate(valid => {
+      this.$refs["associationPlan"].validate(valid => {
         if (!valid) {
           return;
         }
-        this.dataModel.projectId = this.dataModel.projectArry[this.dataModel.projectArry.length - 1];
-         plan(this.dataModel)
-        .then(response => {
-          if (response.code == "200") {
-            this.$message.success("添加成功!");
-            this.close();
-            this.$emit("refreshData");
-          } else {
-            this.$message.error(response.msg);
-          }
-        })
-        .catch(error => {
-        });
+        // this.dataModel.projectId = this.dataModel.projectArry[this.dataModel.projectArry.length - 1];
+        //  plan(this.dataModel)
+        // .then(response => {
+        //   if (response.code == "200") {
+        //     this.$message.success("添加成功!");
+        //     this.close();
+        //     this.$emit("refreshData");
+        //   } else {
+        //     this.$message.error(response.msg);
+        //   }
+        // })
+        // .catch(error => {
+        // });
       });
     },
 

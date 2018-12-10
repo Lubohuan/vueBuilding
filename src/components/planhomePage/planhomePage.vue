@@ -36,18 +36,18 @@
             </el-col>          
             <el-col :span="9" class="middleAdd" style="text-align:right;">
                  <el-button size="mini" type="text">+新增计划</el-button>
-                 <el-button size="mini" type="text">+导入计划</el-button>    
+                 <el-button size="mini" type="text" @click="linePlan">+关联计划</el-button>    
             </el-col>
         </el-row>
          <el-row :gutter="20"  class="middleList">
-            <el-col :span="12" >
-                <div class="blockList">
-                    <div class="blockList_title">总进度计划</div>
+            <el-col v-for="item in projectList" :key="item.id" :span="12">
+                <div class="blockList" @click="openProgressPicture(item.id)">
+                    <div class="blockList_title">{{item.name}}</div>
                     <div class="blockList_title">总工期差异：+9天    延期计划任务：8个</div>
                     <img src="http://tower-img.1357.cn/file/2018-11-29/1219862087247360.jpg?x-oss-process=image/resize,m_lfit,w_640,h_640/watermark,type_ZmFuZ3poZW5na2FpdGk=,color_FFFFFF,type_ZmFuZ3poZW5naGVpdGk,size_22,text_6LW15LqMICAyMDE4LTExLTI5IDE0OjI2" alt="">
                 </div>
             </el-col>
-            <el-col :span="12">
+            <!-- <el-col :span="12">
                <div class="blockList">
                     <div class="blockList_title">总进度计划</div>
                     <div class="blockList_title">总工期差异：+9天    延期计划任务：8个</div>
@@ -60,7 +60,7 @@
                     <div class="blockList_title">总工期差异：+9天    延期计划任务：8个</div>
                     <img  src="http://tower-img.1357.cn/file/2018-11-29/1219862087247360.jpg?x-oss-process=image/resize,m_lfit,w_640,h_640/watermark,type_ZmFuZ3poZW5na2FpdGk=,color_FFFFFF,type_ZmFuZ3poZW5naGVpdGk,size_22,text_6LW15LqMICAyMDE4LTExLTI5IDE0OjI2" alt="">
                 </div>
-            </el-col>
+            </el-col> -->
         </el-row>       
       </el-col>
      <el-col  :span="8"  class="elStyle" style="border-right:none;">
@@ -103,19 +103,26 @@
   </el-row>
 
     <!-- 编辑项目弹框 -->
-    <el-dialog title="编辑项目" :center="true" :visible.sync="dialog.editPlan" width="1000px" @open="$nextTick(()=>$refs['editPlan'].update(dataObj))" @close="$refs['editPlan'].reset()">
-        <editPlan ref="editPlan" @refreshData="refreshList"  @close="dialog.editPlan = false"></editPlan>
+    <el-dialog title="编辑项目" :center="true" :visible.sync="dialog.editPlan" width="1100px" @open="$nextTick(()=>$refs['editPlan'].update(dataObj))" @close="$refs['editPlan'].reset()" >
+        <editPlan ref="editPlan" @refreshData="refreshList"  @close="dialog.editPlan = false" style="height:600px;overflow:auto;"></editPlan>
+    </el-dialog>
+
+    <!-- 关联计划 -->
+    <el-dialog title="关联计划" :center="true" :visible.sync="dialog.associationPlan" width="700px" @open="$nextTick(()=>$refs['associationPlan'].update(dataObj))" @close="$refs['associationPlan'].reset()" >
+        <associationPlan ref="associationPlan" @refreshData="refreshList"  @close="dialog.associationPlan = false" ></associationPlan>
     </el-dialog>
   </div>
 </template>
 
 <script>
 import editPlan from"../planhomePage/editPlan.vue";
-import { getPlanTaskPage,getConstructPlanDetailById,getConstructLogPage,updateTaskPriority } from "../api/system_interface.js";
+import associationPlan from"../planhomePage/associationPlan.vue";
+import { plans,projectInfo } from "../api/system_interface.js";
 export default {
   name: "planhomePage",
   components:{
-      editPlan
+      editPlan,
+      associationPlan
   },
   data() {
     return {
@@ -123,20 +130,50 @@ export default {
             {type:'你',num:'2'},{type:'好',num:'3'}
         ],
         dialog:{
-            editPlan:false
+            editPlan:false,
+            associationPlan:false
         },
-        dataObj:{}
+        dataObj:{},
+        projectList:[]
     };
   },
   methods:{
       openEditPlan(){
-          this.dialog.editPlan = true;
+        this.dialog.editPlan = true;
       },
+      linePlan(){
+        this.dialog.associationPlan = true;
+      },
+      openProgressPicture(data){
+          this.$router.push({
+            name: 'progressPIcture',
+            params: {
+            planID: data
+            }
+        })
+        // this.$router.push({path:'/progressPIcture'});
+      },
+      //查询所有计划
       refreshList(){
-
-      }
+        var projectArry = JSON.parse(sessionStorage.getItem("selectArry"));
+        var lastProject = projectArry[projectArry.length-1];
+        plans({})
+        .then(response => {
+          this.projectList = response.body;
+        })
+        .catch(error => {});
+        
+        projectInfo(lastProject)
+        .then(response => {
+        //   this.projectList = response.body;
+        console.log(response.body,'response.body');
+        })
+        .catch(error => {});
+        
+      },
   },
  created() {
+     this.refreshList();
   }
 };
 </script>

@@ -28,14 +28,14 @@
   <el-table :data="tableData" style="width: 100%;margin-top:20px;"   @selection-change="handleSelectionChange" border :header-cell-style="rowClass">
     <el-table-column type="selection" width="50" align="center"></el-table-column>
     <el-table-column type="index" width="50" label="序号" align="center"></el-table-column>
-    <el-table-column prop="projectName" label="项目名称" align="center" min-width="200"></el-table-column>
+    <el-table-column prop="projectName" label="项目名称" align="center" min-width="160"></el-table-column>
     <el-table-column prop="regionFullName" label="施工区段" align="center" min-width="180" :show-overflow-tooltip="true"></el-table-column>
     <el-table-column prop="subFullName" label="分部分项名称" align="center" min-width="180" :show-overflow-tooltip="true"></el-table-column>
-    <el-table-column prop="statName" label="形象进度统计项" align="center" min-width="120"></el-table-column>
+    <el-table-column prop="statName" label="形象进度统计项" align="center" min-width="120" :show-overflow-tooltip="true"></el-table-column>
     <el-table-column prop="unitName" label="形象单位" align="center"></el-table-column>
-    <el-table-column prop="budgetTotal" label="预算工程量" align="center" min-width="100"></el-table-column>
+    <el-table-column prop="budgetTotal" label="预算工程量" align="center" min-width="90"></el-table-column>
     <el-table-column prop="finishBudget" label="累计完成" align="center"></el-table-column>
-    <el-table-column prop="outputTotal" label="总产值（万元）" align="center"  min-width="120"></el-table-column>
+    <el-table-column prop="outputTotal" label="总产值（万元）" align="center"  min-width="110"></el-table-column>
     <el-table-column prop="finishOutput" label="完成产值（万元）" align="center" min-width="120"></el-table-column>
     <el-table-column prop="finishBudgetRate" label="完成比例" min-width="180">
         <!-- <template slot-scope="scope">
@@ -46,12 +46,12 @@
                 <el-progress v-else :stroke-width="13"  :percentage="$common.fomatPrecent(scope.row.finishBudgetRate)"></el-progress>
         </template>
     </el-table-column>
-    <el-table-column label="操作" align="center" min-width="180">
+    <el-table-column label="操作" align="center" min-width="240">
       <template slot-scope="scope">
             <el-button size="mini" type="primary" @click="editClick(scope)">编辑</el-button>
-            <el-button v-if="scope.row.isForbid == null" size="mini" type="danger" @click="deleteClick(scope)">删除</el-button>
             <el-button v-if="scope.row.isForbid == 0" size="mini" type="warning" @click="stopClick(scope)">禁用</el-button>
             <el-button v-if="scope.row.isForbid == 1" size="mini" type="success" @click="startClick(scope)">启用</el-button>
+            <el-button size="mini" type="danger" @click="deleteClick(scope)">删除</el-button>   
       </template>
     </el-table-column>
   </el-table>
@@ -77,7 +77,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import {getVisualStatItemPage,startVisualStatItem,stopVisualStatItems} from "../api/system_interface.js";
+import {getVisualStatItemPage,startVisualStatItem,stopVisualStatItems,deleteVisualStatItem} from "../api/system_interface.js";
 import addProgress from "../graphicProgress/addProgress.vue";
 export default {
   name: "graphicProgress",
@@ -140,7 +140,18 @@ export default {
         cancelButtonText: "取消"
       })
         .then(() => {
-          this.$message.success("删除成功!");
+        deleteVisualStatItem(scope.row.id)
+        .then(response => {
+          if (response.code == "200") {
+            this.$message.success("删除成功!");
+            this.refreshList();
+          } else {
+            this.$message.error(response.msg);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
         })
         .catch(() => {
           this.$message.error("已取消删除");

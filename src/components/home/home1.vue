@@ -28,11 +28,11 @@ export default {
           label: "项目进度计划首页",
           path:"/planhomePage"
         },
-        {
-          id: 2,
-          label: "进度计划",
-          path:"/progressPIcture"
-        }
+        // {
+        //   id: 2,
+        //   label: "进度计划",
+        //   path:"/progressPIcture"
+        // }
       ]
     };
   },

@@ -19,7 +19,7 @@
      <iframe ref="iframe" id="iframe" src="static/guant/gantt.html" frameborder="0" width="100%" height="85%" ></iframe>
 
      <!--新增计划-->
-    <el-dialog  title="新增计划'" :center="true" :visible.sync="dialog.addProgress" width="700px" @close="$refs['addProgress'].reset()">
+    <el-dialog  title="新增计划" :center="true" :visible.sync="dialog.addProgress" width="700px" @close="$refs['addProgress'].reset()">
       <addProgress  v-if="dialog.addProgress" ref="addProgress"  @refreshData="refreshLists"  @close="dialog.addProgress = false" ></addProgress>
     </el-dialog>
 </div>
@@ -128,6 +128,7 @@ export default {
 
   },
   created() {
+    console.log(this.$route.params.planID,"ss");
     this.awaitList();
     if(sessionStorage.getItem("selectArry")){
       this.projectArry = JSON.parse(sessionStorage.getItem("selectArry"));

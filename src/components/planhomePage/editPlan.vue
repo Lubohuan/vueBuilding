@@ -35,15 +35,43 @@
         <el-form-item label="" prop="typeName">
           <el-input size="small" v-model="dataModel.typeName" placeholder="请填写详细地址"></el-input>
         </el-form-item>
-         <el-form-item label="" prop="typeName">
+         <el-form-item label="工程类别" prop="typeName">
           <el-input size="small" v-model="dataModel.typeName" placeholder="工程类别"></el-input>
         </el-form-item>
-        <el-form-item label="" prop="typeName">
+        <el-form-item label="工程规模" prop="typeName">
           <el-input size="small" v-model="dataModel.typeName" placeholder="工程规模"></el-input>
         </el-form-item>
-        <el-form-item label="" prop="typeName">
-          <el-input size="small" v-model="dataModel.typeName" placeholder="工程规模"></el-input>
+        <el-form-item label="工程造价" prop="typeName">
+          <el-input size="small" v-model="dataModel.typeName" placeholder="工程造价"></el-input>
         </el-form-item>
+        <el-form-item label="工程状态" prop="typeName">
+          <el-input size="small" v-model="dataModel.typeName" placeholder="工程状态"></el-input>
+        </el-form-item>
+        <el-form-item label="合同状态" prop="typeName">
+          <el-input size="small" v-model="dataModel.typeName" placeholder="合同状态"></el-input>
+        </el-form-item>
+        <el-form-item label="开工日期" prop="typeName">
+          <el-input size="small" v-model="dataModel.typeName" placeholder="开工日期"></el-input>
+        </el-form-item>
+        <el-form-item label="进度状态" prop="typeName">
+          <el-input size="small" v-model="dataModel.typeName" placeholder="进度状态"></el-input>
+        </el-form-item>
+        <el-form-item label="中标单位" prop="typeName">
+          <el-input size="small" v-model="dataModel.typeName" placeholder="中标单位"></el-input>
+        </el-form-item>
+         <el-form-item label="建设单位" prop="typeName">
+          <el-input size="small" v-model="dataModel.typeName" placeholder="建设单位"></el-input>
+        </el-form-item>
+         <el-form-item label="设计单位" prop="typeName">
+          <el-input size="small" v-model="dataModel.typeName" placeholder="设计单位"></el-input>
+        </el-form-item>
+         <el-form-item label="监理单位" prop="typeName">
+          <el-input size="small" v-model="dataModel.typeName" placeholder="监理单位"></el-input>
+        </el-form-item>
+         <el-form-item label="工程概括" prop="typeName">
+          <el-input size="small" v-model="dataModel.typeName" placeholder="工程概括"></el-input>
+        </el-form-item>
+        
   </el-form>
   <div class="clickBtn">
     <el-button @click="close"  size="small">取消</el-button>
