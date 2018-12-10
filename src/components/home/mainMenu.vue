@@ -283,13 +283,13 @@ export default {
       // },
 
       getSecondTypeLIst(data){
+        this.secondTypeList = [];
         var dataArr = data;
         for(var i=0;i<dataArr.length;i++){
           if(dataArr[i].type == 2){
             this.secondTypeList.push(dataArr[i]);
           }
         }
-        console.log(this.secondTypeList,"this.secondTypeList");
       },
 
       //获取登陆用户信息

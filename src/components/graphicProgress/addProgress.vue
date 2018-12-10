@@ -149,7 +149,7 @@ export default {
       //查找分部分项父级
       let objectss = this.$common.initTree(this.bitemList);
       this.dataModel.subIdArry  = this.$common.findParents(objectss,data.subId);
-      console.log(this.dataModel.subIdArry,'this.dataModel.subIdArry ');
+      // console.log(this.dataModel.subIdArry,'this.dataModel.subIdArry ');
     },
 
     //重置方法

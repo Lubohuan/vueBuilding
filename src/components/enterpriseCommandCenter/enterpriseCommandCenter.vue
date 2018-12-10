@@ -13,14 +13,16 @@
                 <el-col :span="9" class="cradContent">
                     <div class="contentInfo">
                         <div class="desp_look">今日完成产值</div>
-                        <div v-if="!panTable.dayFinishOutput">0万</div>
+                        <div v-if="!panTable"></div>
+                        <div v-else-if="!panTable.dayFinishOutput">0万</div>
                         <div v-else class="desp_personal">{{panTable.dayFinishOutput}}万</div>
                     </div> 
                 </el-col>
                 <el-col :span="9" class="cradContent">
                     <div class="contentInfo">
                         <div class="desp_look">本月完成产值</div>
-                        <div v-if="!panTable.weekFinishOutput">0万</div>
+                        <div v-if="!panTable"></div>
+                        <div v-else-if="!panTable.weekFinishOutput">0万</div>
                         <div v-else class="desp_personal">{{panTable.weekFinishOutput}}万</div>
                     </div>
                 </el-col>
@@ -30,20 +32,24 @@
                 <div class="cardFooter">
                     <span>日环比：
                         <span>
-                        <img v-if="!panTable.dayOutputRate"  src="" alt="">
+                        <img v-if="!panTable" src="" alt="">
+                        <img v-else-if="!panTable.dayOutputRate"  src="" alt="">
                         <img v-else-if="panTable.dayOutputRate>=0" src="../../assets/u489.png" alt="" class="upDownImage" >
                         <img v-else src="../../assets/u493.png" alt="" class="upDownImage downImage">
                         </span>
-                        <span v-if="!panTable.dayOutputRate">0%</span>
+                        <span v-if="!panTable"></span>
+                        <span v-else-if="!panTable.dayOutputRate">0%</span>
                         <span v-else>{{$common.fomatPrecent(panTable.dayOutputRate)}}%</span> 
                     </span>
                     <span class="footerRight">周环比:
                         <span>
-                            <img v-if="!panTable.weekOutputRate"  src="" alt="">
+                            <img v-if="!panTable">
+                            <img v-else-if="!panTable.weekOutputRate"  src="" alt="">
                             <img v-else-if="panTable.weekOutputRate>=0" src="../../assets/u489.png" alt="" class="upDownImage" >
                             <img v-else src="../../assets/u493.png" alt="" class="upDownImage downImage">
                         </span>
-                        <span v-if="!panTable.weekOutputRate">0%</span>
+                        <span v-if="!panTable"></span>
+                        <span v-else-if="!panTable.weekOutputRate">0%</span>
                         <span v-else>{{$common.fomatPrecent(panTable.weekOutputRate)}}%</span> 
                     </span>
                 </div>
@@ -52,11 +58,13 @@
                     <div class="cardFooter">
                         <span>月环比：
                         <span>
-                            <img v-if="!panTable.monthOutputRate"  src="" alt="">
+                            <img v-if="!panTable">
+                            <img v-else-if="!panTable.monthOutputRate"  src="" alt="">
                             <img v-else-if="panTable.monthOutputRate>=0" src="../../assets/u489.png" alt="" class="upDownImage" >
                             <img v-else src="../../assets/u493.png" alt="" class="upDownImage downImage">
                         </span>
-                        <span v-if="!panTable.monthOutputRate">0%</span>
+                        <span v-if="!panTable"></span>
+                        <span v-else-if="!panTable.monthOutputRate">0%</span>
                         <span v-else>{{$common.fomatPrecent(panTable.monthOutputRate)}}%</span> 
                         </span>
                     </div>
@@ -70,16 +78,21 @@
             <span class="spanBlock">产值排行榜</span>
             <div class="outputranking">
                 <span class="outTrank">
-                    <img src="../../assets/分组@2x.png" alt="">
-                    <img src="../../assets/分组 2@2x.png" alt="">
-                    <img src="../../assets/分组 3@2x.png" alt="">
+                    <img v-if="!panTable" src="" alt="">
+                    <img v-else-if="panTable.child.length>=1" src="../../assets/分组@2x.png" alt=""  style="margin-top: 5px;">
+                    <img v-if="!panTable" src="" alt="">
+                    <img v-else-if="panTable.child.length>=2" src="../../assets/分组 2@2x.png" alt="" style="margin-top: 13px;">
+                    <img v-if="!panTable" src="" alt="">
+                    <img v-else-if="panTable.child.length>=3" src="../../assets/分组 3@2x.png" alt="" style="margin-top: 13px;">
                 </span>
-                <span v-if="panTable.child" style="vertical-align: top;">
+                <span v-if="!panTable"></span>
+                <span v-else-if="panTable.child" style="vertical-align: top;">
                       <el-tooltip v-for="(item,index) in panTable.child" :key="index"  effect="dark" :content="item.name" placement="top-start">
                                <div>{{item.name}}</div>
                       </el-tooltip>                
                 </span>
-                <span v-if="panTable.child" style="vertical-align: top;" class="monthFinish">
+                <span v-if="!panTable"></span>
+                <span v-else-if="panTable.child" style="vertical-align: top;" class="monthFinish">
                      <el-tooltip v-for="(item,index) in panTable.child" :key="index"  effect="dark" :content="'本月完成'+ item.monthFinishOutput +'万元'" placement="top-start">
                                <div>本月完成{{item.monthFinishOutput}}万元</div>
                       </el-tooltip> 
