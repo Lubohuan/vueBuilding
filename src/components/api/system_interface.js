@@ -413,7 +413,7 @@ export function exportUnitByIds(data) {
 }
 // 导出工程类别excel
 export function exportEngineerSortByIds(data) {
-  return request({
+  return uploadRequest({
     url: baseUrl + '/web/export/exportEngineerSortByIds',
     method: 'post',
     data:data
@@ -445,7 +445,7 @@ export function mpp(data) {
 }
 // 获取企业级管理看板统计信息
 export function getCompanyOutputBoard(data) {
-  return uploadRequest({
+  return request({
     url: baseUrl + '/company/getCompanyOutputBoard',
     method: 'get',
     params:data
@@ -453,7 +453,7 @@ export function getCompanyOutputBoard(data) {
 }
 //获取产值进展统计分页对象(企业级管理看板)
 export function listOutputProgress(data) {
-  return uploadRequest({
+  return request({
     url: baseUrl + '/company/listOutputProgress',
     method: 'get',
     params:data
@@ -461,7 +461,7 @@ export function listOutputProgress(data) {
 }
 //产值未完成情况分析(企业级管理看板)
 export function getUnfinishedOutputAnalyze(data) {
-  return uploadRequest({
+  return request({
     url: baseUrl + '/company/getUnfinishedOutputAnalyze',
     method: 'get',
     params:data
@@ -469,7 +469,7 @@ export function getUnfinishedOutputAnalyze(data) {
 }
 //获取项目级产值未完成预警列表(企业级管理看板)
 export function listProjectOutputWarning(data) {
-  return uploadRequest({
+  return request({
     url: baseUrl + '/company/listProjectOutputWarning',
     method: 'get',
     params:data
@@ -477,14 +477,14 @@ export function listProjectOutputWarning(data) {
 }
 //删除形象进度统计项
 export function deleteVisualStatItem(data) {
-  return uploadRequest({
+  return request({
     url: baseUrl + '/project/deleteVisualStatItem/' + data,
     method: 'get'
   })
 }
 //查询项目信息
 export function projectInfo(data) {
-  return uploadRequest({
+  return request({
     url: baseUrl + '/v1/projectPlan/projectInfo/' + data,
     method: 'get'
   })
@@ -492,10 +492,10 @@ export function projectInfo(data) {
 1222
 //更新项目信息
 export function updateProjectInfo(data) {
-  return uploadRequest({
-    url: baseUrl + '/v1/projectPlan/projectInfo/' + data.id,
-    method: 'get',
-    data:data.projectInfo
+  return request({
+    url: baseUrl + '/v1/projectPlan/projectInfo',
+    method: 'put',
+    data:data
   })
 }
 

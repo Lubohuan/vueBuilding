@@ -20,13 +20,15 @@
           <el-row class="listPlan">
               <div v-if="!projeInfo">项目名称：</div>
               <div v-else>项目名称：{{projeInfo.projectName}}</div>
-              <div>合同工期：2018年5月4日-2019年9月18日</div>
-              <div class="Workproress"><span>工期进度：</span><el-progress style="width:60%;border:none;display: inline-block;" :stroke-width="13" :percentage="80"></el-progress></div>
+              <div v-if="!projeInfo">合同工期：</div>
+              <div v-else>合同工期：{{projeInfo.contractStartTime}}-{{projeInfo.contractEndTime}}</div>
+              <div class="Workproress"><span>工期进度：</span><el-progress style="width:60%;border:none;display: inline-block;" :stroke-width="13" :percentage="this.projectProgress"></el-progress></div>
               <div v-if="!projeInfo">项目经理：</div>
               <div v-else>项目经理：{{projeInfo.projectManager}}</div>
               <div style="border-bottom:none;">
                   <p>项目概括：</p>
-                  <p>商业工程占地面积约78400平方米，总建筑面积53600 m²。主要功能：办公、地下车库及附属商业配套设施。本工程主体结构嵌固在五棵松地下停车库负二层顶板上，停车库基坑南北长287m，东西宽252m。本工程±0.00=59.50m，负二层顶板标高为-9.1m，以此标高进行界面划分。</p>
+                  <p v-if="!projeInfo"></p>
+                  <p v-else>{{projeInfo.projectOverview}}</p>
               </div>
           </el-row>
       </el-col>
@@ -38,7 +40,7 @@
             </el-col>          
             <el-col :span="9" class="middleAdd" style="text-align:right;">
                  <el-button size="mini" type="text" @click="addPlan">+新增计划</el-button>
-                 <el-button size="mini" type="text" @click="linePlan">+关联计划</el-button>    
+                 <el-button size="mini" type="text" @click="linePlan">+导入计划</el-button>    
             </el-col>
         </el-row>
          <el-row :gutter="20"  class="middleList">
@@ -105,17 +107,18 @@
   </el-row>
 
     <!-- 编辑项目弹框 -->
-    <el-dialog title="编辑项目" :center="true" :visible.sync="dialog.editPlan" width="1100px" @open="$nextTick(()=>$refs['editPlan'].update(dataObj))" @close="$refs['editPlan'].reset()" >
-        <editPlan ref="editPlan" @refreshData="refreshList"  @close="dialog.editPlan = false" style="height:600px;overflow:auto;"></editPlan>
+    <el-dialog title="编辑项目" :center="true" :visible.sync="dialog.editPlan" width="700px" @open="$nextTick(()=>$refs['editPlan'].update(projectInfoObj))" @close="$refs['editPlan'].reset()" >
+        <!-- <editPlan ref="editPlan" @refreshData="refreshList"  @close="dialog.editPlan = false" style="height:600px;overflow:auto;"></editPlan> -->
+        <editPlan ref="editPlan" @refreshData="refreshList"  @close="dialog.editPlan = false"></editPlan>
     </el-dialog>
 
-    <!-- 关联计划 -->
-    <el-dialog title="关联计划" :center="true" :visible.sync="dialog.associationPlan" width="700px" @open="$nextTick(()=>$refs['associationPlan'].update(dataObj))" @close="$refs['associationPlan'].reset()" >
+    <!-- 导入计划 -->
+    <el-dialog title="导入计划" :center="true" :visible.sync="dialog.associationPlan" width="700px" @open="$nextTick(()=>$refs['associationPlan'].update())" @close="$refs['associationPlan'].reset()" >
         <associationPlan ref="associationPlan" @refreshData="refreshList"  @close="dialog.associationPlan = false" ></associationPlan>
     </el-dialog>
 
     <!-- 新增计划 -->
-    <el-dialog title="新增计划" :center="true" :visible.sync="dialog.addImportPlan" width="700px" @close="$refs['addImportPlan'].reset()">
+    <el-dialog title="新增计划" :center="true" :visible.sync="dialog.addImportPlan" @open="$nextTick(()=>$refs['addImportPlan'].update())" width="700px" @close="$refs['addImportPlan'].reset()">
         <addImportPlan ref="addImportPlan" @refreshData="refreshList"  @close="dialog.addImportPlan = false" ></addImportPlan>
     </el-dialog>
   </div>
@@ -146,12 +149,15 @@ export default {
         },
         dataObj:{},
         projectList:[],
-        projeInfo:{}
+        projeInfo:{},
+        projectProgress:0,
+        projectInfoObj:{}
     };
   },
   methods:{
       openEditPlan(){
         this.dialog.editPlan = true;
+        this.projectInfoObj = this.projeInfo;
       },
       linePlan(){
         this.dialog.associationPlan = true;
@@ -180,10 +186,25 @@ export default {
         projectInfo(lastProject)
         .then(response => {
           this.projeInfo = response.body;
+          this.projectProgress = this.getProcess(this.projeInfo.contractStartTime,this.projeInfo.contractEndTime);
+
         })
         .catch(error => {});
         
       },
+    //将年月日格式转换为yyyy-mm-dd格式
+    chDate2date (str) {
+        return str.replace(/[年|月]/g, '-').replace('日', '')
+    },
+    //计算今天占日期范围的百分比 start为开始日期   end为结束日期
+    getProcess (start, end) {
+    start = +new Date(start)
+    end = +new Date(end)
+    let now = +new Date
+    let rs = (now - start) / (end - start)
+    rs = rs > 1 ? 1 : rs.toFixed(2)
+    return rs * 100
+    }
   },
  created() {
      this.refreshList();

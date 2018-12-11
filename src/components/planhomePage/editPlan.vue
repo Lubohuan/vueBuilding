@@ -1,17 +1,23 @@
 <template>
 <!-- 编辑项目 -->
 <div class="editPlan">
-  <el-form :model="dataModel" :rules="rules" ref="editPlan" label-width="150px" style="width:94%;">
-        <el-form-item label="所属组织：" prop="typeName">
+  <el-form :model="dataModel" :rules="rules" ref="editPlan" label-width="120px" style="width:94%;">
+        <!-- <el-form-item label="所属组织：" prop="typeName">
           <el-input size="small" v-model="dataModel.typeName"></el-input>
+        </el-form-item> -->
+        <el-form-item label="项目名称：" prop="projectName">
+          <el-input size="small" v-model="dataModel.projectName"></el-input>
         </el-form-item>
-         <el-form-item label="项目名称：" prop="typeName">
-          <el-input size="small" v-model="dataModel.typeName"></el-input>
+        <el-form-item label="项目经理：" prop="projectManager">
+          <el-input size="small" v-model="dataModel.projectManager"></el-input>
         </el-form-item>
-        <el-form-item label="项目经理：" prop="typeName">
-          <el-input size="small" v-model="dataModel.typeName"></el-input>
+        <el-form-item label="合同工期：" prop="setvalue">
+          <el-date-picker value-format="yyyy-MM-dd" size="small" v-model="dataModel.setvalue" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" style="width:100%;"></el-date-picker>
         </el-form-item>
-        <el-form-item label="项目简称：" prop="typeName">
+        <el-form-item label="项目概括：" prop="projectOverview">
+          <el-input type="textarea" size="small" v-model="dataModel.projectOverview"></el-input>
+        </el-form-item>
+        <!-- <el-form-item label="项目简称：" prop="typeName">
           <el-input size="small" v-model="dataModel.typeName"></el-input>
         </el-form-item>
         <el-form-item label="项目编码：" prop="typeName">
@@ -70,7 +76,7 @@
         </el-form-item>
          <el-form-item label="工程概括" prop="typeName">
           <el-input size="small" v-model="dataModel.typeName" placeholder="工程概括"></el-input>
-        </el-form-item>
+        </el-form-item> -->
         
   </el-form>
   <div class="clickBtn">
@@ -81,14 +87,18 @@
 </template>
 
 <script>
-import { addProjectType, updateProjectType } from "../api/system_interface.js";
+import { addProjectType, updateProjectInfo } from "../api/system_interface.js";
 export default {
   name: "editPlan",
   data() {
     return {
       dataModel: {
-        typeName: "",
-        id: ""
+        setvalue:'',
+        projectName:"",
+        projectManager:"",
+        projectOverview:"",
+        contractStartTime:"",
+        contractEndTime:""
       },
       radio: "",
       //数据校验
@@ -102,14 +112,27 @@ export default {
   methods: {
 
     update(data){
-
+      // this.dataModel = {...data};
+      this.dataModel.id = data.projectId;
+      var dateArr = [];
+      dateArr.push(data.contractStartTime);
+      dateArr.push(data.contractEndTime);
+      this.dataModel.setvalue = dateArr;
+      this.dataModel.projectName = data.projectName;
+      this.dataModel.projectManager =data.projectManager;
+      this.dataModel.projectOverview =data.projectOverview;
     },
     //重置方法
     reset() {
       const editPlan = this.$refs["editPlan"];
       editPlan.resetFields();
-      this.dataModel.typeName = "";
-      this.dataModel.id = "";
+      this.dataModel.setvalue = '';
+      // this.dataModel.id = "";
+      this.dataModel.projectName ="";
+      this.dataModel.projectManager ="";
+      this.dataModel.projectOverview ="";
+      this.dataModel.contractStartTime ="";
+      this.dataModel.contractEndTime ="";
     },
 
     //关闭弹框
@@ -126,6 +149,20 @@ export default {
         if (!valid) {
           return;
         }
+      this.dataModel.contractStartTime = this.dataModel.setvalue[0];
+      this.dataModel.contractEndTime = this.dataModel.setvalue[1];
+        updateProjectInfo(this.dataModel)
+        .then(response => {
+          if (response.code == "200") {
+            this.$message.success("编辑成功!");
+            this.close();
+            this.$emit("refreshData");
+          } else {
+            this.$message.error(response.msg);
+          }
+        })
+        .catch(error => {
+        });
       });
     },
 

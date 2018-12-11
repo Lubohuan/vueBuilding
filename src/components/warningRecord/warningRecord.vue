@@ -19,9 +19,9 @@
              <span v-else>--</span>
         </template>
     </el-table-column>
-    <el-table-column prop="respUserName"  label="预警解除人" align="center" min-width="120">
+    <el-table-column prop="updateUserName"  label="预警解除人" align="center" min-width="120">
         <template slot-scope="scope">
-             <span v-if="scope.row.respUserName">{{scope.row.respUserName}}</span>
+             <span v-if="scope.row.updateUserName">{{scope.row.updateUserName}}</span>
              <span v-else>--</span>
         </template>
     </el-table-column>

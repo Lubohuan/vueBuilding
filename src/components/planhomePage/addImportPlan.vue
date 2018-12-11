@@ -74,7 +74,9 @@ export default {
       'getlistOrgInfoList'
     ]),
 
-   
+    update(){
+     this.dataModel.projectArry = JSON.parse(sessionStorage.getItem("selectArry"));
+    },
 
     //重置方法
     reset() {

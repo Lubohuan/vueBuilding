@@ -8,7 +8,7 @@
   <el-row>
    <el-col :span="24">
       <el-button size="mini" type="primary" @click="addEng">+ 添加工程类别</el-button>
-      <el-button size="mini" type="success">导出excel</el-button>
+      <el-button size="mini" type="success" @click="exportExcel">导出excel</el-button>
    </el-col>
   </el-row>
   <el-table :data="tableData" style="width: 100%;margin-top:20px;"   @selection-change="handleSelectionChange" border>
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { listProjectType,deleteProjectType} from "../api/system_interface.js";
+import { listProjectType,deleteProjectType,exportEngineerSortByIds} from "../api/system_interface.js";
 import addEng from "../engineering-category-management/addEng.vue";
 export default {
   name: "engineering-category-management",
@@ -52,7 +52,50 @@ export default {
 
     //选择项变化
     handleSelectionChange(val) {
-      this.multipleSelection = val;
+       for(var i=0;i<val.length;i++){
+        this.multipleSelection.push(val[i].id)
+      }
+    },
+
+    exportExcel(){
+
+      this.$axios
+        .post("http://autobuild.jiguantong.com/bimScheduleService/web/export/exportEngineerSortByIds", this.multipleSelection,{responseType: 'arraybuffer'})
+        .then(response => {
+           let blob = new Blob([response.data], {type: "application/vnd.ms-excel"}); 
+           let objectUrl = URL.createObjectURL(blob);
+           window.location.href = objectUrl; 
+        })
+        .catch(error => {
+          this.$message.error(error);
+        });
+
+      //  exportEngineerSortByIds(
+      //    this.multipleSelection
+      //  )
+      //       .then(response => {
+      //         if (response.code == "200") {
+      //           // window.location.href=response.body;
+      //           // var blob = new Blob([res], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8'}); // application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
+      //           // var downloadElement = document.createElement('a');
+      //           // var href = window.URL.createObjectURL(blob); // 创建下载的链接
+      //           // downloadElement.href = href;
+      //           // downloadElement.download = 'xxx.xlsx'; // 下载后文件名
+      //           // document.body.appendChild(downloadElement);
+      //           // downloadElement.click(); // 点击下载
+      //           // document.body.removeChild(downloadElement); // 下载完成移除元素
+      //           // window.URL.revokeObjectURL(href); // 释放掉blob对象
+      //           let blob = new Blob([response.data], {type: "application/vnd.ms-excel"}); 
+      //           let objectUrl = URL.createObjectURL(blob);
+      //           window.location.href = objectUrl;  
+      //           this.refreshList();
+      //         } else {
+      //           this.$message.error(response.msg);
+      //         }
+      //       })
+      //       .catch(error => {
+      //         console.log(error);
+      //       });
     },
 
     //删除类别
