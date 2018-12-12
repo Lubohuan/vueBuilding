@@ -151,6 +151,24 @@ export default new Router({
           }
       ]
       },
+      {
+        path: '/bimHome',
+        name: 'bimHome',
+        component: (resolve) => {
+          require(['../components/home/bimHome.vue'], resolve)
+        },
+        redirect: '/bimHomePage',
+        children:[
+           //形象进度首页
+           {
+            path: '/bimHomePage',
+            name: 'bimHomePage',
+            component: (resolve) => {
+              require(['../components/bimHomePage/bimHomePage.vue'], resolve)
+            }
+          }
+      ]
+      },
        //loading界面
        {
         path: '/loading',

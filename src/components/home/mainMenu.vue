@@ -161,6 +161,7 @@ export default {
       menuData:[
         {id:'1',icon:require('../../assets/progressmenu.png'),text:'生产形象进度',path:'/home'},
         {id:'2',icon:require('../../assets/planProgress.png'),text:'生产计划进度',path:'/home1'},
+        {id:'3',icon:require('../../assets/planProgress.png'),text:'BIM应用',path:'/bimHome'},
       ],
         defaultPropss:{
         children: "child",

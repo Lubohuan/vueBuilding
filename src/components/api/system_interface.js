@@ -3,7 +3,7 @@ import uploadRequest from '@/utils/uploadRequest';
 // const baseUrl = 'http://172.16.7.135:8081';
 // const baseUrl = 'http://172.16.7.135';
 // const baseUrl = 'http://172.16.7.157:8080/bimScheduleService';
-
+import axios from 'axios'
 //请求url
 const baseUrl = 'http://autobuild.jiguantong.com/bimScheduleService';
 //const baseUrl = 'http://spm.jiguantong.com/bimScheduleService';
@@ -489,7 +489,6 @@ export function projectInfo(data) {
     method: 'get'
   })
 }
-1222
 //更新项目信息
 export function updateProjectInfo(data) {
   return request({
@@ -498,4 +497,112 @@ export function updateProjectInfo(data) {
     data:data
   })
 }
+
+//上传bim url
+export function uploadDrawing(data) {
+  return request({
+    url: baseUrl + '/drawing/uploadDrawing',
+    method: 'post',
+    data:data
+  })
+}
+
+//分页查询施工图纸列表
+export function getDrawingPage(data) {
+  return request({
+    url: baseUrl + '/drawing/getDrawingPage',
+    method: 'get',
+    params:data
+  })
+}
+
+//获取图纸的ViewToken
+export function getViewToken(data) {
+  return request({
+    url: baseUrl + '/drawing/getViewToken/'+ data,
+    method: 'get'
+  })
+}
+
+//删除工程图纸
+export function deleteDrawing(data) {
+  return request({
+    url: baseUrl + '/drawing/deleteDrawing/'+ data,
+    method: 'delete'
+  })
+}
+
+//获取工程图纸下载地址
+export function getDownloadUrl(data) {
+  return request({
+    url: baseUrl + '/drawing/getDownloadUrl/'+ data,
+    method: 'get'
+  })
+}
+
+
+
+
+// 云盘上传文件接口
+async function getPolicy(ext) {
+  return new Promise(function(resolve, reject) {
+      resolve(axios.get('http://autobuild.jiguantong.com/alphaPortalService/cloud/policy',{ ext }));
+  });
+}
+
+//  uploadfile 上传
+export async function uploadfile(file,callback,progressfn) {
+      var _this = this;
+      //参数  file ，
+      //const file = document.getElementById('upload').files[0]
+      let cloudFile = {};
+      cloudFile.fileName = file.name;
+      cloudFile.fileExt = file.type;
+      //cloudFile.folderId = _this.folderId;///???
+      cloudFile.fileSize = file.size +'';
+      getPolicy(file.name).then(({data}) => {
+        const fd = new FormData();
+        const {accessid, host, policy, signature, dir, saveName} = data;
+
+        fd.append('OSSAccessKeyId', accessid);
+        fd.append('policy', policy);
+        fd.append('signature', signature);
+        fd.append('key', dir + saveName);
+        fd.append('success_action_status', 200);
+        fd.append('file', file, saveName);
+        const xhr = new XMLHttpRequest();
+        xhr.open('post', host, true);
+        //控制进度条的
+        xhr.upload.addEventListener('progress', (evt) => {
+          let progress = Math.round((evt.loaded) * 100 / evt.total);
+          progressfn && progressfn(progress);
+        }, false)
+        xhr.addEventListener('load', (e) => {
+            if (e.target.status !== 200) {
+                return
+            }
+            if (e.target.status === 200) {
+            //cloudFile.fileUrl = host + '/' + dir + saveName
+
+            //uploadSave(cloudFile).then((res) => {
+                // queryCloudFolderInfoPage(this.parentId).then((res) => {
+                //     this.folderList = res.body.rows
+                // })
+                // queryCloudFileInfoPage(this.folderId).then((res) => {
+                //     if(res.code === 200){
+                //     return this.fileList = res.body.rows;
+                //     }
+                // })
+                //if(res.code === 200){
+
+                  callback && callback('http://altadaye.com' + '/' + dir + saveName);
+                //}
+                //callback ,回显url
+            //})
+            //this.imgUrl = host + '/' + dir + saveName
+            }
+        }, false)
+        xhr.send(fd)
+      })
+  }
 

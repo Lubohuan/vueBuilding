@@ -1,5 +1,5 @@
 <template>
-<!-- 新增/修改分部分项 -->
+<!-- 新增计划 -->
 <div class="addProgress">
   <el-form :model="dataModel" :rules="rules" ref="addProgress" label-width="120px">
         <el-form-item label="项目名称：" prop="projectArry">

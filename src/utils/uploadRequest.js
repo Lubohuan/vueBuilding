@@ -7,7 +7,7 @@ axios.defaults.headers.common['Authorization'] = 'Basic Y29vcGVyYXRpb25BcHA6Y29v
 const service = axios.create({
   baseURL: process.env.BASE_API, // api 的 base_url
   timeout: 10000, // 请求超时时间
-  responseType: 'blob'
+  // responseType: 'blob'
 })
 // request拦截器
 service.interceptors.request.use(
@@ -15,8 +15,8 @@ service.interceptors.request.use(
     //判断session中是否有token，如果有给请求头加上token
     if (sessionStorage.getItem("userToken")) {
         config.headers.common['token'] = sessionStorage.getItem("userToken");
-        // config.headers.common['Content-Type'] = 'multipart/form-data';
     }
+    config.headers.common['Content-Type'] = 'multipart/form-data';
     return config
   },
   error => {
