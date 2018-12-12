@@ -22,8 +22,8 @@
                     <div class="contentInfo">
                         <div class="desp_look">本月完成产值</div>
                         <div v-if="!panTable"></div>
-                        <div v-else-if="!panTable.weekFinishOutput">0万</div>
-                        <div v-else class="desp_personal">{{panTable.weekFinishOutput}}万</div>
+                        <div v-else-if="!panTable.monthFinishOutput">0万</div>
+                        <div v-else class="desp_personal">{{panTable.monthFinishOutput}}万</div>
                     </div>
                 </el-col>
             </el-row>
