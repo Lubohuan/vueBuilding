@@ -27,6 +27,7 @@
   </el-row>
   <el-table :data="tableData" style="width: 100%;margin-top:20px;"    border >
     <el-table-column type="selection" width="50" align="center"></el-table-column>
+    <el-table-column prop="projectName"  label="项目名称" align="center"></el-table-column>
     <el-table-column prop="name"  label="图纸名称" align="center"></el-table-column>
     <el-table-column prop="lengthView" label="大小" align="center" min-width="160"></el-table-column>
     <el-table-column prop="createTime" label="上传时间" align="center" min-width="180" :show-overflow-tooltip="true"></el-table-column>
@@ -61,7 +62,7 @@
 
 
    <!--导入bim文件-->
-    <el-dialog  :center="true" :visible.sync="dialog.importBim" width="1200px" :show-close="false">
+    <el-dialog  :center="true" :visible.sync="dialog.importBim" width="1200px" :show-close="false" :close-on-click-modal="false">
       <importBim  ref="importBim" @refreshData="timeshowImg"  @close="dialog.importBim = false" ></importBim>
     </el-dialog>
   </div>
@@ -93,14 +94,15 @@ export default {
       setvalue:'',
       startTime:'',
       endTime:'',
-      stateList:[{
-        state:0,
+      stateList:[
+        {
+        state:1,
         name:"转换中"
       },{
-        state:5,
+        state:2,
         name:"转换成功"
       },{
-        state:1,
+        state:0,
         name:"转换失败"
       }],
       filetypeList:[

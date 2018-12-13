@@ -48,7 +48,7 @@
                 <div class="blockList" @click="openProgressPicture(item.id)">
                     <div class="blockList_title">{{item.name}}</div>
                     <div class="blockList_title">总工期差异：+9天    延期计划任务：8个</div>
-                    <img src="http://tower-img.1357.cn/file/2018-11-29/1219862087247360.jpg?x-oss-process=image/resize,m_lfit,w_640,h_640/watermark,type_ZmFuZ3poZW5na2FpdGk=,color_FFFFFF,type_ZmFuZ3poZW5naGVpdGk,size_22,text_6LW15LqMICAyMDE4LTExLTI5IDE0OjI2" alt="">
+                    <img src="../../assets/planImg.png" alt="">
                 </div>
             </el-col>
             <!-- <el-col :span="12">
