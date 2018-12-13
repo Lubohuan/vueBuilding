@@ -270,10 +270,12 @@ export default {
            this.statisList = response.body;
           }
           else {
-            this.$message.error(response.msg);
+            this.statisList = [];
+            this.$message.error(response.msg);          
           }
         })
         .catch(error => {
+          this.statisList = [];
           console.log(error);
         });
     },
