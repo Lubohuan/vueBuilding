@@ -17,7 +17,7 @@
                 <el-option v-for="(item,index) in stateList" :label="item.name" :value="item.state" :key="index"></el-option>
       </el-select>
       <el-select size="small" v-model="flieTypeInfo" placeholder="文件类型" clearable>
-                <el-option v-for="(item,index) in filetypeList" :label="item.name" :value="item.type" :key="index"></el-option>
+                <el-option v-for="(item,index) in filetypeList" :label="item.name" :value="item.name" :key="index"></el-option>
       </el-select>
     </el-col>
    <el-col :span="9" class="graphicProgress_btn1">
@@ -27,7 +27,7 @@
   </el-row>
   <el-table :data="tableData" style="width: 100%;margin-top:20px;"    border >
     <el-table-column type="selection" width="50" align="center"></el-table-column>
-    <el-table-column prop="name"  label="名称" align="center"></el-table-column>
+    <el-table-column prop="name"  label="图纸名称" align="center"></el-table-column>
     <el-table-column prop="lengthView" label="大小" align="center" min-width="160"></el-table-column>
     <el-table-column prop="createTime" label="上传时间" align="center" min-width="180" :show-overflow-tooltip="true"></el-table-column>
     <el-table-column prop="state" label="转换状态" align="center" min-width="180" :show-overflow-tooltip="true">
@@ -95,13 +95,13 @@ export default {
       endTime:'',
       stateList:[{
         state:0,
-        name:"上传中"
+        name:"转换中"
+      },{
+        state:5,
+        name:"转换成功"
       },{
         state:1,
-        name:"上传成功"
-      },{
-        state:2,
-        name:"上传失败"
+        name:"转换失败"
       }],
       filetypeList:[
         {type:1,
@@ -138,7 +138,10 @@ export default {
         name:"dae"
         },
         {type:12,
-        name:"dae"
+        name:"ply"
+        },
+        {type:12,
+        name:"igms"
         }
       ],
       t1:null
@@ -172,8 +175,8 @@ export default {
       getDrawingPage({
         current: this.currentPage,
         offset: this.pagesize,
-        state:this.flieTypeInfo,
-        suffix:this.stateInfo,
+        state:this.stateInfo,
+        suffix:this.flieTypeInfo,
         startTime:this.startTime,
         endTime:this.endTime
       })
@@ -190,7 +193,7 @@ export default {
     lookClick(data){ 
        getViewToken(data.fileId)
         .then(response => {
-          window.open("static/bimLook.html?ViewToken=" + response.body)
+          window.open("static/bimLook.html?ViewToken=" + response.body + "&name="+data.name)
         })
         .catch(error => {
           console.log(error);
@@ -261,6 +264,8 @@ export default {
       this.setvalue = ''; 
       this.stateInfo = null;
       this.flieTypeInfo = null;
+      this.startTime = null;
+      this.endTime = null;
     }
   },
   created() {

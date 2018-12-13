@@ -8,23 +8,49 @@
 <!-- 引用BIMFACE的JavaScript显示组件库 -->
 <script src="https://static.bimface.com/api/BimfaceSDKLoader/BimfaceSDKLoader@latest-release.js" charset="utf-8"></script>
 <style>
+	*{
+		padding: 0;
+		margin: 0;
+	}
     html,body{
       height:100%;
       width:100%;
     }
+	#titleInfo{
+		color: #ffffff;
+		background: rgba(51, 55, 68, 1);
+		height: 40px;
+		line-height: 37px;
+		padding-left: 20px;
+	}
+	.footerInfo{
+		color: #ffffff;
+		background: rgba(51, 55, 68, 1);
+		text-align: center;
+		height: 40px;
+		line-height: 40px;
+		font-size: 12px;
+	}
+	#domId{
+		width:100%; 
+		height:calc(100% - 80px);
+	}
 </style>
 </head>
 
 <body>
-
+<div id="titleInfo"></div>
 <!-- 定义DOM元素，用于在该DOM元素中显示模型或图纸 -->
-<div id="domId" style="width:100%; height:100%"></div>
-
+<div id="domId"></div>
+<div class="footerInfo">Copyright 2015         陕ICP备15012350号     进度易      华筑科技旗下产品</div>
 <script type="text/javascript">
 
     // 指定待显示的模型或图纸（viewToken从服务端获取）
     var string = window.location.search;
-    var str = string.split('=')[1];
+	var str = string.split('=')[1];
+	var names = string.split('=')[2];
+	var title = document.getElementById('titleInfo');
+	title.innerHTML = names;
 	var viewToken = str;
 	
 	// 初始化显示组件
