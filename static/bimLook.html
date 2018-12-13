@@ -48,7 +48,7 @@
     // 指定待显示的模型或图纸（viewToken从服务端获取）
     var string = window.location.search;
 	var str = string.split('=')[1];
-	var names = string.split('=')[2];
+	var  names = decodeURI(string.split('=')[2]);
 	var title = document.getElementById('titleInfo');
 	title.innerHTML = names;
 	var viewToken = str;

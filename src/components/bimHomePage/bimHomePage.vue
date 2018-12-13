@@ -195,7 +195,8 @@ export default {
     lookClick(data){ 
        getViewToken(data.fileId)
         .then(response => {
-          window.open("static/bimLook.html?ViewToken=" + response.body + "&name="+data.name)
+          var lookurl = encodeURI("static/bimLook.html?ViewToken=" + response.body + "&name="+data.name);   //使用encodeURI编码
+          window.open(lookurl);
         })
         .catch(error => {
           console.log(error);
