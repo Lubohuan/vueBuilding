@@ -62,7 +62,7 @@
 
 
    <!--导入bim文件-->
-    <el-dialog  :center="true" :visible.sync="dialog.importBim" width="1200px" :show-close="false" :close-on-click-modal="false">
+    <el-dialog  :center="true" :visible.sync="dialog.importBim" width="1200px" :show-close="false" :close-on-click-modal="false" @open="$nextTick(()=>$refs['importBim'].update())">
       <importBim  ref="importBim" @refreshData="timeshowImg"  @close="dialog.importBim = false" ></importBim>
     </el-dialog>
   </div>

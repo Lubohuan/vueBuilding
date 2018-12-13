@@ -3,6 +3,7 @@
 <div class="addArea">
     <el-button @click="close"  type="primary" size="small">关闭</el-button>
     <div class="importDiv">
+        <el-cascader :options="listOrgInfoList" v-model="projectArry" :props="defaultProp" size="small" placeholder="请选择项目" @change="chageType" :show-all-levels="false"></el-cascader>
         <el-upload accept="" style="display:inline-block;vertical-align: top;" action="" :http-request="uploadImg" :show-file-list="false" :disabled="isOver">
           <el-button size="small" type="success" :disabled="isOver">添加文件</el-button>
         </el-upload>
@@ -22,36 +23,65 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex';
 import { uploadBIM,uploadfile,uploadDrawing } from "../api/system_interface.js";
 export default {
   name: "addArea",
   data() {
     return {
-      dataModel: {
-        regionName: null,
-        projectId: [],
-        id:null,
-      },
       projectArry:[],
       tableData:[],
-      progressNum:"",
-      
+      progressNum:"",      
       uploadUpdateBIm:{
         fileUrl:'',
         name:'',
         projectId:''
       },
-      isOver:false
+      isOver:true,
+      defaultProp: {
+        children: "child",
+        label: "name",
+        value: "id"
+      },
     };
   },
+  computed: {
+    ...mapState([
+     'listOrgInfoList'
+    ]),
+  },
   methods: {
+
+    ...mapActions([
+      'getlistOrgInfoList'
+    ]),
+
+    update(){
+      this.getlistOrgInfoList();
+    },
 
     //关闭弹框
     close() {
       this.$emit("close");
       this.tableData = [];
+      this.uploadUpdateBIm = {};
+      this.projectArry = [];
+      this.isOver = true; 
       this.$emit("refreshData");
     },
+
+     //切换项目查询形象进度统计项
+    chageType(){
+      if(this.projectArry.length >= 1){
+         this.uploadUpdateBIm.projectId = this.projectArry[this.projectArry.length - 1];
+         this.isOver = false;
+      }
+      else{
+        this.isOver = true;
+      }
+    
+    },
+
     uploadImg (f) { 
         this.isOver = true;       
         var importInfo = {};
@@ -62,6 +92,7 @@ export default {
         this.tableData.unshift(importInfo);
         uploadfile(f.file,this.ceshicall,this.progressInfo); 
     },
+
     ceshicall(data){
         this.$message.success("上传成功!");
         this.uploadUpdateBIm.fileUrl = data;
@@ -76,16 +107,18 @@ export default {
         .catch(error => {
         });
     },
+
     progressInfo(data){
         this.tableData[0].progress = data;
         this.progressNum = data;
     }
   },
   created(){
-    if(sessionStorage.getItem("selectArry")){
-      this.projectArry = JSON.parse(sessionStorage.getItem("selectArry"));
-      this.uploadUpdateBIm.projectId = this.projectArry[this.projectArry.length - 1];
-    }
+    // if(sessionStorage.getItem("selectArry")){
+    //   this.projectArry = JSON.parse(sessionStorage.getItem("selectArry"));
+    //   this.uploadUpdateBIm.projectId = this.projectArry[this.projectArry.length - 1];
+    // }
+    this.getlistOrgInfoList();
   }
 };
 </script>
