@@ -247,7 +247,8 @@ export default {
 
     //查询按钮
     resarchInfo(){
-       if(this.setvalue.length>=1){
+       
+       if(this.setvalue&&this.setvalue.length>=1){
          this.startTime = this.setvalue[0];
          this.endTime = this.setvalue[1];
        }
