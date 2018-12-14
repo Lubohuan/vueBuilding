@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { getUnitPage, deleteUnitById,exportUnitByIds } from "../api/system_interface.js";
+import { getUnitPage, deleteUnitById,exportUnitByIds,baseinUrl } from "../api/system_interface.js";
 import addStat from "../bitem/addStat.vue";
 export default {
   name: "statistical",
@@ -64,30 +64,35 @@ export default {
     };
   },
   methods: {
+
     //选择项变化
     handleSelectionChange(val) {
+       this.multipleSelection = [];
       // this.multipleSelection = val.map(v=>v.id);
       for(var i=0;i<val.length;i++){
         this.multipleSelection.push(val[i].id)
       }
       console.log(this.multipleSelection);
     },
+    
+    //导出表格
     exportExcel(){
-       exportUnitByIds(
-         this.multipleSelection
-       )
-            .then(response => {
-              if (response.code == "200") {
-                window.location.href=response.body;
-                this.refreshList();
-              } else {
-                this.$message.error(response.msg);
-              }
-            })
-            .catch(error => {
-              console.log(error);
-            });
+       if(this.multipleSelection.length < 1){
+          this.$message.success("请选择要导出的类别!");
+          return
+       }
+       this.$axios
+        .post( baseinUrl() + "/web/export/exportUnitByIds", this.multipleSelection,{responseType: 'arraybuffer'})
+        .then(response => {
+           let blob = new Blob([response.data], {type: "application/vnd.ms-excel"}); 
+           let objectUrl = URL.createObjectURL(blob);
+           window.location.href = objectUrl; 
+        })
+        .catch(error => {
+          this.$message.error(error);
+        });
     },
+
     //删除单位
     deleteClick(scope) {
       this.$confirm("确定要删除此单位吗", "提示", {
