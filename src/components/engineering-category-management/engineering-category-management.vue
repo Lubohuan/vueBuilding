@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { listProjectType,deleteProjectType,exportEngineerSortByIds} from "../api/system_interface.js";
+import { listProjectType,deleteProjectType,exportEngineerSortByIds,baseinUrl} from "../api/system_interface.js";
 import addEng from "../engineering-category-management/addEng.vue";
 export default {
   name: "engineering-category-management",
@@ -90,7 +90,7 @@ export default {
         return
       }
       this.$axios
-        .post("http://autobuild.jiguantong.com/bimScheduleService/web/export/exportEngineerSortByIds", this.multipleSelection,{responseType: 'arraybuffer'})
+        .post( baseinUrl() + "/web/export/exportEngineerSortByIds", this.multipleSelection,{responseType: 'arraybuffer'})
         .then(response => {
            let blob = new Blob([response.data], {type: "application/vnd.ms-excel"}); 
            let objectUrl = URL.createObjectURL(blob);

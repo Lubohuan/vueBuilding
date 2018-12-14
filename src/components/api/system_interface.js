@@ -15,6 +15,10 @@ const spmUrl = 'http://autobuild.1357.cn/Admin/Login/public_login';
 export function loginUrl(){
   return spmUrl;
 }
+
+export function baseinUrl(){
+  return baseUrl;
+}
 // 查询统计单位接口
 export function getUnitPage(data) {
   return request({
