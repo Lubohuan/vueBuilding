@@ -149,7 +149,7 @@ export default {
       t1:null,
       pickerOptions: {
           disabledDate(time) {
-            return time.getTime() > Date.now() - 8.64e7;
+            return time.getTime() > Date.now();
           }
       }, 
      
@@ -251,6 +251,10 @@ export default {
        if(this.setvalue&&this.setvalue.length>=1){
          this.startTime = this.setvalue[0];
          this.endTime = this.setvalue[1];
+       }
+       else{
+         this.startTime = null;
+         this.endTime = null;
        }
        this.refreshList();
     },
