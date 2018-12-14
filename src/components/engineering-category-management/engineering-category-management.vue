@@ -52,13 +52,17 @@ export default {
 
     //选择项变化
     handleSelectionChange(val) {
+       this.multipleSelection = [];
        for(var i=0;i<val.length;i++){
         this.multipleSelection.push(val[i].id)
       }
     },
 
     exportExcel(){
-
+      if(this.multipleSelection.length < 1){
+        this.$message.success("请选择要导出的类别!");
+        return
+      }
       this.$axios
         .post("http://autobuild.jiguantong.com/bimScheduleService/web/export/exportEngineerSortByIds", this.multipleSelection,{responseType: 'arraybuffer'})
         .then(response => {

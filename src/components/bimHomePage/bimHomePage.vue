@@ -12,7 +12,7 @@
   </el-row>
    <el-row class="graphicProgress_row">
    <el-col :span="15">
-      <el-date-picker value-format="yyyy-MM-dd" size="small" v-model="setvalue" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" style="width:225px;padding-top:1px;"></el-date-picker>
+      <el-date-picker value-format="yyyy-MM-dd" size="small" v-model="setvalue" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" style="width:225px;padding-top:1px;" :picker-options="pickerOptions"></el-date-picker>
       <el-select size="small" v-model="stateInfo" placeholder="上传状态" clearable>
                 <el-option v-for="(item,index) in stateList" :label="item.name" :value="item.state" :key="index"></el-option>
       </el-select>
@@ -146,7 +146,12 @@ export default {
         name:"igms"
         }
       ],
-      t1:null
+      t1:null,
+      pickerOptions: {
+          disabledDate(time) {
+            return time.getTime() > Date.now() - 8.64e7;
+          }
+      }, 
      
     };
   },
