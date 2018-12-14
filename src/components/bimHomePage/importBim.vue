@@ -86,7 +86,8 @@ export default {
         this.isOver = true;       
         var importInfo = {};
         importInfo.name = f.file.name;
-        importInfo.size = f.file.size/1024 + 'M';
+        console.log(f.file.size);
+        importInfo.size = (f.file.size/1024/1024).toFixed(2) + 'M';
         importInfo.progress = 0;
         this.uploadUpdateBIm.name = f.file.name;
         this.tableData.unshift(importInfo);
