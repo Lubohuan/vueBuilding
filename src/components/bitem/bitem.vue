@@ -42,6 +42,17 @@
         </span>
       </span>
    </el-tree>
+   <el-pagination background v-if="total>0"
+      class="pageStyle"
+			layout="prev, pager, next, sizes, total, jumper"
+			:page-sizes="[5, 10, 15, 20]"
+			:page-size="pagesize"
+      :current-page="currentPage"
+			:total="total"
+			@current-change="handleCurrentChange"
+			@size-change="handleSizeChange"
+			>
+   </el-pagination>
    <!--类别管理-->
     <el-dialog title="类别管理" :center="true" :visible.sync="dialog.modify" width="800px">
       <categoryManagement ref="categoryManagement" @close="dialog.modify = false" ></categoryManagement>
@@ -153,6 +164,16 @@ export default {
       this.subObject = data;
     },
 
+    handleCurrentChange(cpage) {
+      this.currentPage = cpage;
+      this.refreshList();
+    },
+
+    handleSizeChange(psize) {
+      this.pagesize = psize;
+      this.refreshList();
+    },
+
     //查询分部分项库
     refreshList() {
         getSubsectionPage({
@@ -182,7 +203,7 @@ export default {
        return new Promise((resolve, reject) => {
         listProjectType({})
         .then(response => {
-          this.projectTypeList = response.body;
+          this.projectTypeList = response.body.rows;
           resolve()
         })
         .catch(error => {
