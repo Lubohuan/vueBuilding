@@ -94,6 +94,8 @@ export default {
       setvalue:'',
       startTime:'',
       endTime:'',
+      flieTypeInfos:'',
+      stateInfos:'',
       stateList:[
         {
         state:1,
@@ -182,8 +184,8 @@ export default {
       getDrawingPage({
         current: this.currentPage,
         offset: this.pagesize,
-        state:this.stateInfo,
-        suffix:this.flieTypeInfo,
+        state:this.stateInfos,
+        suffix:this.flieTypeInfos,
         startTime:this.startTime,
         endTime:this.endTime
       })
@@ -247,7 +249,8 @@ export default {
 
     //查询按钮
     resarchInfo(){
-       
+       this.stateInfos = this.stateInfo;
+       this.flieTypeInfos = this.flieTypeInfo;
        if(this.setvalue&&this.setvalue.length>=1){
          this.startTime = this.setvalue[0];
          this.endTime = this.setvalue[1];
