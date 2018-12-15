@@ -8,7 +8,7 @@
   </el-breadcrumb>
   <el-row>
    <el-col :span="10">
-      <el-button size="mini" type="success">导出excel</el-button>
+      <el-button size="mini" type="success" @click="exportExcel">导出excel</el-button>
    </el-col>
    <el-col :span="14" class="lookProgress_btn1">
      <el-input size="small" placeholder="选择检视时间范围"  v-on:click.native="openData" style="width:200px;"></el-input>
@@ -25,6 +25,7 @@
    </el-col>
   </el-row>
   <el-table :data="tableData" style="width: 100%;margin-top:20px;"   @selection-change="handleSelectionChange" border>
+    <el-table-column type="selection" width="50" align="center"></el-table-column>
     <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
     <el-table-column prop="projectName" label="项目名称" align="center"></el-table-column>
     <el-table-column prop="regionName" label="施工区段" align="center" min-width="200"></el-table-column>
@@ -122,6 +123,9 @@ export default {
       projectIds:null,   
       monthIndex:'',
       indexArry:[],
+      title:['项目名称','施工区段','分部分项名称','形象进度统计项','形象单位','预算工程量','累计完成','完成比例'],
+      key:['projectName', 'regionName', 'subName', 'statName', 'unitName', 'budgetTotal','finishBudget','finishBudgetRate'],
+      excelName:'进度视检表格'
     };
   },
   computed: {
@@ -136,9 +140,18 @@ export default {
         'getlistOrgInfoList'
     ]),
 
+   exportExcel(){
+     if(this.multipleSelection.length < 1){
+          this.$message.success("请选择要导出的类别!");
+          return
+     }
+     this.$common.export2Excel(this.title,this.key,this.multipleSelection,this.excelName)
+   },
+
     //选择项变化
     handleSelectionChange(val) {
       this.multipleSelection = val;
+      console.log(this.multipleSelection);
     },
 
     //页码变化

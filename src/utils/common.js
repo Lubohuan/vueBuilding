@@ -1,5 +1,19 @@
 export default {
 
+  formatJson(filterVal, jsonData) {
+    　　　　return jsonData.map(v => filterVal.map(j => v[j]))
+    　　},
+  export2Excel(title,key,info,excelName) {
+    　　　　require.ensure([], () => {
+    　　　　　　const { export_json_to_excel } = require('../vendor/Export2Excel');
+    　　　　　　const tHeader = title;
+    　　　　　　const filterVal = key;
+    　　　　　　const list = info;
+    　　　　　　const data = this.formatJson(filterVal, list);
+    　　　　　　export_json_to_excel(tHeader, data, excelName);
+    　　　　})
+  },
+
    //转换日期
    changeDate(dayData){
     var arr = dayData.split("-"); //将获取的数组按“-”拆分成字符串数组
