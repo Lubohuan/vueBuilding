@@ -3,7 +3,7 @@
 <div class="addProgress">
   <el-form :model="dataModel" :rules="rules" ref="addProgress" label-width="150px">
     <el-form-item label="项目名称：" prop="projectIdArry">
-       <el-cascader :options="listOrgInfoList" v-model="dataModel.projectIdArry" :props="defaultPropss" size="small" placeholder="请选择项目" style="width:100%;" :disabled="isUp"></el-cascader>
+       <el-cascader :options="listOrgInfoList" v-model="dataModel.projectIdArry" :props="defaultPropss" size="small" placeholder="请选择项目" style="width:100%;" :disabled="isUps"></el-cascader>
     </el-form-item>
     <el-form-item label="施工区域" prop="regionIdArry" >
          <el-cascader ref="checkRegion" change-on-select :options="reginList" v-model="dataModel.regionIdArry" :props="defaultProps" size="small" style="width:100%;" :disabled="isUp" @change="changeCheckRegion"></el-cascader>
@@ -96,6 +96,7 @@ export default {
         value: "id"
       },
       isUp:false,
+      isUps:false,
       checkReginLabel:'',
       checkBitemLabel:'',
     };
@@ -128,8 +129,10 @@ export default {
      反显数据
      */
     async update(data) {
+      let companyTypes = sessionStorage.getItem("companyType");
       if(!data.id){
         this.dataModel.projectIdArry = JSON.parse(sessionStorage.getItem("selectArry"));
+        this.isUps = companyTypes == 4?true:false;
       }
       this.getReginList();
       await this.getSubsectionList();
@@ -138,6 +141,7 @@ export default {
       if (!data.id) return;
       this.dataModel ={...data};
       this.isUp = true;
+      this.isUps = true;
       //查找项目父级
       let object = this.$common.initTree(this.listOrgInfoList);
       this.dataModel.projectIdArry  = this.$common.findParent(object,data.projectId);

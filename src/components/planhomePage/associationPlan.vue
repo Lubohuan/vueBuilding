@@ -3,7 +3,7 @@
 <div class="associationPlan">
   <el-form :model="dataModel" :rules="rules" ref="associationPlan" label-width="100px">
         <el-form-item label="项目名称：" prop="projectArry">
-            <el-cascader :options="listOrgInfoList" v-model="dataModel.projectArry" :props="defaultProp" size="small" placeholder="请选择项目" style="width:100%;" clearable></el-cascader>
+            <el-cascader :options="listOrgInfoList" v-model="dataModel.projectArry" :props="defaultProp" size="small" placeholder="请选择项目" style="width:100%;" clearable :disabled="isCompany"></el-cascader>
         </el-form-item>
          <el-form-item label="计划级别：" prop="level">
             <el-select size="small" v-model="dataModel.level" placeholder="请选择：" clearable style="width:100%;">
@@ -54,7 +54,8 @@ export default {
         level:   [{ required: true, message:  "请选择计划级别", trigger: "change" }]
       
       },
-      file:false
+      file:false,
+      isCompany:false 
     };
   },
   computed: {
@@ -69,6 +70,8 @@ export default {
     ]),
 
     update(){
+     let companyTypes = sessionStorage.getItem("companyType");
+     this.isCompany = companyTypes == 4?true:false;
      this.dataModel.projectArry = JSON.parse(sessionStorage.getItem("selectArry"));
     },
 

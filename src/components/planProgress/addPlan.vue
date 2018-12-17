@@ -3,13 +3,13 @@
 <div class="addPlan">
   <el-form :model="dataModel" :rules="rules" ref="addPlan" label-width="135px">
     <el-form-item label="项目名称：" prop="projectIdArry">
-        <el-cascader :options="listOrgInfoList" v-model="dataModel.projectIdArry" :props="defaultProp" size="small" placeholder="请选择项目" style="width:100%;" @change="changeProject" clearable></el-cascader>
+        <el-cascader :options="listOrgInfoList" v-model="dataModel.projectIdArry" :props="defaultProp" size="small" placeholder="请选择项目" style="width:100%;" @change="changeProject" clearable :disabled="iscompany"></el-cascader>
     </el-form-item>
     <el-form-item label="选择统计项：" prop="visualStatId">
          <el-select  size="small" v-model="dataModel.visualStatId" placeholder="请选择形象进度统计项"  style="width:100%;"  @change="changeVisu" clearable>
             <el-option v-for="(item,index) in statisList" :label="item.statName" :value="item.id" :key="index" ></el-option>
         </el-select>
-        <span v-if="visualStatObject !== null" style="color:rgb(64, 158, 255);">分部分项：{{visualStatObject.subName}}</span>
+        <span v-if="visualStatObject !== null" style="color:rgb(64, 158, 255);">分部分项：{{visualStatObject.subFullName}}</span>
         <div  v-if="visualStatObject !== null" class="visualSpan">
         <span>预算工程量：{{visualStatObject.budgetTotal}}m³</span>
         <span>已完成工程量：{{visualStatObject.finishBudget}}m³</span>
@@ -65,6 +65,7 @@ export default {
         projectIdArry:[]
       },
       visualStatObject:null,
+      iscompany:false,
       statisList:[],
       //数据校验
       rules: {
@@ -160,10 +161,12 @@ export default {
      反显数据
      */
     async update(data) {
+      let companyTypes = sessionStorage.getItem("companyType");
       if(!data.id){
         this.dataModel.projectIdArry = JSON.parse(sessionStorage.getItem("selectArry"));
         this.changeProject();
-      }
+        this.iscompany = companyTypes == 4?true:false;
+      }  
       this.getlistOrgInfoList();
       this.getUserList();
       if (!data.id) return;
@@ -173,7 +176,7 @@ export default {
        //查找项目父级
       let object = this.$common.initTree(this.listOrgInfoList);
       this.dataModel.projectIdArry  = this.$common.findParent(object, this.dataModel.projectId);
-
+      this.iscompany = true;
     },
 
     //重置方法
