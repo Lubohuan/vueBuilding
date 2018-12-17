@@ -7,7 +7,7 @@
         </el-form-item>
         <el-form-item label="计划级别：" prop="level">
             <el-select size="small" v-model="dataModel.level" placeholder="请选择计划级别：" clearable style="width:100%;">
-                <el-option v-for="(item,index) in trackList" :label="item.name" :value="item.number" :key="index"></el-option>
+                <el-option v-for="(item,index) in planTypeList" :label="item.name" :value="item.number" :key="index"></el-option>
             </el-select>
             <span class="warnInfo" v-if="dataModel.level==1">一级进度计划匹配项目总工期，项目下只可建立一个，请确认后再添加！</span>
         </el-form-item>
@@ -41,20 +41,6 @@ export default {
         label: "name",
         value: "id"
       },
-       trackList:[
-        {
-          name:'一级进度计划',
-          number:1
-        },
-         {
-          name:'二级进度计划',
-          number:2
-        },
-         {
-          name:'三级进度计划',
-          number:3
-        }
-        ],
       //数据校验
       rules: {
         projectArry:   [{ required: true, message:  "请选择项目", trigger: "blur" }],
@@ -66,7 +52,8 @@ export default {
   },
   computed: {
     ...mapState([
-     'listOrgInfoList'
+     'listOrgInfoList',
+     'planTypeList'
     ]),
   },
   methods: {

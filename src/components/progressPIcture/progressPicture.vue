@@ -44,7 +44,31 @@ export default {
       iframeWin: {},
       showGantt:true,
       projectArry:[],
-      projectId:''
+      projectId:'',
+      trackList:[
+         {
+          name:'二级进度计划',
+          number:2
+        },
+         {
+          name:'三级进度计划',
+          number:3
+        }
+      ],
+      trackLists:[
+            {
+                name:'一级进度计划',
+                number:1
+            },
+            {
+                name:'二级进度计划',
+                number:2
+            },
+            {
+                name:'三级进度计划',
+                number:3
+            }
+      ]
     };
   },
   methods: {
@@ -97,6 +121,14 @@ export default {
     //打开新增计划弹框
     addPlan(){
       this.dialog.addProgress = true;
+      // var levelList = this.projectTypeList.map(v=>v.id);
+      // if(this.projectTypeList&&this.projectTypeList.length>=1){    
+      //   this.$store.dispatch('getplanTypeList',this.trackList);
+      // }else{
+      //   this.$store.dispatch('getplanTypeList',this.trackLists);
+      // }
+     
+      
     },
 
     gaBack(){

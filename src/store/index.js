@@ -13,7 +13,21 @@ export default new Vuex.Store({
     listOrgInfoList:[],//项目列表
     userList:[],//用户列表
     userToken:'',//用户token
-    orangType:''
+    orangType:'',
+    planTypeList:[
+      {
+        name:'一级进度计划',
+        number:1
+      },
+       {
+        name:'二级进度计划',
+        number:2
+      },
+      {
+        name:'三级进度计划',
+        number:3
+      }
+    ]
   },
   mutations: {
     updatestatisList(state, data) {
@@ -40,8 +54,8 @@ export default new Vuex.Store({
     updateUserToken(state, data) {
         state.userToken = data;
     },
-    updateOrangType(state, data) {
-      state.orangType = data;
+    updateplanTypeList(state, data) {
+      state.planTypeList = data;
   }
   },
   actions: {
@@ -142,9 +156,9 @@ export default new Vuex.Store({
     getUserToken({commit},data) {
           commit('updateUserToken', data)
     },
-    //更新公司类别
-    getOrangeType({commit},data) {
-      commit('updateOrangType', data)
+    //更新级别列表
+    getplanTypeList({commit},data){
+      commit('updateplanTypeList', data)
     }
   }
 })

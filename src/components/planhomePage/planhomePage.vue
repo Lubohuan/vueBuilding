@@ -151,7 +151,31 @@ export default {
         projectList:[],
         projeInfo:{},
         projectProgress:0,
-        projectInfoObj:{}
+        projectInfoObj:{},
+        trackList:[
+            {
+            name:'二级进度计划',
+            number:2
+            },
+            {
+            name:'三级进度计划',
+            number:3
+            }
+        ],
+        trackLists:[
+            {
+                name:'一级进度计划',
+                number:1
+            },
+            {
+                name:'二级进度计划',
+                number:2
+            },
+            {
+                name:'三级进度计划',
+                number:3
+            }
+        ],
     };
   },
   methods:{
@@ -164,6 +188,11 @@ export default {
       },
       addPlan(){
         this.dialog.addImportPlan = true;
+        // if(this.projectList&&this.projectList.length>=1){    
+        //     this.$store.dispatch('getplanTypeList',this.trackList);
+        // }else{
+        //     this.$store.dispatch('getplanTypeList',this.trackLists);
+        // }
       },
       openProgressPicture(data){
           this.$router.push({
@@ -186,7 +215,10 @@ export default {
         projectInfo(lastProject)
         .then(response => {
           this.projeInfo = response.body;
-          this.projectProgress = this.getProcess(this.projeInfo.contractStartTime,this.projeInfo.contractEndTime);
+          if(this.this.projeInfo.contractStartTime){
+               this.projectProgress = this.getProcess(this.projeInfo.contractStartTime,this.projeInfo.contractEndTime);
+          }
+         
 
         })
         .catch(error => {});
