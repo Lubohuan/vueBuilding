@@ -201,7 +201,8 @@
                      <span style="font-size: 16px;">施工记录</span>
                  </el-col>
                  <el-col :span="12" style="text-align:right;">
-                     <i class="el-icon-sort iconStyle"></i>
+                      <el-button icon="el-icon-sort iconStyle" circle @click="orderList"></el-button>
+                     <!-- <i class="el-icon-sort iconStyle" @click="orderList"></i> -->
                  </el-col>  
             </el-row>
             <el-tabs v-model="activeName11" @tab-click="handleClick">
@@ -353,7 +354,8 @@ export default {
           remainingTimeDisplay: false,
           fullscreenToggle: true  //全屏按钮
         }
-    }
+    },
+    order:null
     };
   },
   methods: {
@@ -379,6 +381,12 @@ export default {
       console.log()
       this.refreshLists();
 
+    },
+
+    //施工记录排序
+    orderList(){
+        this.order = this.order == null?1:null;
+        this.refreshLists();
     },
 
     //切换顶部tab标签
@@ -512,7 +520,8 @@ export default {
        getConstructLogPage({
            current:this.current,
            offset:this.offset,
-           planId:this.palnId
+           planId:this.palnId,
+           orderBy:this.order
        })
         .then(response => {
           this.tableDatas = response.body.rows;
