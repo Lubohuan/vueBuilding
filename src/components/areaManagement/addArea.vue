@@ -3,7 +3,7 @@
 <div class="addArea">
   <el-form :model="dataModel" :rules="rules" ref="addArea" label-width="120px">
         <el-form-item label="项目名称：" prop="projectArry">
-           <el-cascader :options="listOrgInfoList" v-model="dataModel.projectArry" :props="defaultProp" size="small" placeholder="请选择项目" style="width:100%;" :disabled="isUp"></el-cascader>
+           <el-cascader :options="listOrgInfoList" v-model="dataModel.projectArry" :props="defaultProp" size="small" placeholder="请选择项目" style="width:100%;" :disabled="isCompany"></el-cascader>
         </el-form-item>
         <el-form-item label="区域名称：" prop="regionName">
           <el-input v-model="dataModel.regionName" size="small"></el-input>
@@ -52,7 +52,7 @@ export default {
         projectArry:   [{ required: true, message:  "请选择项目", trigger: "blur" }]
       
       },
-      isUp:false,
+      isCompany:false
     };
   },
   computed: {
@@ -70,11 +70,13 @@ export default {
      */
     async update(data) {
       await this.getlistOrgInfoList();
+      let companyTypes = sessionStorage.getItem("companyType");
       if(!data.id){
         this.dataModel.projectArry = JSON.parse(sessionStorage.getItem("selectArry"));
+        this.isCompany = companyTypes == 4?true:false;
       }
       if (!data.id) return;
-      this.isUp = true;
+      this.isCompany = true;
       this.dataModel.id = data.id;
       this.dataModel.regionName = data.regionName;
        //查找项目父级
