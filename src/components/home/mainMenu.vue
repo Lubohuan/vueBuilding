@@ -27,7 +27,7 @@
               </div>
             </div> -->
             <div class="n_menu_container">
-              <div  class="n_menu" v-if="hasPerm(some.code)" v-for="(some,index) in menuData" :key="some.id" @click="showChild(some.path,index)" :class="{ checkEdColor:changeList == index}">
+              <div  class="n_menu" v-for="(some,index) in menuDatas" :key="some.id" @click="showChild(some.path,index)" :class="{ checkEdColor:changeList == index}">
                 <div class="pre_icon"><img :src="some.icon" alt=""></div>
                 <div class="menu_text">{{some.text}}</div>
                 <!-- <div class="after_icon">
@@ -183,7 +183,8 @@ export default {
       },
       firstProject:[],
       secondTypeList:[],
-      changeList:0
+      changeList:0,
+      menuDatas:[]
     }
   },
   computed: {
@@ -276,7 +277,7 @@ export default {
         listPermissionCode({})
         .then(response => {
               if (response.code == "200") {
-                sessionStorage.setItem('companyPressCode', response.body);              
+                sessionStorage.setItem('companyPressCode', response.body);             
                 resolve();          
             } else {
               this.$message.error(response.msg);
@@ -360,6 +361,11 @@ export default {
     }
     await this.getUserInfo();
     await this.getUserPermission();
+    for(var i=0;i<this.menuData.length;i++){
+      if(this.hasPerm(this.menuData[i].code)){
+          this.menuDatas.push(this.menuData[i]);
+      }
+    }
     this.firstProject = this.projectArry;
     this.openDialodg();
   }
