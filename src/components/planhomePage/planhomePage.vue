@@ -21,7 +21,7 @@
               <div v-if="!projeInfo">项目名称：</div>
               <div v-else>项目名称：{{projeInfo.projectName}}</div>
               <div v-if="!projeInfo">合同工期：</div>
-              <div v-else>合同工期：{{projeInfo.contractStartTime}}-{{projeInfo.contractEndTime}}</div>
+              <div v-else>合同工期：{{$common.chDate1date(projeInfo.contractStartTime)}}-{{$common.chDate1date(projeInfo.contractEndTime)}}</div>
               <div class="Workproress"><span>工期进度：</span><el-progress style="width:60%;border:none;display: inline-block;" :stroke-width="13" :percentage="this.projectProgress"></el-progress></div>
               <div v-if="!projeInfo">项目经理：</div>
               <div v-else>项目经理：{{projeInfo.projectManager}}</div>
@@ -215,28 +215,15 @@ export default {
         projectInfo(lastProject)
         .then(response => {
           this.projeInfo = response.body;
-          if(this.this.projeInfo.contractStartTime){
-               this.projectProgress = this.getProcess(this.projeInfo.contractStartTime,this.projeInfo.contractEndTime);
+          if(this.projeInfo.contractStartTime){
+               this.projectProgress = this.$common.getProcess(this.projeInfo.contractStartTime,this.projeInfo.contractEndTime);
+               
           }
-         
-
         })
         .catch(error => {});
         
       },
-    //将年月日格式转换为yyyy-mm-dd格式
-    chDate2date (str) {
-        return str.replace(/[年|月]/g, '-').replace('日', '')
-    },
-    //计算今天占日期范围的百分比 start为开始日期   end为结束日期
-    getProcess (start, end) {
-    start = +new Date(start)
-    end = +new Date(end)
-    let now = +new Date
-    let rs = (now - start) / (end - start)
-    rs = rs > 1 ? 1 : rs.toFixed(2)
-    return rs * 100
-    }
+   
   },
  created() {
      this.refreshList();

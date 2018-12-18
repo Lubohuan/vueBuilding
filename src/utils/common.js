@@ -1,5 +1,5 @@
 export default {
-
+  //导出表格
   formatJson(filterVal, jsonData) {
     　　　　return jsonData.map(v => filterVal.map(j => v[j]))
     　　},
@@ -12,6 +12,27 @@ export default {
     　　　　　　const data = this.formatJson(filterVal, list);
     　　　　　　export_json_to_excel(tHeader, data, excelName);
     　　　　})
+  },
+
+  //将yyyy-mm-dd格式转换为年月日格式
+  chDate1date(str){
+    var reg =/(\d{4})\-(\d{2})\-(\d{2})/;
+    return str.replace(reg,"$1年$2月$3日")
+  },
+
+  //将年月日格式转换为yyyy-mm-dd格式
+  chDate2date (str) {
+    return str.replace(/[年|月]/g, '-').replace('日', '')
+  },
+
+  //计算今天占日期范围的百分比 start为开始日期   end为结束日期
+  getProcess (start, end) {
+    start = +new Date(start)
+    end = +new Date(end)
+    let now = +new Date
+    let rs = (now - start) / (end - start)
+    rs = rs > 1 ? 1 : rs.toFixed(2)
+    return rs * 100
   },
 
    //转换日期

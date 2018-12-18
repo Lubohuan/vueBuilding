@@ -15,7 +15,7 @@
           <el-date-picker value-format="yyyy-MM-dd" size="small" v-model="dataModel.setvalue" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" style="width:100%;"></el-date-picker>
         </el-form-item>
         <el-form-item label="项目概括：" prop="projectOverview">
-          <el-input type="textarea" size="small" v-model="dataModel.projectOverview"></el-input>
+          <el-input type="textarea"  :autosize="{minRows:2}"  v-model="dataModel.projectOverview"></el-input>
         </el-form-item>
         <!-- <el-form-item label="项目简称：" prop="typeName">
           <el-input size="small" v-model="dataModel.typeName"></el-input>
@@ -94,6 +94,7 @@ export default {
     return {
       dataModel: {
         setvalue:'',
+        projectId:'',
         projectName:"",
         projectManager:"",
         projectOverview:"",
@@ -103,9 +104,9 @@ export default {
       radio: "",
       //数据校验
       rules: {
-        typeName: [
-          { required: true, message: "请输入类别名称", trigger: "blur" }
-        ]
+        projectName: [{ required: true, message: "请输入项目名称", trigger: "blur" }],
+        projectManager: [{ required: true, message: "请输入项目经理名称", trigger: "blur" }],
+        setvalue:[{ required: true, message: "请选择合同工期", trigger: "blur" }]
       }
     };
   },
@@ -113,7 +114,7 @@ export default {
 
     update(data){
       // this.dataModel = {...data};
-      this.dataModel.id = data.projectId;
+      this.dataModel.projectId = data.projectId;
       var dateArr = [];
       dateArr.push(data.contractStartTime);
       dateArr.push(data.contractEndTime);
@@ -127,7 +128,7 @@ export default {
       const editPlan = this.$refs["editPlan"];
       editPlan.resetFields();
       this.dataModel.setvalue = '';
-      // this.dataModel.id = "";
+      this.dataModel.projectId = "";
       this.dataModel.projectName ="";
       this.dataModel.projectManager ="";
       this.dataModel.projectOverview ="";
