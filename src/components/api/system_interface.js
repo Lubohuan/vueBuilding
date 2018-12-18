@@ -4,16 +4,16 @@ import uploadRequest from '@/utils/uploadRequest';
 // const baseUrl = 'http://172.16.7.157:8080/bimScheduleService';
 import axios from 'axios'
 //请求url
-const baseUrl = 'http://autobuild.jiguantong.com/bimScheduleService';
-//const baseUrl = 'http://spm.jiguantong.com/bimScheduleService';
+//const baseUrl = 'http://autobuild.jiguantong.com/bimScheduleService';
+const baseUrl = 'http://spm.jiguantong.com/bimScheduleService';
 
 //云盘接口
-const alphaUrl = 'http://autobuild.jiguantong.com';
-// const alphaUrl = 'http://spm.jiguantong.com';
+//const alphaUrl = 'http://autobuild.jiguantong.com';
+const alphaUrl = 'http://spm.jiguantong.com';
 
 //退出url
-const spmUrl = 'http://autobuild.1357.cn/Admin/Login/public_login';
-//const spmUrl = 'http://spm.1357.cn/Admin/Login/public_login';
+//const spmUrl = 'http://autobuild.1357.cn/Admin/Login/public_login';
+const spmUrl = 'http://spm.1357.cn/Admin/Login/public_login';
 
 export function loginUrl(){
   return spmUrl;
