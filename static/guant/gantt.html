@@ -227,11 +227,11 @@ function saveGanttOnServer() {
   // var prof = new Profiler("saveServerSide");
   // prof.reset();
 
-  if (ge.deletedTaskIds.length>0) {
-    if (!confirm("TASK_THAT_WILL_BE_REMOVED\n"+ge.deletedTaskIds.length)) {
-      return;
-    }
-  }
+  // if (ge.deletedTaskIds.length>0) {
+  //   if (!confirm("TASK_THAT_WILL_BE_REMOVED\n"+ge.deletedTaskIds.length)) {
+  //     return;
+  //   }
+  // }
 
   $.ajax( baseUrl+"/v1/projectPlan/gantt/"+projectId, {
     contentType: 'application/json;charset=UTF-8',
