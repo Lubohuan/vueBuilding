@@ -28,7 +28,7 @@
 
 <script>
 import addProgress from"../progressPIcture/addProgress.vue";
-import { plans,mpp } from "../api/system_interface.js";
+import { plans,mpp,baseinUrl } from "../api/system_interface.js";
 export default {
   name: "progressPicture",
   components:{
@@ -164,7 +164,8 @@ export default {
 
   },
   created() {
-    console.log(this.$route.params.planID,"ss");
+    // console.log(this.$route.params.planID,"ss");
+    baseinUrl();
     this.awaitList();
     if(sessionStorage.getItem("selectArry")){
       this.projectArry = JSON.parse(sessionStorage.getItem("selectArry"));

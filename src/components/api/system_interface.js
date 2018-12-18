@@ -17,6 +17,7 @@ export function loginUrl(){
 }
 
 export function baseinUrl(){
+  sessionStorage.setItem("baseUrl",baseUrl);
   return baseUrl;
 }
 // 查询统计单位接口

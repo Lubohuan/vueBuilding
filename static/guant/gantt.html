@@ -75,13 +75,13 @@
 </form>
 
 <script type="text/javascript">
-var baseUrl = 'http://autobuild.jiguantong.com/bimScheduleService';
-//var baseUrl = 'http://spm.jiguantong.com/bimScheduleService';
+var baseUrl;
+var basee;
 var ge;
 var rets;
 var project;
 var projectId;
-
+var orinigId;
 // 接受父页面发来的信息
 window.addEventListener("message", function(event){
       var data = event.data;
@@ -90,7 +90,10 @@ window.addEventListener("message", function(event){
 });
 
 $(function(){
+      baseUrl = sessionStorage.getItem("baseUrl");
       projectId = sessionStorage.getItem("planID");
+      var projectArry = JSON.parse(sessionStorage.getItem("selectArry"));
+      orinigId = projectArry[projectArry.length - 1];
       var canWrite=true; //this is the default for test purposes
       // here starts gantt initialization
       ge = new GanttMaster();
@@ -217,9 +220,9 @@ function saveGanttOnServer() {
   delete prj.roles;
   for(var i = 0;i<prj.tasks.length;i++){
     prj.tasks[i].num = i + 1;
-    prj.tasks[i].planId = "132452525432374382";
-    prj.tasks[i].orgId = "220";
-    prj.tasks[i].regionId = "131616240539009134";
+    prj.tasks[i].planId = projectId;
+    prj.tasks[i].orgId = orinigId;
+    prj.tasks[i].regionId = "";
   };
   // var prof = new Profiler("saveServerSide");
   // prof.reset();
@@ -238,21 +241,21 @@ function saveGanttOnServer() {
     },
     type:"PUT",
     success: function(response) {
-      if (response.ok) {
+      if (response.code == 200) {
         // prof.stop();
-        if (response.project) {
-          ge.loadProject(response.project); //must reload as "tmp_" ids are now the good ones
-        } else {
-          ge.reset();
-        }
+        // if (response.project) {
+        //   ge.loadProject(response.project); //must reload as "tmp_" ids are now the good ones
+        // } else {
+        //   ge.reset();
+        // }
+        alert('保存成功');
       } else {
         var errMsg="Errors saving project\n";
-        if (response.message) {
-          errMsg=errMsg+response.message+"\n";
+        if (response.msg) {
+          errMsg=errMsg+response.msg+"\n";
         }
-
-        if (response.errorMessages.length) {
-          errMsg += response.errorMessages.join("\n");
+        if (response.msg.length) {
+          errMsg += response.msg.join("\n");
         }
 
         alert(errMsg);
