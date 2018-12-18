@@ -27,7 +27,7 @@
               </div>
             </div> -->
             <div class="n_menu_container">
-              <div class="n_menu" v-for="some in menuData" :key="some.id" @click="showChild(some.path)">
+              <div class="n_menu" v-for="(some,index) in menuData" :key="some.id" @click="showChild(some.path,index)" :class="{ checkEdColor:changeList == index}">
                 <div class="pre_icon"><img :src="some.icon" alt=""></div>
                 <div class="menu_text">{{some.text}}</div>
                 <!-- <div class="after_icon">
@@ -182,7 +182,8 @@ export default {
         checkList:false
       },
       firstProject:[],
-      secondTypeList:[]
+      secondTypeList:[],
+      changeList:0
     }
   },
   computed: {
@@ -208,8 +209,9 @@ export default {
           this.main_menu = 'active'
         }
       },
-      showChild:function(path){
+      showChild:function(path,index){
           path && this.$router.replace(path);
+          this.changeList = index;
       },
       error:function(){
 
@@ -380,4 +382,13 @@ export default {
 </script>
 <style lang="scss" scoped>
   @import "mainMenu.scss";
+  .checkEdColor{
+    background-color: #191616;
+  }
 </style>
+<style lang="scss">
+   .el-cascader-menu{
+    height: 250px !important;
+  }
+</style>
+

@@ -1,12 +1,15 @@
 import request from '@/utils/request';
 import uploadRequest from '@/utils/uploadRequest';
 // const baseUrl = 'http://172.16.7.135:8081';
-// const baseUrl = 'http://172.16.7.135';
 // const baseUrl = 'http://172.16.7.157:8080/bimScheduleService';
 import axios from 'axios'
 //请求url
 const baseUrl = 'http://autobuild.jiguantong.com/bimScheduleService';
 //const baseUrl = 'http://spm.jiguantong.com/bimScheduleService';
+
+//云盘接口
+const alphaUrl = 'http://autobuild.jiguantong.com';
+// const alphaUrl = 'http://spm.jiguantong.com';
 
 //退出url
 const spmUrl = 'http://autobuild.1357.cn/Admin/Login/public_login';
@@ -551,7 +554,7 @@ export function getDownloadUrl(data) {
 // 云盘上传文件接口
 async function getPolicy(ext) {
   return new Promise(function(resolve, reject) {
-      resolve(axios.get('http://autobuild.jiguantong.com/alphaPortalService/cloud/policy',{ ext }));
+      resolve(axios.get( alphaUrl + '/alphaPortalService/cloud/policy',{ ext }));
   });
 }
 

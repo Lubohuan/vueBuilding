@@ -19,6 +19,14 @@
       background: white;
       // color: #409EFF;
     }
+    .el-tree-node.is-current.is-focusable>.el-tree-node__content{
+      background-color:#fff !important;
+      // .el-tree-node__label{
+      //     border:1px solid #338fe5;
+      //     border-radius:3px;
+      //     color:#338fe5;
+      // }
+  }
     .el-tree-node__content{
       padding-left: 20px !important;
     }
