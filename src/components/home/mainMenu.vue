@@ -27,7 +27,7 @@
               </div>
             </div> -->
             <div class="n_menu_container">
-              <div class="n_menu" v-for="(some,index) in menuData" :key="some.id" @click="showChild(some.path,index)" :class="{ checkEdColor:changeList == index}">
+              <div  class="n_menu" v-if="hasPerm(some.code)" v-for="(some,index) in menuData" :key="some.id" @click="showChild(some.path,index)" :class="{ checkEdColor:changeList == index}">
                 <div class="pre_icon"><img :src="some.icon" alt=""></div>
                 <div class="menu_text">{{some.text}}</div>
                 <!-- <div class="after_icon">
@@ -159,9 +159,9 @@ export default {
       main_menu:'',
       isScale:false,
       menuData:[
-        {id:'1',icon:require('../../assets/progressmenu.png'),text:'生产形象进度',path:'/home'},
-        {id:'2',icon:require('../../assets/planProgress.png'),text:'生产计划进度',path:'/home1'},
-        {id:'3',icon:require('../../assets/planProgress.png'),text:'BIM应用',path:'/bimHome'},
+        {id:'1',icon:require('../../assets/progressmenu.png'),text:'生产形象进度',path:'/home',code:'110000'},
+        {id:'2',icon:require('../../assets/planProgress.png'),text:'生产计划进度',path:'/home1',code:'120000'},
+        {id:'3',icon:require('../../assets/planProgress.png'),text:'BIM应用',path:'/bimHome',code:'130000'},
       ],
         defaultPropss:{
         children: "child",
@@ -271,19 +271,23 @@ export default {
       },
 
       //获取用户权限码
-      // getUserPermission(){
-      //    listPermissionCode({})
-      //   .then(response => {
-      //     if (response.code == "200") {
-      //       console.log(response.body,"response.body")            
-      //     } else {
-      //       this.$message.error(response.msg);
-      //     }
-      //   })
-      //   .catch(error => {
-      //     console.log(error);
-      //   });
-      // },
+      getUserPermission(){
+        return new Promise((resolve, reject) => {
+        listPermissionCode({})
+        .then(response => {
+              if (response.code == "200") {
+                sessionStorage.setItem('companyPressCode', response.body);              
+                resolve();          
+            } else {
+              this.$message.error(response.msg);
+            }
+          })
+          .catch(error => {
+            console.log(error);
+            reject();
+          });
+        })
+      },
 
       getSecondTypeLIst(data){
         this.secondTypeList = [];
@@ -321,24 +325,6 @@ export default {
             reject();
           });
         })
-        // getSessionInfo({})
-        // .then(response => {
-        //   if (response.code == "200") {
-
-        //     //获取父级id
-        //     let objects = this.$common.initTree(this.listOrgInfoList);
-        //     this.projectArry  = this.$common.findParent(objects,response.body.chOrgId);
-
-        //     // 存储值：将对象转换为Json字符串
-        //     sessionStorage.setItem('selectArry', JSON.stringify(this.projectArry));
-        //     sessionStorage.setItem('companyType', response.body.chOrgType);           
-        //   } else {
-        //     this.$message.error(response.msg);
-        //   }
-        // })
-        // .catch(error => {
-        //   console.log(error);
-        // });
       },
 
       // 打开弹框
@@ -361,20 +347,19 @@ export default {
       }
   },
   async created(){
-     //有token再更新userToken
+    //有token再更新userToken
     let url = window.location.href;
     if(url.indexOf("?")!=-1){
         this.$store.dispatch('getUserToken',this.getUrlParam('token'));
         sessionStorage.setItem("userToken",this.getUrlParam('token'));
-        console.log(this.getUrlParam('token'),"this.getUrlParam('token')");
     };
-
     await this.getlistOrgInfoList();
 
     if(sessionStorage.getItem("selectArry")){
       this.projectArry = JSON.parse(sessionStorage.getItem("selectArry"));
     }
     await this.getUserInfo();
+    await this.getUserPermission();
     this.firstProject = this.projectArry;
     this.openDialodg();
   }
