@@ -23,7 +23,7 @@
       </template>
     </el-table-column>
   </el-table>
-  <el-pagination background v-if="total > 0"
+  <!-- <el-pagination background v-if="total > 0"
       class="pageStyle"
 			layout="prev, pager, next, sizes, total, jumper"
 			:page-sizes="[5, 10, 15, 20]"
@@ -33,7 +33,7 @@
 			@current-change="handleCurrentChange"
 			@size-change="handleSizeChange"
 			>
-	</el-pagination>
+	</el-pagination> -->
    <!--新增/修改类别-->
     <el-dialog :title="dataObj.id?'修改工程类别':'新增工程类别'" :center="true" :visible.sync="dialog.addEng" width="800px" @open="$nextTick(()=>$refs['addEng'].update(dataObj))" @close="$refs['addEng'].reset()">
       <addEng ref="addEng" @refreshData="refreshList" @close="dialog.addEng = false" ></addEng>
@@ -141,12 +141,12 @@ export default {
     //查询
     refreshList() {
       listProjectType({
-        current: this.currentPage,
-        offset: this.pagesize,
+        // current: this.currentPage,
+        // offset: this.pagesize,
       })
         .then(response => {
-          this.tableData = response.body.rows;
-          this.total = Number(response.body.page.rows);
+          this.tableData = response.body;
+          // this.total = Number(response.body.page.rows);
         })
         .catch(error => {
           console.log(error);

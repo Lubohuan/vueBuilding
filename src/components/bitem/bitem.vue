@@ -18,7 +18,7 @@
   <el-row>
    <el-col :span="24">
       <el-button size="mini" type="primary" @click="addSub">+ 添加分部</el-button>
-      <el-button size="mini" type="success">导出excel</el-button>
+      <el-button size="mini" type="success" @click="exportExcel">导出excel</el-button>
    </el-col>
    <!-- <el-col :span="19" class="bitem_btn1">
       <el-input v-model="subName" size="small" placeholder="搜索" clearable @change="resarchBitem" style="width:200px;"></el-input>
@@ -32,7 +32,7 @@
       <div>操作</div>
     </el-col>
   </el-row>
-  <el-tree :data="tableData" show-checkbox node-key="id" :default-expand-all="false" :expand-on-click-node="false" :props="defaultProps">
+  <el-tree :data="tableData" show-checkbox node-key="id" :default-expand-all="false" :expand-on-click-node="false" :props="defaultProps"  @check-change="handleSelectionChange">
       <span class="custom-tree-node" slot-scope="{ node, data }">
         <span style="margin-left:100px;font-size:12px;">{{ data.subName }}</span>
         <span>
@@ -72,7 +72,7 @@
 import categoryManagement from "../bitem/categoryManagement.vue";
 import addSubChid from "../bitem/addSubChid.vue";
 import addSubsection from "../bitem/addSubsection.vue";
-import { getSubsectionPage, deleteSubsectionById,listProjectType } from "../api/system_interface.js";
+import { getSubsectionPage, deleteSubsectionById,listProjectType,exportSubsectionByIds,baseinUrl } from "../api/system_interface.js";
 export default {
   name: "bitem",
   components: {
@@ -109,9 +109,42 @@ export default {
     },
 
     //选择框
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
-      console.log(this.multipleSelection, "this.multipleSelection");
+    handleSelectionChange(data, checked, indeterminate) {
+      if(checked==true){
+        this.multipleSelection.push(data); 
+      }
+      else{
+         let index = this.multipleSelection.indexOf(data);
+         if (index > -1) {
+              this.multipleSelection.splice(index, 1);
+          }
+      }
+      console.log(this.multipleSelection, checked, indeterminate, "this.multipleSelection");
+    },
+
+    //导出excel
+    exportExcel(){
+      // let object = this.$common.initTree(this.multipleSelection).map(v=>v.id);
+      // console.log(object);   
+       if(this.multipleSelection.length < 1){
+          this.$message.success("请选择要导出的类别!");
+          return
+       }
+       this.$axios
+        .post( baseinUrl() + "/web/export/exportSubsectionByIds", this.multipleSelection,{responseType: 'arraybuffer'})
+        .then(response => {
+           if(response.code == "200"){
+              let blob = new Blob([response.data], {type: "application/vnd.ms-excel"}); 
+              let objectUrl = URL.createObjectURL(blob);
+              window.location.href = objectUrl; 
+           }else{
+             this.$message.error('系统异常');
+           }
+          
+        })
+        .catch(error => {
+          this.$message.error(error);
+        });
     },
 
     //删除操作
@@ -203,7 +236,7 @@ export default {
        return new Promise((resolve, reject) => {
         listProjectType({})
         .then(response => {
-          this.projectTypeList = response.body.rows;
+          this.projectTypeList = response.body;
           resolve()
         })
         .catch(error => {
