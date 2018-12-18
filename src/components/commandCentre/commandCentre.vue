@@ -80,14 +80,14 @@
                        <img v-if="imageData === 'up'" src="../../assets/u514.png" alt="" class="upDownImage" >
                        <img v-else src="../../assets/u518.png" alt="" class="upDownImage downImage">
                     </span> -->
-                    <!-- <span>23%</span> -->
+                    <span>0%</span>
                 </span>
                  <span class="footerRight">周环比：
                    <!-- <span>
                        <img v-if="imageData === 'up'" src="../../assets/u514.png" alt="" class="upDownImage" >
                        <img v-else src="../../assets/u518.png" alt="" class="upDownImage downImage">
                     </span> -->
-                   <!-- <span>2.23%</span> -->
+                   <span>0%</span>
                 </span>
                 </div>
             </div>
@@ -100,19 +100,19 @@
                 <el-progress v-else :stroke-width="18" :percentage="$common.fomatPrecent(panTable.contractProRate)"></el-progress>
                 </div>
             <div class="cardFooters">
-              <span>同周比：
+              <span>本月工期损失：
                    <!-- <span>
                        <img v-if="imageData === 'up'" src="../../assets/u514.png" alt="" class="upDownImage" >
                        <img v-else src="../../assets/u518.png" alt="" class="upDownImage downImage">
                     </span> -->
-                   <!-- <span>2.23%</span> -->
+                   <span>0天</span>
                 </span>
-                <span class="footerRight">日环比:
+                <span class="footerRight">累计损失:
                     <!-- <span>
                        <img v-if="imageData === 'up'" src="../../assets/u514.png" alt="" class="upDownImage" >
                        <img v-else src="../../assets/u518.png" alt="" class="upDownImage downImage">
                     </span> -->
-                    <!-- <span>23%</span> -->
+                    <span>0天</span>
                 </span>
             </div>
       </div>
