@@ -18,7 +18,7 @@
   <el-row>
    <el-col :span="24">
       <el-button size="mini" type="primary" @click="addSub">+ 添加分部</el-button>
-      <el-button size="mini" type="success" @click="exportExcel">导出excel</el-button>
+      <!-- <el-button size="mini" type="success" @click="exportExcel">导出excel</el-button> -->
    </el-col>
    <!-- <el-col :span="19" class="bitem_btn1">
       <el-input v-model="subName" size="small" placeholder="搜索" clearable @change="resarchBitem" style="width:200px;"></el-input>
@@ -130,21 +130,42 @@ export default {
           this.$message.success("请选择要导出的类别!");
           return
        }
-       this.$axios
-        .post( baseinUrl() + "/web/export/exportSubsectionByIds", this.multipleSelection,{responseType: 'arraybuffer'})
-        .then(response => {
-           if(response.code == "200"){
+        this.$axios({
+          method:"post",
+          url:baseinUrl() + "/web/export/exportSubsectionByIds",
+          data:this.multipleSelection,
+          headers:{
+              'token':sessionStorage.getItem("userToken")
+          },
+          responseType: 'arraybuffer'
+        }).then(response => {
+          //  if(response.code == "200"){
               let blob = new Blob([response.data], {type: "application/vnd.ms-excel"}); 
               let objectUrl = URL.createObjectURL(blob);
               window.location.href = objectUrl; 
-           }else{
-             this.$message.error('系统异常');
-           }
-          
+          //  }else{
+          //    this.$message.error('系统异常');
+          //  }
         })
         .catch(error => {
           this.$message.error(error);
         });
+
+      //  this.$axios
+      //   .post( baseinUrl() + "/web/export/exportSubsectionByIds", this.multipleSelection,{responseType: 'arraybuffer'})
+      //   .then(response => {
+      //      if(response.code == "200"){
+      //         let blob = new Blob([response.data], {type: "application/vnd.ms-excel"}); 
+      //         let objectUrl = URL.createObjectURL(blob);
+      //         window.location.href = objectUrl; 
+      //      }else{
+      //        this.$message.error('系统异常');
+      //      }
+          
+      //   })
+      //   .catch(error => {
+      //     this.$message.error(error);
+      //   });
     },
 
     //删除操作
