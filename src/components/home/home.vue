@@ -152,7 +152,7 @@ export default {
     // if(sessionStorage.getItem("orgType")){
     //   this.orangeType = sessionStorage.getItem("orgType");
     // }
-    if(this.companyType == 2||this.companyType== 3||this.companyType== 1){
+    if(this.companyType == 2||this.companyType== 3){
        this.$router.push({path:'/enterpriseCommandCenter'});
     }
     if(this.companyType == 4){
