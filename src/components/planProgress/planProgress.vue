@@ -42,7 +42,7 @@
        </template>
     </el-table-column>
     <el-table-column prop="planName"  label="计划任务名称" align="center" min-width="200"></el-table-column>
-    <el-table-column prop="regionFullName"  label="施工区段" align="center" min-width="200"></el-table-column>
+    <el-table-column prop="regionFullName"  label="施工区段" align="center" min-width="100" :show-overflow-tooltip="true"></el-table-column>
     <el-table-column prop="planEndTime"  label="完成时间" align="center" min-width="90"></el-table-column>
     <el-table-column prop="budgetTotal"  label="总工程量" align="center"></el-table-column>
     <el-table-column prop="notFinishBudget"  label="总剩余工程量" align="center" min-width="100"></el-table-column>
@@ -61,12 +61,12 @@
                 <el-progress v-else-if="scope.row.state == 3" :stroke-width="13"  :percentage="$common.fomatPrecent(scope.row.planFinishRate)" color="#3296fa"></el-progress>
         </template>
     </el-table-column>
-    <el-table-column label="操作" align="center" min-width="160">
+    <el-table-column label="操作" align="center" min-width="230">
       <template slot-scope="scope">
          <el-button size="mini" type="primary" @click="editPlan(scope.row)">编辑</el-button>
          <el-button v-if="scope.row.isForbid == 0" size="mini" type="warning" @click="stopClick(scope)">禁用</el-button>
          <el-button v-if="scope.row.isForbid == 1" size="mini" type="success" @click="startClick(scope)">启用</el-button>
-         <el-button v-if="scope.row.isForbid == null" size="mini" type="danger" @click="deleteClick(scope)">删除</el-button>
+         <el-button v-if="scope.row.isForbid == 1" size="mini" type="danger" @click="deleteClick(scope)">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
