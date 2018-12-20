@@ -9,7 +9,7 @@
   <el-row>
    <el-col :span="10">
       <el-button size="mini" type="primary" @click="addProgress">+新增形象进度统计项</el-button>
-      <el-button size="mini" type="success">导出excel</el-button>
+      <el-button size="mini" type="success" @click="exportExcel">导出excel</el-button>
    </el-col>
    <!-- <el-col :span="14" class="graphicProgress_btn1">
       <el-cascader placeholder="请选择施工区段" :options="reginList" v-model="regionId" :props="defaultProps" size="small" @change="reserchList" clearable></el-cascader>
@@ -77,7 +77,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import {getVisualStatItemPage,startVisualStatItem,stopVisualStatItems,deleteVisualStatItem} from "../api/system_interface.js";
+import {getVisualStatItemPage,startVisualStatItem,stopVisualStatItems,deleteVisualStatItem,baseinUrl} from "../api/system_interface.js";
 import addProgress from "../graphicProgress/addProgress.vue";
 export default {
   name: "graphicProgress",
@@ -126,6 +126,34 @@ export default {
     rowClass({ row, rowIndex}) {
       console.log(rowIndex) //表头行标号为0
       return 'text-align:center'
+    },
+    
+     //导出表格
+    exportExcel(){
+       if(this.multipleSelection.length < 1){
+          this.$message.success("请选择要导出的类别!");
+          return
+       }
+        this.$axios({
+          method:"post",
+          url:baseinUrl() + "/web/export/exportVisualStatItemByIds",
+          data:this.multipleSelection,
+          headers:{
+              'token':sessionStorage.getItem("userToken")
+          },
+          responseType: 'arraybuffer'
+        }).then(response => {
+          //  if(response.code == "200"){
+              let blob = new Blob([response.data], {type: "application/vnd.ms-excel"}); 
+              let objectUrl = URL.createObjectURL(blob);
+              window.location.href = objectUrl; 
+          //  }else{
+          //    this.$message.error('系统异常');
+          //  }
+        })
+        .catch(error => {
+          this.$message.error(error);
+        });
     },
 
     //选择项变化

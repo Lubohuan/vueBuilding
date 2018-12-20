@@ -86,7 +86,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { getVisualStatMonitorPage } from "../api/system_interface.js";
+import { getVisualStatMonitorPage,baseinUrl } from "../api/system_interface.js";
 export default {
   name: "lookProgress",
   data() {
@@ -152,6 +152,36 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
       console.log(this.multipleSelection);
+    },
+
+    //导出excel
+    exportExcel(){
+      // let object = this.$common.initTree(this.multipleSelection).map(v=>v.id);
+      // this.$common.export2Excel(this.title,this.key,this.multipleSelection,this.excelName);
+       if(this.multipleSelection.length < 1){
+          this.$message.success("请选择要导出的内容!");
+          return
+       }
+        this.$axios({
+          method:"post",
+          url:baseinUrl() + "/web/export/exportVisualReviewByIds",
+          data:this.multipleSelection,
+          headers:{
+              'token':sessionStorage.getItem("userToken")
+          },
+          responseType: 'arraybuffer'
+        }).then(response => {
+          //  if(response.code == "200"){
+              let blob = new Blob([response.data], {type: "application/vnd.ms-excel"}); 
+              let objectUrl = URL.createObjectURL(blob);
+              window.location.href = objectUrl; 
+          //  }else{
+          //    this.$message.error('系统异常');
+          //  }
+        })
+        .catch(error => {
+          this.$message.error(error);
+        });
     },
 
     //页码变化
@@ -255,8 +285,11 @@ export default {
     },
   },
   created(){
+     let companyTypes = sessionStorage.getItem("companyType");
+    if(companyTypes==2||companyTypes==3||companyTypes==4){
+      this.refreshList();
+    }
     this.getReginList();
-    this.refreshList();
     this.Month(-2);
     this.getlistOrgInfoList();
   }

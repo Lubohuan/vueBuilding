@@ -3,13 +3,13 @@
 <div class="addProgress">
   <el-form :model="dataModel" :rules="rules" ref="addProgress" label-width="150px">
     <el-form-item label="项目名称：" prop="projectIdArry">
-       <el-cascader :options="listOrgInfoList" v-model="dataModel.projectIdArry" :props="defaultPropss" size="small" placeholder="请选择项目" style="width:100%;" :disabled="isUps"></el-cascader>
+       <el-cascader :options="listOrgInfoList" v-model="dataModel.projectIdArry" :props="defaultPropss" size="small" placeholder="请选择项目" style="width:100%;" :disabled="isUps" @change="changeCheckProgress"></el-cascader>
     </el-form-item>
     <el-form-item label="施工区域" prop="regionIdArry" >
          <el-cascader ref="checkRegion" change-on-select :options="reginList" v-model="dataModel.regionIdArry" :props="defaultProps" size="small" style="width:100%;" :disabled="isUp" @change="changeCheckRegion"></el-cascader>
     </el-form-item>
     <el-form-item label="选择分部分项：" prop="subIdArry">
-        <el-cascader ref="checkBitem"  change-on-select :options="bitemList" v-model="dataModel.subIdArry" :props="defaultProp" size="small" style="width:100%;" :disabled="isUp" @change="changeCheckBitem"></el-cascader>
+        <el-cascader ref="checkBitem"  change-on-select :options="bitemList" v-model="dataModel.subIdArry" :props="defaultProp" size="small" style="width:100%;" :disabled="isUp"  @change="changeCheckBitem"></el-cascader>
     </el-form-item>
      <el-form-item label="形象进度统计项：" prop="statName">
         <el-input v-model="dataModel.statName" size="small"></el-input>
@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { addVisualStatItem,updateVisualStatItemById} from "../api/system_interface.js";
+import { addVisualStatItem,updateVisualStatItemById,listRegion} from "../api/system_interface.js";
 import { mapState, mapActions } from 'vuex'
 export default {
   name: "addProgress",
@@ -99,11 +99,12 @@ export default {
       isUps:false,
       checkReginLabel:'',
       checkBitemLabel:'',
+      checkdProgress:'',
+      reginList:[{regionName:"暂无数据",id:'0',disabled: true}]
     };
   },
   computed: {
     ...mapState([
-     'reginList',
      'bitemList',
      'planList',
      'listOrgInfoList'
@@ -111,11 +112,32 @@ export default {
   },
   methods: {
     ...mapActions([
-        'getReginList',
         'getSubsectionList',
         'getUnitList',
         'getlistOrgInfoList'
     ]),
+
+    //根据选择的项目查询施工区段
+    changeCheckProgress(){
+      return new Promise((resolve, reject) => {
+        this.reginList = [];
+        this.checkdProgress =  this.dataModel.projectIdArry[this.dataModel.projectIdArry.length - 1];
+        listRegion({projectId:this.checkdProgress,})
+          .then(response => {
+            if(response.body.length>1){
+              this.reginList = response.body;
+            }else{
+              this.reginList = [{regionName:"暂无数据",id:'0',disabled: true}]
+            }         
+            resolve()
+          })
+          .catch(error => {
+            console.log(error);
+            reject();
+          });
+      })
+    },
+
     changeCheckRegion(){   
       this.checkReginLabel = this.$refs["checkRegion"].currentLabels.join("/");
       this.dataModel.statName = this.checkReginLabel + '/' + this.checkBitemLabel;      
@@ -131,10 +153,15 @@ export default {
     async update(data) {
       let companyTypes = sessionStorage.getItem("companyType");
       if(!data.id){
-        this.dataModel.projectIdArry = JSON.parse(sessionStorage.getItem("selectArry"));
-        this.isUps = companyTypes == 4?true:false;
-      }
-      this.getReginList();
+        //项目层级自动回填项目并且不能修改
+        if(companyTypes == 4){
+           this.dataModel.projectIdArry = JSON.parse(sessionStorage.getItem("selectArry"));
+           this.changeCheckProgress();
+        }else{
+          this.dataModel.projectIdArry = [];
+        }
+        this.isUps = companyTypes == 4?true:false;     
+      }      
       await this.getSubsectionList();
       this.getUnitList();
       this.getlistOrgInfoList();
@@ -142,9 +169,11 @@ export default {
       this.dataModel ={...data};
       this.isUp = true;
       this.isUps = true;
+
       //查找项目父级
       let object = this.$common.initTree(this.listOrgInfoList);
       this.dataModel.projectIdArry  = this.$common.findParent(object,data.projectId);
+      await this.changeCheckProgress();
 
       //查找地区父级
       let objects = this.$common.initTree(this.reginList);
@@ -153,6 +182,7 @@ export default {
       //查找分部分项父级
       let objectss = this.$common.initTree(this.bitemList);
       this.dataModel.subIdArry  = this.$common.findParents(objectss,data.subId);
+  
       // console.log(this.dataModel.subIdArry,'this.dataModel.subIdArry ');
     },
 

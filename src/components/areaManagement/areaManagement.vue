@@ -6,7 +6,7 @@
     <el-breadcrumb-item>施工区段管理</el-breadcrumb-item>
     </el-breadcrumb>
     <el-button size="mini" type="primary" @click="addClick">+ 添加区段</el-button>
-    <el-button size="mini" type="success">导出excel</el-button>
+    <el-button size="mini" type="success" @click="exportExcel">导出excel</el-button>
     <el-row class="tableRow">
     <el-col :span="15">
       <el-cascader :show-all-levels="false" :options="listOrgInfoList" v-model="projectId" :props="defaultPropss" size="small" placeholder="请选择项目" clearable></el-cascader>
@@ -46,7 +46,7 @@
       <span>操作</span>
     </el-col>
   </el-row>
-  <el-tree :data="tableData" show-checkbox node-key="id" :default-expand-all="false" :expand-on-click-node="false" :props="defaultProps" style="overflow:auto;" :indent="5">
+  <el-tree :data="tableData" ref="tree" :default-checked-keys="resourceCheckedKey" show-checkbox node-key="id" :default-expand-all="false" :expand-on-click-node="false" :props="defaultProps" style="overflow:auto;" :indent="5" @check-change="handleSelectionChange">
     <span class="custom-tree-node" slot-scope="{ node, data }" :style="'margin-left:'+ node.level*(-8.8) + 'px'">
     <el-row style="width:100%;" :style="'margin-left:'+ (30 + node.level*2.1) + 'px'">
     <el-col :span="2" class="tableCol">
@@ -105,7 +105,7 @@
 </template>
 <script>
 import { mapState, mapActions } from 'vuex';
-import { listRegion, deleteRegionById } from "../api/system_interface.js";
+import { listRegion, deleteRegionById,baseinUrl } from "../api/system_interface.js";
 import addArea from "../areaManagement/addArea.vue";
 import addAreaChild from "../areaManagement/addAreaChild.vue";
 export default {
@@ -123,6 +123,7 @@ export default {
       regionId: [],
       regionIds:null,
       projectIds:null,
+      resourceCheckedKey: [],
       regionObject: {},
       dialog: {
         addArea: false,
@@ -156,9 +157,46 @@ export default {
       'getlistOrgInfoList'
     ]),
 
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
-      console.log(this.multipleSelection, "this.multipleSelection");
+    //选择框
+    handleSelectionChange(data, checked, indeterminate) {
+      if(checked==true){
+        this.multipleSelection.push(data); 
+      }
+      else{
+         let index = this.multipleSelection.indexOf(data);
+         if (index > -1) {
+              this.multipleSelection.splice(index, 1);
+          }
+      }
+      console.log(this.multipleSelection, checked, indeterminate, "this.multipleSelection");
+    },
+
+      //导出表格
+    exportExcel(){
+       if(this.multipleSelection.length < 1){
+          this.$message.success("请选择要导出的类别!");
+          return
+       }
+        this.$axios({
+          method:"post",
+          url:baseinUrl() + "/web/export/exportRegionByIds",
+          data:this.multipleSelection,
+          headers:{
+              'token':sessionStorage.getItem("userToken")
+          },
+          responseType: 'arraybuffer'
+        }).then(response => {
+          //  if(response.code == "200"){
+              let blob = new Blob([response.data], {type: "application/vnd.ms-excel"}); 
+              let objectUrl = URL.createObjectURL(blob);
+              window.location.href = objectUrl; 
+          //  }else{
+          //    this.$message.error('系统异常');
+          //  }
+        })
+        .catch(error => {
+          this.$message.error(error);
+        });
     },
 
     //删除区段
@@ -210,8 +248,6 @@ export default {
     //查询
     refreshList() {
       listRegion({
-        current:  this.currentPage,
-        offset:   this.pagesize,
         projectId:this.projectIds,
         regionId: this.regionIds
       })
@@ -241,6 +277,7 @@ export default {
        this.projectId = [];
        this.regionIds = "";
        this.projectIds = "";
+       this.$refs.tree.setCheckedKeys(this.tableData);
     }
   },
   created() {

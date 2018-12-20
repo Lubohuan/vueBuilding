@@ -18,7 +18,7 @@
   <el-row>
    <el-col :span="24">
       <el-button size="mini" type="primary" @click="addSub">+ 添加分部</el-button>
-      <!-- <el-button size="mini" type="success" @click="exportExcel">导出excel</el-button> -->
+      <el-button size="mini" type="success" @click="exportExcel">导出excel</el-button>
    </el-col>
    <!-- <el-col :span="19" class="bitem_btn1">
       <el-input v-model="subName" size="small" placeholder="搜索" clearable @change="resarchBitem" style="width:200px;"></el-input>

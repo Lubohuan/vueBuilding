@@ -163,8 +163,12 @@ export default {
     async update(data) {
       let companyTypes = sessionStorage.getItem("companyType");
       if(!data.id){
-        this.dataModel.projectIdArry = JSON.parse(sessionStorage.getItem("selectArry"));
-        this.changeProject();
+        if(companyTypes == 4){
+           this.dataModel.projectIdArry = JSON.parse(sessionStorage.getItem("selectArry"));
+           this.changeProject();
+        }else{
+          this.dataModel.projectIdArry = [];
+        }
         this.iscompany = companyTypes == 4?true:false;
       }  
       this.getlistOrgInfoList();

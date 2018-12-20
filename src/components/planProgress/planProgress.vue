@@ -9,7 +9,7 @@
   <el-row>
    <el-col :span="10">
       <el-button size="mini" type="primary" @click="addPlan">+ 编制计划</el-button>
-      <el-button size="mini" type="success">导出excel</el-button>
+      <el-button size="mini" type="success" @click="exportExcel">导出excel</el-button>
    </el-col>
    <!-- <el-col :span="14" class="planProgress_btn1">
      <el-date-picker size="small" v-model="valueData" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
@@ -92,7 +92,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import {getConstructPlanPage,startConstructPlan,stopVisualStatItem,deleteConstructPlanById} from "../api/system_interface.js";
+import {getConstructPlanPage,startConstructPlan,stopVisualStatItem,deleteConstructPlanById,baseinUrl} from "../api/system_interface.js";
 import addPlan from "../planProgress/addPlan.vue";
 export default {
   name: "planProgress",
@@ -162,6 +162,36 @@ export default {
     //选择项变化
     handleSelectionChange(val) {
       this.multipleSelection = val;
+    },
+
+    //导出excel
+    exportExcel(){
+      // let object = this.$common.initTree(this.multipleSelection).map(v=>v.id);
+      // console.log(object);   
+       if(this.multipleSelection.length < 1){
+          this.$message.success("请选择要导出的内容!");
+          return
+       }
+        this.$axios({
+          method:"post",
+          url:baseinUrl() + "/web/export/exportVisualPlanByIds",
+          data:this.multipleSelection,
+          headers:{
+              'token':sessionStorage.getItem("userToken")
+          },
+          responseType: 'arraybuffer'
+        }).then(response => {
+          //  if(response.code == "200"){
+              let blob = new Blob([response.data], {type: "application/vnd.ms-excel"}); 
+              let objectUrl = URL.createObjectURL(blob);
+              window.location.href = objectUrl; 
+          //  }else{
+          //    this.$message.error('系统异常');
+          //  }
+        })
+        .catch(error => {
+          this.$message.error(error);
+        });
     },
 
     //删除方法
