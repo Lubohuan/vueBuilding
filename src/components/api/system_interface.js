@@ -8,6 +8,8 @@ const domain = 'http://autobuild.';
 
 //请求url
 const baseUrl = domain + 'jiguantong.com/bimScheduleService';
+// const baseUrl = 'http://172.16.7.157:8080/bimScheduleService';
+
 
 //云盘接口
 const alphaUrl = domain + 'jiguantong.com';
@@ -487,7 +489,7 @@ export function listProjectOutputWarning(data) {
 export function deleteVisualStatItem(data) {
   return request({
     url: baseUrl + '/project/deleteVisualStatItem/' + data,
-    method: 'get'
+    method: 'delete'
   })
 }
 //查询项目信息
