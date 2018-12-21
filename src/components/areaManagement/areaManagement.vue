@@ -179,7 +179,7 @@ export default {
        }
         this.$axios({
           method:"post",
-          url:baseinUrl() + "/web/export/exportRegionByIds",
+          url:baseinUrl() + "/web/export/exportRegion",
           data:this.multipleSelection,
           headers:{
               'token':sessionStorage.getItem("userToken")

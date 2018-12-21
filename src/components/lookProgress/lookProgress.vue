@@ -164,7 +164,7 @@ export default {
        }
         this.$axios({
           method:"post",
-          url:baseinUrl() + "/web/export/exportVisualReviewByIds",
+          url:baseinUrl() + "/web/export/exportVisualReview",
           data:this.multipleSelection,
           headers:{
               'token':sessionStorage.getItem("userToken")

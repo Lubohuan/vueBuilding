@@ -132,7 +132,7 @@ export default {
        }
         this.$axios({
           method:"post",
-          url:baseinUrl() + "/web/export/exportSubsectionByIds",
+          url:baseinUrl() + "/web/export/exportSubsection",
           data:this.multipleSelection,
           headers:{
               'token':sessionStorage.getItem("userToken")

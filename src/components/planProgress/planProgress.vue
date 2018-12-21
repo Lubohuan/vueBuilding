@@ -166,15 +166,13 @@ export default {
 
     //导出excel
     exportExcel(){
-      // let object = this.$common.initTree(this.multipleSelection).map(v=>v.id);
-      // console.log(object);   
        if(this.multipleSelection.length < 1){
           this.$message.success("请选择要导出的内容!");
           return
        }
         this.$axios({
           method:"post",
-          url:baseinUrl() + "/web/export/exportVisualPlanByIds",
+          url:baseinUrl() + "/web/export/exportVisualPlan",
           data:this.multipleSelection,
           headers:{
               'token':sessionStorage.getItem("userToken")
