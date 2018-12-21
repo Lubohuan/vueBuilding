@@ -21,7 +21,7 @@
               <div v-if="!projeInfo">项目名称：</div>
               <div v-else>项目名称：{{projeInfo.projectName}}</div>
               <div v-if="!projeInfo">合同工期：</div>
-              <div v-else>合同工期：{{$common.chDate1date(projeInfo.contractStartTime)}}-{{$common.chDate1date(projeInfo.contractEndTime)}}</div>
+              <div v-else-if="projeInfo.contractStartTime">合同工期：{{$common.chDate1date(projeInfo.contractStartTime)}}-{{$common.chDate1date(projeInfo.contractEndTime)}}</div>
               <div class="Workproress"><span>工期进度：</span><el-progress style="width:60%;border:none;display: inline-block;" :stroke-width="13" :percentage="this.projectProgress"></el-progress></div>
               <div v-if="!projeInfo">项目经理：</div>
               <div v-else>项目经理：{{projeInfo.projectManager}}</div>
