@@ -1,6 +1,6 @@
 <template>
 <!--计划任务甘特图-->
-<div class="progressPicture" style="height:100%;">
+<div class="progressPicture" style="height:100%;" ref="gantPicture">
       <el-breadcrumb separator-class="el-icon-arrow-right" class="breadTitle">
         <el-breadcrumb-item :to="{ path: '/' }">生产形象进度  </el-breadcrumb-item>
         <el-breadcrumb-item>形象进度管理</el-breadcrumb-item>
@@ -11,6 +11,7 @@
       <el-upload accept=".mpp" style="display:inline-block;vertical-align: top;" action="" :http-request="uploadImg" :on-success="uploadImgSuccess" :on-remove="handleRemove">
         <el-button size="small" type="success">导入计划</el-button>
       </el-upload>
+      <el-button size="small" type="primary" @click="createPicture">生成缩略图</el-button>
 
       <el-col :span="24" style="margin-top:10px;">
         <el-tabs v-model="projectType" type="card" @tab-click="handleClick">
@@ -29,6 +30,7 @@
 <script>
 import addProgress from"../progressPIcture/addProgress.vue";
 import { plans,mpp,baseinUrl } from "../api/system_interface.js";
+import html2canvas from 'html2canvas';
 export default {
   name: "progressPicture",
   components:{
@@ -72,6 +74,18 @@ export default {
     };
   },
   methods: {
+    //生成缩略图
+    createPicture(){
+      html2canvas(this.$refs.gantPicture).then(canvas => { 
+                //  this.$refs.gantPicture.append(canvas);  
+                 let link = document.createElement('a');
+                 link.href = canvas.toDataURL();
+                 link.setAttribute('download', '缩略图.png');
+                 link.style.display = 'none';
+                 document.body.appendChild(link);
+                 link.click();
+            });
+    },
 
     uploadImg (f) {
          let param = new FormData(); //创建form对象
