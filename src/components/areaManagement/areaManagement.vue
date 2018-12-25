@@ -158,7 +158,7 @@ export default {
     ]),
 
     //选择框
-    // handleSelectionChange(data, checked, indeterminate) {
+    handleSelectionChange(data, checked, indeterminate) {
     //   if(checked==true){
     //     this.multipleSelection.push(data); 
     //   }
@@ -169,7 +169,7 @@ export default {
     //       }
     //   }
     //   console.log(this.multipleSelection, checked, indeterminate, "this.multipleSelection");
-    // },
+    },
 
       //导出表格
     exportExcel(){
