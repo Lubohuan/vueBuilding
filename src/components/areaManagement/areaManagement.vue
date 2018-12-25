@@ -158,21 +158,22 @@ export default {
     ]),
 
     //选择框
-    handleSelectionChange(data, checked, indeterminate) {
-      if(checked==true){
-        this.multipleSelection.push(data); 
-      }
-      else{
-         let index = this.multipleSelection.indexOf(data);
-         if (index > -1) {
-              this.multipleSelection.splice(index, 1);
-          }
-      }
-      console.log(this.multipleSelection, checked, indeterminate, "this.multipleSelection");
-    },
+    // handleSelectionChange(data, checked, indeterminate) {
+    //   if(checked==true){
+    //     this.multipleSelection.push(data); 
+    //   }
+    //   else{
+    //      let index = this.multipleSelection.indexOf(data);
+    //      if (index > -1) {
+    //           this.multipleSelection.splice(index, 1);
+    //       }
+    //   }
+    //   console.log(this.multipleSelection, checked, indeterminate, "this.multipleSelection");
+    // },
 
       //导出表格
     exportExcel(){
+       this.multipleSelection = this.$refs.tree.getCheckedKeys();
        if(this.multipleSelection.length < 1){
           this.$message.success("请选择要导出的类别!");
           return

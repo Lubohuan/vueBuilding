@@ -32,7 +32,7 @@
       <div>操作</div>
     </el-col>
   </el-row>
-  <el-tree :data="tableData" show-checkbox node-key="id" :default-expand-all="false" :expand-on-click-node="false" :props="defaultProps"  @check-change="handleSelectionChange">
+  <el-tree ref="tree" :data="tableData" show-checkbox node-key="id" :default-expand-all="false" :expand-on-click-node="false" :props="defaultProps">
       <span class="custom-tree-node" slot-scope="{ node, data }">
         <span style="margin-left:100px;font-size:12px;">{{ data.subName }}</span>
         <span>
@@ -109,23 +109,25 @@ export default {
     },
 
     //选择框
-    handleSelectionChange(data, checked, indeterminate) {
-      if(checked==true){
-        this.multipleSelection.push(data); 
-      }
-      else{
-         let index = this.multipleSelection.indexOf(data);
-         if (index > -1) {
-              this.multipleSelection.splice(index, 1);
-          }
-      }
-      console.log(this.multipleSelection, checked, indeterminate, "this.multipleSelection");
-    },
+    // handleSelectionChange(data, checked, indeterminate) {
+    //   if(checked==true){
+    //     this.multipleSelection.push(data); 
+    //   }
+    //   else{
+    //      let index = this.multipleSelection.indexOf(data);
+    //      if (index > -1) {
+    //           this.multipleSelection.splice(index, 1);
+    //       }
+    //   }
+    //   console.log(this.multipleSelection, checked, indeterminate, "this.multipleSelection");
+    // },
 
     //导出excel
     exportExcel(){
       // let object = this.$common.initTree(this.multipleSelection).map(v=>v.id);
-      // console.log(object);   
+      // console.log(object); 
+      this.multipleSelection = this.$refs.tree.getCheckedKeys();
+      // console.log(this.$refs.tree.getCheckedKeys());  
        if(this.multipleSelection.length < 1){
           this.$message.success("请选择要导出的类别!");
           return
