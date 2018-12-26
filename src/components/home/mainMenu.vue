@@ -362,9 +362,9 @@ export default {
     await this.getUserInfo();
     await this.getUserPermission();
     for(var i=0;i<this.menuData.length;i++){
-      // if(this.hasPerm(this.menuData[i].code)){
+      if(this.hasPerm(this.menuData[i].code)){
           this.menuDatas.push(this.menuData[i]);
-      // }
+      }
     }
     this.firstProject = this.projectArry;
     this.openDialodg();
