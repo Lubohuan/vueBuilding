@@ -173,11 +173,20 @@ export default {
 
       //导出表格
     exportExcel(){
-       this.multipleSelection = this.$refs.tree.getCheckedKeys();
-       if(this.multipleSelection.length < 1){
+
+        let x = this.$refs.tree.getCheckedKeys();
+        for(var i=0;i<x.length;i++){
+              if(this.$refs.tree.getNode(x[i]).parent.data.id){
+                x.push(this.$refs.tree.getNode(x[i]).parent.data.id);
+              }
+        }
+        let y = new Set(x);
+        this.multipleSelection = [...y];
+
+        if(this.multipleSelection.length < 1){
           this.$message.success("请选择要导出的类别!");
           return
-       }
+        }
         this.$axios({
           method:"post",
           url:baseinUrl() + "/web/export/exportRegion",

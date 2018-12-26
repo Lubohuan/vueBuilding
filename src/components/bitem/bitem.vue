@@ -108,26 +108,20 @@ export default {
       this.refreshList();
     },
 
-    //选择框
-    // handleSelectionChange(data, checked, indeterminate) {
-    //   if(checked==true){
-    //     this.multipleSelection.push(data); 
-    //   }
-    //   else{
-    //      let index = this.multipleSelection.indexOf(data);
-    //      if (index > -1) {
-    //           this.multipleSelection.splice(index, 1);
-    //       }
-    //   }
-    //   console.log(this.multipleSelection, checked, indeterminate, "this.multipleSelection");
-    // },
-
     //导出excel
     exportExcel(){
       // let object = this.$common.initTree(this.multipleSelection).map(v=>v.id);
-      // console.log(object); 
-      this.multipleSelection = this.$refs.tree.getCheckedKeys();
-      // console.log(this.$refs.tree.getCheckedKeys());  
+      // this.multipleSelection = this.$refs.tree.getCheckedKeys();
+
+        let x = this.$refs.tree.getCheckedKeys();
+        for(var i=0;i<x.length;i++){
+              if(this.$refs.tree.getNode(x[i]).parent.data.id){
+                x.push(this.$refs.tree.getNode(x[i]).parent.data.id);
+              }
+        }
+        let y = new Set(x);
+        this.multipleSelection = [...y];
+
        if(this.multipleSelection.length < 1){
           this.$message.success("请选择要导出的类别!");
           return
