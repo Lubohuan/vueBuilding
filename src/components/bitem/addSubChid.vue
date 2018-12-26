@@ -11,7 +11,7 @@
   </el-form>
   <div class="clickBtn">
     <el-button @click="close"  size="small">取消</el-button>
-    <el-button @click="commit" size="small" type="primary">保存</el-button>
+    <el-button @click="commit" size="small" type="primary" :disabled="isSuccess">保存</el-button>
   </div>
 </div>
 </template>
@@ -33,7 +33,8 @@ export default {
       //数据校验
       rules: {
         subName: [{ required: true, message: "分部分项名称", trigger: "blur" }]
-      }
+      },
+      isSuccess:false
     };
   },
   methods: {
@@ -48,6 +49,7 @@ export default {
     reset() {
       const addSubChid = this.$refs["addSubChid"];
       addSubChid.resetFields();
+      this.isSuccess = false;
     },
     //关闭弹框
     close() {
@@ -60,6 +62,7 @@ export default {
         if (!valid) {
           return;
         }
+        this.isSuccess = true;
         addSubsection(this.dataModel)
           .then(response => {
             if (response.code == "200") {
@@ -71,7 +74,7 @@ export default {
             }
           })
           .catch(error => {
-            // this.$message.error(error);
+            this.isSuccess = false;
           });
       });
     }

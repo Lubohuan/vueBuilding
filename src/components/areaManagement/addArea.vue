@@ -23,7 +23,7 @@
   </el-form>
   <div class="clickBtn">
     <el-button @click="close"  size="small">取消</el-button>
-    <el-button @click="commit" size="small" type="primary">保存</el-button>
+    <el-button @click="commit" size="small" type="primary" :disabled="isSuccess">保存</el-button>
   </div>
 </div>
 </template>
@@ -52,7 +52,8 @@ export default {
         projectArry:   [{ required: true, message:  "请选择项目", trigger: "blur" }]
       
       },
-      isCompany:false
+      isCompany:false,
+      isSuccess:false
     };
   },
   computed: {
@@ -93,6 +94,7 @@ export default {
       this.dataModel.id = null;
       this.dataModel.projectArry = [];
       this.isUp = false;
+      this.isSuccess = false;  
     },
 
     //关闭弹框
@@ -107,6 +109,7 @@ export default {
         if (!valid) {
           return;
         }
+        this.isSuccess = true;
         this.dataModel.projectId = this.dataModel.projectArry[this.dataModel.projectArry.length - 1];
         //根据是否有数据传入决定执行新增还是修改
         const result = this.dataModel.id ? this.updateRegion() : this.addRegion();
@@ -121,11 +124,13 @@ export default {
             this.$message.success("添加成功!");
             this.close();
             this.$emit("refreshData");
-          } else {
+          }
+          else{
             this.$message.error(response.msg);
           }
         })
         .catch(error => {
+          this.isSuccess = false;
           return false;
         });
       return true;
@@ -144,7 +149,7 @@ export default {
           }
         })
         .catch(error => {
-          console.log(error);
+          this.isSuccess = false;
           return false;
         });
       return true;

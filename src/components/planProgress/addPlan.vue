@@ -41,7 +41,7 @@
   </el-form>
   <div class="clickBtn">
     <el-button @click="close"  size="small">取消</el-button>
-    <el-button @click="commit" size="small" type="primary">保存</el-button>
+    <el-button @click="commit" size="small" type="primary" :disabled="isSuccess">保存</el-button>
   </div>
 </div>
 </template>
@@ -66,6 +66,7 @@ export default {
       },
       visualStatObject:null,
       iscompany:false,
+      isSuccess:false,
       statisList:[],
       //数据校验
       rules: {
@@ -190,6 +191,7 @@ export default {
       this.dataModel = {};
       this.dataModel.id = null;
       this.visualStatObject = null;
+      this.isSuccess = false;
     },
 
     //关闭弹框
@@ -204,6 +206,7 @@ export default {
         if (!valid) {
           return;
         }
+        this.isSuccess = true;
         this.dataModel.planStartTime = this.$common.fomatDate(this.dataModel.planStartTime);
         this.dataModel.planEndTime = this.$common.fomatDate(this.dataModel.planEndTime);
         this.dataModel.projectId = this.dataModel.projectIdArry[this.dataModel.projectIdArry.length - 1];
@@ -225,6 +228,7 @@ export default {
           }
         })
         .catch(error => {
+          this.isSuccess = false;
           return false;
         });
       return true;
@@ -243,6 +247,7 @@ export default {
           }
         })
         .catch(error => {
+          this.isSuccess = false;
           return false;
         });
       return true;

@@ -20,7 +20,7 @@
   </el-form>
   <div class="clickBtn">
     <el-button @click="close"  size="small">取消</el-button>
-    <el-button @click="commit" size="small" type="primary">保存</el-button>
+    <el-button @click="commit" size="small" type="primary" :disabled="isSuccess">保存</el-button>
   </div>
 </div>
 </template>
@@ -40,7 +40,8 @@ export default {
       rules: {
         code: [{ required: true, message: "请输入编码", trigger: "blur" }],
         name: [{ required: true, message: "请输入名称", trigger: "blur" }]
-      }
+      },
+      isSuccess:false
     };
   },
   methods: {
@@ -63,6 +64,7 @@ export default {
       this.dataModel.code = "";
       this.dataModel.desp = "";
       this.dataModel.id = null;
+      this.isSuccess = false;
     },
     //关闭弹框
     close() {
@@ -75,6 +77,7 @@ export default {
         if (!valid) {
           return;
         }
+        this.isSuccess = true;
         this.$emit("close");
         this.reset();
       });

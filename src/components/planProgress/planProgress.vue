@@ -139,7 +139,7 @@ export default {
         children: "child",
         label: "name",
         value: "id"
-      },
+      }
     };
   },
   computed: {

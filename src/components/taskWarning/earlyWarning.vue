@@ -22,7 +22,7 @@
   </el-form>
   <div class="clickBtn">
     <el-button @click="close"  size="small">取消</el-button>
-    <el-button @click="commit" size="small" type="primary">保存</el-button>
+    <el-button @click="commit" size="small" type="primary" :disabled="isSuccess">保存</el-button>
   </div>
 </div>
 </template>
@@ -49,6 +49,7 @@ export default {
           { required: true, message: "请选择解除预警时间", trigger: "blur" }
         ]
       },
+      isSuccess:false
     };
   },
   methods: {
@@ -66,6 +67,7 @@ export default {
       this.relieveReasons.id = "";
       this.relieveReasons.relieveReason = "";
       this.relieveReasons.planEndTime = "";
+      this.isSuccess = false;
     },
 
     //关闭弹框
@@ -91,6 +93,7 @@ export default {
         if (!valid) {
           return;
         }
+        this.isSuccess = true;
         relieveTaskWarning(this.relieveReasons)
         .then(response => {
           if (response.code == "200") {
@@ -102,6 +105,7 @@ export default {
           }
         })
         .catch(error => {
+           this.isSuccess = false;
            console.log(error);
         });
       });

@@ -14,7 +14,7 @@
   </el-form>
   <div class="clickBtn">
     <el-button @click="close"  size="small">取消</el-button>
-    <el-button @click="commit" size="small" type="primary">保存</el-button>
+    <el-button @click="commit" size="small" type="primary" :disabled="isSuccess">保存</el-button>
   </div>
 </div>
 </template>
@@ -36,7 +36,8 @@ export default {
           { required: true, message: "请输入督办内容", trigger: "blur" }
         ]
       },
-      radio: ""
+      radio: "",
+      isSuccess:false
     };
   },
   methods: {
@@ -51,6 +52,7 @@ export default {
       const AddStat = this.$refs["supervise"];
       AddStat.resetFields();
       this.superviseModel= {};
+      this.isSuccess = false;
     },
 
     //关闭弹框
@@ -65,6 +67,7 @@ export default {
         if (!valid) {
           return;
         }
+        this.isSuccess = true;
         urgeTask(this.superviseModel)
           .then(response => {
             if (response.code == "200") {
@@ -75,7 +78,7 @@ export default {
             }
           })
           .catch(error => {
-            console.log(error);
+            this.isSuccess = false;
           });
       });
     }

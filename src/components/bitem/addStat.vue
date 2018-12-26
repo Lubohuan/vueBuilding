@@ -8,7 +8,7 @@
   </el-form>
   <div class="clickBtn">
     <el-button @click="close"  size="small">取消</el-button>
-    <el-button @click="commit" size="small" type="primary">保存</el-button>
+    <el-button @click="commit" size="small" type="primary" :disabled="isSuccess">保存</el-button>
   </div>
 </div>
 </template>
@@ -29,7 +29,8 @@ export default {
         unitName: [
           { required: true, message: "请输入单位名称", trigger: "blur" }
         ]
-      }
+      },
+      isSuccess:false
     };
   },
   methods: {
@@ -50,6 +51,7 @@ export default {
       this.dataModel.unitName = "";
       this.dataModel.id = "";
       this.dataModel.remark = "";
+      this.isSuccess = false;
     },
     //关闭弹框
     close() {
@@ -63,6 +65,7 @@ export default {
         if (!valid) {
           return;
         }
+        this.isSuccess = true;
         //根据是否有数据传入决定执行新增还是修改
         const result = this.dataModel.id ? this.updateStat() : this.addStat();
       });
@@ -80,7 +83,7 @@ export default {
           }
         })
         .catch(error => {
-          // this.$message.error(error);
+          this.isSuccess = false;
           return false;
         });
       return true;
@@ -112,7 +115,7 @@ export default {
           }
         })
         .catch(error => {
-          // this.$message.error(error);
+          this.isSuccess = false;
           return false;
         });
       return true;

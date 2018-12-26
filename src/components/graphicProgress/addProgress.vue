@@ -43,7 +43,7 @@
   </el-form>
   <div class="clickBtn">
     <el-button @click="close"  size="small">取消</el-button>
-    <el-button @click="commit" size="small" type="primary">保存</el-button>
+    <el-button @click="commit" size="small" type="primary" :disabled="isSuccess">保存</el-button>
   </div>
 </div>
 </template>
@@ -97,6 +97,7 @@ export default {
       },
       isUp:false,
       isUps:false,
+      isSuccess:false,
       checkReginLabel:'',
       checkBitemLabel:'',
       checkdProgress:'',
@@ -201,6 +202,7 @@ export default {
       this.dataModel.regionIdArry = [];
       this.dataModel.subIdArry = [];
       this.dataModel.projectIdArry = [];
+      this.isSuccess = false;
     },
 
     //关闭弹框
@@ -216,6 +218,7 @@ export default {
         if (!valid) {
           return;
         }
+         this.isSuccess = true;
          this.dataModel.regionId  = this.dataModel.regionIdArry[this.dataModel.regionIdArry.length - 1];
          this.dataModel.subId     = this.dataModel.subIdArry[this.dataModel.subIdArry.length - 1];
          this.dataModel.projectId = this.dataModel.projectIdArry[this.dataModel.projectIdArry.length - 1];
@@ -237,7 +240,7 @@ export default {
           }
         })
         .catch(error => {
-          this.$message.error(response.msg);
+          this.isSuccess = false;
           return false;
         });
       return true;
@@ -256,7 +259,7 @@ export default {
           }
         })
         .catch(error => {
-          this.$message.error(error);
+          this.isSuccess = false;
           return false;
         });
       return true;

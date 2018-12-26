@@ -11,7 +11,7 @@
   </el-form>
   <div class="clickBtn">
     <el-button @click="close"  size="small">取消</el-button>
-    <el-button @click="commit" size="small" type="primary">保存</el-button>
+    <el-button @click="commit" size="small" type="primary" :disabled="isSuccess">保存</el-button>
   </div>
 </div>
 </template>
@@ -33,7 +33,8 @@ export default {
         subName: [
           { required: true, message: "分部分项名称", trigger: "blur" }
         ]
-      }
+      },
+      isSuccess:false
     };
   },
   methods: {
@@ -55,6 +56,7 @@ export default {
       this.dataModel.remark = "";
       this.dataModel.sort = 1;
       this.dataModel.subName = "";
+      this.isSuccess = false;
     },
     //关闭弹框
     close() {
@@ -68,6 +70,7 @@ export default {
         if (!valid) {
           return;
         }
+        this.isSuccess = true;
         //根据是否有数据传入决定执行新增还是修改
         const result = this.dataModel.id ? this.updateSubsections() : this.addSubsections();
       });
@@ -85,7 +88,7 @@ export default {
           }
         })
         .catch(error => {
-          console.log(error);
+          this.isSuccess = false;
           return false;
         });
       return true;
@@ -103,7 +106,7 @@ export default {
           }
         })
         .catch(error => {
-          console.log(error);
+          this.isSuccess = false;
           return false;
         });
       return true;

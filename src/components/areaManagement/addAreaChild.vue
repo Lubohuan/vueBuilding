@@ -8,7 +8,7 @@
   </el-form>
   <div class="clickBtn">
     <el-button @click="close"  size="small">取消</el-button>
-    <el-button @click="commit" size="small" type="primary">保存</el-button>
+    <el-button @click="commit" size="small" type="primary" :disabled="isSuccess">保存</el-button>
   </div>
 </div>
 </template>
@@ -33,7 +33,8 @@ export default {
       //数据校验
       rules: {
         regionName:  [{ required: true, message: "请输入区域名称", trigger: "blur" }]      
-      }
+      },
+      isSuccess:false
     };
   },
   computed: {
@@ -64,6 +65,7 @@ export default {
       this.dataModel.parentId = null;
       this.dataModel.regionName = "";
       this.dataModel.projectId = null;
+      this.isSuccess = false;
     },
 
     //关闭弹框
@@ -78,6 +80,7 @@ export default {
         if (!valid) {
           return;
         }
+        this.isSuccess = true;
         addRegion(this.dataModel)
         .then(response => {
           if (response.code == "200") {
@@ -89,6 +92,7 @@ export default {
           }
         })
         .catch(error => {
+         this.isSuccess = false;
          console.log(error);
         });
 
