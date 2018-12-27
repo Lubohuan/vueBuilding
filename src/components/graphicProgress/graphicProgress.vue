@@ -70,7 +70,7 @@
 
    <!--新增/修改形象进度统计项-->
     <el-dialog :title="dataObj.id?'修改形象进度统计项':'新增形象进度统计项'" :center="true" :visible.sync="dialog.addProgress" width="700px" @open="$nextTick(()=>$refs['addProgress'].update(dataObj))" @close="$refs['addProgress'].reset()">
-      <addProgress  v-if="dialog.addProgress" ref="addProgress" @refreshData="refreshList"  @close="dialog.addProgress = false" ></addProgress>
+      <addProgress ref="addProgress" @refreshData="refreshList"  @close="dialog.addProgress = false" ></addProgress>
     </el-dialog>
   </div>
 </template>
