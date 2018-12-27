@@ -193,6 +193,7 @@ export default {
       this.dataModel.id = null;
       this.visualStatObject = null;
       this.isSuccess = false;
+      this.iscompany = false;
     },
 
     //关闭弹框

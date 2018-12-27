@@ -55,10 +55,10 @@
        </template> -->
        <template slot-scope="scope" style="text-align:left;">
                 <el-progress v-if="!scope.row.planFinishRate" :stroke-width="13"  :percentage="0"></el-progress>
-                <el-progress v-else-if="scope.row.state == 0" :stroke-width="13"  :percentage="$common.fomatPrecent(scope.row.planFinishRate)" color="#ff943e"></el-progress>
-                <el-progress v-else-if="scope.row.state == 1" :stroke-width="13"  :percentage="$common.fomatPrecent(scope.row.planFinishRate)" color="#15bc83"></el-progress>
-                <el-progress v-else-if="scope.row.state == 2" :stroke-width="13"  :percentage="$common.fomatPrecent(scope.row.planFinishRate)" color="#f25643"></el-progress>
-                <el-progress v-else-if="scope.row.state == 3" :stroke-width="13"  :percentage="$common.fomatPrecent(scope.row.planFinishRate)" color="#3296fa"></el-progress>
+                <el-progress v-else-if="scope.row.state == 0" :stroke-width="13"  :percentage="$common.fomatPrecent(Number(scope.row.planFinishRate))" color="#ff943e"></el-progress>
+                <el-progress v-else-if="scope.row.state == 1" :stroke-width="13"  :percentage="$common.fomatPrecent(Number(scope.row.planFinishRate))" color="#15bc83"></el-progress>
+                <el-progress v-else-if="scope.row.state == 2" :stroke-width="13"  :percentage="$common.fomatPrecent(Number(scope.row.planFinishRate))" color="#f25643"></el-progress>
+                <el-progress v-else-if="scope.row.state == 3" :stroke-width="13"  :percentage="$common.fomatPrecent(Number(scope.row.planFinishRate))" color="#3296fa"></el-progress>
         </template>
     </el-table-column>
     <el-table-column label="操作" align="center" min-width="230">
@@ -84,7 +84,7 @@
 
  <!--新增/修改进度计划-->
     <el-dialog  :title="dataObj.id?'修改形象进度计划':'新增形象进度计划'" :center="true" :visible.sync="dialog.addPlan" width="700px" @open="$nextTick(()=>$refs['addPlan'].update(dataObj))" @close="$refs['addPlan'].reset()">
-      <addPlan v-if="dialog.addPlan" ref="addPlan"  @refreshData="refreshList"  @close="dialog.addPlan = false" ></addPlan>
+      <addPlan  ref="addPlan"  @refreshData="refreshList"  @close="dialog.addPlan = false" ></addPlan>
     </el-dialog>
 
   </div>
