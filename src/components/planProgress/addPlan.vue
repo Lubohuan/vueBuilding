@@ -11,9 +11,9 @@
         </el-select>
         <span v-if="visualStatObject !== null" style="color:rgb(64, 158, 255);">分部分项：{{visualStatObject.subFullName}}</span>
         <div  v-if="visualStatObject !== null" class="visualSpan">
-        <span>预算工程量：{{visualStatObject.budgetTotal}}m³</span>
-        <span>已完成工程量：{{visualStatObject.finishBudget}}m³</span>
-        <span>剩余工程量：{{visualStatObject.budgetTotal - visualStatObject.finishBudget}}m³</span>
+        <span>预算工程量：{{visualStatObject.budgetTotal}}{{visualStatObject.unitName}}</span>
+        <span>已完成工程量：{{visualStatObject.finishBudget}}{{visualStatObject.unitName}}</span>
+        <span>剩余工程量：{{visualStatObject.budgetTotal - visualStatObject.finishBudget}}{{visualStatObject.unitName}}</span>
         </div> 
     </el-form-item>
     <el-form-item label="任务名称：" prop="planName">
@@ -294,6 +294,8 @@ export default {
 
     //切换项目查询形象进度统计项
     changeProject(){
+      this.dataModel.visualStatId = '';
+      this.visualStatObject = null;
       if(this.dataModel.projectIdArry.length >= 1){
          this.dataModel.projectId = this.dataModel.projectIdArry[this.dataModel.projectIdArry.length - 1];
          this.getVisitLIst(); 
