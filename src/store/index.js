@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {getVisualStatItemPage,listRegion,getUnitPage,getSubsectionPage,listOrgInfo,listUserInfo} from "../components/api/system_interface.js";
+import {getVisualStatItemPage,listRegion,getUnitPage,getSubsectionPage,listOrgInfo,listUserInfo,changelistChOrgInfo} from "../components/api/system_interface.js";
 Vue.use(Vuex)
 export default new Vuex.Store({
   strict: false, // 开发中启用严格模式
@@ -84,8 +84,6 @@ export default new Vuex.Store({
             else{
               commit('updatereginList', response.body)
             }  
-            resolve()
-          
           })
           .catch(error => {
             console.log(error);
@@ -152,6 +150,27 @@ export default new Vuex.Store({
         });
       })
     },
+
+     //根据切换的组织查询项目列表下拉框
+     changeListChOrgInfo({commit}) {
+      return new Promise((resolve, reject) => {
+        changelistChOrgInfo({})
+        .then(response => {
+          if(!response.body){
+            commit('updateprojectList', [])
+          }
+          else{
+            commit('updateprojectList', response.body)
+          }  
+          resolve()
+        })
+        .catch(error => {
+          console.log(error);
+          reject();
+        });
+      })
+    },
+
     //更新token
     getUserToken({commit},data) {
           commit('updateUserToken', data)

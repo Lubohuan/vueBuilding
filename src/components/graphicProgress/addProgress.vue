@@ -3,7 +3,7 @@
 <div class="addProgress">
   <el-form :model="dataModel" :rules="rules" ref="addProgress" label-width="150px">
     <el-form-item label="项目名称：" prop="projectIdArry">
-       <el-cascader :options="listOrgInfoList" v-model="dataModel.projectIdArry" :props="defaultPropss" size="small" placeholder="请选择项目" style="width:100%;" :disabled="isUps" @change="changeCheckProgress"></el-cascader>
+       <el-cascader :options="projectList" v-model="dataModel.projectIdArry" :props="defaultPropss" size="small" placeholder="请选择项目" style="width:100%;" :disabled="isUps" @change="changeCheckProgress"></el-cascader>
     </el-form-item>
     <el-form-item label="施工区域" prop="regionIdArry" >
          <el-cascader ref="checkRegion" change-on-select :options="reginList" v-model="dataModel.regionIdArry" :props="defaultProps" size="small" style="width:100%;" :disabled="isUp" @change="changeCheckRegion"></el-cascader>
@@ -20,10 +20,10 @@
         </el-select>      
     </el-form-item>
     <el-form-item label=" 预算工程量：" prop="budgetTotal">
-        <el-input v-model="dataModel.budgetTotal" size="small"></el-input>     
+        <el-input v-model="dataModel.budgetTotal" size="small" maxlength="9"></el-input>     
     </el-form-item>
     <el-form-item label="工程总产值(万元)：" prop="outputTotal" >
-        <el-input v-model="dataModel.outputTotal" size="small" :disabled="isUp"></el-input>
+        <el-input v-model="dataModel.outputTotal" size="small" maxlength="9" :disabled="isUp"></el-input>
     </el-form-item>
     <!-- <el-row>
           <el-col :span="17">
@@ -108,14 +108,14 @@ export default {
     ...mapState([
      'bitemList',
      'planList',
-     'listOrgInfoList'
+     'projectList'
     ]),
   },
   methods: {
     ...mapActions([
         'getSubsectionList',
         'getUnitList',
-        'getlistOrgInfoList'
+        'changeListChOrgInfo'
     ]),
 
     //根据选择的项目查询施工区段
@@ -165,20 +165,21 @@ export default {
       }      
       await this.getSubsectionList();
       this.getUnitList();
-      this.getlistOrgInfoList();
+      await this.changeListChOrgInfo();
       if (!data.id) return;
       this.dataModel ={...data};
       this.isUp = true;
       this.isUps = true;
 
       //查找项目父级
-      let object = this.$common.initTree(this.listOrgInfoList);
+      let object = this.$common.initTree(this.projectList);
       this.dataModel.projectIdArry  = this.$common.findParent(object,data.projectId);
       await this.changeCheckProgress();
 
       //查找地区父级
       let objects = this.$common.initTree(this.reginList);
       this.dataModel.regionIdArry  = this.$common.findParents(objects,data.regionId);
+      
 
       //查找分部分项父级
       let objectss = this.$common.initTree(this.bitemList);

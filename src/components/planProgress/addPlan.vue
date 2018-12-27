@@ -3,7 +3,7 @@
 <div class="addPlan">
   <el-form :model="dataModel" :rules="rules" ref="addPlan" label-width="135px">
     <el-form-item label="项目名称：" prop="projectIdArry">
-        <el-cascader :options="listOrgInfoList" v-model="dataModel.projectIdArry" :props="defaultProp" size="small" placeholder="请选择项目" style="width:100%;" @change="changeProject" clearable :disabled="iscompany"></el-cascader>
+        <el-cascader :options="projectList" v-model="dataModel.projectIdArry" :props="defaultProp" size="small" placeholder="请选择项目" style="width:100%;" @change="changeProject" clearable :disabled="iscompany"></el-cascader>
     </el-form-item>
     <el-form-item label="选择统计项：" prop="visualStatId">
          <el-select  size="small" v-model="dataModel.visualStatId" placeholder="请选择形象进度统计项"  style="width:100%;"  @change="changeVisu" clearable>
@@ -141,15 +141,16 @@ export default {
   },
   computed: {
     ...mapState([
-     'listOrgInfoList',
+     'projectList',
      'userList'
+     
     ]),
   },
   methods: {
 
     ...mapActions([
-        'getlistOrgInfoList',
-        'getUserList'
+        'getUserList',
+        'changeListChOrgInfo'
     ]),
 
     //根据选中的统计项id获取项目信息
@@ -163,6 +164,7 @@ export default {
      */
     async update(data) {
       let companyTypes = sessionStorage.getItem("companyType");
+      await this.changeListChOrgInfo();
       if(!data.id){
         if(companyTypes == 4){
            this.dataModel.projectIdArry = JSON.parse(sessionStorage.getItem("selectArry"));
@@ -172,14 +174,13 @@ export default {
         }
         this.iscompany = companyTypes == 4?true:false;
       }  
-      this.getlistOrgInfoList();
       this.getUserList();
       if (!data.id) return;
       this.dataModel.id = data.id;
       await this.getInfoPlan();
       this.getVisitLIst();
        //查找项目父级
-      let object = this.$common.initTree(this.listOrgInfoList);
+      let object = this.$common.initTree(this.projectList);
       this.dataModel.projectIdArry  = this.$common.findParent(object, this.dataModel.projectId);
       this.iscompany = true;
     },

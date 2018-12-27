@@ -3,7 +3,7 @@
 <div class="addArea">
   <el-form :model="dataModel" :rules="rules" ref="addArea" label-width="120px">
         <el-form-item label="项目名称：" prop="projectArry">
-           <el-cascader :options="listOrgInfoList" v-model="dataModel.projectArry" :props="defaultProp" size="small" placeholder="请选择项目" style="width:100%;" :disabled="isCompany"></el-cascader>
+           <el-cascader :options="projectList" v-model="dataModel.projectArry" :props="defaultProp" size="small" placeholder="请选择项目" style="width:100%;" :disabled="isCompany"></el-cascader>
         </el-form-item>
         <el-form-item label="区域名称：" prop="regionName">
           <el-input v-model="dataModel.regionName" size="small"></el-input>
@@ -58,19 +58,19 @@ export default {
   },
   computed: {
     ...mapState([
-     'listOrgInfoList'
+     'projectList'
     ]),
   },
   methods: {
      ...mapActions([
-      'getlistOrgInfoList'
+      'changeListChOrgInfo'
     ]),
 
     /**
      * 反显数据
      */
     async update(data) {
-      await this.getlistOrgInfoList();
+      await this.changeListChOrgInfo();
       let companyTypes = sessionStorage.getItem("companyType");
       if(!data.id){
         this.dataModel.projectArry = JSON.parse(sessionStorage.getItem("selectArry"));
@@ -81,7 +81,7 @@ export default {
       this.dataModel.id = data.id;
       this.dataModel.regionName = data.regionName;
        //查找项目父级
-      let object = this.$common.initTree(this.listOrgInfoList);
+      let object = this.$common.initTree(this.projectList);
       this.dataModel.projectArry  = this.$common.findParent(object, data.projectId);
     },
 
