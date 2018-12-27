@@ -43,7 +43,7 @@
        </template> -->
         <template slot-scope="scope">
                 <el-progress v-if="!scope.row.finishBudgetRate" :stroke-width="13"  :percentage="0"></el-progress>
-                <el-progress v-else :stroke-width="13"  :percentage="$common.fomatPrecent(scope.row.finishBudgetRate)"></el-progress>
+                <el-progress v-else :stroke-width="13" :percentage="$common.fomatPrecent(Number(scope.row.finishBudgetRate))"></el-progress>
         </template>
     </el-table-column>
     <el-table-column label="操作" align="center" min-width="240">

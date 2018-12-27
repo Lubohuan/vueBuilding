@@ -550,10 +550,11 @@ export function getDownloadUrl(data) {
 }
 
 //切换组织查询项目下拉列表
-export function changelistChOrgInfo(){
+export function changelistChOrgInfo(data){
   return request({
     url: baseUrl + '/system/listChOrgInfo',
-    method: 'get'
+    method: 'get',
+    params:data
   })
 }
 

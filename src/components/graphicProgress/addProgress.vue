@@ -2,8 +2,11 @@
 <!-- 新增/修改形象进度统计项 -->
 <div class="addProgress">
   <el-form :model="dataModel" :rules="rules" ref="addProgress" label-width="150px">
-    <el-form-item label="项目名称：" prop="projectIdArry">
+     <el-form-item v-if="isUps" label="项目名称：" prop="projectIdArry">
        <el-cascader :options="listOrgInfoList" v-model="dataModel.projectIdArry" :props="defaultPropss" size="small" placeholder="请选择项目" style="width:100%;" :disabled="isUps" @change="changeCheckProgress"></el-cascader>
+    </el-form-item>
+    <el-form-item v-else  label="项目名称：" prop="projectIdArry">
+       <el-cascader  :options="projectList" v-model="dataModel.projectIdArry" :props="defaultPropss" size="small" placeholder="请选择项目" style="width:100%;" :disabled="isUps" @change="changeCheckProgress"></el-cascader>
     </el-form-item>
     <el-form-item label="施工区域" prop="regionIdArry" >
          <el-cascader ref="checkRegion" change-on-select :options="reginList" v-model="dataModel.regionIdArry" :props="defaultProps" size="small" style="width:100%;" :disabled="isUp" @change="changeCheckRegion"></el-cascader>
@@ -108,6 +111,7 @@ export default {
     ...mapState([
      'bitemList',
      'planList',
+     'projectList',
      'listOrgInfoList'
     ]),
   },
@@ -115,6 +119,7 @@ export default {
     ...mapActions([
         'getSubsectionList',
         'getUnitList',
+        'changeListChOrgInfo',
         'getlistOrgInfoList'
     ]),
 
@@ -152,8 +157,10 @@ export default {
      反显数据
      */
     async update(data) {
+      await this.getSubsectionList();
+      this.getUnitList();
       let companyTypes = sessionStorage.getItem("companyType");
-      if(!data.id){
+      if(!data.id){         
         //项目层级自动回填项目并且不能修改
         if(companyTypes == 4){
            this.dataModel.projectIdArry = JSON.parse(sessionStorage.getItem("selectArry"));
@@ -161,10 +168,10 @@ export default {
         }else{
           this.dataModel.projectIdArry = [];
         }
-        this.isUps = companyTypes == 4?true:false;     
-      }      
-      await this.getSubsectionList();
-      this.getUnitList();
+        this.isUps = companyTypes == 4?true:false;
+         
+      }          
+      this.changeListChOrgInfo();  
       this.getlistOrgInfoList();
       if (!data.id) return;
       this.dataModel ={...data};
