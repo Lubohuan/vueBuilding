@@ -352,9 +352,8 @@ export function getConstructPlanById(data) {
 //获取当前登录用户所在组织中的所有用户
 export function listUserInfo(data) {
   return request({
-    url: baseUrl + '/system/listUserInfo',
+    url: baseUrl + '/system/listUserInfo?orgId=' + data,
     method: 'get',
-    params:data
   })
 }
 //首页表盘

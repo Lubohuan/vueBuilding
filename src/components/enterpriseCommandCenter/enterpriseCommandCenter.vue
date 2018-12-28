@@ -187,7 +187,12 @@
             </template>
        </el-table-column>
        <template v-for="(item,index) in dateArr">
-            <el-table-column  :prop="'logs['+ index +'].finishTotal'"  :label=" '第' + item.weekNum.toString() + '周 '+ item.weekStart + '~' + item.weekEnd "  :key="index" align="center" width="130" :render-header="renderHeader"></el-table-column>
+            <el-table-column  :prop="'logs['+ index +'].finishTotal'"  :label=" '第' + item.weekNum.toString() + '周 '+ item.weekStart + '~' + item.weekEnd "  :key="index" align="center" width="130" :render-header="renderHeader">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.logs[index].finishTotal !=null">{{scope.row.logs[index].finishTotal}}%</span>
+                    <span v-else>--</span>
+                </template>
+            </el-table-column>
        </template>
       </el-table>
        <el-pagination background v-if="total>0"

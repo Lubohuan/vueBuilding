@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { addConstructPlan,updateConstructPlan,getConstructPlanById,getVisualStatItemList} from "../api/system_interface.js";
+import { addConstructPlan,updateConstructPlan,getConstructPlanById,getVisualStatItemList,listUserInfo} from "../api/system_interface.js";
 import { mapState, mapActions } from 'vuex'
 export default {
   name: "addPlan",
@@ -117,6 +117,7 @@ export default {
         label: "name",
         value: "id"
       },
+      userList:[],
       // pickerOptions0: {
       //     disabledDate:(time)=> {
       //       return time.getTime() < Date.now();
@@ -141,15 +142,12 @@ export default {
   },
   computed: {
     ...mapState([
-     'projectList',
-     'userList'
-     
+     'projectList'    
     ]),
   },
   methods: {
 
     ...mapActions([
-        'getUserList',
         'changeListChOrgInfo'
     ]),
 
@@ -174,11 +172,11 @@ export default {
         }
         this.iscompany = companyTypes == 4?true:false;
       }  
-      this.getUserList();
       if (!data.id) return;
       this.dataModel.id = data.id;
       await this.getInfoPlan();
       this.getVisitLIst();
+      this.getUserLIst();
        //查找项目父级
       let object = this.$common.initTree(this.projectList);
       this.dataModel.projectIdArry  = this.$common.findParent(object, this.dataModel.projectId);
@@ -194,6 +192,8 @@ export default {
       this.visualStatObject = null;
       this.isSuccess = false;
       this.iscompany = false;
+      this.statisList = [];
+      this.userList = [];
     },
 
     //关闭弹框
@@ -300,12 +300,34 @@ export default {
       this.visualStatObject = null;
       if(this.dataModel.projectIdArry.length >= 1){
          this.dataModel.projectId = this.dataModel.projectIdArry[this.dataModel.projectIdArry.length - 1];
-         this.getVisitLIst(); 
+         this.getVisitLIst();
+         this.getUserLIst(); 
       }
       else{
         this.statisList = [];
       }
-    
+    },
+
+     //查询负责人
+    getUserLIst(){
+      listUserInfo(this.dataModel.projectId)
+        .then(response => {
+          if (response.code == "200") {
+           this.userList = response.body;
+           let userObject = this.userList.find((v) => v.id === this.dataModel.respUser);
+           if(!userObject){
+             this.dataModel.respUser = "";
+           }
+          }
+          else {
+            this.userList = [];
+            this.$message.error(response.msg);          
+          }
+        })
+        .catch(error => {
+          this.userList = [];
+          console.log(error);
+        });
     }
   }
 };
