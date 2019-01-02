@@ -411,9 +411,10 @@ export default {
     },
 
     /*传入年，周数，获取周数对应的所有日期*/
-    getWeekTime(index) {
+    getWeekTime(years,index) {
       var data = new Date();
-      var year = data.getFullYear();
+    //   var year = data.getFullYear();
+      var year = years.substring(0,4);
       var dataArr = this.$common.getXDate(year,index);
       var arr = dataArr.split("--");
       return arr
@@ -492,8 +493,8 @@ export default {
     for(var i = 0;i < weekArr.length;i++){
           var weekData = {};
           weekData.weekNum = weekArr[i];
-          weekData.weekStart = this.getWeekTime(weekArr[i])[0].substring(5,10);
-          weekData.weekEnd =   this.getWeekTime(weekArr[i])[1].substring(5,10);
+          weekData.weekStart = this.getWeekTime(this.monthData,weekArr[i])[0].substring(5,10);
+          weekData.weekEnd =   this.getWeekTime(this.monthData,weekArr[i])[1].substring(5,10);
           this.dateArr.push(weekData);
     }
     },
@@ -515,8 +516,8 @@ export default {
       for(var i = 0;i < weekArr.length;i++){
           var weekData = {};
           weekData.weekNum = weekArr[i];
-          weekData.weekStart = this.getWeekTime(weekArr[i])[0].substring(5,10);
-          weekData.weekEnd =   this.getWeekTime(weekArr[i])[1].substring(5,10);
+          weekData.weekStart = this.getWeekTime(addMon,weekArr[i])[0].substring(5,10);
+          weekData.weekEnd =   this.getWeekTime(addMon,weekArr[i])[1].substring(5,10);
           this.dateArr.push(weekData);
       }
       this.refreshList();
@@ -587,8 +588,8 @@ export default {
       for(var i = 0;i < weekArr.length;i++){
           var weekData = {};
           weekData.weekNum = weekArr[i];
-          weekData.weekStart = this.getWeekTime(weekArr[i])[0].substring(5,10);
-          weekData.weekEnd =   this.getWeekTime(weekArr[i])[1].substring(5,10);
+          weekData.weekStart = this.getWeekTime(addMon,weekArr[i])[0].substring(5,10);
+          weekData.weekEnd =   this.getWeekTime(addMon,weekArr[i])[1].substring(5,10);
           this.dateArr.push(weekData);
       }
       this.refreshList();
@@ -628,7 +629,6 @@ export default {
         this.refreshLists();
         this.refreshListss();
     }
-
     // console.log( this.companyType," this.companyType");
   }
 };
