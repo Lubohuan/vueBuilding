@@ -482,10 +482,16 @@ export default {
     this.end   = this.$common.getLastDay(this.monthData);
     this.ends   = this.$common.getLastDay(this.monthDatas);
     var weekArr = this.$common.getWeekAll(this.start,this.end);
+    if(weekArr.includes(0)){
+        weekArr = [1,2,3,4,5];
+    }
+    if(weekArr.includes(6)){
+        weekArr = [5,6,7,8,9];
+    }
     for(var i = 0;i < weekArr.length;i++){
           var weekData = {};
           weekData.weekNum = weekArr[i];
-          weekData.weekStart = this.$common.changeDate(this.getWeekTime(weekArr[i])[0]).substring(5,10)  ;
+          weekData.weekStart = this.$common.changeDate(this.getWeekTime(weekArr[i])[0]).substring(5,10);
           weekData.weekEnd =   this.$common.changeDate(this.getWeekTime(weekArr[i])[6]).substring(5,10) ;
           this.dateArr.push(weekData);
     }

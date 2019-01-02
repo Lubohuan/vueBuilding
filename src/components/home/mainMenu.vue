@@ -210,8 +210,12 @@ export default {
           this.main_menu = 'active'
         }
       },
-      showChild:function(path,index){
+      showChild:function(path,index){ 
           path && this.$router.replace(path);
+          this.isRouterAlive = false;
+          this.$nextTick(()=>{
+              this.isRouterAlive = true;
+          }) 
           this.changeList = index;
       },
       error:function(){
