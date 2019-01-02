@@ -13,7 +13,7 @@
         <div  v-if="visualStatObject !== null" class="visualSpan">
         <span>预算工程量：{{visualStatObject.budgetTotal}}{{visualStatObject.unitName}}</span>
         <span>已完成工程量：{{visualStatObject.finishBudget}}{{visualStatObject.unitName}}</span>
-        <span>剩余工程量：{{visualStatObject.budgetTotal - visualStatObject.finishBudget}}{{visualStatObject.unitName}}</span>
+        <span>剩余工程量：{{(visualStatObject.budgetTotal - visualStatObject.finishBudget).toFixed(2)}}{{visualStatObject.unitName}}</span>
         </div> 
     </el-form-item>
     <el-form-item label="任务名称：" prop="planName">
@@ -153,8 +153,13 @@ export default {
 
     //根据选中的统计项id获取项目信息
     changeVisu(){
-     this.visualStatObject = this.statisList.find((v) => v.id === this.dataModel.visualStatId);
-     this.dataModel.planName = this.visualStatObject.statName;
+      if(this.dataModel.visualStatId != ''){
+        this.visualStatObject = this.statisList.find((v) => v.id === this.dataModel.visualStatId);
+        this.dataModel.planName = this.visualStatObject.statName;
+      }
+      else{
+        this.visualStatObject = null;
+      }
     },
 
     /**
@@ -176,7 +181,13 @@ export default {
       this.dataModel.id = data.id;
       await this.getInfoPlan();
       this.getVisitLIst();
-      this.getUserLIst();
+      await this.getUserLIst();
+
+      let userObject = this.userList.find((v) => v.id === this.dataModel.respUser);
+      if(!userObject){
+          this.dataModel.respUser = "";
+      }
+
        //查找项目父级
       let object = this.$common.initTree(this.projectList);
       this.dataModel.projectIdArry  = this.$common.findParent(object, this.dataModel.projectId);
@@ -268,7 +279,6 @@ export default {
           }
         })
         .catch(error => {
-          return false;
           reject();
         });
       })
@@ -310,24 +320,39 @@ export default {
 
      //查询负责人
     getUserLIst(){
-      listUserInfo(this.dataModel.projectId)
+
+       return new Promise((resolve,reject)=>{
+         listUserInfo(this.dataModel.projectId)
         .then(response => {
           if (response.code == "200") {
-           this.userList = response.body;
-           let userObject = this.userList.find((v) => v.id === this.dataModel.respUser);
-           if(!userObject){
-             this.dataModel.respUser = "";
-           }
-          }
+            this.userList = response.body;
+            resolve();
+          } 
           else {
             this.userList = [];
-            this.$message.error(response.msg);          
+            this.$message.error(response.msg);
           }
         })
         .catch(error => {
           this.userList = [];
-          console.log(error);
+          reject();
         });
+      })
+
+      // listUserInfo(this.dataModel.projectId)
+      //   .then(response => {
+      //     if (response.code == "200") {
+      //      this.userList = response.body;
+      //     }
+      //     else {
+      //       this.userList = [];
+      //       this.$message.error(response.msg);          
+      //     }
+      //   })
+      //   .catch(error => {
+      //     this.userList = [];
+      //     console.log(error);
+      //   });
     }
   }
 };
