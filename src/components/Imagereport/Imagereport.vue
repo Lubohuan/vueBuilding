@@ -122,7 +122,9 @@ export default {
             // return time.getTime() > Date.now() - 8.64e7;
             return time.getTime() > Date.now();
           }
-      }
+      },
+      yearDate:null,
+      nowYear:null
     };
   },
   methods: {
@@ -138,6 +140,7 @@ export default {
       case "second":
       this.ifTime = "本周完成产值";
       this.ifTimeOutPut = "本周完成工程量";
+      this.getYears();
       this.getWeek();
       this.getWeekTime();
       this.start = this.dataArr[0];
@@ -209,9 +212,12 @@ export default {
 
     //周数减
     reduceWeek() {
+
       if (this.weekData <= 1) {
-        return;
-      } else {
+        this.weekData = 53;
+        this.weekData = this.weekData - 1;
+        this.yearDate = this.yearDate - 1;
+      }else{
         this.weekData = this.weekData - 1;
       }
         this.getWeekTime();
@@ -233,10 +239,16 @@ export default {
 
     //周数加
     addWeek() {
-      if (this.weekData >= this.newestData) {
-         this.$message.success("已经是最新的了 !");
+      if(this.weekData>=52){
+        this.weekData = 0;
+        this.weekData = this.weekData + 1;
+        this.yearDate = this.yearDate + 1;
+      }
+      else if(this.weekData >= this.newestData&&this.yearDate >= this.nowYear) {
+        this.$message.success("已经是最新的了 !");
         return;
-      } else {
+      }
+      else {
         this.weekData = this.weekData + 1;
       }     
         this.getWeekTime();
@@ -248,9 +260,10 @@ export default {
     /*传入年，周数，获取周数对应的所有日期*/
     getWeekTime() {
       var data = new Date();
-      var year = data.getFullYear();
+      var year = this.yearDate;
       var index = this.weekData;
-      this.dataArr = this.$common.getWeekTime(year,index);
+      var arr = this.$common.getXDate(year,index);
+      this.dataArr = arr.split("--");
     },
 
     //自定义查询
@@ -318,11 +331,19 @@ export default {
     getWeek(){  
     this.weekData   = this.$common.getWeek();
     this.newestData = this.$common.getWeek();
+    },  
+
+    //获取年份
+    getYears(){
+      var date=new Date;
+      this.yearDate = date.getFullYear();
+      this.nowYear = date.getFullYear();
     }
   },
   created() {
   this.getThisDays();
   this.refreshList(); 
+  this.getYears();
   }
 };
 </script>
