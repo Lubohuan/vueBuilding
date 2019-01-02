@@ -414,8 +414,9 @@ export default {
     getWeekTime(index) {
       var data = new Date();
       var year = data.getFullYear();
-      var dataArr = this.$common.getWeekTime(year,index);
-      return dataArr
+      var dataArr = this.$common.getXDate(year,index);
+      var arr = dataArr.split("--");
+      return arr
     },
 
     //获取表盘数据
@@ -491,8 +492,8 @@ export default {
     for(var i = 0;i < weekArr.length;i++){
           var weekData = {};
           weekData.weekNum = weekArr[i];
-          weekData.weekStart = this.$common.changeDate(this.getWeekTime(weekArr[i])[0]).substring(5,10);
-          weekData.weekEnd =   this.$common.changeDate(this.getWeekTime(weekArr[i])[6]).substring(5,10) ;
+          weekData.weekStart = this.getWeekTime(weekArr[i])[0].substring(5,10);
+          weekData.weekEnd =   this.getWeekTime(weekArr[i])[1].substring(5,10);
           this.dateArr.push(weekData);
     }
     },
@@ -514,8 +515,8 @@ export default {
       for(var i = 0;i < weekArr.length;i++){
           var weekData = {};
           weekData.weekNum = weekArr[i];
-          weekData.weekStart = this.$common.changeDate(this.getWeekTime(weekArr[i])[0]).substring(5,10)  ;
-          weekData.weekEnd =   this.$common.changeDate(this.getWeekTime(weekArr[i])[6]).substring(5,10) ;
+          weekData.weekStart = this.getWeekTime(weekArr[i])[0].substring(5,10);
+          weekData.weekEnd =   this.getWeekTime(weekArr[i])[1].substring(5,10);
           this.dateArr.push(weekData);
       }
       this.refreshList();
@@ -586,8 +587,8 @@ export default {
       for(var i = 0;i < weekArr.length;i++){
           var weekData = {};
           weekData.weekNum = weekArr[i];
-          weekData.weekStart = this.$common.changeDate(this.getWeekTime(weekArr[i])[0]).substring(5,10);
-          weekData.weekEnd =   this.$common.changeDate(this.getWeekTime(weekArr[i])[6]).substring(5,10);
+          weekData.weekStart = this.getWeekTime(weekArr[i])[0].substring(5,10);
+          weekData.weekEnd =   this.getWeekTime(weekArr[i])[1].substring(5,10);
           this.dateArr.push(weekData);
       }
       this.refreshList();

@@ -32,7 +32,7 @@
           <i @click="addMonth" class="el-icon-arrow-right"></i>
        </div>
         <div v-if="activeName === 'fourth'" class="activeTab">         
-         <el-date-picker value-format="yyyy-MM-dd" size="small" v-model="setvalue" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" @change="changeSetDate"></el-date-picker>
+         <el-date-picker value-format="yyyy-MM-dd" size="small" :picker-options="pickerOptions1" v-model="setvalue" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" @change="changeSetDate"></el-date-picker>
        </div>
     </el-col>
  </el-row>
@@ -117,7 +117,12 @@ export default {
       newestData: "",
       ifTime:"今日完成产值",
       ifTimeOutPut:'今日完成工程量',
-
+      pickerOptions1: {
+           disabledDate:(time) => {
+            // return time.getTime() > Date.now() - 8.64e7;
+            return time.getTime() > Date.now();
+          }
+      }
     };
   },
   methods: {
@@ -163,7 +168,13 @@ export default {
     },
 
     //月份加
-    addMonth() {
+    addMonth() { 
+
+      var newThisMonth =  this.$common.getMonths();;
+      if(newThisMonth == this.monthData){
+        this.$message.success("已经是最新的了 !");
+        return
+      }
       let addMon = this.$common.addMonth(this.monthData);
       this.monthData = addMon;
       this.start = addMon + "-" + '01';
