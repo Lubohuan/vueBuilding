@@ -88,7 +88,7 @@ export default {
         children: "child"
       },
       projectTypeList:[],
-      projectType: "",
+      projectType: null,
       currentPage: 1,
       pagesize: 10,
       subName:null,
@@ -199,6 +199,7 @@ export default {
       this.dialog.addSubsection = true;
       this.subObject = {};
       this.subObject.projectType = this.projectType;
+      
     },
 
     //添加子项
@@ -266,7 +267,12 @@ export default {
     //等待查询工程类别完成
     async awaitList(){
       await this.refreshLists();
-      this.projectType = this.projectTypeList[0].id;
+      if(this.projectTypeList.length >= 1){
+        this.projectType = this.projectTypeList[0].id;
+      }
+      else{
+        this.projectType = null;
+      }     
       this.refreshList();
     },
 

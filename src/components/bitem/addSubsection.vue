@@ -23,7 +23,7 @@ export default {
   data() {
     return {
       dataModel: {
-        projectType: 1,
+        projectType: null,
         remark: "",
         sort: 1,
         subName: ""
