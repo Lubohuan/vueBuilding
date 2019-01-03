@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import {getSessionInfo} from "../api/system_interface.js";
+import {getSessionInfo,listPermissionCode} from "../api/system_interface.js";
 export default {
   name: "home",
   data() {
@@ -162,9 +162,28 @@ export default {
           });
         })
     },
+    //获取用户权限码
+    getUserPermission(){
+        return new Promise((resolve, reject) => {
+        listPermissionCode({})
+        .then(response => {
+              if (response.code == "200") {
+                sessionStorage.setItem('companyPressCode', response.body);             
+                resolve();          
+            } else {
+              this.$message.error(response.msg);
+            }
+          })
+          .catch(error => {
+            console.log(error);
+            reject();
+          });
+        })
+      },
   },
   async created(){
     await this.getUserInfo();
+    await this.getUserPermission();
     // if(sessionStorage.getItem("orgType")){
     //   this.orangeType = sessionStorage.getItem("orgType");
     // }
