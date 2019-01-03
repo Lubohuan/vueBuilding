@@ -1,6 +1,7 @@
 export function hasPermissions(permission){
  let myBtns = sessionStorage.getItem("companyPressCode");
-//  let myBtns = ['100000','110000','120000','130000','110101','110301','110401'];
+//  console.log(myBtns,'myBtns');
+//  let myBtns = ['110101','110301','110401','110701','110402','110404'];
  return myBtns.indexOf(permission) > -1;
 }
   

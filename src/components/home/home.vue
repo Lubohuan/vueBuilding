@@ -4,7 +4,7 @@
 <el-container style="height:100%;">
   <el-aside width="180px" class="asideList">
      <div class="titleSpan">生产形象进度</div>
-     <el-tree class="treeList" :data="data2" :props="defaultProps" default-expand-all @node-click="handleNodeClick"></el-tree>
+     <el-tree class="treeList" :data="data3" :props="defaultProps" default-expand-all @node-click="handleNodeClick"></el-tree>
   </el-aside>
    <!-- <el-tree  :data="data2" :props="defaultProps" default-expand-all @node-click="handleNodeClick">
           <span style="width:100%;height:100%;" class="treeList" slot-scope="{ node, data }">
@@ -33,48 +33,57 @@ export default {
       company:{
           id: 1,
           label: "企业级管理看板",
-          path:"/enterpriseCommandCenter"
+          path:"/enterpriseCommandCenter",
+          code:"110101"
       },
       project: {
           id: 2,
           label: "项目管理看板",
-          path:"/commandCentre"
+          path:"/commandCentre",
+          code:"110101"
       },
       data2: [
         {
           id: 3,
           label: "施工区段管理",
-          path:"/areaManagement"
+          path:"/areaManagement",
+          code:"110201"
         },
         {
           id: 4,
           label: "形象进度管理",
           path:"",
+          code:"110301",
           children: [
             {
               id: 41,
               label: "形象进度统计项",
-              path:"/graphicProgress"
+              path:"/graphicProgress",
+              code:"110401"
             },
             {
               id: 42,
               label: "形象进度月计划",
-              path:"/planProgress"
+              path:"/planProgress",
+              code:"110501"
             },
              {
               id: 43,
               label: "形象进度任务管理",
-              path:"/taskManagement"
+              path:"/taskManagement",
+              code:"110601"
             },
              {
               id: 44,
               label: "进度检视",
-              path:"/lookProgress"
+              path:"/lookProgress",
+              code:"110701"
             },
              {
               id: 45,
               label: "形象进度报表",
-              path:"/Imagereport"
+              path:"/Imagereport",
+              code:"110801"
             }
           ]
         },
@@ -83,17 +92,19 @@ export default {
           id: 5,
           label: "预警督办",
           path:"",
+          code:"110901",
           children: [
             {
               id: 51,
               label: "计划预警",
-              path:"/taskWarning"
+              path:"/taskWarning",
+              code:"111001"
             },
             {
               id: 52,
               label: "预警记录",
-              path:"/warningRecord"
-
+              path:"/warningRecord",
+              code:"111101"
             }
           ]
         },
@@ -101,25 +112,30 @@ export default {
           id: 6,
           label: "设置",
           path:"",
+          code:"111201",
           children: [
             {
               id: 61,
               label: "分部分项库",
-              path:"/bitem"
+              path:"/bitem",
+              code:"111301"
             },
              {
               id: 62,
               label: "统计单位库",
-              path:"/statistical"
+              path:"/statistical",
+              code:"111401"
             },
              {
               id: 63,
               label: "工程类别",
-              path:"/engineeringcategorymanagement"
+              path:"/engineeringcategorymanagement",
+              code:"111501"
             }
           ]
         }       
-      ]
+      ],
+      data3:[]
     };
   },
   methods: {
@@ -168,6 +184,25 @@ export default {
       this.data2.unshift(this.project);
        this.data2.unshift(this.company);
     }
+
+    for(var i=0;i<this.data2.length;i++){
+      if(this.hasPerm(this.data2[i].code)){
+          if(!this.data2[i].children){
+            this.data3.push(this.data2[i]);
+          }
+          else{            
+            for (let j = this.data2[i].children.length; j--;) {
+
+              if(!this.hasPerm(this.data2[i].children[j].code)){
+                  var index = this.data2[i].children.indexOf(this.data2[i].children[j]);
+                  this.data2[i].children.splice(index, 1);
+              }
+            }
+            this.data3.push(this.data2[i]);
+        }
+      }
+    }
+    // console.log(this.data3,'this.data3');
   }
 };
 </script>

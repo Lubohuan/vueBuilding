@@ -7,7 +7,7 @@
     </el-breadcrumb>
   <el-row>
    <el-col :span="24">
-      <el-button size="mini" type="primary" @click="addEng">+ 添加工程类别</el-button>
+      <el-button v-if="hasPerm('111502')" size="mini" type="primary" @click="addEng">+ 添加工程类别</el-button>
       <el-button size="mini" type="success" @click="exportExcel">导出excel</el-button>
    </el-col>
   </el-row>
@@ -16,8 +16,8 @@
     <el-table-column prop="typeName" label="工程类别" align="center"></el-table-column>
     <el-table-column label="操作" align="center">
       <template slot-scope="scope">
-            <el-button size="mini" type="primary" @click="editClick(scope)">编辑</el-button>
-            <el-button size="mini" type="danger" @click="deleteClick(scope)">删除</el-button>
+            <el-button v-if="hasPerm('111504')" size="mini" type="primary" @click="editClick(scope)">编辑</el-button>
+            <el-button v-if="hasPerm('111503')" size="mini" type="danger" @click="deleteClick(scope)">删除</el-button>
             <!-- <el-button size="mini" type="success" @click="deleteClick(scope)">启用</el-button>
             <el-button size="mini" type="warning" @click="deleteClick(scope)">禁用</el-button> -->
       </template>

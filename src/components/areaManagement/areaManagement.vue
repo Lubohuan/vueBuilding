@@ -5,7 +5,7 @@
     <el-breadcrumb-item :to="{ path: '/' }">生产形象进度 </el-breadcrumb-item>
     <el-breadcrumb-item>施工区段管理</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-button size="mini" type="primary" @click="addClick">+ 添加区段</el-button>
+    <el-button size="mini" type="primary" @click="addClick" v-if="hasPerm('110202')">+ 添加区段</el-button>
     <el-button size="mini" type="success" @click="exportExcel">导出excel</el-button>
     <el-row class="tableRow">
     <el-col :span="15">
@@ -83,9 +83,9 @@
     </el-col>
     <el-col :span="4"  class="tableCol">
      <span>
-            <el-button size="mini" type="primary" @click="addChild(data,node)">添加下级</el-button>
-            <el-button size="mini" type="primary" @click="editClick(data)">编辑</el-button>
-            <el-button size="mini" type="danger"  @click="deleteClick(data)">删除</el-button>
+            <el-button v-if="hasPerm('110202')" size="mini" type="primary"  @click="addChild(data,node)">添加下级</el-button>
+            <el-button v-if="hasPerm('110204')" size="mini" type="primary" @click="editClick(data)">编辑</el-button>
+            <el-button v-if="hasPerm('110203')" size="mini" type="danger"  @click="deleteClick(data)">删除</el-button>
         </span>
     </el-col>
   </el-row>       

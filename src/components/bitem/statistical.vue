@@ -7,7 +7,7 @@
     </el-breadcrumb>
   <el-row>
    <el-col :span="10">
-      <el-button size="mini" type="primary" @click="addStat">+ 添加统计单位</el-button>
+      <el-button v-if="hasPerm('111402')" size="mini" type="primary" @click="addStat">+ 添加统计单位</el-button>
       <el-button size="mini" type="success" @click="exportExcel">导出excel</el-button>
    </el-col>
    <el-col :span="14" class="statistical_btn1">
@@ -19,8 +19,8 @@
     <el-table-column prop="unitName" label="单位名称" align="center"></el-table-column>
     <el-table-column label="操作" align="center">
       <template slot-scope="scope">
-            <el-button size="mini" type="primary" @click="editClick(scope)">编辑</el-button>
-            <el-button size="mini" type="danger" @click="deleteClick(scope)">删除</el-button>
+            <el-button v-if="hasPerm('111404')" size="mini" type="primary" @click="editClick(scope)">编辑</el-button>
+            <el-button v-if="hasPerm('111403')" size="mini" type="danger" @click="deleteClick(scope)">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
