@@ -2,7 +2,7 @@
 <!--形象进度统计项-->
 <div class="graphicProgress">
   <el-breadcrumb separator-class="el-icon-arrow-right" class="breadTitle">
-    <el-breadcrumb-item :to="{ path: '/' }">生产形象进度  </el-breadcrumb-item>
+    <el-breadcrumb-item :to="{ path: '' }">生产形象进度  </el-breadcrumb-item>
     <el-breadcrumb-item>形象进度管理</el-breadcrumb-item>
     <el-breadcrumb-item>形象进度统计项</el-breadcrumb-item>
   </el-breadcrumb>

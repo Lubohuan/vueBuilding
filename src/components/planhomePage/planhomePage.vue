@@ -2,7 +2,7 @@
 <!--项目进度首页-->
 <div class="planhomePage">
  <el-breadcrumb separator-class="el-icon-arrow-right" class="breadTitle">
-    <el-breadcrumb-item :to="{ path: '/' }">生产形象进度  </el-breadcrumb-item>
+    <el-breadcrumb-item :to="{ path: '' }">生产计划进度  </el-breadcrumb-item>
     <el-breadcrumb-item>形象进度管理</el-breadcrumb-item>
     <el-breadcrumb-item>形象进度任务管理</el-breadcrumb-item>
   </el-breadcrumb>

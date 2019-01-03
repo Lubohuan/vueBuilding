@@ -2,7 +2,7 @@
 <!--形象进度统计项-->
 <div class="bimHomePage">
   <el-breadcrumb separator-class="el-icon-arrow-right" class="breadTitle">
-    <el-breadcrumb-item :to="{ path: '/' }">BIM应用  </el-breadcrumb-item>
+    <el-breadcrumb-item :to="{ path: '' }">BIM应用  </el-breadcrumb-item>
     <el-breadcrumb-item>图纸管理</el-breadcrumb-item>
   </el-breadcrumb>
   <el-row>

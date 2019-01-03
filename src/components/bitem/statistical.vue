@@ -2,7 +2,7 @@
 <!--统计单位库-->
 <div class="statistical">
    <el-breadcrumb separator-class="el-icon-arrow-right" class="breadTitle">
-    <el-breadcrumb-item :to="{ path: '/' }">设置 </el-breadcrumb-item>
+    <el-breadcrumb-item :to="{ path: '' }">设置 </el-breadcrumb-item>
     <el-breadcrumb-item>统计单位库</el-breadcrumb-item>
     </el-breadcrumb>
   <el-row>

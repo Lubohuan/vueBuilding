@@ -2,7 +2,7 @@
 <!-- 分部分项库 -->
 <div class="bitem">
    <el-breadcrumb separator-class="el-icon-arrow-right" class="breadTitle">
-    <el-breadcrumb-item :to="{ path: '/' }">设置 </el-breadcrumb-item>
+    <el-breadcrumb-item :to="{ path: '' }">设置 </el-breadcrumb-item>
     <el-breadcrumb-item>分部分项库</el-breadcrumb-item>
     </el-breadcrumb>
    <el-row>

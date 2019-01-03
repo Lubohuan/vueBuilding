@@ -2,7 +2,7 @@
 <!--任务预警-->
 <div class="taskWarning">
    <el-breadcrumb separator-class="el-icon-arrow-right" class="breadTitle">
-    <el-breadcrumb-item :to="{ path: '/' }">生产形象进度  </el-breadcrumb-item>
+    <el-breadcrumb-item :to="{ path: '' }">生产形象进度  </el-breadcrumb-item>
     <el-breadcrumb-item>预警督办</el-breadcrumb-item>
     <el-breadcrumb-item>任务预警</el-breadcrumb-item>
   </el-breadcrumb>

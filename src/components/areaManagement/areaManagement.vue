@@ -2,7 +2,7 @@
 <!-- 施工区域管理 -->
 <div class="areaManagement">
     <el-breadcrumb separator-class="el-icon-arrow-right" class="breadTitle">
-    <el-breadcrumb-item :to="{ path: '/' }">生产形象进度 </el-breadcrumb-item>
+    <el-breadcrumb-item :to="{ path: '' }">生产形象进度 </el-breadcrumb-item>
     <el-breadcrumb-item>施工区段管理</el-breadcrumb-item>
     </el-breadcrumb>
     <el-button size="mini" type="primary" @click="addClick" v-if="hasPerm('110202')">+ 添加区段</el-button>
