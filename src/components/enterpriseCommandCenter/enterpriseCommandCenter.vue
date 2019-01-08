@@ -115,7 +115,7 @@
                 <span>暂无月度产值预警</span>
             </template>
             <el-table-column type="index" label="序号" align="center"></el-table-column>
-            <el-table-column prop="name" label="经理部名称" align="center" min-width="180"></el-table-column>
+            <el-table-column prop="name" label="分公司名称" align="center" min-width="180"></el-table-column>
             <el-table-column prop="projectCount" label="项目总数" align="center" ></el-table-column>
             <el-table-column prop="notFinishCount" label="未完成产值项目数" align="center" min-width="150"></el-table-column>
             <el-table-column prop="notFinishRate" label="占比" align="center" >
@@ -173,7 +173,7 @@
       </el-row>
       <el-table  border :data="tableData" style="width: 100%" :header-cell-style="rowClass" max-height="315">
       <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
-       <el-table-column prop="name" :label="companyType == 2 ?'经理部名称':'项目名称'" align="center" min-width="200"></el-table-column>
+       <el-table-column prop="name" :label="companyType == 2 ?'分公司名称':'项目名称'" align="center" min-width="200"></el-table-column>
        <el-table-column prop="monthPlanOutput" label="月计划产值（万元）" align="center" min-width="180"></el-table-column>
        <el-table-column prop="monthFinishOutput" label="月完成产值（万元）" align="center" min-width="120"></el-table-column>
        <el-table-column prop="monthOutputRate" label="月环比" align="center" min-width="120">
@@ -231,7 +231,7 @@
     <div  v-if="companyType == 2">
     <el-table  border :data="tableData2" style="width: 100%" max-height="300">
         <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
-        <el-table-column prop="name"  label="经理部名称" align="center" min-width="150"></el-table-column>
+        <el-table-column prop="name"  label="分公司名称" align="center" min-width="150"></el-table-column>
         <el-table-column prop="projectNum"  label="总项目数" align="center"></el-table-column>
         <el-table-column prop="lastMonthUnfinishedProjectNum"  label="上月未完成项目数" align="center" min-width="150"></el-table-column>
         <el-table-column prop="monthUnfinishedProjectNum"  label="本月未完成项目数" align="center" min-width="150"></el-table-column>

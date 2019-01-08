@@ -30,9 +30,9 @@
    </el-col>
   </el-row>
   <el-table :data="tableData" style="width: 100%;margin-top:20px;"   @selection-change="handleSelectionChange" border :header-cell-style="rowClass">
-    <el-table-column type="selection" width="50" align="center"></el-table-column>
-    <el-table-column type="index" label="序号" width="50" align="center"></el-table-column>
-    <el-table-column prop="projectName"  label="项目名称" align="center" min-width="120"></el-table-column>
+    <el-table-column type="selection" width="40" align="center"></el-table-column>
+    <el-table-column type="index" label="序号" width="45" align="center"></el-table-column>
+    <el-table-column prop="projectName"  label="项目名称" align="center" min-width="120" :show-overflow-tooltip="true"></el-table-column>
     <el-table-column prop="state"  label="状态" align="center" min-width="80">
        <template slot-scope="scope">
           <span v-if="scope.row.state == 0"><span class="starting"></span>进行中</span>
@@ -41,9 +41,10 @@
           <span v-if="scope.row.state == 3" ><span class="notStatr"></span>未开始</span>
        </template>
     </el-table-column>
-    <el-table-column prop="planName"  label="计划任务名称" align="center" min-width="200"></el-table-column>
+    <el-table-column prop="planName"  label="计划任务名称" align="center" min-width="190" :show-overflow-tooltip="true"></el-table-column>
     <el-table-column prop="regionFullName"  label="施工区段" align="center" min-width="100" :show-overflow-tooltip="true"></el-table-column>
     <el-table-column prop="planEndTime"  label="完成时间" align="center" min-width="90"></el-table-column>
+    <el-table-column prop="unitName"  label="形象单位" align="center" min-width="70"></el-table-column>
     <el-table-column prop="budgetTotal"  label="总工程量" align="center"></el-table-column>
     <el-table-column prop="notFinishBudget"  label="总剩余工程量" align="center" min-width="100"></el-table-column>
     <el-table-column prop="planFinish"  label="计划工程量" align="center" min-width="90"></el-table-column>
