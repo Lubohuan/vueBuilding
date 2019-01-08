@@ -111,6 +111,9 @@
             <span class="blueBlock"></span>
             <span class="spanBlock">月度产值预警</span>
             <el-table  border :data="tableDatas" style="width: 100%"  max-height="129">
+            <template slot="empty">
+                <span>暂无月度产值预警</span>
+            </template>
             <el-table-column type="index" label="序号" align="center"></el-table-column>
             <el-table-column prop="name" label="经理部名称" align="center" min-width="180"></el-table-column>
             <el-table-column prop="projectCount" label="项目总数" align="center" ></el-table-column>
@@ -137,8 +140,12 @@
                 </el-col>
             </el-row>
             <el-table  border :data="tableDatas" style="width: 100%" max-height="129">
+             <!-- 暂无数据提示-->
+            <template slot="empty">
+                    <span>暂无月度产值预警</span>
+            </template>
             <el-table-column type="index" label="序号" align="center"></el-table-column>
-            <el-table-column prop="name" label="经理部名称" align="center" min-width="180"></el-table-column>
+            <el-table-column prop="name" label="项目名称" align="center" min-width="180"></el-table-column>
             <el-table-column prop="planOutput" label="计划产值" align="center" min-width="80"></el-table-column>
             <el-table-column prop="notFinishOutput" label="未完成产值" align="center" min-width="100"></el-table-column>
             <el-table-column prop="notFinishOutputRate" label="占比" align="center">
@@ -168,7 +175,7 @@
       <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
        <el-table-column prop="name" :label="companyType == 2 ?'经理部名称':'项目名称'" align="center" min-width="200"></el-table-column>
        <el-table-column prop="monthPlanOutput" label="月计划产值（万元）" align="center" min-width="180"></el-table-column>
-       <el-table-column prop="monthFinishOutput" label="月完成产值（万元" align="center" min-width="120"></el-table-column>
+       <el-table-column prop="monthFinishOutput" label="月完成产值（万元）" align="center" min-width="120"></el-table-column>
        <el-table-column prop="monthOutputRate" label="月环比" align="center" min-width="120">
             <template slot-scope="scope">
                 <span>
