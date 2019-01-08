@@ -415,13 +415,19 @@ getLastDay(data){
     var time = new Date();
     time.setDate(time.getDate()); //获取Day天后的日期
     var y = time.getFullYear();
-    var d = time.getDate();
+    var d = this.doHandleMonth(time.getDate());
     var m;
     if (time.getMonth() + month + 1 > 12) {
       y = y + 1;
-      m = time.getMonth() + month - 11; //获取当前月份的日期 d
+      m = this.doHandleMonth(time.getMonth() + month - 11); //获取当前月份 d
     } else {
-      m = time.getMonth() + month + 1; //获取当前月份的日期 d
+      if(time.getMonth() + month<=0){
+        y = y - 1;
+        m = this.doHandleMonth(12 + month + time.getMonth() + 1); //获取当前月份 d
+      }
+      else{
+        m = this.doHandleMonth(time.getMonth() + month + 1); //获取当前月份 d
+      }
     }
     return y + "-" + m + "-" + d;
   },

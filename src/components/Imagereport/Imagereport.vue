@@ -38,7 +38,7 @@
  </el-row>
     <div class="tableDiv">
       <span class="blueBlock"></span>
-      <span class="spanBlock">产值进度</span>
+      <span class="spanBlock">产值进度(单位：万元)</span>
       <el-table  border :data="tableData1" style="width: 100%" max-height="500">
        <el-table-column prop="regionName" label="名称" align="center" min-width="200" ></el-table-column>
        <el-table-column prop="currentFinish" :label="ifTime" align="center"></el-table-column>
