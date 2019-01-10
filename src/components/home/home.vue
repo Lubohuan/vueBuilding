@@ -51,36 +51,71 @@ export default {
         },
         {
           id: 4,
+          label: "生产计划管理",
+          path:"/areaManagement",
+          code:"111601",
+          children:[
+            {
+              id: 41,
+              label: "总进度计划",
+              path:"",
+              code:"111701"
+            },
+            {
+              id: 42,
+              label: "年进度计划",
+              path:"",
+              code:"111801"
+            },
+            {
+              id: 43,
+              label: "月进度计划",
+              path:"/planProgress",
+              code:"111901"
+            },
+          ]
+        },
+        {
+          id: 41,
+          label: "生产任务管理",
+          path:"/areaManagement",
+          code:"112001",
+          children:[
+            {
+              id: 53,
+              label: "形象进度任务管理",
+              path:"/taskManagement",
+              code:"110601"
+            },
+          ]
+        },
+        {
+          id: 5,
           label: "形象进度管理",
           path:"",
           code:"110301",
           children: [
             {
-              id: 41,
+              id: 51,
               label: "形象进度统计项",
               path:"/graphicProgress",
               code:"110401"
             },
-            {
-              id: 42,
-              label: "形象进度月计划",
-              path:"/planProgress",
-              code:"110501"
-            },
+            // {
+            //   id: 52,
+            //   label: "形象进度月计划",
+            //   path:"/planProgress",
+            //   code:"110501"
+            // },
+             
              {
-              id: 43,
-              label: "形象进度任务管理",
-              path:"/taskManagement",
-              code:"110601"
-            },
-             {
-              id: 44,
+              id: 54,
               label: "进度检视",
               path:"/lookProgress",
               code:"110701"
             },
              {
-              id: 45,
+              id: 55,
               label: "形象进度报表",
               path:"/Imagereport",
               code:"110801"
@@ -89,19 +124,19 @@ export default {
         },
       
         {
-          id: 5,
+          id: 6,
           label: "预警督办",
           path:"",
           code:"110901",
           children: [
             {
-              id: 51,
+              id: 61,
               label: "计划预警",
               path:"/taskWarning",
               code:"111001"
             },
             {
-              id: 52,
+              id: 62,
               label: "预警记录",
               path:"/warningRecord",
               code:"111101"
@@ -109,25 +144,25 @@ export default {
           ]
         },
         {
-          id: 6,
+          id: 7,
           label: "设置",
           path:"",
           code:"111201",
           children: [
             {
-              id: 61,
+              id: 71,
               label: "分部分项库",
               path:"/bitem",
               code:"111301"
             },
              {
-              id: 62,
+              id: 72,
               label: "统计单位库",
               path:"/statistical",
               code:"111401"
             },
              {
-              id: 63,
+              id: 73,
               label: "工程类别",
               path:"/engineeringcategorymanagement",
               code:"111501"
@@ -140,7 +175,12 @@ export default {
   },
   methods: {
       handleNodeClick(data){
-        this.$router.push(data.path);
+        if(data.path){
+          this.$router.push(data.path);
+        }else{
+          this.$message.error('敬请期待！');
+        }
+        
       },
       //获取登陆用户信息
       getUserInfo(){
@@ -203,24 +243,24 @@ export default {
       this.data2.unshift(this.project);
        this.data2.unshift(this.company);
     }
+    this.data3 = JSON.parse(JSON.stringify(this.data2));
+    // for(var i=0;i<this.data2.length;i++){
+    //   if(this.hasPerm(this.data2[i].code)){
+    //       if(!this.data2[i].children){
+    //         this.data3.push(this.data2[i]);
+    //       }
+    //       else{            
+    //         for (let j = this.data2[i].children.length; j--;) {
 
-    for(var i=0;i<this.data2.length;i++){
-      if(this.hasPerm(this.data2[i].code)){
-          if(!this.data2[i].children){
-            this.data3.push(this.data2[i]);
-          }
-          else{            
-            for (let j = this.data2[i].children.length; j--;) {
-
-              if(!this.hasPerm(this.data2[i].children[j].code)){
-                  var index = this.data2[i].children.indexOf(this.data2[i].children[j]);
-                  this.data2[i].children.splice(index, 1);
-              }
-            }
-            this.data3.push(this.data2[i]);
-        }
-      }
-    }
+    //           if(!this.hasPerm(this.data2[i].children[j].code)){
+    //               var index = this.data2[i].children.indexOf(this.data2[i].children[j]);
+    //               this.data2[i].children.splice(index, 1);
+    //           }
+    //         }
+    //         this.data3.push(this.data2[i]);
+    //     }
+    //   }
+    // }
     // console.log(this.data3,'this.data3');
   }
 };
