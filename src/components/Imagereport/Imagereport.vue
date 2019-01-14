@@ -41,11 +41,19 @@
       <span class="spanBlock">产值进度(单位：万元)</span>
       <el-table  border :data="tableData1" style="width: 100%" max-height="500">
        <el-table-column prop="regionName" label="名称" align="center" min-width="200" ></el-table-column>
+       <el-table-column prop="monthPlanOutput" label="本月计划产值" align="center" v-if="activeName == 'third'"></el-table-column>
        <el-table-column prop="currentFinish" :label="ifTime" align="center"></el-table-column>
+       <el-table-column prop="monthFinishRate"  label="月度完成比例"  v-if="activeName == 'third'" min-width="100" header-cell-style="tr_title">
+          <template slot-scope="scope" style="text-align:left;">
+            <el-progress :stroke-width="13"  :percentage="$common.fomatPrecent(Number(scope.row.monthFinishRate))" color="#3296fa"></el-progress>
+          </template>
+       </el-table-column>
+       <el-table-column prop="planOutput" label="总产值" align="center" v-if="activeName == 'third'"></el-table-column>
        <el-table-column prop="finishOutput"  label="累计完成产值" align="center"></el-table-column>
-       <el-table-column prop="finishBudgetRate"  label="累计完成比例" align="center" min-width="120">
-          <template slot-scope="scope">
-            <span v-if="scope.row.finishBudgetRate">{{$common.fomatPrecent(scope.row.finishBudgetRate)}}%</span>
+
+       <el-table-column prop="finishBudgetRate"  label="累计完成比例"  v-if="activeName == 'third'" min-width="100" header-cell-style="tr_title">
+          <template slot-scope="scope" style="text-align:left;">
+            <el-progress :stroke-width="13"  :percentage="$common.fomatPrecent(Number(scope.row.finishBudgetRate))" color="#3296fa"></el-progress>
           </template>
        </el-table-column>
       </el-table>
@@ -57,19 +65,30 @@
        <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
        <el-table-column prop="regionFullName" label="施工区段" align="center" min-width="200"></el-table-column>
        <el-table-column prop="subFullName" label="分部分项名称" align="center" min-width="200"></el-table-column>
+       <el-table-column prop="unitName" label="形象单位" align="center" min-width="100"></el-table-column>
        <el-table-column prop="budgetTotal" label="预算工程量" align="center" min-width="100"></el-table-column>
        <el-table-column prop="finishAmount" :label="ifTimeOutPut" align="center" min-width="100"></el-table-column>
        <el-table-column prop="finishBudgetTotal" label="累计完成工程量" align="center"></el-table-column>
-       <el-table-column prop="finishBudgetTotalRate" label="累计完成比例" align="center" min-width="80">
+       <!-- <el-table-column prop="finishBudgetTotalRate" label="累计完成比例" align="center" min-width="80">
           <template slot-scope="scope">
             <span v-if="scope.row.finishBudgetTotalRate">{{$common.fomatPrecent(scope.row.finishBudgetTotalRate)}}%</span>
+          </template>
+       </el-table-column> -->
+       <el-table-column prop="finishBudgetTotalRate"  label="累计完成比例"   min-width="100" header-cell-style="tr_title">
+          <template slot-scope="scope" style="text-align:left;">
+            <el-progress :stroke-width="13"  :percentage="$common.fomatPrecent(Number(scope.row.finishBudgetTotalRate))" color="#3296fa"></el-progress>
           </template>
        </el-table-column>
        <el-table-column prop="finishOutput" :label="ifTime" align="center"></el-table-column>
        <el-table-column prop="finishOutputTotal" label="累计完成产值" align="center"></el-table-column>
-       <el-table-column prop="finishOutputTotalRate" label="累计完成比例" align="center" >
+       <!-- <el-table-column prop="finishOutputTotalRate" label="累计产值完成比例" align="center" >
           <template slot-scope="scope">
             <span v-if="scope.row.finishOutputTotalRate">{{$common.fomatPrecent(scope.row.finishOutputTotalRate)}}%</span>
+          </template>
+       </el-table-column> -->
+       <el-table-column prop="finishOutputTotalRate"  label="累计产值完成比例"   min-width="100" header-cell-style="tr_title">
+          <template slot-scope="scope" style="text-align:left;">
+            <el-progress :stroke-width="13"  :percentage="$common.fomatPrecent(Number(scope.row.finishOutputTotalRate))" color="#3296fa"></el-progress>
           </template>
        </el-table-column>
       </el-table>
@@ -80,19 +99,30 @@
       <el-table  border :data="tableData3" style="width: 100%" max-height="500">
        <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
        <el-table-column prop="subFullName" label="分部分项名称" align="center" min-width="150"></el-table-column>
+       <el-table-column prop="unitName" label="形象单位" align="center" min-width="100"></el-table-column>
        <el-table-column prop="budgetTotal" label="预算工程量" align="center" min-width="100"></el-table-column>
        <el-table-column prop="finishAmount" :label="ifTimeOutPut" align="center" min-width="100"></el-table-column>
        <el-table-column prop="finishBudgetTotal" label="累计完成工程量" align="center"></el-table-column>
-       <el-table-column prop="finishBudgetTotalRate" label="累计完成比例" align="center" min-width="80">
+       <!-- <el-table-column prop="finishBudgetTotalRate" label="累计完成比例" align="center" min-width="80">
           <template slot-scope="scope">
             <span v-if="scope.row.finishBudgetTotalRate">{{$common.fomatPrecent(scope.row.finishBudgetTotalRate)}}%</span>
+          </template>
+       </el-table-column> -->
+       <el-table-column prop="finishBudgetTotal"  label="累计完成比例"   min-width="100" header-cell-style="tr_title">
+          <template slot-scope="scope" style="text-align:left;">
+            <el-progress :stroke-width="13"  :percentage="$common.fomatPrecent(Number(scope.row.finishBudgetTotal))" color="#3296fa"></el-progress>
           </template>
        </el-table-column>
        <el-table-column prop="finishOutput" :label="ifTime" align="center"></el-table-column>
        <el-table-column prop="finishOutputTotal" label="累计完成产值" align="center"></el-table-column>
-       <el-table-column prop="finishOutputTotalRate" label="累计完成比例" align="center" >
+       <!-- <el-table-column prop="finishOutputTotalRate" label="累计产值完成比例" align="center" >
            <template slot-scope="scope">
             <span v-if="scope.row.finishOutputTotalRate">{{$common.fomatPrecent(scope.row.finishOutputTotalRate)}}%</span>
+          </template>
+       </el-table-column> -->
+       <el-table-column prop="finishOutputTotalRate"  label="累计产值完成比例"   min-width="100" header-cell-style="tr_title">
+          <template slot-scope="scope" style="text-align:left;">
+            <el-progress :stroke-width="13"  :percentage="$common.fomatPrecent(Number(scope.row.finishOutputTotalRate))" color="#3296fa"></el-progress>
           </template>
        </el-table-column>
       </el-table>
