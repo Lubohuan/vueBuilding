@@ -284,6 +284,7 @@ export default {
     },
     async ensureeditClick(data){
       if(data.yearPlanBudget == this.focusvalue){
+        data.update = 0;
         return ;
       }
       if(isNaN(Number(this.focusvalue))){
@@ -461,5 +462,8 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  .el-input__inner{
+    padding:0 5px !important;
+  }
 }
 </style>
