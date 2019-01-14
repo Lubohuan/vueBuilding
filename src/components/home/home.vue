@@ -58,13 +58,13 @@ export default {
             {
               id: 41,
               label: "总进度计划",
-              path:"",
+              path:"/planTotal",
               code:"111701"
             },
             {
               id: 42,
               label: "年进度计划",
-              path:"",
+              path:"/planYear",
               code:"111801"
             },
             {
@@ -261,7 +261,7 @@ export default {
     //     }
     //   }
     // }
-    // console.log(this.data3,'this.data3');
+    console.log(this.data3,'this.data3');
   }
 };
 </script>

@@ -84,6 +84,30 @@ export default new Router({
               require(['../components/planProgress/planProgress.vue'], resolve)
             }
           },
+           // 总进度计划
+           {
+            path: '/planTotal',
+            name: 'planTotal',
+            component: (resolve) => {
+              require(['../components/planTotal/planTotal.vue'], resolve)
+            }
+          },
+           // 年进度计划
+           {
+            path: '/planYear',
+            name: 'planYear',
+            component: (resolve) => {
+              require(['../components/planYear/planYear.vue'], resolve)
+            }
+          },
+          //
+          {
+            path: '/testvuetable',
+            name: 'testvuetable',
+            component: (resolve) => {
+              require(['../components/testvuetable/testvuetable.vue'], resolve)
+            }
+          },
           //任务预警
           {
             path: '/taskWarning',
