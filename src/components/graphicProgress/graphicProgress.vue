@@ -228,6 +228,7 @@ export default {
     editClick(scope) {
       this.dialog.addProgress = true;
       this.dataObj = scope.row;
+      console.log(this.dataObj);
     },
 
     //页码改变

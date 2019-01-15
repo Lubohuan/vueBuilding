@@ -1,7 +1,7 @@
 <template>
 <!-- 新增/修改形象进度统计项 -->
 <div class="addProgress">
-  <el-form :model="dataModel" :rules="rules" ref="addtask" label-width="150px">
+  <el-form :model="dataModel" :rules="rules" ref="addProgress" label-width="150px">
      <el-form-item v-if="isUps" label="项目名称：" prop="projectIdArry">
        <el-cascader :options="listOrgInfoList" v-model="dataModel.projectIdArry" :props="defaultPropss" size="small" placeholder="请选择项目" style="width:100%;" :disabled="isUps" @change="changeCheckProgress"></el-cascader>
     </el-form-item>
@@ -9,7 +9,7 @@
        <el-cascader  :options="projectList" v-model="dataModel.projectIdArry" :props="defaultPropss" size="small" placeholder="请选择项目" style="width:100%;" :disabled="isUps" @change="changeCheckProgress"></el-cascader>
     </el-form-item>
     <el-form-item label="施工区域" prop="regionIdArry" >
-         <el-cascader ref="checkRegion" change-on-select :options="reginList" v-model="dataModel.regionIdArry" :props="defaultProps" size="small" style="width:100%;" :disabled="isUps" @change="changeCheckRegion"></el-cascader>
+         <el-cascader ref="checkRegion" change-on-select :options="reginList" v-model="dataModel.regionIdArry" :props="defaultProps" size="small" style="width:100%;" :disabled="isUp" @change="changeCheckRegion"></el-cascader>
     </el-form-item>
     <el-form-item label="选择分部分项：" prop="subIdArry">
         <el-cascader ref="checkBitem"  change-on-select :options="bitemList" v-model="dataModel.subIdArry" :props="defaultProp" size="small" style="width:100%;" :disabled="isUp"  @change="changeCheckBitem"></el-cascader>
@@ -47,7 +47,10 @@
             </el-date-picker>
     </el-form-item>
     <el-form-item label="里程碑" prop="isMilestone" >
-        <el-checkbox v-model="dataModel.isMilestone">是</el-checkbox>
+        <el-radio-group v-model="dataModel.isMilestone">
+            <el-radio label="是" value="1"></el-radio>
+            <el-radio label="否" value="0"></el-radio>
+        </el-radio-group>
     </el-form-item>
     <!-- <el-row>
           <el-col :span="17">
@@ -94,7 +97,7 @@ export default {
         subIdArry:[],
         startTime:'',
         endTime:'',
-        isMilestone:false
+        isMilestone:0
       },
       //数据校验
       rules: {
@@ -184,38 +187,27 @@ export default {
      反显数据
      */
     async update(data) {
-    
-      //this.reset();
-        if(data.isMilestone == '0'){
-            data.isMilestone = false;
-        }else{
-            data.isMilestone = true;
-        }
-      
       await this.getSubsectionList();
       this.getUnitList();
       let companyTypes = sessionStorage.getItem("companyType");
       
-    //   if(data.optype == 'add'){         
-    //     //项目层级自动回填项目并且不能修改
-    //     if(companyTypes == 4){
-    //        this.dataModel.projectIdArry = JSON.parse(sessionStorage.getItem("selectArry"));
-    //        this.changeCheckProgress();
-    //     }else{
-    //       this.dataModel.projectIdArry = [];
-    //     }
-    //    // this.isUps = companyTypes == 4?true:false;
+      if(!data.id){         
+        //项目层级自动回填项目并且不能修改
+        if(companyTypes == 4){
+           this.dataModel.projectIdArry = JSON.parse(sessionStorage.getItem("selectArry"));
+           this.changeCheckProgress();
+        }else{
+          this.dataModel.projectIdArry = [];
+        }
+        this.isUps = companyTypes == 4?true:false;
          
-    //   }      
-      if(data.optype == 'add'){
-          this.isUps = true;
-      }    
+      }          
       this.changeListChOrgInfo();  
       this.getlistOrgInfoList();
-      //if (data.optype == 'add') return;
+      if (!data.id) return;
       this.dataModel ={...data};
-      //this.isUp = true;
-      //this.isUps = true;
+      this.isUp = true;
+      this.isUps = true;
 
       //查找项目父级
       let object = this.$common.initTree(this.listOrgInfoList);
@@ -225,7 +217,7 @@ export default {
       //查找地区父级
       let objects = this.$common.initTree(this.reginList);
       this.dataModel.regionIdArry  = this.$common.findParents(objects,data.regionId);
-      //Object.defineProperty(this.dataModel,'regionIdArry',{value:this.$common.findParents(objects,data.regionId)});
+
       //查找分部分项父级
       let objectss = this.$common.initTree(this.bitemList);
       this.dataModel.subIdArry  = this.$common.findParents(objectss,data.subId);
@@ -235,7 +227,7 @@ export default {
 
     //重置方法
     reset() {
-      const AddStat = this.$refs["addtask"];
+      const AddStat = this.$refs["addProgress"];
       AddStat.resetFields();
       this.dataModel.budgetTotal = null;
       this.dataModel.outputTotal = null;
@@ -248,7 +240,6 @@ export default {
       this.dataModel.regionIdArry = [];
       this.dataModel.subIdArry = [];
       this.dataModel.projectIdArry = [];
-      this.dataModel.isMilestone = false;
       this.isSuccess = false;
       this.isUp = false;
       this.isUps = false;
@@ -263,7 +254,7 @@ export default {
     //点击提交
     commit() {
       console.log(this.dataModel.startTime,"this.dataModel.subIdArry");
-      this.$refs["addtask"].validate(valid => {
+      this.$refs["addProgress"].validate(valid => {
         if (!valid) {
           return;
         }
@@ -271,9 +262,9 @@ export default {
          this.dataModel.regionId  = this.dataModel.regionIdArry[this.dataModel.regionIdArry.length - 1];
          this.dataModel.subId     = this.dataModel.subIdArry[this.dataModel.subIdArry.length - 1];
          this.dataModel.projectId = this.dataModel.projectIdArry[this.dataModel.projectIdArry.length - 1];
-         this.dataModel.isMilestone = this.dataModel.isMilestone == true?1:0;
+         this.dataModel.isMilestone = this.dataModel.isMilestone == '是'?1:0;
         //根据是否有数据传入决定执行新增还是修改
-        const result = this.dataModel.optype =='update' ? this.updateVisualStatItemById() : this.addVisualStatItem();
+        const result = this.dataModel.id ? this.updateVisualStatItemById() : this.addVisualStatItem();
       });
     },
 
@@ -284,7 +275,7 @@ export default {
           if (response.code == "200") {
             this.$message.success("添加成功!");
             this.close();
-            this.$emit("refreshData");
+            this.$emit("refreshList");
           } else {
             this.$message.error(response.msg);
           }
@@ -303,7 +294,6 @@ export default {
           if (response.code == "200") {
             this.$message.success("修改成功!");
             this.close();
-            this.reset();
             this.$emit("refreshData");
           } else {
             this.$message.error(response.msg);

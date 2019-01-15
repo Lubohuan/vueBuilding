@@ -52,10 +52,10 @@
       <span>累计完成</span>
     </el-col>
     <el-col :span="2" class="tableCol">
-      <span>总产值</span>
+      <span>总产值(万元)</span>
     </el-col>
     <el-col :span="2" class="tableCol">
-      <span>累计完成产值</span>
+      <span>累计完成产值(万元)</span>
     </el-col>
       <el-col :span="2" class="tableCol" style="margin-left:10px;">
       <span>完成比例</span>
@@ -68,8 +68,13 @@
     <span class="custom-tree-node" slot-scope="{ node, data }" :style="'margin-left:'+ node.level*(-8.8) + 'px'">
     <el-row style="width:100%;" :style="'margin-left:'+ (30 + node.level*2.1) + 'px'">
     <el-col :span="2" class="tableCol" style="text-align:left;">
+      <img src="../../assets/wbs.png" style="height:20px;" v-if="data.type == 0" />
       <span v-if="data.projectName == null">--</span>
-      <span v-else>{{ data.projectName }}</span>
+      <span v-else>
+        
+        {{ data.projectName }}
+        </span>
+      
     </el-col>
     <el-col :span="2" class="tableCol">
        <span v-if="data.type == 0">{{ data.regionName }}</span>
@@ -121,10 +126,10 @@
     </el-col>
     <el-col :span="2"  class="tableCol">
      <span>
-          <!-- <el-button v-if="hasPerm('110202')" size="mini" type="primary"  @click="addChild(data,node)">添加计划</el-button>
+          <!-- <el-button v-if="hasPerm('110404')" size="mini" type="primary"  @click="addChild(data,node)">添加计划</el-button>
           <el-button v-if="hasPerm('110204')" size="mini" type="primary" @click="editClick(data)">编辑</el-button> -->
-          <el-button v-if="data.type == 0" size="mini" type="primary"  @click="addChild(data,node)">添加计划</el-button>
-          <el-button v-if="data.type == 1" size="mini" type="primary" @click="editClick(data)">编辑</el-button>
+          <el-button v-if="data.type == 0 && hasPerm('110402')" size="mini" type="primary"  @click="addChild(data,node)">添加计划</el-button>
+          <el-button v-if="data.type == 1 && hasPerm('110404')" size="mini" type="primary" @click="editClick(data)">编辑</el-button>
         </span>
     </el-col>
   </el-row>       
@@ -143,8 +148,11 @@
    </el-pagination> -->
   
    <!--类别管理-->
-    <el-dialog title="新增计划任务" :center="true" :visible.sync="dialog.addtask" width="800px" @open="$nextTick(()=>$refs['addtask'].update(nowdata))">
-      <addtask ref="addtask" @close="dialog.addtask = false" ></addtask>
+    <el-dialog title="新增计划任务" :center="true" :visible.sync="dialog.addtask" width="800px" @open="$nextTick(()=>$refs['addtask'].update(nowdata))"  @close="$refs['addtask'].reset()">
+      <addtask ref="addtask" @close="dialog.addtask = false" @refreshData="refreshList"></addtask>
+    </el-dialog>
+     <el-dialog title="修改计划任务" :center="true" :visible.sync="dialog.updatetask" width="800px" @open="$nextTick(()=>$refs['updatetask'].update(nowdata))"  @close="$refs['updatetask'].reset()">
+      <updatetask ref="updatetask" @close="dialog.updatetask = false" @refreshData="refreshList"></updatetask>
     </el-dialog>
      <!--添加/修改分部分项-->
     <!-- <el-dialog :title="subObject.id?'修改分部分项':'新增分部分项'" :center="true" :visible.sync="dialog.addSubsection" width="800px"  @open="$nextTick(()=>$refs['addSubsection'].update(subObject))" @close="$refs['addSubsection'].reset()">
@@ -160,6 +168,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import addtask from "./addtask.vue";
+import updatetask from "./updatetask.vue";
 import addSubChid from "../bitem/addSubChid.vue";
 import addSubsection from "../bitem/addSubsection.vue";
 import {getTotalPlan, getSubsectionPage, deleteSubsectionById,listProjectType,exportSubsectionByIds,baseinUrl } from "../api/system_interface.js";
@@ -167,6 +176,7 @@ export default {
   name: "planTotal",
   components: {
     addtask,
+    updatetask,
     addSubsection,
     addSubChid
   },
@@ -197,6 +207,7 @@ export default {
       total: 0,
       dialog: {
         addtask: false,
+        updatetask:false,
       },
       subObject: {},
       regionIds:'',
@@ -235,8 +246,24 @@ export default {
        }
     },
     addChild(data,node){
-      //this.nowdata = data;
+      
+      this.nowdata = JSON.parse(JSON.stringify(data));
+      this.nowdata['optype'] = 'add';//regionId
+      this.nowdata['regionFullName'] = this.nowdata['regionName'];
+      this.nowdata['regionId'] = this.nowdata['id'];
+      this.nowdata['startTime'] = '';
+      this.nowdata['endTime'] = '';
+      this.nowdata['outputTotal'] = '';
       this.dialog.addtask = true;
+      console.log(data);
+    },
+    editClick(data){
+      
+      this.nowdata = JSON.parse(JSON.stringify(data));
+      this.nowdata['optype'] = 'update';
+      this.dialog.updatetask = true;
+      //this.dialog.addtask = true;
+      console.log(data);
     },
      //重置
     resetForm(){
@@ -362,5 +389,10 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-size: 12px;
+}
+.tableHead{
+  color:#909399;
+  font-weight: 600;
 }
 </style>
