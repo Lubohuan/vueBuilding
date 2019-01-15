@@ -17,7 +17,7 @@
      <el-cascader :show-all-levels="false" :options="listOrgInfoList" @blur="clearmodel()" v-model="projectId" :props="defaultProps1" size="small" placeholder="请选择项目" clearable></el-cascader>
      <el-cascader :show-all-levels="false" :options="reginList" @blur="clearmodel()" v-model="regionId" :props="defaultProp" size="small" placeholder="请选择施工区段" clearable></el-cascader>
    </el-col>
-   <el-col :span="6" class="planProgress_btn1">
+   <el-col :span="6" class="planProgress_btn1" style="text-align:right;">
        <el-button size="mini" type="success" @click="resarchInfo">搜索</el-button>
        <el-button size="mini"  @click="resetForm">重置</el-button>
    </el-col>
