@@ -4,7 +4,7 @@
  <el-breadcrumb separator-class="el-icon-arrow-right" class="breadTitle">
     <el-breadcrumb-item :to="{ path: '' }">生产形象进度  </el-breadcrumb-item>
     <el-breadcrumb-item>生产任务管理</el-breadcrumb-item>
-    <el-breadcrumb-item>形象进度任务管理</el-breadcrumb-item>
+    <el-breadcrumb-item>生产任务管理</el-breadcrumb-item>
   </el-breadcrumb>
  <el-row>
     <el-col :span="24">

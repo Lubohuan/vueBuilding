@@ -50,10 +50,10 @@
       <span>累计完成</span>
     </el-col>
     <el-col :span="2" class="tableCol" style="margin-left:-10px;">
-      <span>总产值</span>
+      <span>总产值(万元)</span>
     </el-col>
     <el-col :span="1" class="tableCol">
-      <span>完成产值</span>
+      <span>完成产值(万元)</span>
     </el-col>
       <el-col :span="2" class="tableCol" >
       <span>完成比例</span>
@@ -65,10 +65,10 @@
       <span>年完成量</span>
     </el-col>
     <el-col :span="2" class="tableCol">
-      <span>年计划产值</span>
+      <span>年计划产值(万元)</span>
     </el-col>
       <el-col :span="2" class="tableCol" style="margin-left:-10px;">
-      <span>年完成产值</span>
+      <span>年完成产值(万元)</span>
     </el-col>
     <el-col :span="2" class="tableCol" style="margin-left:-10px;">
       <span>年完成比例</span>
@@ -81,8 +81,12 @@
     <span class="custom-tree-node" slot-scope="{ node, data }" :style="'margin-left:'+ node.level*(-8.8) + 'px'">
     <el-row style="width:100%;" :style="'margin-left:'+ (30 + node.level*2.1) + 'px'">
     <el-col :span="2" class="tableCol" style="text-align:left;">
+      <img src="../../assets/wbs.png" style="height:20px;" v-if="data.type == 0" />
       <span v-if="data.projectName == null">--</span>
-      <span v-else>{{ data.projectName }}</span>
+      <span v-else>
+        
+        {{ data.projectName }}
+      </span>
     </el-col>
     <el-col :span="2" class="tableCol">
        <span v-if="data.type == 0">{{ data.regionName }}</span>
@@ -150,10 +154,10 @@
     </el-col>
     <el-col :span="1"  class="tableCol">
      <span>
-          <!-- <el-button v-if="hasPerm('110202')" size="mini" type="primary"  @click="addChild(data,node)">添加计划</el-button>
+          <!-- <el-button v-if="hasPerm('110504')" size="mini" type="primary"  @click="addChild(data,node)">添加计划</el-button>
           <el-button v-if="hasPerm('110204')" size="mini" type="primary" @click="editClick(data)">编辑</el-button> -->
           <!-- <el-button v-if="data.type == 0" size="mini" type="primary"  @click="addChild(data,node)">添加计划</el-button> -->
-          <el-button v-if="data.type == 1 && data.update == 0" size="mini" type="primary" @click="editClick(data)">编辑</el-button>
+          <el-button v-if="data.type == 1 && data.update == 0 && hasPerm('110504')" size="mini" type="primary" @click="editClick(data)">编辑</el-button>
           <el-button v-if="data.update == 1" size="mini" type="primary" @click="ensureeditClick(data)">确认</el-button>
         </span>
     </el-col>
@@ -302,6 +306,7 @@ export default {
     },
     //修改数据
     async updatenowdata(data){
+      console.log(data);
         updateYearPlan({
           "id":data.yearPlanId,
           "planFinish": this.focusvalue,
@@ -335,6 +340,7 @@ export default {
                   data.update = 0;
                   data.yearPlanBudget = this.focusvalue;
                   this.$message.success('更新成功');
+                  this.refreshList();
                 } else {
                   this.$message.error(response.msg);
                 }
@@ -439,7 +445,7 @@ export default {
             let lengthc = list[i].visualYearPlans.length;
             for(let j=lengthc;j--;){
               list[i].visualYearPlans[j]['type'] = '1';//任务
-              list[i].visualYearPlans[p]['update'] = '0';
+              list[i].visualYearPlans[j]['update'] = '0';
             }
             list[i]['child'] = JSON.parse(JSON.stringify(list[i].visualYearPlans));
             delete list[i].visualYearPlans;
@@ -462,8 +468,13 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-size: 12px;
   .el-input__inner{
     padding:0 5px !important;
   }
+}
+.tableHead{
+  color:#909399;
+  font-weight: 600;
 }
 </style>

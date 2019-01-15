@@ -1,7 +1,7 @@
 <template>
 <!-- 新增/修改形象进度统计项 -->
 <div class="addProgress">
-  <el-form :model="dataModel" :rules="rules" ref="addtask" label-width="150px">
+  <el-form :model="dataModel" :rules="rules" ref="updatetask" label-width="150px">
      <el-form-item v-if="isUps" label="项目名称：" prop="projectIdArry">
        <el-cascader :options="listOrgInfoList" v-model="dataModel.projectIdArry" :props="defaultPropss" size="small" placeholder="请选择项目" style="width:100%;" :disabled="isUps" @change="changeCheckProgress"></el-cascader>
     </el-form-item>
@@ -76,7 +76,7 @@
 import { addVisualStatItem,updateVisualStatItemById,listRegion} from "../api/system_interface.js";
 import { mapState, mapActions } from 'vuex'
 export default {
-  name: "addtask",
+  name: "updatetask",
   data() {
     return {
       dataModel: {
@@ -184,7 +184,7 @@ export default {
      反显数据
      */
     async update(data) {
-    
+      console.log('进入调用');
       //this.reset();
         if(data.isMilestone == '0'){
             data.isMilestone = false;
@@ -224,18 +224,22 @@ export default {
 
       //查找地区父级
       let objects = this.$common.initTree(this.reginList);
-      this.dataModel.regionIdArry  = this.$common.findParents(objects,data.regionId);
-      //Object.defineProperty(this.dataModel,'regionIdArry',{value:this.$common.findParents(objects,data.regionId)});
+      //this.dataModel.regionIdArry  = this.$common.findParents(objects,data.regionId);
+      // setTimeout(()=>{
+      //   this.dataModel.regionIdArry  = this.$common.findParents(objects,data.regionId);
+      // },0);this.$set.(key, value)
+      this.$set(this.dataModel,'regionIdArry', this.$common.findParents(objects,data.regionId));
+      console.log(this.dataModel.regionIdArry,'父区域');
       //查找分部分项父级
       let objectss = this.$common.initTree(this.bitemList);
       this.dataModel.subIdArry  = this.$common.findParents(objectss,data.subId);
-  
+      console.log(this.dataModel.subIdArry,'分部分项');
       // console.log(this.dataModel.subIdArry,'this.dataModel.subIdArry ');
     },
 
     //重置方法
     reset() {
-      const AddStat = this.$refs["addtask"];
+      const AddStat = this.$refs["updatetask"];
       AddStat.resetFields();
       this.dataModel.budgetTotal = null;
       this.dataModel.outputTotal = null;
@@ -263,7 +267,7 @@ export default {
     //点击提交
     commit() {
       console.log(this.dataModel.startTime,"this.dataModel.subIdArry");
-      this.$refs["addtask"].validate(valid => {
+      this.$refs["updatetask"].validate(valid => {
         if (!valid) {
           return;
         }

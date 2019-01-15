@@ -20,8 +20,8 @@
     <el-table-column prop="createTime"  label="预警时间" align="center" min-width="120"></el-table-column>
     <el-table-column  label="操作" align="center" min-width="200">
       <template slot-scope="scope">
-         <el-button v-if="hasPerm('111002')" size="mini" type="primary" @click="remindSupervise(scope.row)">督办</el-button>
-         <el-button v-if="hasPerm('111003')" size="mini" type="success" @click="relieveReason(scope.row)">解除预警</el-button>
+         <el-button v-if="hasPerm('111402')" size="mini" type="primary" @click="remindSupervise(scope.row)">督办</el-button>
+         <el-button v-if="hasPerm('111404')" size="mini" type="success" @click="relieveReason(scope.row)">解除预警</el-button>
       </template>
     </el-table-column>
   </el-table>
