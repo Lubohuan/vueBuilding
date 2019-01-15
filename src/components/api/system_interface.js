@@ -3,8 +3,8 @@ import uploadRequest from '@/utils/uploadRequest';
 import axios from 'axios'
 
 //环境
-//const domain = 'http://spm.';
-const domain = 'http://autobuild.';
+const domain = 'http://spm.';
+//const domain = 'http://autobuild.';
 
 //请求url
 const baseUrl = domain + 'jiguantong.com/bimScheduleService';
@@ -557,7 +557,7 @@ export function changelistChOrgInfo(data){
   })
 }
 
-//获取总进度计划GET 
+//获取总进度计划GET
 export function getTotalPlan(data){
   return request({
     url: baseUrl + '/workStat/listVisualProfilePlan',
@@ -566,7 +566,7 @@ export function getTotalPlan(data){
   })
 }
 
-//获取年进度计划GET 
+//获取年进度计划GET
 export function getYearPlan(data){
   return request({
     url: baseUrl + '/workStat/listVisualYearPlan',
@@ -575,7 +575,7 @@ export function getYearPlan(data){
   })
 }
 
-//添加形象进度年计划 
+//添加形象进度年计划
 export function addYearPlan(data){
   return request({
     url: baseUrl + '/task/addVisualYearPlan',
@@ -584,7 +584,7 @@ export function addYearPlan(data){
   })
 }
 
-//修改形象进度年计划 
+//修改形象进度年计划
 export function updateYearPlan(data){
   return request({
     url: baseUrl + '/task/updateVisualYearPlan',
