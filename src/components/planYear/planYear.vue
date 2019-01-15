@@ -237,7 +237,7 @@ export default {
       projectIds:'',
       nowdata:'',
       nowyear:'2018',
-      focusData:'',
+      focusData:{},
       focusvalue:'',
     };
   },
@@ -282,6 +282,9 @@ export default {
     },
     //修改年计划量
     editClick(data){
+      if(this.focusData['id'] != data.id && this.focusData['id']){
+        this.focusData.update = 0;
+      }
       this.focusData = data;
       data.update = 1;
       this.focusvalue = data.yearPlanBudget;
