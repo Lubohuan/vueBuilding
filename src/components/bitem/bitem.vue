@@ -17,7 +17,7 @@
   </el-row>
   <el-row>
    <el-col :span="24">
-      <el-button v-if="hasPerm('111302')" size="mini" type="primary" @click="addSub">+ 添加分部</el-button>
+      <el-button v-if="hasPerm('111702')" size="mini" type="primary" @click="addSub">+ 添加分部</el-button>
       <el-button size="mini" type="success" @click="exportExcel">导出excel</el-button>
    </el-col>
    <!-- <el-col :span="19" class="bitem_btn1">
@@ -36,9 +36,9 @@
       <span class="custom-tree-node" slot-scope="{ node, data }">
         <span style="margin-left:100px;font-size:12px;">{{ data.subName }}</span>
         <span>
-            <el-button v-if="hasPerm('111302')" size="mini" type="primary"  @click="addSubChild(data)">添加子项</el-button>
-            <el-button v-if="hasPerm('111304')" size="mini" type="primary"  @click="editSub(data)">编辑</el-button>
-            <el-button v-if="hasPerm('111303')" size="mini" type="danger"   @click="deleteClick(data)">删除</el-button>
+            <el-button v-if="hasPerm('111702')" size="mini" type="primary"  @click="addSubChild(data)">添加子项</el-button>
+            <el-button v-if="hasPerm('111704')" size="mini" type="primary"  @click="editSub(data)">编辑</el-button>
+            <el-button v-if="hasPerm('111703')" size="mini" type="danger"   @click="deleteClick(data)">删除</el-button>
         </span>
       </span>
    </el-tree>

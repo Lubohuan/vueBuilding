@@ -82,15 +82,20 @@
     <el-row style="width:100%;" :style="'margin-left:'+ (30 + node.level*2.1) + 'px'">
     <el-col :span="2" class="tableCol" style="text-align:left;">
       <img src="../../assets/wbs.png" style="height:20px;" v-if="data.type == 0" />
-      <span v-if="data.projectName == null">--</span>
-      <span v-else>
-        
-        {{ data.projectName }}
-      </span>
+      
+      <el-tooltip class="item" effect="dark" :content="data.projectName" placement="top">
+        <span v-if="data.projectName == null">--</span>
+        <span v-else>
+          
+          {{ data.projectName }}
+        </span>
+      </el-tooltip>
     </el-col>
     <el-col :span="2" class="tableCol">
-       <span v-if="data.type == 0">{{ data.regionName }}</span>
-       <span v-if="data.type == 1">{{ data.statName }}</span>
+      <el-tooltip class="item" effect="dark" :content="data.type==0?data.regionName:data.statName" placement="top">
+       <span class="tableCol" style="display:inline-block;width:100%;" v-if="data.type == 0">{{ data.regionName }}</span>
+       <span class="tableCol" style="display:inline-block;width:100%;" v-if="data.type == 1">{{ data.statName }}</span>
+      </el-tooltip>
     </el-col>
     <el-col :span="1" class="tableCol">
        <span v-if="data.isMilestone == 0">否</span>
@@ -236,7 +241,7 @@ export default {
       regionIds:'',
       projectIds:'',
       nowdata:'',
-      nowyear:'2018',
+      nowyear:new Date().getFullYear()+'',
       focusData:{},
       focusvalue:'',
     };
@@ -298,7 +303,7 @@ export default {
         this.$message.error('数据非法');
         return ;
       }
-      if(data.yearPlanBudget == 0){
+      if(!data['yearPlanId']){
         await this.addnowdata(data);
       }else{
         await this.updatenowdata(data);
@@ -342,8 +347,9 @@ export default {
             if (response.code == "200") {
                   data.update = 0;
                   data.yearPlanBudget = this.focusvalue;
+                  data['yearPlanId'] = response.body;
                   this.$message.success('更新成功');
-                  this.refreshList();
+                  //this.refreshList();
                 } else {
                   this.$message.error(response.msg);
                 }

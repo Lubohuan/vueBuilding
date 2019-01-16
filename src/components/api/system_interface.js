@@ -592,7 +592,27 @@ export function updateYearPlan(data){
     data:data
   })
 }
-
+// 删除进度计划
+export function deleteTaskPlan(data) {
+  return request({
+    url: baseUrl + '/project/deleteVisualStatItem/' + data,
+    method: 'delete',
+  })
+}
+// 禁用进度计划
+export function forbidTaskPlan(data) {
+  return request({
+    url: baseUrl + '/project/stopVisualStatItem/' + data,
+    method: 'get',
+  })
+}
+// 启用进度计划
+export function openTaskPlan(data) {
+  return request({
+    url: baseUrl + '/project/startVisualStatItem/' + data,
+    method: 'get',
+  })
+}
 
 
 
