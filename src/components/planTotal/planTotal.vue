@@ -22,8 +22,10 @@
        <el-button size="mini"  @click="resetForm">重置</el-button>
    </el-col>
   </el-row>
+  <div style="height:auto;width:100%;overflow:auto;">
+
   
- <el-row class="tableHead">
+ <el-row class="tableHead" style="min-width:1600px;">
     <el-col :span="2" class="tableCol" style="margin-left:35px;">
       <span>项目名称</span>
     </el-col>
@@ -64,21 +66,25 @@
       <span>操作</span>
     </el-col>
   </el-row>
-  <el-tree :data="tableData" ref="tree" node-key="id" :default-expand-all="false" :expand-on-click-node="false" :props="defaultProps" style="width:100%;" :indent="5" >
+  <el-tree   :data="tableData" ref="tree" node-key="id" :default-expand-all="false" :expand-on-click-node="false" :props="defaultProps" style="width:100%;min-width:1600px;" :indent="5" >
     <span class="custom-tree-node" slot-scope="{ node, data }" :style="'margin-left:'+ node.level*(-8.8) + 'px'">
     <el-row style="width:100%;" :style="'margin-left:'+ (30 + node.level*2.1) + 'px'">
     <el-col :span="2" class="tableCol" style="text-align:left;">
       <img src="../../assets/wbs.png" style="height:20px;" v-if="data.type == 0" />
-      <span v-if="data.projectName == null">--</span>
-      <span v-else>
-        
-        {{ data.projectName }}
+      <el-tooltip class="item" effect="dark" :content="data.projectName" placement="top">
+        <span v-if="data.projectName == null">--</span>
+        <span v-else>
+          
+          {{ data.projectName }}
         </span>
+      </el-tooltip>
       
     </el-col>
     <el-col :span="2" class="tableCol">
-       <span v-if="data.type == 0">{{ data.regionName }}</span>
-       <span v-if="data.type == 1">{{ data.statName }}</span>
+      <el-tooltip class="item" effect="dark" :content="data.type==0?data.regionName:data.statName" placement="top">
+        <span class="tableCol" style="display:inline-block;width:100%;" v-if="data.type == 0">{{ data.regionName }}</span>
+        <span class="tableCol" style="display:inline-block;width:100%;" v-if="data.type == 1">{{ data.statName }}</span>
+      </el-tooltip>
     </el-col>
     <el-col :span="1" class="tableCol">
        <span v-if="data.isMilestone == 0">否</span>
@@ -124,17 +130,21 @@
         <el-progress v-else :stroke-width="13" :percentage="$common.fomatPrecent(Number(data.finishOutputRate))"></el-progress>
         
     </el-col>
-    <el-col :span="2"  class="tableCol">
+    <el-col :span="2"  class="tableCol" style="margin-left:-10px;">
      <span>
           <!-- <el-button v-if="hasPerm('110404')" size="mini" type="primary"  @click="addChild(data,node)">添加计划</el-button>
           <el-button v-if="hasPerm('110204')" size="mini" type="primary" @click="editClick(data)">编辑</el-button> -->
           <el-button v-if="data.type == 0 && hasPerm('110402')" size="mini" type="primary"  @click="addChild(data,node)">添加计划</el-button>
-          <el-button v-if="data.type == 1 && hasPerm('110404')" size="mini" type="primary" @click="editClick(data)">编辑</el-button>
+          <el-button class="levelbtn" v-if="data.type == 1 && hasPerm('110404')" size="mini" type="primary" @click="editClick(data)" style="margin-left:2px;">编辑</el-button>
+          <el-button class="levelbtn" v-if="data.type == 1 && hasPerm('110404') && data.isForbid == 0" size="mini" type="warning" @click="forbidClick(data)" style="margin-left:2px;">禁用</el-button>
+          <el-button class="levelbtn" v-if="data.type == 1 && hasPerm('110404') && data.isForbid == 1" size="mini" type="warning" @click="openClick(data)" style="margin-left:2px;">启用</el-button>
+          <el-button class="levelbtn" v-if="data.type == 1 && hasPerm('110404')" size="mini" type="danger" @click="deleteClick(data)" style="margin-left:2px;">删除</el-button>
         </span>
     </el-col>
   </el-row>       
   </span>
    </el-tree>
+   </div>
    <!-- <el-pagination background v-if="total>0"
       class="pageStyle"
 			layout="prev, pager, next, sizes, total, jumper"
@@ -171,7 +181,7 @@ import addtask from "./addtask.vue";
 import updatetask from "./updatetask.vue";
 import addSubChid from "../bitem/addSubChid.vue";
 import addSubsection from "../bitem/addSubsection.vue";
-import {getTotalPlan, getSubsectionPage, deleteSubsectionById,listProjectType,exportSubsectionByIds,baseinUrl } from "../api/system_interface.js";
+import {openTaskPlan,forbidTaskPlan,deleteTaskPlan,getTotalPlan, getSubsectionPage, deleteSubsectionById,listProjectType,exportSubsectionByIds,baseinUrl } from "../api/system_interface.js";
 export default {
   name: "planTotal",
   components: {
@@ -265,6 +275,71 @@ export default {
       //this.dialog.addtask = true;
       console.log(data);
     },
+    //删除
+    deleteClick(data){
+      this.$confirm('确认删除此数据？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.godeleteClick(data);
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
+    },
+    //删除
+    godeleteClick(data){
+         deleteTaskPlan(data.id)
+        .then(response => {
+          if (response.code == "200") {
+                this.$message.success('删除成功！');
+                this.refreshList();
+                
+              } else {
+                this.$message.error(response.msg);
+              }
+        })
+        .catch(error => {
+          console.log(error);
+      })  
+    },
+
+    //禁用
+    forbidClick(data){
+        forbidTaskPlan(data.id)
+        .then(response => {
+          if (response.code == "200") {
+                this.$message.success('禁用成功！');
+                this.refreshList();
+                
+              } else {
+                this.$message.error(response.msg);
+              }
+        })
+        .catch(error => {
+          console.log(error);
+      })  
+    },
+    //启用
+     openClick(data){
+        openTaskPlan(data.id)
+        .then(response => {
+          if (response.code == "200") {
+                this.$message.success('启用成功！');
+                this.refreshList();
+                
+              } else {
+                this.$message.error(response.msg);
+              }
+        })
+        .catch(error => {
+          console.log(error);
+      })  
+    },
+
      //重置
     resetForm(){
       this.regionId = [];
@@ -394,5 +469,8 @@ export default {
 .tableHead{
   color:#909399;
   font-weight: 600;
+}
+.levelbtn{
+  padding:7px 6px;
 }
 </style>

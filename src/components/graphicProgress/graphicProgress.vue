@@ -8,7 +8,7 @@
   </el-breadcrumb>
   <el-row>
    <el-col :span="10">
-      <el-button v-if="hasPerm('110402')" size="mini" type="primary" @click="addProgress">+新增形象进度统计项</el-button>
+      <el-button v-if="hasPerm('111002')" size="mini" type="primary" @click="addProgress">+新增形象进度统计项</el-button>
       <el-button size="mini" type="success" @click="exportExcel">导出excel</el-button>
    </el-col>
    <!-- <el-col :span="14" class="graphicProgress_btn1">
@@ -48,10 +48,10 @@
     </el-table-column>
     <el-table-column label="操作" align="center" min-width="240">
       <template slot-scope="scope">
-            <el-button v-if="hasPerm('110404')" size="mini" type="primary" @click="editClick(scope)">编辑</el-button>
-            <el-button v-if="scope.row.isForbid == 0 && hasPerm('110404')" size="mini" type="warning" @click="stopClick(scope)">禁用</el-button>
-            <el-button v-if="scope.row.isForbid == 1 && hasPerm('110404')" size="mini" type="success" @click="startClick(scope)">启用</el-button>
-            <el-button v-if="hasPerm('110403')" size="mini" type="danger" @click="deleteClick(scope)">删除</el-button>   
+            <el-button v-if="hasPerm('111004')" size="mini" type="primary" @click="editClick(scope)">编辑</el-button>
+            <el-button v-if="scope.row.isForbid == 0 && hasPerm('111004')" size="mini" type="warning" @click="stopClick(scope)">禁用</el-button>
+            <el-button v-if="scope.row.isForbid == 1 && hasPerm('111004')" size="mini" type="success" @click="startClick(scope)">启用</el-button>
+            <el-button v-if="hasPerm('111003')" size="mini" type="danger" @click="deleteClick(scope)">删除</el-button>   
       </template>
     </el-table-column>
   </el-table>
