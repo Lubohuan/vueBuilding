@@ -22,10 +22,10 @@
        <el-button size="mini"  @click="resetForm">重置</el-button>
    </el-col>
   </el-row>
-  <div style="height:auto;width:100%;overflow:auto;">
+  <!-- <div style="height:auto;width:100%;overflow:auto;"> -->
 
   
- <el-row class="tableHead" style="min-width:1600px;">
+ <el-row class="tableHead" style="">
     <el-col :span="2" class="tableCol" style="margin-left:35px;">
       <span>项目名称</span>
     </el-col>
@@ -47,10 +47,10 @@
     <el-col :span="1" class="tableCol">
       <span>形象单位</span>
     </el-col>
-    <el-col :span="2" class="tableCol" style="margin-left:-10px;">
+    <el-col :span="1" class="tableCol" style="margin-left:-10px;">
       <span>总工程量</span>
     </el-col>
-    <el-col :span="2" class="tableCol" >
+    <el-col :span="1" class="tableCol" >
       <span>累计完成</span>
     </el-col>
     <el-col :span="2" class="tableCol">
@@ -62,11 +62,11 @@
       <el-col :span="2" class="tableCol" style="margin-left:10px;">
       <span>完成比例</span>
     </el-col>
-    <el-col :span="3"  class="tableCol" style="margin-left:-25px;">
+    <el-col :span="4"  class="tableCol" style="margin-left:-25px;">
       <span>操作</span>
     </el-col>
   </el-row>
-  <el-tree   :data="tableData" ref="tree" node-key="id" :default-expand-all="false" :expand-on-click-node="false" :props="defaultProps" style="width:100%;min-width:1600px;" :indent="5" >
+  <el-tree   :data="tableData" ref="tree" node-key="id" :default-expand-all="false" :expand-on-click-node="false" :props="defaultProps" style="width:100%;" :indent="5" >
     <span class="custom-tree-node" slot-scope="{ node, data }" :style="'margin-left:'+ node.level*(-8.8) + 'px'">
     <el-row style="width:100%;" :style="'margin-left:'+ (30 + node.level*2.1) + 'px'">
     <el-col :span="2" class="tableCol" style="text-align:left;">
@@ -106,11 +106,11 @@
        <span v-if="!data.unitName">--</span>
        <span v-else>{{ data.unitName }}</span>
     </el-col>
-    <el-col :span="2" class="tableCol">
+    <el-col :span="1" class="tableCol">
        <span v-if="data.budgetTotal == null">--</span>
        <span v-else>{{ data.budgetTotal }}</span>
     </el-col>
-    <el-col :span="2" class="tableCol">
+    <el-col :span="1" class="tableCol">
        <span v-if="data.finishBudget == null">--</span>
        <span v-else>{{ data.finishBudget }}</span>
     </el-col>
@@ -130,7 +130,7 @@
         <el-progress v-else :stroke-width="13" :percentage="$common.fomatPrecent(Number(data.finishOutputRate))"></el-progress>
         
     </el-col>
-    <el-col :span="2"  class="tableCol" style="margin-left:-10px;">
+    <el-col :span="4"  class="tableCol" style="margin-left:-10px;">
      <span>
           <!-- <el-button v-if="hasPerm('110404')" size="mini" type="primary"  @click="addChild(data,node)">添加计划</el-button>
           <el-button v-if="hasPerm('110204')" size="mini" type="primary" @click="editClick(data)">编辑</el-button> -->
@@ -144,7 +144,7 @@
   </el-row>       
   </span>
    </el-tree>
-   </div>
+   <!-- </div> -->
    <!-- <el-pagination background v-if="total>0"
       class="pageStyle"
 			layout="prev, pager, next, sizes, total, jumper"
@@ -470,7 +470,7 @@ export default {
   color:#909399;
   font-weight: 600;
 }
-.levelbtn{
-  padding:7px 6px;
-}
+// .levelbtn{
+//   padding:7px 6px;
+// }
 </style>
