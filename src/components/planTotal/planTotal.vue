@@ -137,7 +137,7 @@
           <el-button v-if="data.type == 0 && hasPerm('110402')" size="mini" type="primary"  @click="addChild(data,node)">添加计划</el-button>
           <el-button class="levelbtn" v-if="data.type == 1 && hasPerm('110404')" size="mini" type="primary" @click="editClick(data)" style="margin-left:2px;">编辑</el-button>
           <el-button class="levelbtn" v-if="data.type == 1 && hasPerm('110404') && data.isForbid == 0" size="mini" type="warning" @click="forbidClick(data)" style="margin-left:2px;">禁用</el-button>
-          <el-button class="levelbtn" v-if="data.type == 1 && hasPerm('110404') && data.isForbid == 1" size="mini" type="warning" @click="openClick(data)" style="margin-left:2px;">启用</el-button>
+          <el-button class="levelbtn" v-if="data.type == 1 && hasPerm('110404') && data.isForbid == 1" size="mini" type="success" @click="openClick(data)" style="margin-left:2px;">启用</el-button>
           <el-button class="levelbtn" v-if="data.type == 1 && hasPerm('110404')" size="mini" type="danger" @click="deleteClick(data)" style="margin-left:2px;">删除</el-button>
         </span>
     </el-col>
