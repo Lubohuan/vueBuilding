@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: bim-schedule-website
-  namespace: develop
+  namespace: huazhu-app
 spec:
   replicas: 1
   selector:
