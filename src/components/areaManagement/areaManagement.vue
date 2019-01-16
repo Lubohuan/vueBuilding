@@ -17,11 +17,12 @@
        <el-button size="mini" @click="resetForm">重置</el-button>
    </el-col>
   </el-row>
-  <el-row class="tableHead">
-    <el-col :span="2" class="tableCol" style="margin-left:45px;">
+  <el-row class="tableHead" style="display:flex;justify-content: space-between;align-items: center;">
+    <div style="width:calc(100% - 240px);">
+    <el-col :span="4" class="tableCol" style="margin-left:45px;">
       <span>项目名称</span>
     </el-col>
-    <el-col :span="3" class="tableCol">
+    <el-col :span="4" class="tableCol">
       <span>区域名称</span>
     </el-col>
       <el-col :span="2" class="tableCol">
@@ -42,18 +43,25 @@
       <el-col :span="3" class="tableCol">
       <span>未开始</span>
     </el-col>
-    <el-col :span="3"  class="tableCol">
+    </div>
+    <div class="tableCol" style="min-width:240px;">
       <span>操作</span>
-    </el-col>
+    </div>
+    <!-- <el-col :span="3"  class="tableCol" style="min-width:240px;">
+      <span>操作</span>
+    </el-col> -->
   </el-row>
   <el-tree :data="tableData" ref="tree" :default-checked-keys="resourceCheckedKey" show-checkbox node-key="id" :default-expand-all="false" :expand-on-click-node="false" :props="defaultProps" style="overflow:auto;" :indent="5" @check-change="handleSelectionChange">
-    <span class="custom-tree-node" slot-scope="{ node, data }" :style="'margin-left:'+ node.level*(-8.8) + 'px'">
+    <div style="display:flex;justify-content: space-between;align-items: center;" class="custom-tree-node" slot-scope="{ node, data }" :style="'margin-left:'+ node.level*(-8.8) + 'px'">
+      <div style="width:calc(100% - 240px);">
+      
+    <!-- <span class="custom-tree-node" slot-scope="{ node, data }" :style="'margin-left:'+ node.level*(-8.8) + 'px'"> -->
     <el-row style="width:100%;" :style="'margin-left:'+ (30 + node.level*2.1) + 'px'">
-    <el-col :span="2" class="tableCol">
+    <el-col :span="4" class="tableCol">
       <span v-if="data.projectName == null">--</span>
       <span v-else>{{ data.projectName }}</span>
     </el-col>
-    <el-col :span="3" class="tableCol">
+    <el-col :span="4" class="tableCol">
        <span v-if="data.regionName == null">--</span>
        <span v-else>{{ data.regionName }}</span> 
     </el-col>
@@ -81,15 +89,27 @@
        <span v-if="data.notStartCount == null">--</span>
        <span v-else>{{ data.notStartCount }}</span>
     </el-col>
-    <el-col :span="4"  class="tableCol">
+    
+    
+    <!-- <el-col :span="4"  class="tableCol" style="min-width:240px;">
      <span>
             <el-button v-if="hasPerm('110202')" size="mini" type="primary"  @click="addChild(data,node)">添加下级</el-button>
             <el-button v-if="hasPerm('110204')" size="mini" type="primary" @click="editClick(data)">编辑</el-button>
             <el-button v-if="hasPerm('110203')" size="mini" type="danger"  @click="deleteClick(data)">删除</el-button>
         </span>
-    </el-col>
-  </el-row>       
-  </span>
+    </el-col> -->
+    </el-row>       
+    <!-- </span> -->
+    
+    </div>
+    <div class="tableCol" style="min-width:240px;">
+      <span>
+            <el-button v-if="hasPerm('110202')" size="mini" type="primary"  @click="addChild(data,node)">添加下级</el-button>
+            <el-button v-if="hasPerm('110204')" size="mini" type="primary" @click="editClick(data)">编辑</el-button>
+            <el-button v-if="hasPerm('110203')" size="mini" type="danger"  @click="deleteClick(data)">删除</el-button>
+        </span>
+    </div>
+  </div>
    </el-tree>
 
     <!--添加/修改分部分项-->
