@@ -1,7 +1,7 @@
 <template>
 <!-- 新增/修改形象进度统计项 -->
 <div class="addProgress">
-  <el-form :model="dataModel" :rules="rules" ref="addtask" label-width="150px">
+  <el-form :model="dataModel" :rules="rules" ref="updatetask" label-width="150px">
      <el-form-item v-if="isUps" label="项目名称：" prop="projectIdArry">
        <el-cascader :options="listOrgInfoList" v-model="dataModel.projectIdArry" :props="defaultPropss" size="small" placeholder="请选择项目" style="width:100%;" :disabled="isUps" @change="changeCheckProgress"></el-cascader>
     </el-form-item>
@@ -28,7 +28,7 @@
     <el-form-item label="工程总产值(万元)：" prop="outputTotal" >
         <el-input v-model="dataModel.outputTotal" size="small" maxlength="9" :disabled="isUp"></el-input>
     </el-form-item>
-    <el-form-item label="计划开始时间：" prop="startTime" >
+    <el-form-item label="计划开始时间：" prop="startTime" style="width:49%;display:inline-block;">
         <el-date-picker
             size="small"
             v-model="dataModel.startTime"
@@ -37,7 +37,10 @@
             placeholder="选择日期">
             </el-date-picker>
     </el-form-item>
-    <el-form-item label="计划完成时间" prop="endTime" >
+    <el-form-item label="里程碑" prop="startIsms" style="width:50%;display:inline-block;">
+        <el-checkbox v-model="dataModel.startIsms">是</el-checkbox>
+    </el-form-item>
+    <el-form-item label="计划完成时间：" prop="endTime" style="width:49%;display:inline-block;">
         <el-date-picker
             size="small"
             v-model="dataModel.endTime"
@@ -46,8 +49,8 @@
             placeholder="选择日期">
             </el-date-picker>
     </el-form-item>
-    <el-form-item label="里程碑" prop="isMilestone" >
-        <el-checkbox v-model="dataModel.isMilestone">是</el-checkbox>
+    <el-form-item label="里程碑" prop="endIsms" style="width:50%;display:inline-block;">
+        <el-checkbox v-model="dataModel.endIsms">是</el-checkbox>
     </el-form-item>
     <!-- <el-row>
           <el-col :span="17">
@@ -76,7 +79,7 @@
 import { addVisualStatItem,updateVisualStatItemById,listRegion} from "../api/system_interface.js";
 import { mapState, mapActions } from 'vuex'
 export default {
-  name: "addtask",
+  name: "updatetask",
   data() {
     return {
       dataModel: {
@@ -94,7 +97,8 @@ export default {
         subIdArry:[],
         startTime:'',
         endTime:'',
-        isMilestone:false
+        endIsms:false,
+        startIsms : false,
       },
       //数据校验
       rules: {
@@ -105,8 +109,8 @@ export default {
         unitId: [{ required: true, message: "请选择形象单位", trigger: "blur" }],
         budgetTotal: [{ required: true, message: "请输入预算工程量", trigger: "blur" }],
         outputTotal: [{ required: true, message: "请输入工程总产值", trigger: "blur" }],
-        startTime: [{ required: true, message: "请选择开始时间", trigger: "blur" }],
-        endTime: [{ required: true, message: "请选择完成时间", trigger: "blur" }],
+        // startTime: [{ required: true, message: "请选择开始时间", trigger: "blur" }],
+        // endTime: [{ required: true, message: "请选择完成时间", trigger: "blur" }],
         // isMilestone: [{ required: true, message: "请选择是否里程碑", trigger: "blur" }],
       },
       radio: "",
@@ -184,12 +188,17 @@ export default {
      反显数据
      */
     async update(data) {
-    
+      console.log(data);
       //this.reset();
-        if(data.isMilestone == '0'){
-            data.isMilestone = false;
+        if(!data.startIsms || data.startIsms==0){
+            data.startIsms = false;
         }else{
-            data.isMilestone = true;
+            data.startIsms = true;
+        }
+        if(!data.endIsms || data.endIsms==0){
+            data.endIsms = false;
+        }else{
+            data.endIsms = true;
         }
       
       await this.getSubsectionList();
@@ -224,18 +233,22 @@ export default {
 
       //查找地区父级
       let objects = this.$common.initTree(this.reginList);
-      this.dataModel.regionIdArry  = this.$common.findParents(objects,data.regionId);
-      //Object.defineProperty(this.dataModel,'regionIdArry',{value:this.$common.findParents(objects,data.regionId)});
+      //this.dataModel.regionIdArry  = this.$common.findParents(objects,data.regionId);
+      // setTimeout(()=>{
+      //   this.dataModel.regionIdArry  = this.$common.findParents(objects,data.regionId);
+      // },0);this.$set.(key, value)
+      this.$set(this.dataModel,'regionIdArry', this.$common.findParents(objects,data.regionId));
+      console.log(this.dataModel.regionIdArry,'父区域');
       //查找分部分项父级
       let objectss = this.$common.initTree(this.bitemList);
       this.dataModel.subIdArry  = this.$common.findParents(objectss,data.subId);
-  
+      console.log(this.dataModel.subIdArry,'分部分项');
       // console.log(this.dataModel.subIdArry,'this.dataModel.subIdArry ');
     },
 
     //重置方法
     reset() {
-      const AddStat = this.$refs["addtask"];
+      const AddStat = this.$refs["updatetask"];
       AddStat.resetFields();
       this.dataModel.budgetTotal = null;
       this.dataModel.outputTotal = null;
@@ -252,6 +265,8 @@ export default {
       this.isSuccess = false;
       this.isUp = false;
       this.isUps = false;
+      this.dataModel.endIsms = false;
+      this.dataModel.startIsms = false;
     },
 
     //关闭弹框
@@ -263,7 +278,7 @@ export default {
     //点击提交
     commit() {
       console.log(this.dataModel.startTime,"this.dataModel.subIdArry");
-      this.$refs["addtask"].validate(valid => {
+      this.$refs["updatetask"].validate(valid => {
         if (!valid) {
           return;
         }
@@ -279,6 +294,8 @@ export default {
 
     //添加形象进度统计项
     addVisualStatItem() {
+      this.dataModel.endIsms = this.dataModel.endIsms == true?1:0;
+      this.dataModel.startIsms = this.dataModel.startIsms == true?1:0;
       addVisualStatItem(this.dataModel)
         .then(response => {
           if (response.code == "200") {
@@ -298,6 +315,8 @@ export default {
 
     //修改形象进度统计项
     updateVisualStatItemById() {
+      this.dataModel.endIsms = this.dataModel.endIsms == true?1:0;
+      this.dataModel.startIsms = this.dataModel.startIsms == true?1:0;
       updateVisualStatItemById(this.dataModel)
         .then(response => {
           if (response.code == "200") {

@@ -28,7 +28,7 @@
     <el-form-item label="工程总产值(万元)：" prop="outputTotal" >
         <el-input v-model="dataModel.outputTotal" size="small" maxlength="9" :disabled="isUp"></el-input>
     </el-form-item>
-    <el-form-item label="计划开始时间：" prop="startTime" >
+    <el-form-item label="计划开始时间：" prop="startTime" style="width:49%;display:inline-block;">
         <el-date-picker
             size="small"
             v-model="dataModel.startTime"
@@ -37,7 +37,10 @@
             placeholder="选择日期">
             </el-date-picker>
     </el-form-item>
-    <el-form-item label="计划完成时间" prop="endTime" >
+    <el-form-item label="里程碑" prop="startIsms" style="width:50%;display:inline-block;">
+        <el-checkbox v-model="dataModel.startIsms">是</el-checkbox>
+    </el-form-item>
+    <el-form-item label="计划完成时间：" prop="endTime" style="width:49%;display:inline-block;">
         <el-date-picker
             size="small"
             v-model="dataModel.endTime"
@@ -46,8 +49,8 @@
             placeholder="选择日期">
             </el-date-picker>
     </el-form-item>
-    <el-form-item label="里程碑" prop="isMilestone" >
-        <el-checkbox v-model="dataModel.isMilestone">是</el-checkbox>
+    <el-form-item label="里程碑" prop="endIsms" style="width:50%;display:inline-block;">
+        <el-checkbox v-model="dataModel.endIsms">是</el-checkbox>
     </el-form-item>
     <!-- <el-row>
           <el-col :span="17">
@@ -105,8 +108,8 @@ export default {
         unitId: [{ required: true, message: "请选择形象单位", trigger: "blur" }],
         budgetTotal: [{ required: true, message: "请输入预算工程量", trigger: "blur" }],
         outputTotal: [{ required: true, message: "请输入工程总产值", trigger: "blur" }],
-        startTime: [{ required: true, message: "请选择开始时间", trigger: "blur" }],
-        endTime: [{ required: true, message: "请选择完成时间", trigger: "blur" }],
+        // startTime: [{ required: true, message: "请选择开始时间", trigger: "blur" }],
+        // endTime: [{ required: true, message: "请选择完成时间", trigger: "blur" }],
         // isMilestone: [{ required: true, message: "请选择是否里程碑", trigger: "blur" }],
       },
       radio: "",
@@ -184,12 +187,17 @@ export default {
      反显数据
      */
     async update(data) {
-    
+      console.log(data);
       //this.reset();
-        if(data.isMilestone == '0'){
-            data.isMilestone = false;
+        if(!data.startIsms || data.startIsms==0){
+            data.startIsms = false;
         }else{
-            data.isMilestone = true;
+            data.startIsms = true;
+        }
+        if(!data.endIsms || data.endIsms==0){
+            data.endIsms = false;
+        }else{
+            data.endIsms = true;
         }
       
       await this.getSubsectionList();
@@ -252,6 +260,8 @@ export default {
       this.isSuccess = false;
       this.isUp = false;
       this.isUps = false;
+      this.dataModel.endIsms = false;
+      this.dataModel.startIsms = false;
     },
 
     //关闭弹框
@@ -271,7 +281,8 @@ export default {
          this.dataModel.regionId  = this.dataModel.regionIdArry[this.dataModel.regionIdArry.length - 1];
          this.dataModel.subId     = this.dataModel.subIdArry[this.dataModel.subIdArry.length - 1];
          this.dataModel.projectId = this.dataModel.projectIdArry[this.dataModel.projectIdArry.length - 1];
-         this.dataModel.isMilestone = this.dataModel.isMilestone == true?1:0;
+         this.dataModel.endIsms = this.dataModel.endIsms == true?1:0;
+         this.dataModel.startIsms = this.dataModel.startIsms == true?1:0;
         //根据是否有数据传入决定执行新增还是修改
         const result = this.dataModel.optype =='update' ? this.updateVisualStatItemById() : this.addVisualStatItem();
       });

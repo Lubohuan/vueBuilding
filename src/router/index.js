@@ -100,6 +100,14 @@ export default new Router({
               require(['../components/planYear/planYear.vue'], resolve)
             }
           },
+          //项目计划
+          {
+            path: '/planProject',
+            name: 'planProject',
+            component: (resolve) => {
+              require(['../components/planProject/planProject.vue'], resolve)
+            }
+          },
           //
           {
             path: '/testvuetable',

@@ -1,12 +1,31 @@
 <template>
   <div class="contains">
     <h1>树表格实现</h1>
-    <tree-table ref="recTree" :list.sync="treeDataSource" @actionFunc="actionFunc" @deleteFunc="deleteFunc" @handlerExpand="handlerExpand" @orderByFunc="orderByFunc"></tree-table>
+    <el-table :data="treeDataSource" style="width: 100%;">
+                <table-tree-column prop="Id" treeKey="Id" label="id"></table-tree-column>
+                <el-table-column label="姓名">
+                  <template slot-scope="scope">
+                    <span>{{scope.row.ResponsibleName}}</span>
+                    
+                  </template>
+                </el-table-column>
+                <el-table-column label="权限">
+                  <template slot-scope="scope">
+                   <span>{{scope.row.CreateTime}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column width="200" label="操作">
+                  <template slot-scope="scope">
+                    <el-button type="primary" size="mini" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
+                    
+                  </template>
+                </el-table-column>
+              </el-table>
   </div>
 </template>
 <script>
 import dataJson from './data.json'
-import treeTable from '../treeTable/tree-table.vue'
+import tableTreeColumn from '../treeTable'
 export default {
   data() {
     return {
@@ -14,7 +33,7 @@ export default {
     }
   },
   components: {
-    treeTable
+    tableTreeColumn
   },
   methods: {
     orderByFunc(val) {
