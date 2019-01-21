@@ -108,9 +108,9 @@
             <span v-if="scope.row.finishBudgetTotalRate">{{$common.fomatPrecent(scope.row.finishBudgetTotalRate)}}%</span>
           </template>
        </el-table-column> -->
-       <el-table-column prop="finishBudgetTotal"  label="累计完成比例"   min-width="100" header-cell-style="tr_title">
+       <el-table-column prop="finishBudgetTotalRate"  label="累计完成比例"   min-width="100" header-cell-style="tr_title">
           <template slot-scope="scope" style="text-align:left;">
-            <el-progress :stroke-width="13"  :percentage="$common.fomatPrecent(Number(scope.row.finishBudgetTotal))" color="#3296fa"></el-progress>
+            <el-progress :stroke-width="13"  :percentage="$common.fomatPrecent(Number(scope.row.finishBudgetTotalRate))" color="#3296fa"></el-progress>
           </template>
        </el-table-column>
        <el-table-column prop="finishOutput" :label="ifTime" align="center"></el-table-column>
