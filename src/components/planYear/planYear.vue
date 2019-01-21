@@ -31,39 +31,31 @@
   </el-row>
   
  <el-row class="tableHead">
-    <el-col :span="2" class="tableCol" style="margin-left:35px;">
+    <el-col :span="3" class="tableCol" style="margin-left:35px;">
       <span>项目名称</span>
     </el-col>
-    <el-col :span="2" class="tableCol">
+    <el-col :span="3" class="tableCol">
       <span>区域名称</span>
     </el-col>
-      <el-col :span="1" class="tableCol">
+      <el-col :span="2" class="tableCol">
       <span>里程碑</span>
     </el-col>
-    <el-col :span="1" class="tableCol">
-      <span>形象单位</span>
-    </el-col>
-    <el-col :span="2" class="tableCol" style="margin-left:-10px;">
-      <span>总工程量</span>
-    </el-col>
-    <el-col :span="2" class="tableCol" >
-      <span>累计完成</span>
-    </el-col>
+    
     <el-col :span="2" class="tableCol" style="margin-left:-10px;">
       <span>总产值(万元)</span>
     </el-col>
-    <el-col :span="1" class="tableCol">
+    <el-col :span="2" class="tableCol">
       <span>完成产值(万元)</span>
     </el-col>
       <el-col :span="2" class="tableCol" >
       <span>完成比例</span>
     </el-col>
-    <el-col :span="1" class="tableCol">
+    <!-- <el-col :span="2" class="tableCol">
       <span>年计划量</span>
     </el-col>
-      <el-col :span="1" class="tableCol" style="margin-left:-10px;">
+      <el-col :span="2" class="tableCol" style="margin-left:-10px;">
       <span>年完成量</span>
-    </el-col>
+    </el-col> -->
     <el-col :span="2" class="tableCol">
       <span>年计划产值(万元)</span>
     </el-col>
@@ -73,14 +65,14 @@
     <el-col :span="2" class="tableCol" style="margin-left:-10px;">
       <span>年完成比例</span>
     </el-col>
-    <el-col :span="1"  class="tableCol" style="margin-left:-25px;">
+    <el-col :span="4"  class="tableCol" style="margin-left:-25px;">
       <span>操作</span>
     </el-col>
   </el-row>
   <el-tree :data="tableData" ref="tree" node-key="id" :default-expand-all="false" :expand-on-click-node="false" :props="defaultProps" style="width:100%;box-sizing: border-box;" :indent="5" >
     <span class="custom-tree-node" slot-scope="{ node, data }" :style="'margin-left:'+ node.level*(-8.8) + 'px'">
     <el-row style="width:100%;" :style="'margin-left:'+ (30 + node.level*2.1) + 'px'">
-    <el-col :span="2" class="tableCol" style="text-align:left;">
+    <el-col :span="3" class="tableCol" style="text-align:left;">
       <img src="../../assets/wbs.png" style="height:20px;" v-if="data.type == 0" />
       
       <el-tooltip class="item" effect="dark" :content="data.projectName" placement="top">
@@ -91,79 +83,69 @@
         </span>
       </el-tooltip>
     </el-col>
-    <el-col :span="2" class="tableCol">
+    <el-col :span="3" class="tableCol">
       <el-tooltip class="item" effect="dark" :content="data.type==0?data.regionName:data.statName" placement="top">
        <span class="tableCol" style="display:inline-block;width:100%;" v-if="data.type == 0">{{ data.regionName }}</span>
        <span class="tableCol" style="display:inline-block;width:100%;" v-if="data.type == 1">{{ data.statName }}</span>
       </el-tooltip>
     </el-col>
-    <el-col :span="1" class="tableCol">
+    <el-col :span="2" class="tableCol">
        <span v-if="data.isMilestone == 0">否</span>
        <span v-else>是</span> 
     </el-col>
-    <el-col :span="1" class="tableCol" >
-       <span v-if="!data.unitName">--</span>
-       <span v-else>{{ data.unitName }}</span>
+    
+    <el-col :span="2" class="tableCol">
+       <span v-if="data.profilePlanOutput == null">--</span>
+       <span v-else>{{ data.profilePlanOutput }}</span>
     </el-col>
     <el-col :span="2" class="tableCol">
-       <span v-if="data.budgetTotal == null">--</span>
-       <span v-else>{{ data.budgetTotal }}</span>
-    </el-col>
-    <el-col :span="2" class="tableCol">
-       <span v-if="data.finishBudget == null">--</span>
-       <span v-else>{{ data.finishBudget }}</span>
-    </el-col>
-    <el-col :span="2" class="tableCol">
-       <span v-if="data.outputTotal == null">--</span>
-       <span v-else>{{ data.outputTotal }}</span>
-    </el-col>
-    <el-col :span="1" class="tableCol">
-       <span v-if="data.finishOutput == null">--</span>
-       <span v-else>{{ data.finishOutput }}</span>
+       <span v-if="data.profileFinishOutput == null">--</span>
+       <span v-else>{{ data.profileFinishOutput }}</span>
     </el-col>
      
     <el-col :span="2" class="tableCol" style="text-align:left;box-sizing:border-box;padding-left:20px;">
        
       
-        <el-progress v-if="!data.finishOutputRate" :stroke-width="13"  :percentage="0"></el-progress>
-        <el-progress v-else :stroke-width="13" :percentage="$common.fomatPrecent(Number(data.finishOutputRate))"></el-progress>
+        <el-progress v-if="!data.profileFinishOutputRate" :stroke-width="13"  :percentage="0"></el-progress>
+        <el-progress v-else :stroke-width="13" :percentage="$common.fomatPrecent(Number(data.profileFinishOutputRate))"></el-progress>
         
     </el-col>
-    <el-col :span="1" class="tableCol">
-       <span v-if="data.yearPlanBudget == null">--</span>
-       <span v-else>
+    <el-col :span="2" class="tableCol">
+       <!-- <span v-if="!data.planOutput">0</span> -->
+       <span >
          <!-- {{ data.yearPlanBudget}} -->
-         <el-input  size="mini" v-model="data.yearPlanBudget" v-if="data.update == 0" disabled/>
+         <el-input  size="mini" v-model="data.yearPlanOutput" v-if="data.update == 0" disabled/>
          <el-input  size="mini" v-model="focusvalue" v-if="data.update == 1"/>
        </span>
     </el-col>
 
-    <el-col :span="1" class="tableCol" >
-       <span v-if="data.yearFinishBudget == null">--</span>
-       <span v-else>{{ data.yearFinishBudget}}</span>
+    <el-col :span="2" class="tableCol" >
+       <span v-if="data.yearFinishOutput == null">--</span>
+       <span v-else>{{ data.yearFinishOutput}}</span>
     </el-col>
-    <el-col :span="2" class="tableCol">
+    <!-- <el-col :span="2" class="tableCol">
        <span v-if="data.yearPlanOutput == null">--</span>
        <span v-else>{{ data.yearPlanOutput}}</span>
     </el-col>
     <el-col :span="2" class="tableCol">
        <span v-if="data.yearFinishOutput == null">--</span>
        <span v-else>{{ data.yearFinishOutput}}</span>
-    </el-col>
+    </el-col> -->
     <el-col :span="2" class="tableCol" style="text-align:left;box-sizing:border-box;padding-left:20px;">
        
       
-        <el-progress v-if="!data.yearFinishRate" :stroke-width="13"  :percentage="0"></el-progress>
-        <el-progress v-else :stroke-width="13" :percentage="$common.fomatPrecent(Number(data.yearFinishRate))"></el-progress>
+        <el-progress v-if="!data.yearFinishOutputRate" :stroke-width="13"  :percentage="0"></el-progress>
+        <el-progress v-else :stroke-width="13" :percentage="$common.fomatPrecent(Number(data.yearFinishOutputRate))"></el-progress>
         
     </el-col>
-    <el-col :span="1"  class="tableCol">
+    <el-col :span="4"  class="tableCol">
      <span>
           <!-- <el-button v-if="hasPerm('110504')" size="mini" type="primary"  @click="addChild(data,node)">添加计划</el-button>
           <el-button v-if="hasPerm('110204')" size="mini" type="primary" @click="editClick(data)">编辑</el-button> -->
           <!-- <el-button v-if="data.type == 0" size="mini" type="primary"  @click="addChild(data,node)">添加计划</el-button> -->
-          <el-button v-if="data.type == 1 && data.update == 0 && hasPerm('110504')" size="mini" type="primary" @click="editClick(data)">编辑</el-button>
+          <el-button v-if="data.update == 0 && hasPerm('110504')" size="mini" type="primary" @click="editClick(data)">编辑</el-button>
           <el-button v-if="data.update == 1" size="mini" type="primary" @click="ensureeditClick(data)">确认</el-button>
+          <el-button v-if="data.update == 1" size="mini" type="info" @click="cancleeditClick(data)">取消</el-button>
         </span>
     </el-col>
   </el-row>       
@@ -287,15 +269,19 @@ export default {
     },
     //修改年计划量
     editClick(data){
+      if(!this.focusData['yearPlanOutput']){
+        this.focusData['yearPlanOutput'] = 0;
+      }
+      
       if(this.focusData['id'] != data.id && this.focusData['id']){
         this.focusData.update = 0;
       }
       this.focusData = data;
       data.update = 1;
-      this.focusvalue = data.yearPlanBudget;
+      this.focusvalue = data.yearPlanOutput;
     },
     async ensureeditClick(data){
-      if(data.yearPlanBudget == this.focusvalue){
+      if(data.yearPlanOutput == this.focusvalue){
         data.update = 0;
         return ;
       }
@@ -303,7 +289,7 @@ export default {
         this.$message.error('数据非法');
         return ;
       }
-      if(!data['yearPlanId']){
+      if(data['yearPlanOutput'] == 0){
         await this.addnowdata(data);
       }else{
         await this.updatenowdata(data);
@@ -312,14 +298,19 @@ export default {
       //this.focusvalue = data.yearPlanBudget
       //data.update = 0;
     },
+    //取消
+    cancleeditClick(data){
+      data.update = 0;
+      this.focusvalue = data.yearPlanOutput
+    },
     //修改数据
     async updatenowdata(data){
       console.log(data);
         updateYearPlan({
-          "id":data.yearPlanId,
-          "planFinish": this.focusvalue,
-          // "visualStatId": data.id,
-          // "yearNum": this.nowyear
+          "id":data.id,
+          "planOutput": this.focusvalue,
+          //"regionId": data.id,
+          "yearNum": this.nowyear
         })
           .then(response => {
             if (response.code == "200") {
@@ -339,15 +330,15 @@ export default {
     //增加数据
     async addnowdata(data){
         addYearPlan({
-          "planFinish": this.focusvalue,
-          "visualStatId": data.id,
+         "planOutput": this.focusvalue,
+          "regionId": data.id,
           "yearNum": this.nowyear
         })
           .then(response => {
             if (response.code == "200") {
                   data.update = 0;
-                  data.yearPlanBudget = this.focusvalue;
-                  data['yearPlanId'] = response.body;
+                  data.yearPlanOutput = this.focusvalue;
+                  //data['yearPlanOutput'] = response.body;
                   this.$message.success('更新成功');
                   //this.refreshList();
                 } else {
@@ -461,6 +452,7 @@ export default {
           }
         }
         list[i]['type'] = 0;//项目
+        list[i]['update'] = '0';
       }
       return list;
     },

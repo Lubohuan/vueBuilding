@@ -107,7 +107,7 @@ export default {
         outputTotal: [{ required: true, message: "请输入工程总产值", trigger: "blur" }],
         startTime: [{ required: true, message: "请选择开始时间", trigger: "blur" }],
         endTime: [{ required: true, message: "请选择完成时间", trigger: "blur" }],
-        isMilestone: [{ required: true, message: "请选择是否里程碑", trigger: "blur" }],
+        // isMilestone: [{ required: true, message: "请选择是否里程碑", trigger: "blur" }],
       },
       radio: "",
       defaultProps: {

@@ -3,7 +3,7 @@
 <div class="bitem">
    <el-breadcrumb separator-class="el-icon-arrow-right" class="breadTitle">
     <el-breadcrumb-item :to="{ path: '' }">生产计划管理 </el-breadcrumb-item>
-    <el-breadcrumb-item>总进度计划</el-breadcrumb-item>
+    <el-breadcrumb-item>项目阶段性进度计划</el-breadcrumb-item>
     </el-breadcrumb>
    <!-- <el-row>
     <el-col :span="24">
@@ -26,25 +26,25 @@
 
   
  <el-row class="tableHead" style="">
-    <el-col :span="3" class="tableCol" style="margin-left:35px;text-align:left;">
+    <el-col :span="2" class="tableCol" style="margin-left:35px;">
       <span>项目名称</span>
     </el-col>
-    <el-col :span="3" class="tableCol">
+    <el-col :span="2" class="tableCol">
       <span>区域名称</span>
     </el-col>
       <el-col :span="1" class="tableCol">
       <span>里程碑</span>
     </el-col>
-      <el-col :span="2" class="tableCol" style="margin-left:-10px;">
+      <el-col :span="2" class="tableCol">
       <span>开始时间</span>
     </el-col>
-      <el-col :span="2" class="tableCol" >
+      <el-col :span="2" class="tableCol" style="margin-left:-10px;">
       <span>结束时间</span>
     </el-col>
-     <el-col :span="2" class="tableCol" style="margin-left:-10px;">
+     <el-col :span="1" class="tableCol" >
       <span>工期</span>
     </el-col>
-    <!-- <el-col :span="1" class="tableCol">
+    <el-col :span="1" class="tableCol">
       <span>形象单位</span>
     </el-col>
     <el-col :span="1" class="tableCol" style="margin-left:-10px;">
@@ -52,7 +52,7 @@
     </el-col>
     <el-col :span="1" class="tableCol" >
       <span>累计完成</span>
-    </el-col> -->
+    </el-col>
     <el-col :span="2" class="tableCol">
       <span>总产值(万元)</span>
     </el-col>
@@ -66,10 +66,10 @@
       <span>操作</span>
     </el-col>
   </el-row>
-  <el-tree   :data="tableData" ref="tree" node-key="id" :default-expand-all="true" :expand-on-click-node="false" :props="defaultProps" style="width:100%;box-sizing: border-box;" :indent="5" >
+  <el-tree   :data="tableData" ref="tree" node-key="id" :default-expand-all="false" :expand-on-click-node="false" :props="defaultProps" style="width:100%;box-sizing: border-box;" :indent="5" >
     <span class="custom-tree-node" slot-scope="{ node, data }" :style="'margin-left:'+ node.level*(-8.8) + 'px'">
     <el-row style="width:100%;" :style="'margin-left:'+ (30 + node.level*2.1) + 'px'">
-    <el-col :span="3" class="tableCol" style="text-align:left;">
+    <el-col :span="2" class="tableCol" style="text-align:left;">
       <img src="../../assets/wbs.png" style="height:20px;" v-if="data.type == 0" />
       <el-tooltip class="item" effect="dark" :content="data.projectName" placement="top">
         <span v-if="data.projectName == null">--</span>
@@ -80,7 +80,7 @@
       </el-tooltip>
       
     </el-col>
-    <el-col :span="3" class="tableCol">
+    <el-col :span="2" class="tableCol">
       <el-tooltip class="item" effect="dark" :content="data.type==0?data.regionName:data.statName" placement="top">
         <span class="tableCol" style="display:inline-block;width:100%;" v-if="data.type == 0">{{ data.regionName }}</span>
         <span class="tableCol" style="display:inline-block;width:100%;" v-if="data.type == 1">{{ data.statName }}</span>
@@ -98,11 +98,11 @@
        <span v-if="data.endTime == null">--</span>
        <span v-else>{{ data.endTime.substr(0,10) }}</span>
     </el-col>
-    <el-col :span="2" class="tableCol" >
+    <el-col :span="1" class="tableCol" >
        <span v-if="data.durationTime == null">--</span>
        <span v-else>{{ data.durationTime }}d</span>
     </el-col>
-    <!-- <el-col :span="1" class="tableCol" >
+    <el-col :span="1" class="tableCol" >
        <span v-if="!data.unitName">--</span>
        <span v-else>{{ data.unitName }}</span>
     </el-col>
@@ -113,32 +113,32 @@
     <el-col :span="1" class="tableCol">
        <span v-if="data.finishBudget == null">--</span>
        <span v-else>{{ data.finishBudget }}</span>
-    </el-col> -->
-    <el-col :span="2" class="tableCol">
-       <span v-if="data.profilePlanOutput == null">--</span>
-       <span v-else>{{ data.profilePlanOutput }}</span>
     </el-col>
     <el-col :span="2" class="tableCol">
-       <span v-if="data.profileFinishOutput == null">--</span>
-       <span v-else>{{ data.profileFinishOutput }}</span>
+       <span v-if="data.outputTotal == null">--</span>
+       <span v-else>{{ data.outputTotal }}</span>
+    </el-col>
+    <el-col :span="2" class="tableCol">
+       <span v-if="data.finishOutput == null">--</span>
+       <span v-else>{{ data.finishOutput }}</span>
     </el-col>
     <el-col :span="3" class="tableCol" style="text-align:left;box-sizing:border-box;padding-left:20px;">
        <!-- <span v-if="data.finishOutputRate == null">--</span>
        <span v-else>{{ data.finishOutputRate }}</span> -->
       
-        <el-progress v-if="!data.profileFinishOutputRate" :stroke-width="13"  :percentage="0"></el-progress>
-        <el-progress v-else :stroke-width="13" :percentage="$common.fomatPrecent(Number(data.profileFinishOutputRate))"></el-progress>
+        <el-progress v-if="!data.finishOutputRate" :stroke-width="13"  :percentage="0"></el-progress>
+        <el-progress v-else :stroke-width="13" :percentage="$common.fomatPrecent(Number(data.finishOutputRate))"></el-progress>
         
     </el-col>
     <el-col :span="4"  class="tableCol" style="margin-left:-10px;">
      <span>
           <!-- <el-button v-if="hasPerm('110404')" size="mini" type="primary"  @click="addChild(data,node)">添加计划</el-button>
           <el-button v-if="hasPerm('110204')" size="mini" type="primary" @click="editClick(data)">编辑</el-button> -->
-          <el-button v-if="data.type == 0 && hasPerm('110402')" size="mini" type="primary"  @click="addChild(data,node)">编辑</el-button>
-          <!-- <el-button class="levelbtn" v-if="data.type == 1 && hasPerm('110404')" size="mini" type="primary" @click="editClick(data)" style="margin-left:2px;">编辑</el-button>
+          <el-button v-if="data.type == 0 && hasPerm('110402')" size="mini" type="primary"  @click="addChild(data,node)">添加计划</el-button>
+          <el-button class="levelbtn" v-if="data.type == 1 && hasPerm('110404')" size="mini" type="primary" @click="editClick(data)" style="margin-left:2px;">编辑</el-button>
           <el-button class="levelbtn" v-if="data.type == 1 && hasPerm('110404') && data.isForbid == 0" size="mini" type="warning" @click="forbidClick(data)" style="margin-left:2px;">禁用</el-button>
           <el-button class="levelbtn" v-if="data.type == 1 && hasPerm('110404') && data.isForbid == 1" size="mini" type="success" @click="openClick(data)" style="margin-left:2px;">启用</el-button>
-          <el-button class="levelbtn" v-if="data.type == 1 && hasPerm('110404')" size="mini" type="danger" @click="deleteClick(data)" style="margin-left:2px;">删除</el-button> -->
+          <el-button class="levelbtn" v-if="data.type == 1 && hasPerm('110404')" size="mini" type="danger" @click="deleteClick(data)" style="margin-left:2px;">删除</el-button>
         </span>
     </el-col>
   </el-row>       
@@ -158,12 +158,12 @@
    </el-pagination> -->
   
    <!--类别管理-->
-    <el-dialog title="修改计划任务" :center="true" :visible.sync="dialog.updatetotal" width="800px" @open="$nextTick(()=>$refs['updatetotal'].update(nowdata))"  @close="$refs['updatetotal'].reset()">
-      <updatetotal ref="updatetotal" @close="dialog.updatetotal = false" @refreshData="refreshList"></updatetotal>
+    <el-dialog title="新增计划任务" :center="true" :visible.sync="dialog.addtask" width="800px" @open="$nextTick(()=>$refs['addtask'].update(nowdata))"  @close="$refs['addtask'].reset()">
+      <addtask ref="addtask" @close="dialog.addtask = false" @refreshData="refreshList"></addtask>
     </el-dialog>
-     <!-- <el-dialog title="修改计划任务" :center="true" :visible.sync="dialog.updatetask" width="800px" @open="$nextTick(()=>$refs['updatetask'].update(nowdata))"  @close="$refs['updatetask'].reset()">
+     <el-dialog title="修改计划任务" :center="true" :visible.sync="dialog.updatetask" width="800px" @open="$nextTick(()=>$refs['updatetask'].update(nowdata))"  @close="$refs['updatetask'].reset()">
       <updatetask ref="updatetask" @close="dialog.updatetask = false" @refreshData="refreshList"></updatetask>
-    </el-dialog> -->
+    </el-dialog>
      <!--添加/修改分部分项-->
     <!-- <el-dialog :title="subObject.id?'修改分部分项':'新增分部分项'" :center="true" :visible.sync="dialog.addSubsection" width="800px"  @open="$nextTick(()=>$refs['addSubsection'].update(subObject))" @close="$refs['addSubsection'].reset()">
       <addSubsection ref="addSubsection" @refreshData="refreshList" @close="dialog.addSubsection = false" ></addSubsection>
@@ -177,14 +177,16 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import updatetotal from "./updatetotal.vue";
+import addtask from "./addtask.vue";
+import updatetask from "./updatetask.vue";
 import addSubChid from "../bitem/addSubChid.vue";
 import addSubsection from "../bitem/addSubsection.vue";
-import {openTaskPlan,forbidTaskPlan,deleteTaskPlan,getTotalPlan, getSubsectionPage, deleteSubsectionById,listProjectType,exportSubsectionByIds,baseinUrl } from "../api/system_interface.js";
+import {getProjectPlan,openTaskPlan,forbidTaskPlan,deleteTaskPlan,getTotalPlan, getSubsectionPage, deleteSubsectionById,listProjectType,exportSubsectionByIds,baseinUrl } from "../api/system_interface.js";
 export default {
-  name: "planTotal",
+  name: "planProject",
   components: {
-    updatetotal,
+    addtask,
+    updatetask,
     addSubsection,
     addSubChid
   },
@@ -214,7 +216,8 @@ export default {
       subName:null,
       total: 0,
       dialog: {
-        updatetotal: false,
+        addtask: false,
+        updatetask:false,
       },
       subObject: {},
       regionIds:'',
@@ -255,7 +258,13 @@ export default {
     addChild(data,node){
       
       this.nowdata = JSON.parse(JSON.stringify(data));
-      this.dialog.updatetotal = true;
+      this.nowdata['optype'] = 'add';//regionId
+      this.nowdata['regionFullName'] = this.nowdata['regionName'];
+      this.nowdata['regionId'] = this.nowdata['id'];
+      this.nowdata['startTime'] = '';
+      this.nowdata['endTime'] = '';
+      this.nowdata['outputTotal'] = '';
+      this.dialog.addtask = true;
       console.log(data);
     },
     editClick(data){
@@ -351,10 +360,10 @@ export default {
       this.refreshList();
     },
 
-    //查询总计划 
+    //查询实施项目计划 
     refreshList() {
       let _this = this;
-        getTotalPlan({
+        getProjectPlan({
         projectId: this.projectIds,
         regionId:this.regionIds
       })

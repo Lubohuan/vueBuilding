@@ -68,6 +68,12 @@ export default {
               code:"110501"
             },
             {
+              id: 44,
+              label: "项目阶段性进度计划",
+              path:"/planProject",
+              code:"110501"
+            },
+            {
               id: 43,
               label: "月进度计划",
               path:"/planProgress",
