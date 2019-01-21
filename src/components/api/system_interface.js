@@ -3,8 +3,8 @@ import uploadRequest from '@/utils/uploadRequest';
 import axios from 'axios'
 
 //环境
-// const domain = 'http://spm.';
-const domain = 'http://autobuild.';
+const domain = 'http://spm.';
+// const domain = 'http://autobuild.';
 
 //请求url
 const baseUrl = domain + 'jiguantong.com/bimScheduleService';
@@ -581,7 +581,7 @@ export function addTotalPlan(data){
     data:data
   })
 }
-//实施项目计划 
+//实施项目计划
 export function getProjectPlan(data){
   return request({
     url: baseUrl + '/task/visualProfilePlan',
