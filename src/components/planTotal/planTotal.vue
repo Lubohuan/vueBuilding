@@ -30,7 +30,7 @@
       <span>项目名称</span>
     </el-col>
     <el-col :span="3" class="tableCol">
-      <span>区域名称</span>
+      <span>名称</span>
     </el-col>
       <el-col :span="1" class="tableCol">
       <span>里程碑</span>
