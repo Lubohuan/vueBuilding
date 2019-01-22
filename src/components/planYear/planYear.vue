@@ -307,7 +307,7 @@ export default {
     async updatenowdata(data){
       console.log(data);
         updateYearPlan({
-          "id":data.id,
+          "id":data.yearPlanId,
           "planOutput": this.focusvalue,
           //"regionId": data.id,
           "yearNum": this.nowyear
@@ -338,7 +338,7 @@ export default {
             if (response.code == "200") {
                   data.update = 0;
                   data.yearPlanOutput = this.focusvalue;
-                  //data['yearPlanOutput'] = response.body;
+                  data['yearPlanId'] = response.body;
                   this.$message.success('更新成功');
                   //this.refreshList();
                 } else {
