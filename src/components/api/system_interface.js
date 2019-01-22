@@ -611,7 +611,7 @@ export function addYearPlan(data){
 //修改形象进度年计划
 export function updateYearPlan(data){
   return request({
-    url: baseUrl + '/task/updateVisualYearPlan',
+    url: baseUrl + '/task/updateRegionYearPlan',
     method: 'put',
     data:data
   })

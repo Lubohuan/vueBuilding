@@ -108,8 +108,21 @@
     </el-col>
     <el-col :span="9" >
         <div v-if="companyType == 2" class="commandCard">
-            <span class="blueBlock"></span>
-            <span class="spanBlock">月度产值预警</span>
+            <!-- <span class="blueBlock"></span>
+            <span class="spanBlock">月度产值预警</span> -->
+            <el-row class="tableTitle">
+                <el-col :span="18">
+                    <span class="blueBlock"></span>
+                    <span class="spanBlock">月度产值预警</span>
+                </el-col>
+                <el-col :span="6" style="text-align:right;">
+                    <div  class="reportTab">
+                        <i @click="reduceMonth" class="el-icon-arrow-left"></i>
+                        <span>{{monthData}}</span>
+                        <i @click="addMonth" class="el-icon-arrow-right"></i>
+                    </div>
+                </el-col>
+            </el-row>
             <el-table  border :data="tableDatas" style="width: 100%"  max-height="129">
             <template slot="empty">
                 <span>暂无月度产值预警</span>
