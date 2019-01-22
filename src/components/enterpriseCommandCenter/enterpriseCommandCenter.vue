@@ -111,15 +111,15 @@
             <!-- <span class="blueBlock"></span>
             <span class="spanBlock">月度产值预警</span> -->
             <el-row class="tableTitle">
-                <el-col :span="18">
+                <el-col :span="16">
                     <span class="blueBlock"></span>
                     <span class="spanBlock">月度产值预警</span>
                 </el-col>
-                <el-col :span="6" style="text-align:right;">
+                <el-col :span="8" style="text-align:right;">
                     <div  class="reportTab">
-                        <i @click="reduceMonth" class="el-icon-arrow-left"></i>
-                        <span>{{monthData}}</span>
-                        <i @click="addMonth" class="el-icon-arrow-right"></i>
+                        <i @click="reduceMonthss" class="el-icon-arrow-left"></i>
+                        <span>{{monthDatass}}</span>
+                        <i @click="addMonthss" class="el-icon-arrow-right"></i>
                     </div>
                 </el-col>
             </el-row>

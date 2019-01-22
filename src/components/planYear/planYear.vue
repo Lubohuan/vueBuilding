@@ -316,7 +316,8 @@ export default {
             if (response.code == "200") {
               
                   data.update = 0;
-                  data.yearPlanBudget = this.focusvalue;
+                  data.yearPlanOutput = this.focusvalue;
+                  //data.planOutput = this.focusvalue;
                   this.$message.success('更新成功');
                   
                 } else {
