@@ -14,7 +14,7 @@
     <el-form-item label="选择分部分项：" prop="subIdArry">
         <el-cascader ref="checkBitem"  change-on-select :options="bitemList" v-model="dataModel.subIdArry" :props="defaultProp" size="small" style="width:100%;" :disabled="isUp"  @change="changeCheckBitem"></el-cascader>
     </el-form-item>
-     <el-form-item label="形象进度统计项：" prop="statName">
+     <el-form-item label="名称：" prop="statName">
         <el-input v-model="dataModel.statName" size="small"></el-input>
     </el-form-item>
     <el-form-item label="形象单位：" prop="unitId" class="unitem">
@@ -104,7 +104,7 @@ export default {
       rules: {
         projectIdArry: [{ required: true, message: "请输入项目名称", trigger: "blur" }],
         regionIdArry: [{ required: true, message: "请选择施工区域", trigger: "blur" }],
-        statName: [{ required: true, message: "请输入形象进度统计项名称", trigger: "blur" }],
+        statName: [{ required: true, message: "名称", trigger: "blur" }],
         subIdArry: [{ required: true, message: "请选择分部分项", trigger: "blur" }],
         unitId: [{ required: true, message: "请选择形象单位", trigger: "blur" }],
         budgetTotal: [{ required: true, message: "请输入预算工程量", trigger: "blur" }],

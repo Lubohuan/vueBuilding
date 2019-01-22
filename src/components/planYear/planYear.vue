@@ -35,7 +35,7 @@
       <span>项目名称</span>
     </el-col>
     <el-col :span="3" class="tableCol">
-      <span>区域名称</span>
+      <span>名称</span>
     </el-col>
       <el-col :span="2" class="tableCol">
       <span>里程碑</span>
@@ -69,7 +69,7 @@
       <span>操作</span>
     </el-col>
   </el-row>
-  <el-tree :data="tableData" ref="tree" node-key="id" :default-expand-all="false" :expand-on-click-node="false" :props="defaultProps" style="width:100%;box-sizing: border-box;" :indent="5" >
+  <el-tree :data="tableData" ref="tree" node-key="id" :default-expand-all="true" :expand-on-click-node="false" :props="defaultProps" style="width:100%;box-sizing: border-box;" :indent="5" >
     <span class="custom-tree-node" slot-scope="{ node, data }" :style="'margin-left:'+ node.level*(-8.8) + 'px'">
     <el-row style="width:100%;" :style="'margin-left:'+ (30 + node.level*2.1) + 'px'">
     <el-col :span="3" class="tableCol" style="text-align:left;">
@@ -90,7 +90,7 @@
       </el-tooltip>
     </el-col>
     <el-col :span="2" class="tableCol">
-       <span v-if="data.isMilestone == 0">否</span>
+       <span v-if="data.isms == 0">否</span>
        <span v-else>是</span> 
     </el-col>
     
@@ -112,10 +112,10 @@
     </el-col>
     <el-col :span="2" class="tableCol">
        <!-- <span v-if="!data.planOutput">0</span> -->
-       <span >
+       <span class="spci">
          <!-- {{ data.yearPlanBudget}} -->
-         <el-input  size="mini" v-model="data.yearPlanOutput" v-if="data.update == 0" disabled/>
-         <el-input  size="mini" v-model="focusvalue" v-if="data.update == 1"/>
+         <el-input  size="mini" v-model="data.yearPlanOutput" v-if="data.update == 0" disabled  />
+         <el-input  size="mini" v-model="focusvalue" v-if="data.update == 1"  />
        </span>
     </el-col>
 
@@ -477,5 +477,10 @@ export default {
 .tableHead{
   color:#909399;
   font-weight: 600;
+}
+.spci{
+  .el-input__inner{
+    text-align: center;
+  }
 }
 </style>
