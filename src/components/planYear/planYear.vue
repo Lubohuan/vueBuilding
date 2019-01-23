@@ -69,7 +69,7 @@
       <span>操作</span>
     </el-col>
   </el-row>
-  <el-tree :data="tableData" ref="tree" node-key="id" :default-expand-all="true" :expand-on-click-node="false" :props="defaultProps" style="width:100%;box-sizing: border-box;" :indent="5" >
+  <el-tree :data="tableData" ref="tree"  :default-expand-all="true" :expand-on-click-node="false" :props="defaultProps" style="width:100%;box-sizing: border-box;" :indent="5" >
     <span class="custom-tree-node" slot-scope="{ node, data }" :style="'margin-left:'+ node.level*(-8.8) + 'px'">
     <el-row style="width:100%;" :style="'margin-left:'+ (30 + node.level*2.1) + 'px'">
     <el-col :span="3" class="tableCol" style="text-align:left;">
@@ -151,30 +151,7 @@
   </el-row>       
   </span>
    </el-tree>
-   <!-- <el-pagination background v-if="total>0"
-      class="pageStyle"
-			layout="prev, pager, next, sizes, total, jumper"
-			:page-sizes="[5, 10, 15, 20]"
-			:page-size="pagesize"
-      :current-page="currentPage"
-			:total="total"
-			@current-change="handleCurrentChange"
-			@size-change="handleSizeChange"
-			>
-   </el-pagination> -->
-  
-   <!--类别管理-->
-    <!-- <el-dialog title="新增计划任务" :center="true" :visible.sync="dialog.addtask" width="800px" @open="$nextTick(()=>$refs['addtask'].update(nowdata))">
-      <addtask ref="addtask" @close="dialog.addtask = false" ></addtask>
-    </el-dialog> -->
-     <!--添加/修改分部分项-->
-    <!-- <el-dialog :title="subObject.id?'修改分部分项':'新增分部分项'" :center="true" :visible.sync="dialog.addSubsection" width="800px"  @open="$nextTick(()=>$refs['addSubsection'].update(subObject))" @close="$refs['addSubsection'].reset()">
-      <addSubsection ref="addSubsection" @refreshData="refreshList" @close="dialog.addSubsection = false" ></addSubsection>
-    </el-dialog> -->
-     <!--新增子项-->
-    <!-- <el-dialog title="新增子项" :center="true" :visible.sync="dialog.addSubChid" width="800px" @open="$nextTick(()=>$refs['addSubChid'].update(subObject))" @close="$refs['addSubChid'].reset()">
-      <addSubChid ref="addSubChid" @refreshData="refreshList" @close="dialog.addSubChid = false" ></addSubChid>
-    </el-dialog> -->
+   
   </div>
 </template>
 
@@ -349,7 +326,7 @@ export default {
                   data.yearPlanOutput = this.focusvalue;
                   //data.planOutput = this.focusvalue;
                   this.$message.success('更新成功');
-                  
+                  this.refreshList();
                 } else {
                   this.$message.error(response.msg);
                 }
@@ -371,7 +348,7 @@ export default {
                   data.yearPlanOutput = this.focusvalue;
                   data['yearPlanId'] = response.body;
                   this.$message.success('更新成功');
-                  //this.refreshList();
+                  this.refreshList();
                 } else {
                   this.$message.error(response.msg);
                 }
