@@ -181,7 +181,8 @@ export default {
 
     changeCheckBitem(){
       this.checkBitemLabel = this.$refs["checkBitem"].currentLabels.join("/");
-      this.dataModel.statName = this.checkReginLabel + '/' + this.checkBitemLabel;
+      //this.dataModel.statName = this.checkReginLabel + '/' + this.checkBitemLabel;
+      this.$set(this.dataModel,'statName', this.checkReginLabel + '/' + this.checkBitemLabel);
     },
     /**
      反显数据
@@ -199,7 +200,8 @@ export default {
         // }else{
         //     data.endIsms = true;
         // }
-      
+      data.startIsms = false;
+      data.endIsms = false;
       await this.getSubsectionList();
       this.getUnitList();
       let companyTypes = sessionStorage.getItem("companyType");
