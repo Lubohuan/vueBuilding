@@ -21,7 +21,7 @@
       size="small"
       placeholder="选择年">
     </el-date-picker>
-     <el-cascader :show-all-levels="false" :options="listOrgInfoList" @blur="clearmodel()" v-model="projectId" :props="defaultProps1" size="small" placeholder="请选择项目" clearable></el-cascader>
+     <el-cascader :show-all-levels="false" @change="projectchange" :options="listChildOrgInfoList" @blur="clearmodel()" v-model="projectId" :props="defaultProps1" size="small" placeholder="请选择项目" clearable></el-cascader>
      <el-cascader :show-all-levels="false" :options="reginList" @blur="clearmodel()" v-model="regionId" :props="defaultProp" size="small" placeholder="请选择施工区段" clearable></el-cascader>
    </el-col>
    <el-col :span="6" class="planProgress_btn1" style="text-align:right;">
@@ -232,6 +232,7 @@ export default {
     ...mapState([
      'reginList',
      'listOrgInfoList',
+     'listChildOrgInfoList',
     ]),
   },
   methods: {
@@ -258,6 +259,19 @@ export default {
          this.projectIds = '';
        }
     },
+     projectchange(val){
+      console.log(val);
+      let data = {projectId:''};
+      if( this.projectId.length>=1){
+         
+         data = {projectId:this.projectId[this.projectId.length - 1]};
+       }else{
+         data = {projectId:this.projectId[0]};
+       }
+       this.$store.dispatch('getReginList',data); 
+    },
+    //查询区域列表
+
     addChild(data,node){
       //this.nowdata = data;
       this.dialog.addtask = true;

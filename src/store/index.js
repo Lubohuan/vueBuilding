@@ -79,8 +79,8 @@ export default new Vuex.Store({
     },
 
     //施工区域下拉框
-    getReginList({commit}) {
-        listRegion({})
+    getReginList({commit},data) {
+        listRegion(data={})
           .then(response => {
             if(!response.body){
               commit('updatereginList', [{id:1,regionName:'暂无数据',disabled: true}])
@@ -157,13 +157,13 @@ export default new Vuex.Store({
     //查询当前子项目列表下拉框
     getChildlistOrgInfoList({commit}) {
       return new Promise((resolve, reject) => {
-        listOrgInfo({})
+        listChildOrgInfo({})
         .then(response => {
           if(!response.body){
-            commit('listChildOrgInfoList', [])
+            commit('updateChildlistOrgInfoList', [])
           }
           else{
-            commit('listChildOrgInfoList', response.body)
+            commit('updateChildlistOrgInfoList', response.body)
           }  
           resolve()
         })

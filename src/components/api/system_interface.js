@@ -283,7 +283,7 @@ export function listOrgInfo(data) {
 // 查询子项目下拉框
 export function listChildOrgInfo(data) {
   return request({
-    url: baseUrl + '/system/listOrgInfo',
+    url: baseUrl + '/system/listChOrgInfo',
     method: 'get',
     params:data
   })

@@ -272,7 +272,8 @@ export default {
         this.isRouterAlive = false;
         this.$nextTick(()=>{
                 this.isRouterAlive = true;
-        })              
+        }) ;
+        this.$store.dispatch('getChildlistOrgInfoList');             
       },
 
       //获取用户权限码
@@ -370,6 +371,7 @@ export default {
           this.menuDatas.push(this.menuData[i]);
       }
     }
+    await this.$store.dispatch('getChildlistOrgInfoList'); 
     this.firstProject = this.projectArry;
     this.openDialodg();
   }
