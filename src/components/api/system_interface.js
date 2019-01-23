@@ -280,6 +280,14 @@ export function listOrgInfo(data) {
     params:data
   })
 }
+// 查询子项目下拉框
+export function listChildOrgInfo(data) {
+  return request({
+    url: baseUrl + '/system/listOrgInfo',
+    method: 'get',
+    params:data
+  })
+}
 // 查询项目类型
 export function listProjectType(data) {
   return request({

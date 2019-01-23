@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {getVisualStatItemPage,listRegion,getUnitPage,getSubsectionPage,listOrgInfo,listUserInfo,changelistChOrgInfo} from "../components/api/system_interface.js";
+import {getVisualStatItemPage,listRegion,getUnitPage,getSubsectionPage,listOrgInfo,listChildOrgInfo,listUserInfo,changelistChOrgInfo} from "../components/api/system_interface.js";
 Vue.use(Vuex)
 export default new Vuex.Store({
   strict: false, // 开发中启用严格模式
@@ -11,6 +11,7 @@ export default new Vuex.Store({
     statisList: [], //形象进度统计项列表
     bitemList: [], //分部分项列表
     listOrgInfoList:[],//项目列表
+    listChildOrgInfoList:[],//子项目列表
     userList:[],//用户列表
     userToken:'',//用户token
     orangType:'',
@@ -47,6 +48,9 @@ export default new Vuex.Store({
     },
     updatelistOrgInfoList(state, data) {
       state.listOrgInfoList = data;
+    },
+    updateChildlistOrgInfoList(state, data) {
+      state.listChildOrgInfoList = data;
     },
     updateUserList(state, data) {
       state.userList = data;
@@ -141,6 +145,25 @@ export default new Vuex.Store({
           }
           else{
             commit('updatelistOrgInfoList', response.body)
+          }  
+          resolve()
+        })
+        .catch(error => {
+          console.log(error);
+          reject();
+        });
+      })
+    },
+    //查询当前子项目列表下拉框
+    getChildlistOrgInfoList({commit}) {
+      return new Promise((resolve, reject) => {
+        listOrgInfo({})
+        .then(response => {
+          if(!response.body){
+            commit('listChildOrgInfoList', [])
+          }
+          else{
+            commit('listChildOrgInfoList', response.body)
           }  
           resolve()
         })
