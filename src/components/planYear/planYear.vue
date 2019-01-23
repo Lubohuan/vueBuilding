@@ -22,7 +22,7 @@
       placeholder="选择年">
     </el-date-picker>
      <el-cascader :show-all-levels="false" @change="projectchange" :options="listChildOrgInfoList" @blur="clearmodel()" v-model="projectId" :props="defaultProps1" size="small" placeholder="请选择项目" clearable></el-cascader>
-     <el-cascader :show-all-levels="false" :options="reginList" @blur="clearmodel()" v-model="regionId" :props="defaultProp" size="small" placeholder="请选择施工区段" clearable></el-cascader>
+     <el-cascader :show-all-levels="false" :options="roginTreeList" @blur="clearmodel()" v-model="regionId" :props="defaultProp" size="small" placeholder="请选择施工区段" clearable></el-cascader>
    </el-col>
    <el-col :span="6" class="planProgress_btn1" style="text-align:right;">
        <el-button size="mini" type="success" @click="resarchInfo">搜索</el-button>
@@ -183,7 +183,7 @@ import { mapState, mapActions } from 'vuex';
 //import addtask from "./addtask.vue";
 import addSubChid from "../bitem/addSubChid.vue";
 import addSubsection from "../bitem/addSubsection.vue";
-import {updateYearPlan,addYearPlan,getYearPlan, getSubsectionPage, deleteSubsectionById,listProjectType,exportSubsectionByIds,baseinUrl } from "../api/system_interface.js";
+import {updateYearPlan,listRegionTree,addYearPlan,getYearPlan, getSubsectionPage, deleteSubsectionById,listProjectType,exportSubsectionByIds,baseinUrl } from "../api/system_interface.js";
 export default {
   name: "planYear",
   components: {
@@ -226,6 +226,7 @@ export default {
       nowyear:new Date().getFullYear()+'',
       focusData:{},
       focusvalue:'',
+      roginTreeList:[],
     };
   },
   computed: {
@@ -268,7 +269,22 @@ export default {
        }else{
          data = {projectId:this.projectId[0]};
        }
-       this.$store.dispatch('getReginList',data); 
+        this.regintreedata(data); //
+    },
+    async regintreedata(data) {
+      listRegionTree(data)
+        .then(response => {
+          if (response.code == "200") {
+             this.roginTreeList = response.body;
+            //this.refreshList();
+          } else {
+            this.roginTreeList= [];
+            this.$message.error(response.msg);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     //查询区域列表
 

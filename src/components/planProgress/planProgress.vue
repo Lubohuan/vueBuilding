@@ -19,7 +19,7 @@
    <el-row class="planProgress_row">
    <el-col :span="18">
      <el-cascader :show-all-levels="false"  @change="projectchange" :options="listChildOrgInfoList" v-model="projectId" :props="defaultProps" size="small" placeholder="请选择项目" clearable></el-cascader>
-     <el-cascader :show-all-levels="false" :options="reginList" v-model="regionId" :props="defaultProp" size="small" placeholder="请选择施工区段" clearable></el-cascader>
+     <el-cascader :show-all-levels="false" :options="roginTreeList" v-model="regionId" :props="defaultProp" size="small" placeholder="请选择施工区段" clearable></el-cascader>
      <el-select size="small" v-model="state" placeholder="请选择状态" clearable>
             <el-option v-for="(item,index) in stateList" :label="item.name" :value="item.state" :key="index"></el-option>
      </el-select>
@@ -93,7 +93,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import {getConstructPlanPage,startConstructPlan,stopVisualStatItem,deleteConstructPlanById,baseinUrl} from "../api/system_interface.js";
+import {getConstructPlanPage,startConstructPlan,stopVisualStatItem,deleteConstructPlanById,baseinUrl,listRegionTree} from "../api/system_interface.js";
 import addPlan from "../planProgress/addPlan.vue";
 export default {
   name: "planProgress",
@@ -140,7 +140,8 @@ export default {
         children: "child",
         label: "name",
         value: "id"
-      }
+      },
+      roginTreeList:[],
     };
   },
   computed: {
@@ -162,7 +163,6 @@ export default {
     },
     //项目变化的时候
     projectchange(val){
-      console.log(val);
       let data = {projectId:''};
       if( this.projectId.length>=1){
          
@@ -170,7 +170,22 @@ export default {
        }else{
          data = {projectId:this.projectId[0]};
        }
-       this.$store.dispatch('getReginList',data); 
+       this.regintreedata(data); //
+    },
+    async regintreedata(data) {
+      listRegionTree(data)
+        .then(response => {
+          if (response.code == "200") {
+             this.roginTreeList = response.body;
+            //this.refreshList();
+          } else {
+            this.roginTreeList= [];
+            this.$message.error(response.msg);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     //选择项变化
     handleSelectionChange(val) {
