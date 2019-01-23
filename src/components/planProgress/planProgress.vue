@@ -18,7 +18,7 @@
   </el-row>
    <el-row class="planProgress_row">
    <el-col :span="18">
-     <el-cascader :show-all-levels="false" :options="listOrgInfoList" v-model="projectId" :props="defaultProps" size="small" placeholder="请选择项目" clearable></el-cascader>
+     <el-cascader :show-all-levels="false"  @change="projectchange" :options="listChildOrgInfoList" v-model="projectId" :props="defaultProps" size="small" placeholder="请选择项目" clearable></el-cascader>
      <el-cascader :show-all-levels="false" :options="reginList" v-model="regionId" :props="defaultProp" size="small" placeholder="请选择施工区段" clearable></el-cascader>
      <el-select size="small" v-model="state" placeholder="请选择状态" clearable>
             <el-option v-for="(item,index) in stateList" :label="item.name" :value="item.state" :key="index"></el-option>
@@ -147,6 +147,7 @@ export default {
     ...mapState([
      'reginList',
      'listOrgInfoList',
+     'listChildOrgInfoList',
     ]),
   },
   methods: {
@@ -159,7 +160,18 @@ export default {
         // console.log(rowIndex) //表头行标号为0
         return 'text-align:center'
     },
-
+    //项目变化的时候
+    projectchange(val){
+      console.log(val);
+      let data = {projectId:''};
+      if( this.projectId.length>=1){
+         
+         data = {projectId:this.projectId[this.projectId.length - 1]};
+       }else{
+         data = {projectId:this.projectId[0]};
+       }
+       this.$store.dispatch('getReginList',data); 
+    },
     //选择项变化
     handleSelectionChange(val) {
       this.multipleSelection = val;
