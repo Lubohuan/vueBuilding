@@ -186,6 +186,9 @@ export default {
         // }else{
         //   this.$message.error('敬请期待！');
         // }
+        if(data.path){
+          localStorage.setItem('nowRouter', data.path);
+        }
         this.$router.push(data.path);
         
       },
@@ -235,10 +238,24 @@ export default {
     //   this.orangeType = sessionStorage.getItem("orgType");
     // }
     if(this.companyType == 2||this.companyType== 3){
-       this.$router.push({path:'/enterpriseCommandCenter'});
+      let nowRouter = localStorage.getItem('nowRouter');
+      if(nowRouter){
+        this.$router.push({path:nowRouter});
+      }else{
+        localStorage.setItem('nowRouter', '/enterpriseCommandCenter');
+        this.$router.push({path:'/enterpriseCommandCenter'});
+      }
+       
     }
     if(this.companyType == 4){
-       this.$router.push({path:'/commandCentre'});
+
+      let nowRouter = localStorage.getItem('nowRouter');
+      if(nowRouter){
+        this.$router.push({path:nowRouter});
+      }else{
+        localStorage.setItem('nowRouter', '/commandCentre');
+        this.$router.push({path:'/commandCentre'});
+      }
     }  
     if(this.companyType == 2||this.companyType == 3){
       this.data2.unshift(this.company);
@@ -248,7 +265,7 @@ export default {
     }
     else if(this.companyType == 1){
       this.data2.unshift(this.project);
-       this.data2.unshift(this.company);
+      this.data2.unshift(this.company);
     }
     //this.data3 = JSON.parse(JSON.stringify(this.data2));
     for(var i=0;i<this.data2.length;i++){
@@ -268,7 +285,7 @@ export default {
         }
       }
     }
-    console.log(this.data3,'this.data3');
+    console.log(this.companyType,'this.data3');
   }
 };
 </script>
