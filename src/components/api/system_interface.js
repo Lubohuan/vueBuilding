@@ -171,6 +171,14 @@ export function listRegion(data) {
     params: data
   })
 }
+// 根据父ID查询施工区域
+export function listRegionTree(data) {
+  return request({
+    url: baseUrl + '/project/regionTree',
+    method: 'get',
+    params: data
+  })
+}
 // 添加施工区域
 export function addRegion(data) {
   return request({
