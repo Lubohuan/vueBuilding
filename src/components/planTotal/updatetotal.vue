@@ -128,7 +128,6 @@ export default {
 
     //点击提交
     commit() {
-      console.log(this.dataModel.startTime,"this.dataModel.subIdArry");
       this.$refs["updatetotal"].validate(valid => {
         if (!valid) {
           return;

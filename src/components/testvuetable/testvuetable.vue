@@ -4,17 +4,28 @@
     <el-table
     :data="treeTableDate"
     border
-    sortable="true"
     style="width: 100%">
+   
+      
+      <treeTableLan :cloumns="cloumns" :setData="setData" :treeTableDate="treeTableDate" ></treeTableLan>
+    <template>
     <el-table-column 
-        label="操作"  >
+        key="1"
+        index="1"
+        label="操作1"  >
         <template slot-scope="scope">
           <el-button  size="mini" type="primary">编辑</el-button>
         </template>
       </el-table-column>
-      
-      <treeTableLan :cloumns="cloumns" :showicon="showicon" :treeTableDate="treeTableDate"></treeTableLan>
-      
+     <el-table-column 
+        key="2"
+        index="2"
+        label="操作2"  >
+        <template slot-scope="scope">
+          <el-button  size="mini" type="primary">编辑</el-button>
+        </template>
+      </el-table-column>
+     </template>
     </el-table>
   </div>
 </template>
@@ -28,8 +39,12 @@ export default {
         {label:'商品名称',name:'name'},
         {label:'描述',name:'desc'}
       ],
-      showicon:'id',//配置伸缩图标展示列
-      textTrigger:false,
+      
+      setData:{
+        showicon:'id',//配置伸缩图标展示列 ，默认cloumns的第一个元素的name
+        textTrigger:true,//文字点击触发，只在配置列生效,默认是false
+        allDefaultExpand:false,//是否全部展开,默认是false
+      },
       treeTableDate: [{
           id: '1',
           name: '好滋好味鸡蛋仔',

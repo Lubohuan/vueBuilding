@@ -238,7 +238,6 @@ export default {
        }
     },
      projectchange(val){
-      console.log(val);
       let data = {projectId:''};
       if( this.projectId.length>=1){
          
@@ -312,7 +311,6 @@ export default {
     },
     //修改数据
     async updatenowdata(data){
-      console.log(data);
         updateYearPlan({
           "id":data.yearPlanId,
           "planOutput": this.focusvalue,
@@ -384,7 +382,6 @@ export default {
                   //this.tableData = response.body;
                   if(response.body.length>0){
                     this.tableData = this.hanprodata(response.body);
-                    console.log(_this.tableData);
                   }else{
                     this.tableData = [];
                   }

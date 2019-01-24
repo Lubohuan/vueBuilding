@@ -188,7 +188,7 @@ export default {
      反显数据
      */
     async update(data) {
-      console.log(data);
+      
       //this.reset();
         // if(!data.startIsms || data.startIsms==0){
         //     data.startIsms = false;
@@ -274,7 +274,7 @@ export default {
 
     //点击提交
     commit() {
-      console.log(this.dataModel.startTime,"this.dataModel.subIdArry");
+      
       this.$refs["addtask"].validate(valid => {
         if (!valid) {
           return;
