@@ -4,7 +4,8 @@
 <el-container style="height:100%;">
   <el-aside width="180px" class="asideList">
      <div class="titleSpan">生产形象进度</div>
-     <el-tree class="treeList" :data="data3" :props="defaultProps" default-expand-all @node-click="handleNodeClick"></el-tree>
+     <el-tree class="treeList" :data="data3" :props="defaultProps" node-key="id"
+              ref="tree2" default-expand-all @node-click="handleNodeClick"></el-tree>
   </el-aside>
    <!-- <el-tree  :data="data2" :props="defaultProps" default-expand-all @node-click="handleNodeClick">
           <span style="width:100%;height:100%;" class="treeList" slot-scope="{ node, data }">
@@ -82,7 +83,7 @@ export default {
           ]
         },
         {
-          id: 41,
+          id: 50,
           label: "生产任务管理",
           path:"/areaManagement",
           code:"110701",
@@ -188,6 +189,8 @@ export default {
         // }
         if(data.path){
           localStorage.setItem('nowRouter', data.path);
+          localStorage.setItem('nowRouterIndex', data.id);
+          
         }
         this.$router.push(data.path);
         
@@ -239,10 +242,13 @@ export default {
     // }
     if(this.companyType == 2||this.companyType== 3){
       let nowRouter = localStorage.getItem('nowRouter');
-      if(nowRouter){
+      let index = localStorage.getItem('nowRouterIndex');
+      if(nowRouter && index){
         this.$router.push({path:nowRouter});
+        setTimeout(()=>{this.$refs.tree2.setCurrentKey(index)},100);
       }else{
         localStorage.setItem('nowRouter', '/enterpriseCommandCenter');
+        localStorage.setItem('nowRouterIndex', '-1');
         this.$router.push({path:'/enterpriseCommandCenter'});
       }
        
@@ -250,10 +256,13 @@ export default {
     if(this.companyType == 4){
 
       let nowRouter = localStorage.getItem('nowRouter');
+      let index = localStorage.getItem('nowRouterIndex');
       if(nowRouter){
         this.$router.push({path:nowRouter});
+        setTimeout(()=>{this.$refs.tree2.setCurrentKey(index)},100);
       }else{
         localStorage.setItem('nowRouter', '/commandCentre');
+        localStorage.setItem('nowRouterIndex', '-1');
         this.$router.push({path:'/commandCentre'});
       }
     }  
