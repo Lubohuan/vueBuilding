@@ -109,7 +109,7 @@
   </el-row>       
   </span>
    </el-tree> -->
-   <div style="height:calc(100% - 87px);width:100%;overflow:hidden;">
+   <div style="height:calc(100% - 87px);width:100%;overflow-y:hidden;">
    <el-table height="100%" 
     v-loading="loading"
     element-loading-text="拼命加载中"
