@@ -259,7 +259,7 @@ export default {
     },
     //项目变化的时候
     projectchange(val){
-      console.log(val);
+      
       let data = {projectId:''};
       if( this.projectId.length>=1){
          
@@ -294,7 +294,6 @@ export default {
       this.nowdata['endTime'] = '';
       this.nowdata['outputTotal'] = '';
       this.dialog.addtask = true;
-      console.log(data);
     },
     editClick(data){
       
@@ -302,7 +301,6 @@ export default {
       this.nowdata['optype'] = 'update';
       this.dialog.updatetask = true;
       //this.dialog.addtask = true;
-      console.log(data);
     },
     //删除
     deleteClick(data){
@@ -403,7 +401,7 @@ export default {
                   //this.tableData = response.body;
                   if(response.body.length>0){
                     this.tableData = this.hanprodata(response.body);
-                    console.log(_this.tableData);
+                    
                   }else{
                     this.tableData = [];
                   }

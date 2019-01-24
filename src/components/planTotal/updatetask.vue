@@ -184,7 +184,6 @@ export default {
      反显数据
      */
     async update(data) {
-      console.log('进入调用');
       //this.reset();
         if(data.isMilestone == '0'){
             data.isMilestone = false;
@@ -229,11 +228,9 @@ export default {
       //   this.dataModel.regionIdArry  = this.$common.findParents(objects,data.regionId);
       // },0);this.$set.(key, value)
       this.$set(this.dataModel,'regionIdArry', this.$common.findParents(objects,data.regionId));
-      console.log(this.dataModel.regionIdArry,'父区域');
       //查找分部分项父级
       let objectss = this.$common.initTree(this.bitemList);
       this.dataModel.subIdArry  = this.$common.findParents(objectss,data.subId);
-      console.log(this.dataModel.subIdArry,'分部分项');
       // console.log(this.dataModel.subIdArry,'this.dataModel.subIdArry ');
     },
 
@@ -266,7 +263,6 @@ export default {
 
     //点击提交
     commit() {
-      console.log(this.dataModel.startTime,"this.dataModel.subIdArry");
       this.$refs["updatetask"].validate(valid => {
         if (!valid) {
           return;
