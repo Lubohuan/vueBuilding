@@ -8,8 +8,8 @@
    
   <el-row class="planProgress_row" style="margin-bottom:20px;">
    <el-col :span="18">
-     <el-cascader :show-all-levels="false" @change="projectchange" :options="listChildOrgInfoList" @blur="clearmodel()" v-model="projectId" :props="defaultProps1" size="small" placeholder="请选择项目" clearable></el-cascader>
-     <el-cascader :show-all-levels="false" :options="roginTreeList" @blur="clearmodel()" v-model="regionId" :props="defaultProp" size="small" placeholder="请选择施工区段" clearable></el-cascader>
+     <el-cascader change-on-select :show-all-levels="false" @change="projectchange" :options="listChildOrgInfoList" @blur="clearmodel()" v-model="projectId" :props="defaultProps1" size="small" placeholder="请选择项目" clearable></el-cascader>
+     <el-cascader change-on-select :show-all-levels="false" :options="roginTreeList" @blur="clearmodel()" v-model="regionId" :props="defaultProp" size="small" placeholder="请选择施工区段" clearable></el-cascader>
    </el-col>
    <el-col :span="6" class="planProgress_btn1" style="text-align:right;">
        <el-button size="mini" type="success" @click="resarchInfo">搜索</el-button>
@@ -128,7 +128,7 @@
         </template>
       </el-table-column>
       <el-table-column  width="300"
-        label="名称"  show-overflow-tooltip="true">
+        label="名称"  show-overflow-tooltip>
         <template slot-scope="scope">
           <div class="treetablecon" >
             

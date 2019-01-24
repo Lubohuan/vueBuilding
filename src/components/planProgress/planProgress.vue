@@ -18,8 +18,8 @@
   </el-row>
    <el-row class="planProgress_row">
    <el-col :span="18">
-     <el-cascader :show-all-levels="false"  @change="projectchange" :options="listChildOrgInfoList" v-model="projectId" :props="defaultProps" size="small" placeholder="请选择项目" clearable></el-cascader>
-     <el-cascader :show-all-levels="false" :options="roginTreeList" v-model="regionId" :props="defaultProp" size="small" placeholder="请选择施工区段" clearable></el-cascader>
+     <el-cascader change-on-select :show-all-levels="false"  @change="projectchange" :options="listChildOrgInfoList" v-model="projectId" :props="defaultProps" size="small" placeholder="请选择项目" clearable></el-cascader>
+     <el-cascader change-on-select :show-all-levels="false" :options="roginTreeList" v-model="regionId" :props="defaultProp" size="small" placeholder="请选择施工区段" clearable></el-cascader>
      <el-select size="small" v-model="state" placeholder="请选择状态" clearable>
             <el-option v-for="(item,index) in stateList" :label="item.name" :value="item.state" :key="index"></el-option>
      </el-select>
