@@ -115,11 +115,11 @@
        <span v-else>{{ data.finishBudget }}</span>
     </el-col>
     <el-col :span="2" class="tableCol">
-       <span v-if="data.outputTotal == null">--</span>
+       <span v-if="data.type == 0">{{data.profilePlanOutput || '0'}}</span>
        <span v-else>{{ data.outputTotal }}</span>
     </el-col>
     <el-col :span="2" class="tableCol">
-       <span v-if="data.finishOutput == null">--</span>
+       <span v-if="data.type == 0">{{data.finishOutput || '0'}}</span>
        <span v-else>{{ data.finishOutput }}</span>
     </el-col>
     <el-col :span="3" class="tableCol" style="text-align:left;box-sizing:border-box;padding-left:20px;">
