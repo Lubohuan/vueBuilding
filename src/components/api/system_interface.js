@@ -27,7 +27,7 @@ export function baseinUrl(){
 // 查询统计单位接口
 export function getUnitPage(data) {
   return request({
-    url: baseUrl + '/basicData/getUnitPage',
+    url: baseUrl + '/basicData/listUnit',
     method: 'get',
     params: data
   })
