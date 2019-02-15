@@ -117,7 +117,7 @@ export default new Vuex.Store({
             projectType: 1
           })
           .then(response => {
-            commit('updateplanList', response.body.rows)
+            commit('updateplanList', response.body)
           })
           .catch(error => {
             console.log(error);
