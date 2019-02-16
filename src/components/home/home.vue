@@ -294,7 +294,6 @@ export default {
         }
       }
     }
-    console.log(this.companyType,'this.data3');
   }
 };
 </script>

@@ -12,8 +12,8 @@
       </el-tabs>
     </el-col>
   </el-row> -->
-  <el-row class="planProgress_row">
-   <el-col :span="18">
+  <el-row class="planProgress_row" style="margin-bottom:20px;">
+   <el-col :span="24">
     <el-date-picker
       v-model="nowyear"
       value-format="yyyy"
@@ -23,141 +23,121 @@
     </el-date-picker>
      <el-cascader change-on-select :show-all-levels="false" @change="projectchange" :options="listChildOrgInfoList" @blur="clearmodel()" v-model="projectId" :props="defaultProps1" size="small" placeholder="请选择项目" clearable></el-cascader>
      <el-cascader change-on-select :show-all-levels="false" :options="roginTreeList" @blur="clearmodel()" v-model="regionId" :props="defaultProp" size="small" placeholder="请选择施工区段" clearable></el-cascader>
+
+     <el-button size="mini" type="success" @click="resarchInfo" style="margin-left:30px;" plain>搜索</el-button>
+     <el-button size="mini"  @click="resetForm">重置</el-button>
    </el-col>
-   <el-col :span="6" class="planProgress_btn1" style="text-align:right;">
-       <el-button size="mini" type="success" @click="resarchInfo">搜索</el-button>
-       <el-button size="mini"  @click="resetForm">重置</el-button>
-   </el-col>
+   
   </el-row>
   
- <el-row class="tableHead">
-    <el-col :span="3" class="tableCol" style="margin-left:35px;">
-      <span>项目名称</span>
-    </el-col>
-    <el-col :span="3" class="tableCol">
-      <span>名称</span>
-    </el-col>
-      <el-col :span="2" class="tableCol">
-      <span>里程碑</span>
-    </el-col>
-    
-    <el-col :span="2" class="tableCol" style="margin-left:-10px;">
-      <span>总产值(万元)</span>
-    </el-col>
-    <el-col :span="2" class="tableCol">
-      <span>完成产值(万元)</span>
-    </el-col>
-      <el-col :span="2" class="tableCol" >
-      <span>完成比例</span>
-    </el-col>
-    <!-- <el-col :span="2" class="tableCol">
-      <span>年计划量</span>
-    </el-col>
-      <el-col :span="2" class="tableCol" style="margin-left:-10px;">
-      <span>年完成量</span>
-    </el-col> -->
-    <el-col :span="2" class="tableCol">
-      <span>年计划产值(万元)</span>
-    </el-col>
-      <el-col :span="2" class="tableCol" style="margin-left:-10px;">
-      <span>年完成产值(万元)</span>
-    </el-col>
-    <el-col :span="2" class="tableCol" style="margin-left:-10px;">
-      <span>年完成比例</span>
-    </el-col>
-    <el-col :span="4"  class="tableCol" style="margin-left:-25px;">
-      <span>操作</span>
-    </el-col>
-  </el-row>
-  <el-tree :data="tableData" ref="tree"  :default-expand-all="true" :expand-on-click-node="false" :props="defaultProps" style="width:100%;box-sizing: border-box;" :indent="5" >
-    <span class="custom-tree-node" slot-scope="{ node, data }" :style="'margin-left:'+ node.level*(-8.8) + 'px'">
-    <el-row style="width:100%;" :style="'margin-left:'+ (30 + node.level*2.1) + 'px'">
-    <el-col :span="3" class="tableCol" style="text-align:left;">
-      <img src="../../assets/wbs.png" style="height:20px;" v-if="data.type == 0" />
-      
-      <el-tooltip class="item" effect="dark" :content="data.projectName" placement="top">
-        <span v-if="data.projectName == null">--</span>
-        <span v-else>
-          
-          {{ data.projectName }}
-        </span>
-      </el-tooltip>
-    </el-col>
-    <el-col :span="3" class="tableCol">
-      <el-tooltip class="item" effect="dark" :content="data.type==0?data.regionName:data.statName" placement="top">
-       <span class="tableCol" style="display:inline-block;width:100%;" v-if="data.type == 0">{{ data.regionName }}</span>
-       <span class="tableCol" style="display:inline-block;width:100%;" v-if="data.type == 1">{{ data.statName }}</span>
-      </el-tooltip>
-    </el-col>
-    <el-col :span="2" class="tableCol">
-       <span v-if="data.isms == 0">否</span>
-       <span v-else>是</span> 
-    </el-col>
-    
-    <el-col :span="2" class="tableCol">
-       <span v-if="data.profilePlanOutput == null">--</span>
-       <span v-else>{{ data.profilePlanOutput }}</span>
-    </el-col>
-    <el-col :span="2" class="tableCol">
-       <span v-if="data.profileFinishOutput == null">--</span>
-       <span v-else>{{ data.profileFinishOutput }}</span>
-    </el-col>
-     
-    <el-col :span="2" class="tableCol" style="text-align:left;box-sizing:border-box;padding-left:20px;">
-       
-      
-        <el-progress v-if="!data.profileFinishOutputRate" :stroke-width="13"  :percentage="0"></el-progress>
-        <el-progress v-else :stroke-width="13" :percentage="$common.fomatPrecent(Number(data.profileFinishOutputRate))"></el-progress>
-        
-    </el-col>
-    <el-col :span="2" class="tableCol">
-       <!-- <span v-if="!data.planOutput">0</span> -->
-       <span class="spci">
-         <!-- {{ data.yearPlanBudget}} -->
-         <el-input  size="mini" v-model="data.yearPlanOutput" v-if="data.update == 0" disabled  />
-         <el-input  size="mini" v-model="focusvalue" v-if="data.update == 1"  />
-       </span>
-    </el-col>
-
-    <el-col :span="2" class="tableCol" >
-       <span v-if="data.yearFinishOutput == null">--</span>
-       <span v-else>{{ data.yearFinishOutput}}</span>
-    </el-col>
-    <!-- <el-col :span="2" class="tableCol">
-       <span v-if="data.yearPlanOutput == null">--</span>
-       <span v-else>{{ data.yearPlanOutput}}</span>
-    </el-col>
-    <el-col :span="2" class="tableCol">
-       <span v-if="data.yearFinishOutput == null">--</span>
-       <span v-else>{{ data.yearFinishOutput}}</span>
-    </el-col> -->
-    <el-col :span="2" class="tableCol" style="text-align:left;box-sizing:border-box;padding-left:20px;">
-       
-      
-        <el-progress v-if="!data.yearFinishOutputRate" :stroke-width="13"  :percentage="0"></el-progress>
-        <el-progress v-else :stroke-width="13" :percentage="$common.fomatPrecent(Number(data.yearFinishOutputRate))"></el-progress>
-        
-    </el-col>
-    <el-col :span="4"  class="tableCol">
-     <span>
-          <!-- <el-button v-if="hasPerm('110504')" size="mini" type="primary"  @click="addChild(data,node)">添加计划</el-button>
-          <el-button v-if="hasPerm('110204')" size="mini" type="primary" @click="editClick(data)">编辑</el-button> -->
-          <!-- <el-button v-if="data.type == 0" size="mini" type="primary"  @click="addChild(data,node)">添加计划</el-button> -->
-          <el-button v-if="data.update == 0 && hasPerm('110504')" size="mini" type="primary" @click="editClick(data)">编辑</el-button>
-          <el-button v-if="data.update == 1" size="mini" type="primary" @click="ensureeditClick(data)">确认</el-button>
-          <el-button v-if="data.update == 1" size="mini" type="info" @click="cancleeditClick(data)">取消</el-button>
-        </span>
-    </el-col>
-  </el-row>       
-  </span>
-   </el-tree>
+ 
    
+
+  <div style="height:calc(100% - 87px);width:100%;overflow-y:hidden;">
+    <el-table height="100%" 
+      v-loading="loading"
+      element-loading-text="拼命加载中"
+      element-loading-spinner="el-icon-loading"
+      element-loading-background="rgba(0, 0, 0, 0.8)"
+      :data="tableData"
+      border
+      style="width: 100%">
+      <el-table-column 
+        label="项目名称"  align="center">
+        <template slot-scope="scope">
+          <el-tooltip class="item" effect="dark" :content="scope.row.projectName" placement="top">
+            <span v-if="scope.row.projectName == null">--</span>
+            <span v-else>{{ scope.row.projectName }}</span>
+          </el-tooltip>
+        </template>
+      </el-table-column>
+      <el-table-column  width="300"
+        label="名称"  show-overflow-tooltip>
+        <template slot-scope="scope">
+          <div class="treetablecon" >
+            
+              <span class="spacespan" v-for="list in scope.row.nodeLevel" :key="list" ></span>
+              <span class="spacespan"  v-if="!scope.row.child"></span>
+              <i class="el-icon-caret-bottom  nodeClickIcon" :class="{ 'el-icon-caret-right' : !scope.row.nodeExpand }" v-if="scope.row.child" @click="nodeclick($event,scope.$index,scope.row,tableData)"></i>
+            
+              <!-- <span class="text" v-if="setData.textTrigger"  @click="nodeclick($event,scope.$index,scope.row)">{{scope.row[item.name]}}</span>
+              <span class="text" v-else  >{{scope.row[item.name]}}</span> -->
+            <!-- <el-tooltip class="item" effect="dark" :content="scope.row.type==0?scope.row.regionName:scope.row.statName" placement="top"> -->
+              <span   v-if="scope.row.type == 0"><img :src="img" style="height:20px;margin-right:5px;" />{{ scope.row.regionName }}</span>
+              <span  v-if="scope.row.type == 1">{{ scope.row.statName }}</span>
+            <!-- </el-tooltip> -->
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column 
+        label="里程碑" align="center" width="100">
+        <template slot-scope="scope">
+          <span v-if="scope.row.isms == 0">否</span>
+          <span v-else>是</span> 
+        </template>
+      </el-table-column>
+       <el-table-column 
+        label="总产值（万元）" align="center" >
+        <template slot-scope="scope">
+          <span v-if="scope.row.profilePlanOutput == null">--</span>
+          <span v-else>{{ scope.row.profilePlanOutput }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column 
+        label="完成产值（万元）"  align="center">
+        <template slot-scope="scope">
+          <span v-if="scope.row.profileFinishOutput == null">--</span>
+          <span v-else>{{ scope.row.profileFinishOutput }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column 
+        label="完成比例"  align="center">
+        <template slot-scope="scope">
+          <el-progress v-if="!scope.row.profileFinishOutputRate" :stroke-width="13"  :percentage="0"></el-progress>
+          <el-progress v-else :stroke-width="13" :percentage="$common.fomatPrecent(Number(scope.row.profileFinishOutputRate))"></el-progress>
+        </template>
+      </el-table-column>
+       <el-table-column 
+        label="年计划产值(万元)"  align="center">
+        <template slot-scope="scope">
+          <span class="spci">
+         <!-- {{ data.yearPlanBudget}} -->
+         <el-input  size="mini" v-model="scope.row.yearPlanOutput" v-if="scope.row.update == 0" disabled  class="spacialinput"/>
+         <el-input  size="mini" v-model="focusvalue" v-if="scope.row.update == 1"  />
+       </span>
+        </template>
+      </el-table-column>
+      <el-table-column 
+        label="年完成产值"  align="center">
+        <template slot-scope="scope">
+          <span v-if="scope.row.yearFinishOutput == null">--</span>
+          <span v-else>{{ scope.row.yearFinishOutput}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column 
+        label="年完成比例"  align="center">
+        <template slot-scope="scope">
+         <el-progress v-if="!scope.row.yearFinishOutputRate" :stroke-width="13"  :percentage="0"></el-progress>
+        <el-progress v-else :stroke-width="13" :percentage="$common.fomatPrecent(Number(scope.row.yearFinishOutputRate))"></el-progress>
+        </template>
+      </el-table-column>
+      <el-table-column width="150"
+        label="操作"  align="center">
+        <template slot-scope="scope">
+         <el-button v-if="scope.row.update == 0 && hasPerm('110504')" size="mini" type="primary" @click="editClick(scope.row)">编辑</el-button>
+          <el-button v-if="scope.row.update == 1" size="mini" type="primary" @click="ensureeditClick(scope.row)">确认</el-button>
+          <el-button v-if="scope.row.update == 1" size="mini" type="info" @click="cancleeditClick(scope.row)">取消</el-button>
+        </template>
+      </el-table-column>
+      </el-table>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
 //import addtask from "./addtask.vue";
+import {nodeclick,expandNode,closeNode,calculateLength,addchildNode,initHandNode,allExpand,goAllexpand} from '../treefile/treeController.js'
 import addSubChid from "../bitem/addSubChid.vue";
 import addSubsection from "../bitem/addSubsection.vue";
 import {updateYearPlan,listRegionTree,addYearPlan,getYearPlan, getSubsectionPage, deleteSubsectionById,listProjectType,exportSubsectionByIds,baseinUrl } from "../api/system_interface.js";
@@ -170,10 +150,12 @@ export default {
   },
   data() {
     return {
+      img:require('../../assets/wbs.png'),
       projectId: [],
       regionId: [],
       multipleSelection: [],
       tableData: [],
+      loading:true,
       defaultProps: {
         children: "child"
       },
@@ -378,10 +360,23 @@ export default {
         .then(response => {
           if (response.code == "200") {
             
+                // if(response.body){
+                //   //this.tableData = response.body;
+                //   if(response.body.length>0){
+                //     this.tableData = this.hanprodata(response.body);
+                //   }else{
+                //     this.tableData = [];
+                //   }
+                // }
+                // else{
+                //   this.tableData = [];
+                // }
                 if(response.body){
                   //this.tableData = response.body;
                   if(response.body.length>0){
                     this.tableData = this.hanprodata(response.body);
+                    this.tableData = initHandNode(this.tableData,0);
+                    goAllexpand(this.tableData);//全部展开的话这样做
                   }else{
                     this.tableData = [];
                   }
@@ -389,9 +384,11 @@ export default {
                 else{
                   this.tableData = [];
                 }
+                this.loading = false;
                 
               } else {
                 this.$message.error(response.msg);
+                this.loading = false;
               }
         })
         .catch(error => {
@@ -464,6 +461,7 @@ export default {
   },
   created() {
     this.refreshList();
+    this.nodeclick = nodeclick;
   }
 };
 </script>
@@ -487,5 +485,22 @@ export default {
   .el-input__inner{
     text-align: center;
   }
+}
+.spacespan{
+  width:18px;
+  display: inline-block;
+  height:18px;
+}
+.nodeClickIcon{
+  font-size: 18px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+.text{
+    cursor:pointer;
+}
+.spacialinput > .el-input__inner[disabled]{
+  color:#606266;
+  border-color:transparent;
 }
 </style>
