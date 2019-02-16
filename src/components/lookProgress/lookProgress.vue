@@ -18,9 +18,7 @@
    <el-col :span="15">
       <el-cascader :show-all-levels="false" :options="listOrgInfoList" v-model="projectId" :props="defaultProps" size="small" placeholder="请选择项目" clearable></el-cascader>
       <el-cascader :show-all-levels="false" :options="reginList" v-model="regionId" :props="defaultProp" size="small" placeholder="请选择施工区段" clearable></el-cascader>
-   </el-col>
-   <el-col :span="9" class="lookProgress_btn1">
-       <el-button size="mini" type="success" @click="resarchInfo" >搜索</el-button>
+    <el-button size="mini" type="success" @click="resarchInfo" style="margin-left:30px;" plain>搜索</el-button>
        <el-button size="mini" @click="resetForm">重置</el-button>
    </el-col>
   </el-row>
@@ -28,11 +26,11 @@
     <el-table-column type="selection" width="50" align="center"></el-table-column>
     <el-table-column type="index" label="序号" align="center" width="50"></el-table-column>
     <el-table-column prop="projectName" label="项目名称" align="center" :show-overflow-tooltip="true"></el-table-column>
-    <el-table-column prop="regionName" label="施工区段" align="center" min-width="200"></el-table-column>
-    <el-table-column prop="subName" label="分部分项名称" align="center" min-width="200" :show-overflow-tooltip="true"></el-table-column>
-    <el-table-column prop="statName" label="形象进度统计项" align="center" min-width="120" :show-overflow-tooltip="true"></el-table-column>
+    <el-table-column prop="regionName" label="施工区段" align="center" min-width="150"></el-table-column>
+    <el-table-column prop="subName" label="分部分项名称" align="center" min-width="150" :show-overflow-tooltip="true"></el-table-column>
+    <el-table-column prop="statName" label="形象进度统计项" align="center" min-width="100" :show-overflow-tooltip="true"></el-table-column>
     <el-table-column prop="unitName" label="形象单位" align="center"></el-table-column>
-    <el-table-column prop="budgetTotal" label="预算工程量" align="center" min-width="120"></el-table-column>
+    <el-table-column prop="budgetTotal" label="预算工程量" align="center" min-width="100"></el-table-column>
     <el-table-column prop="finishBudget" label="累计完成" align="center"></el-table-column>
     <el-table-column prop="finishBudgetRate" label="完成比例" align="center">
       <template slot-scope="scope">

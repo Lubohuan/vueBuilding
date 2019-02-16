@@ -17,22 +17,21 @@
    </el-col> -->
   </el-row>
    <el-row class="planProgress_row">
-   <el-col :span="18">
+   <el-col :span="24">
      <el-cascader change-on-select :show-all-levels="false"  @change="projectchange" :options="listChildOrgInfoList" v-model="projectId" :props="defaultProps" size="small" placeholder="请选择项目" clearable></el-cascader>
      <el-cascader change-on-select :show-all-levels="false" :options="roginTreeList" v-model="regionId" :props="defaultProp" size="small" placeholder="请选择施工区段" clearable></el-cascader>
      <el-select size="small" v-model="state" placeholder="请选择状态" clearable>
             <el-option v-for="(item,index) in stateList" :label="item.name" :value="item.state" :key="index"></el-option>
      </el-select>
-   </el-col>
-   <el-col :span="6" class="planProgress_btn1">
-       <el-button size="mini" type="success" @click="resarchInfo">搜索</el-button>
+     <el-button size="mini" type="success" @click="resarchInfo" style="margin-left:30px;" plain>搜索</el-button>
        <el-button size="mini"  @click="resetForm">重置</el-button>
    </el-col>
+   
   </el-row>
   <el-table :data="tableData" style="width: 100%;margin-top:20px;"   @selection-change="handleSelectionChange" border :header-cell-style="rowClass">
     <el-table-column type="selection" width="40" align="center"></el-table-column>
     <el-table-column type="index" label="序号" width="45" align="center"></el-table-column>
-    <el-table-column prop="projectName"  label="项目名称" align="center" min-width="120" :show-overflow-tooltip="true"></el-table-column>
+    <el-table-column prop="projectName"  label="项目名称" align="center" min-width="100" :show-overflow-tooltip="true"></el-table-column>
     <el-table-column prop="state"  label="状态" align="center" min-width="80">
        <template slot-scope="scope">
           <span v-if="scope.row.state == 0"><span class="starting"></span>进行中</span>
@@ -46,11 +45,11 @@
     <el-table-column prop="planEndTime"  label="完成时间" align="center" min-width="90"></el-table-column>
     <el-table-column prop="unitName"  label="形象单位" align="center" min-width="70"></el-table-column>
     <el-table-column prop="budgetTotal"  label="总工程量" align="center"></el-table-column>
-    <el-table-column prop="notFinishBudget"  label="总剩余工程量" align="center" min-width="100"></el-table-column>
-    <el-table-column prop="planFinish"  label="计划工程量" align="center" min-width="90"></el-table-column>
+    <el-table-column prop="notFinishBudget"  label="总剩余工程量" align="center" min-width="80"></el-table-column>
+    <el-table-column prop="planFinish"  label="计划工程量" align="center" min-width="80"></el-table-column>
     <el-table-column prop="finishTotal"  label="已完成工程量" align="center" min-width="100"></el-table-column>
     <el-table-column prop="notFinish"  label="计划剩余工程量" align="center" min-width="110"></el-table-column>
-    <el-table-column prop="planFinishRate"  label="完成比例"  min-width="200" header-cell-style="tr_title">
+    <el-table-column prop="planFinishRate"  label="完成比例"  min-width="150" header-cell-style="tr_title">
         <!-- <template slot-scope="scope">
           <span v-if="scope.row.planFinishRate">{{$common.fomatPrecent(scope.row.planFinishRate)}}%</span>
        </template> -->
@@ -62,7 +61,7 @@
                 <el-progress v-else-if="scope.row.state == 3" :stroke-width="13"  :percentage="$common.fomatPrecent(Number(scope.row.planFinishRate))" color="#3296fa"></el-progress>
         </template>
     </el-table-column>
-    <el-table-column label="操作" align="center" min-width="230">
+    <el-table-column label="操作" align="center" min-width="150">
       <template slot-scope="scope">
          <el-button v-if="hasPerm('110604')" size="mini" type="primary" @click="editPlan(scope.row)">编辑</el-button>
          <el-button v-if="scope.row.isForbid == 0 && hasPerm('110604')" size="mini" type="warning" @click="stopClick(scope)">禁用</el-button>

@@ -11,11 +11,9 @@
     <el-col :span="15">
       <el-cascader :show-all-levels="false" :options="listOrgInfoList" v-model="projectId" :props="defaultPropss" size="small" placeholder="请选择项目" clearable></el-cascader>
       <!-- <el-cascader :show-all-levels="false" :options="reginList" v-model="regionId" :props="defaultProp" size="small" placeholder="请选择施工区段" clearable></el-cascader> -->
-   </el-col>
-   <el-col :span="9" class="lightCol">
-       <el-button size="mini" type="success"  @click="resarchInfo">搜索</el-button>
+    <el-button size="mini" type="success"  @click="resarchInfo" style="margin-left:30px;" plain>搜索</el-button>
        <el-button size="mini" @click="resetForm">重置</el-button>
-   </el-col>
+    </el-col>
   </el-row>
   <el-row class="tableHead" style="display:flex;justify-content: space-between;align-items: center;">
     <div style="width:calc(100% - 240px);">
