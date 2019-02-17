@@ -224,7 +224,7 @@
                     <div class="desp_look" style="padding-left:20px;" v-if="item.remark">描述：{{item.remark}}</div> 
                     <div class="imgVidevoInfo">
                      <viewer style="display:inline-block;cursor: pointer;margin-right:5px;"  :images="item.imageUrls"  >
-	                    <img :src="items" width="120" height="70" v-for="items in item.imageUrls" :key="items">
+	                    <img :src="items" width="120" height="70" v-for="items in item.imageUrls" :key="items" style="margin:5px;">
 	                 </viewer>
                      <div class="videoStyle" @click="openVideos(items)" v-for="(items,index) in item.videoUrls" :key="index"  :style="{backgroundImage: 'url(' + items.img + ')'}">
                          <img src="http://overwatch.nos.netease.com/1/assets/img/icons/youtube-btn-ylw.png" class="openIcon" width="30" height="30">
