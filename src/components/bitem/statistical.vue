@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { getUnitPage, deleteUnitById,exportUnitByIds,baseinUrl } from "../api/system_interface.js";
+import { getUnitPage2, deleteUnitById,exportUnitByIds,baseinUrl } from "../api/system_interface.js";
 import addStat from "../bitem/addStat.vue";
 export default {
   name: "statistical",
@@ -155,7 +155,7 @@ export default {
     },
     //分页查询
     refreshList() {
-      getUnitPage({
+      getUnitPage2({
         current: this.currentPage,
         offset: this.pagesize,
         unitName: this.unitName
