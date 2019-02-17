@@ -24,10 +24,18 @@ export function baseinUrl(){
   sessionStorage.setItem("baseUrl",baseUrl);
   return baseUrl;
 }
-// 查询统计单位接口
+// 查询统计单位接口(全部)
 export function getUnitPage(data) {
   return request({
     url: baseUrl + '/basicData/listUnit',
+    method: 'get',
+    params: data
+  })
+}
+// 查询统计单位接口(分页)
+export function getUnitPage2(data) {
+  return request({
+    url: baseUrl + '/basicData/getUnitPage',
     method: 'get',
     params: data
   })
