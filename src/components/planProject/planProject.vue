@@ -33,7 +33,15 @@
   <!-- <div style="height:auto;width:100%;overflow:auto;"> -->
 
   
-
+    <div style="height:45px;width:100%;border:1px solid #ebeef5;border-bottom:none;line-height:45px;">
+    <span style="margin:0 25px;">总计划产值：{{handRate(topTotal)}}万元</span>
+    <span style="margin:0 25px;">总完成产值：{{handRate(topfinish)}}万元</span>
+    <span style="margin:0 25px;">完成比例：<el-progress style="display:inline-block;width:200px;"  :stroke-width="18"  :percentage="changeRatefn()"></el-progress></span>
+    
+    <!-- topTotal:0,
+      topfinish:0,
+      topfinishrate:0, -->
+  </div>
     <div style="height:calc(100% - 87px);width:100%;overflow-y:hidden;">
     <el-table height="100%" 
       v-loading="loading"
@@ -238,6 +246,8 @@ export default {
       projectIds:'',
       nowdata:'',
       roginTreeList:[],
+      topTotal:0,
+      topfinish:0,
     };
   },
   computed: {
@@ -248,13 +258,33 @@ export default {
     ]),
   },
   methods: {
+    handRate(val){
+      if(val == 0){
+        return 0;
+      }else{
+        return parseFloat(val).toFixed(2);
+      }
+    },
+     changeRatefn(){
+      let number = parseFloat(this.topfinish/this.topTotal*100).toFixed(2);
+      if(number == 0){
+        return 0;
+      }else{
+        return number;
+      }
+     
+    },
      //查询按钮
     resarchInfo(){
        if(this.regionId.length>=1){
           this.regionIds = this.regionId[this.regionId.length - 1];
+       }else{
+         this.regionIds = '';
        }
        if( this.projectId.length>=1){
          this.projectIds = this.projectId[this.projectId.length - 1];
+       }else{
+         this.projectIds = '';
        }
       this.refreshList();
     },
@@ -494,6 +524,8 @@ export default {
           }
         }
         list[i]['type'] = 0;//项目
+         this.topTotal += isNaN(parseFloat(list[i]['profilePlanOutput']))?0:parseFloat(list[i]['profilePlanOutput']);
+        this.topfinish += isNaN(parseFloat(list[i]['profileFinishOutput']))?0:parseFloat(list[i]['profileFinishOutput']);
       }
       return list;
     },

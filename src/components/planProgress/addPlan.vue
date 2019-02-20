@@ -12,9 +12,9 @@
         <el-cascader :options="statisList" v-model="dataModel.visualStatId" :props="defaultProp1" size="small" placeholder="选择统计项" style="width:100%;" @change="changeVisu" clearable ></el-cascader>
         <span v-if="visualStatObject !== null" style="color:rgb(64, 158, 255);">分部分项：{{visualStatObject.subFullName}}</span>
         <div  v-if="visualStatObject !== null" class="visualSpan">
-        <span>预算工程量：{{visualStatObject.budgetTotal}}{{visualStatObject.unitName}}</span>
-        <span>已完成工程量：{{visualStatObject.finishBudget}}{{visualStatObject.unitName}}</span>
-        <span>剩余工程量：{{(visualStatObject.budgetTotal - visualStatObject.finishBudget).toFixed(2)}}{{visualStatObject.unitName}}</span>
+          <span>预算工程量：{{visualStatObject.budgetTotal}}{{visualStatObject.unitName}}</span>
+          <span>已完成工程量：{{visualStatObject.finishBudget}}{{visualStatObject.unitName}}</span>
+          <span>剩余工程量：{{(visualStatObject.budgetTotal - visualStatObject.finishBudget).toFixed(2)}}{{visualStatObject.unitName}}</span>
         </div> 
     </el-form-item>
     <el-form-item label="任务名称：" prop="planName">
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { addConstructPlan,updateConstructPlan,getConstructPlanById,getVisualStatItemListTree,listUserInfo} from "../api/system_interface.js";
+import { addConstructPlan,updateConstructPlan,getConstructPlanById,getVisualStatItemListTree,listUserInfo,getMonthAddoption} from "../api/system_interface.js";
 import { mapState, mapActions } from 'vuex'
 export default {
   name: "addPlan",
@@ -159,15 +159,33 @@ export default {
 
     //根据选中的统计项id获取项目信息
     changeVisu(){
-      if(this.dataModel.visualStatId != ''){
-        this.visualStatObject = this.statisList.find((v) => v.id === this.dataModel.visualStatId);
-        this.dataModel.planName = this.visualStatObject.statName;
+      //dataModel.visualStatId
+      if(this.dataModel.visualStatId || this.dataModel.visualStatId.length>0){
+        // this.visualStatObject = this.statisList.find((v) => v.id === this.dataModel.visualStatId);
+        // this.dataModel.planName = this.visualStatObject.statName;
+        this.getshowdata(this.dataModel.visualStatId[this.dataModel.visualStatId.length-1]);
       }
       else{
         this.visualStatObject = null;
       }
     },
-
+    //查询增加后展示内容
+    async getshowdata(data) {
+      getMonthAddoption(data)
+        .then(response => {
+          if (response.code == "200") {
+             this.visualStatObject = response.body;
+             this.dataModel.planName = this.visualStatObject.statName;
+            //this.refreshList();
+          } else {
+            this.visualStatObject= {};
+            this.$message.error(response.msg);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     /**
      反显数据
      */
