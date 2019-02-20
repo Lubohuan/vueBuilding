@@ -85,7 +85,7 @@ export default {
         {
           id: 50,
           label: "生产任务管理",
-          path:"/areaManagement",
+          path:"",
           code:"110701",
           children:[
             {

@@ -18,6 +18,15 @@
   </el-row>
    <el-row class="planProgress_row">
    <el-col :span="24">
+      <el-date-picker size="small"
+      v-model="timeArr"
+      type="daterange"
+      :default-time="['00:00:00', '23:59:59']"
+      value-format="yyyy-MM-dd"
+      range-separator="至"
+      start-placeholder="开始日期"
+      end-placeholder="结束日期">
+      </el-date-picker>
      <el-cascader change-on-select :show-all-levels="false"  @change="projectchange" :options="listChildOrgInfoList" v-model="projectId" :props="defaultProps" size="small" placeholder="请选择项目" clearable></el-cascader>
      <el-cascader change-on-select :show-all-levels="false" :options="roginTreeList" v-model="regionId" :props="defaultProp" size="small" placeholder="请选择施工区段" clearable></el-cascader>
      <el-select size="small" v-model="state" placeholder="请选择状态" clearable>
@@ -101,6 +110,7 @@ export default {
   },
   data() {
     return {
+      timeArr:'',
       multipleSelection: [],
       dataObj: {},
       valueData:"",
@@ -305,7 +315,9 @@ export default {
         offset: this.pagesize,
         projectId: this.projectIds,
         regionId: this.regionIds,
-        state:this.state
+        state:this.state,
+        endTimeStart:this.timeArr&&this.timeArr['length']?this.timeArr[0]:'',
+        endTimeEnd:this.timeArr&&this.timeArr['length']?this.timeArr[1]:'',
       })
         .then(response => {
           this.tableData = response.body.rows;

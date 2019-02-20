@@ -17,12 +17,40 @@
       </el-tabs>
     </el-col>
   </el-row>
+  <el-row class="planProgress_row" style="margin-bottom:15px;">
+   <el-col :span="24">
+     <el-date-picker size="small"
+      v-model="timeArr"
+      type="daterange"
+      :default-time="['00:00:00', '23:59:59']"
+      value-format="yyyy-MM-dd"
+      range-separator="至"
+      start-placeholder="开始日期"
+      end-placeholder="结束日期">
+      </el-date-picker>
+     <el-cascader change-on-select :show-all-levels="false"  @change="projectchange" :options="listChildOrgInfoList" v-model="projectId" :props="defaultProps" size="small" placeholder="请选择项目" clearable></el-cascader>
+     <el-cascader change-on-select :show-all-levels="false" :options="roginTreeList" v-model="regionId" :props="defaultProp" size="small" placeholder="请选择施工区段" clearable></el-cascader>
+    <el-select v-model="respUser" clearable placeholder="请选择负责人" size="small">
+    <el-option
+      v-for="item in respUserList"
+      :key="item.value"
+      :label="item.label"
+      :value="item.value">
+    </el-option>
+  </el-select>
+  <el-select v-model="nowstate" clearable placeholder="请选择状态" size="small">
+    <el-option label="进行中" value="0"></el-option>
+    <el-option label="已完成" value="1"></el-option>
+    <el-option label="已过期" value="2"></el-option>
+  </el-select>
+    <el-button size="mini" type="success" @click="refreshListAll" style="margin-left:30px;" plain>搜索</el-button>
+       <el-button size="mini"  @click="resetForm">重置</el-button>
+   </el-col>
+   
+  </el-row>
   <el-row class="rowOne">
       <el-col :span="7" class="elStyle" style="padding:0px;">
-          <el-row class="sortTab">
-              <!-- <el-col :span="8">
-              <el-button type="primary" size="mini" @click="addTask">+任务</el-button>
-              </el-col> -->
+          <!-- <el-row class="sortTab">
               <el-col :span="24" style="text-align:right;">    
                 <span>
                 <el-popover placement="bottom" width="200" v-model="visible">
@@ -44,7 +72,7 @@
                 </span>
                 <span>筛选</span>
               </el-col>
-          </el-row>
+          </el-row> -->
           <el-row class="listPlan">
           <div class="overDiv">
           <div style="text-align:center;">
@@ -265,8 +293,9 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex';
 import addTasks from "../taskManagement/addTasks.vue";
-import { getPlanTaskPage,getConstructPlanDetailById,getConstructLogPage,updateTaskPriority } from "../api/system_interface.js";
+import { getPlanTaskPage,getConstructPlanDetailById,getConstructLogPage,updateTaskPriority,listRegionTree } from "../api/system_interface.js";
 import Aplayer from 'vue-aplayer';
 export default {
   name: "taskManagement",
@@ -276,6 +305,23 @@ export default {
   },
   data() {
     return {
+      respUser:'',
+      respUserList:[],
+      projectId:[],
+      regionId: [],
+      roginTreeList:[],
+       defaultProps:{
+            children: "child",
+            label: "name",
+            value: "id"
+        },
+        defaultProp:{
+            children: "child",
+            label: "regionName",
+            value: "id"
+        },
+      nowstate:'',
+      timeArr:'',
       activeName: "first",
       activeName1: "first1",
       activeName11: "first11",
@@ -353,13 +399,47 @@ export default {
           durationDisplay: true,
           remainingTimeDisplay: false,
           fullscreenToggle: true  //全屏按钮
-        }
+        },
+       
     },
-    order:null
+    order:null,
     };
   },
+   computed: {
+    ...mapState([
+     'listChildOrgInfoList',
+    ]),
+  },
   methods: {
-
+    resetForm(){
+        
+    },
+    //项目变化的时候
+    projectchange(val){
+      let data = {projectId:''};
+      if( this.projectId.length>=1){
+         
+         data = {projectId:this.projectId[this.projectId.length - 1]};
+       }else{
+         data = {projectId:this.projectId[0]};
+       }
+       this.regintreedata(data); //
+    },
+    async regintreedata(data) {
+      listRegionTree(data)
+        .then(response => {
+          if (response.code == "200") {
+             this.roginTreeList = response.body;
+            //this.refreshList();
+          } else {
+            this.roginTreeList= [];
+            this.$message.error(response.msg);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
      //页码改变
     handleCurrentChange(cpage) {
       this.currentPage = cpage;
@@ -484,6 +564,11 @@ export default {
         getPlanTaskPage({
           current:this.currentPage,
           offset:this.pagesize,
+          endTimeStart:this.timeArr&&this.timeArr['length']?this.timeArr[0]:'',
+          endTimeEnd:this.timeArr&&this.timeArr['length']?this.timeArr[1]:'',
+          state:this.nowstate,
+          projectId:this.projectId.length>0?this.projectId[this.projectId.length - 1]:'',
+          regionId:this.regionId.length>0?this.regionId[this.regionId.length - 1]:''
       })
         .then(response => {
           if(response.body.rows == undefined){
@@ -553,6 +638,15 @@ export default {
     //关闭施工视频弹框
     closeRest(){
         this.$refs.videoPlayer.player.pause()
+    },
+    //刷新界面
+    async refreshListAll(){
+        await this.refreshList();
+        if(this.tableData.length >= 1){
+            this.dateId = this.tableData[0].id;
+            this.palnId = this.tableData[0].planId;
+            this.refreshLists();
+        }
     }
   },
   async created() {

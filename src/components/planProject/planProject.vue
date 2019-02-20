@@ -14,6 +14,15 @@
   </el-row> -->
   <el-row class="planProgress_row" style="margin-bottom:20px;">
    <el-col :span="24">
+     <el-date-picker size="small"
+      v-model="timeArr"
+      type="daterange"
+      :default-time="['00:00:00', '23:59:59']"
+      value-format="yyyy-MM-dd"
+      range-separator="至"
+      start-placeholder="开始日期"
+      end-placeholder="结束日期">
+      </el-date-picker>
      <el-cascader change-on-select :show-all-levels="false" @change="projectchange" :options="listChildOrgInfoList" @blur="clearmodel()" v-model="projectId" :props="defaultProps1" size="small" placeholder="请选择项目" clearable></el-cascader>
      <el-cascader change-on-select :show-all-levels="false" :options="roginTreeList" @blur="clearmodel()" v-model="regionId" :props="defaultProp" size="small" placeholder="请选择施工区段" clearable></el-cascader>
     <el-button size="mini" type="success" @click="resarchInfo" style="margin-left:30px;" plain>搜索</el-button>
@@ -34,6 +43,14 @@
       :data="tableData"
       border
       style="width: 100%">
+      <el-table-column width="70" show-overflow-tooltip
+        label="序号"  align="center">
+        <template slot-scope="scope">
+          
+            <span >{{scope.row.nodeSeq.replace('.1','')}}</span>
+         
+        </template>
+      </el-table-column>
       <el-table-column 
         label="项目名称"  align="center">
         <template slot-scope="scope">
@@ -186,6 +203,7 @@ export default {
   },
   data() {
     return {
+      timeArr:'',
       img:require('../../assets/wbs.png'),
       loading:true,
       projectId: [],
@@ -388,7 +406,9 @@ export default {
       let _this = this;
         getProjectPlan({
         projectId: this.projectIds,
-        regionId:this.regionIds
+        regionId:this.regionIds,
+        endTimeStart:this.timeArr&&this.timeArr['length']?this.timeArr[0]:'',
+        endTimeEnd:this.timeArr&&this.timeArr['length']?this.timeArr[1]:'',
       })
         .then(response => {
           if (response.code == "200") {
