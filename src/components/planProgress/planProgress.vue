@@ -101,7 +101,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import {getConstructPlanPage,startConstructPlan,stopVisualStatItem,deleteConstructPlanById,baseinUrl,listRegionTree} from "../api/system_interface.js";
+import {getConstructPlanPage,startConstructPlan,stopVisualStatItem,deleteConstructPlanById,baseinUrl,listRegionTree,getMonthAddoption} from "../api/system_interface.js";
 import addPlan from "../planProgress/addPlan.vue";
 export default {
   name: "planProgress",
@@ -196,6 +196,7 @@ export default {
           console.log(error);
         });
     },
+    
     //选择项变化
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -332,9 +333,13 @@ export default {
     resarchInfo(){
        if(this.regionId.length>=1){
           this.regionIds = this.regionId[this.regionId.length - 1];
+       }else{
+         this.regionIds = '';
        }
        if( this.projectId.length>=1){
          this.projectIds = this.projectId[this.projectId.length - 1];
+       }else{
+         this.projectIds = '';
        }
        this.refreshList();
     },

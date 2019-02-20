@@ -669,7 +669,13 @@ export function openTaskPlan(data) {
     method: 'get',
   })
 }
-
+// 查询月计划增加项中的统计项
+export function getMonthAddoption(data) {
+  return request({
+    url: baseUrl + '/schedule/visualStatItemDetail/' + data,
+    method: 'get',
+  })
+}
 
 
 // 云盘上传文件接口
