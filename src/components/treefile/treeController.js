@@ -48,12 +48,20 @@
     return arr;
   }
   //增加nodelevel层级
-  export function initHandNode(data,index){
+  export function initHandNode(data,index,seq){
+    seq = seq || '1';
     let length = data.length;
     for(let i=length;i--;){
       data[i]['nodeLevel'] = index;
+      data[i]['nodeIndex'] = i+1;
+      if(seq == '1'){
+        data[i]['nodeSeq'] = data[i]['nodeIndex']+'.'+ seq;
+      }else{
+        data[i]['nodeSeq'] =  seq+'.'+data[i]['nodeIndex'];
+      }
+      
       if(data[i].child){
-        data[i].child = initHandNode(data[i].child,index+1);
+        data[i].child = initHandNode(data[i].child,index+1,data[i]['nodeSeq']);
       }
     }
     return data;

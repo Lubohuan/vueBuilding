@@ -42,6 +42,14 @@
       :data="tableData"
       border
       style="width: 100%">
+      <el-table-column width="70" show-overflow-tooltip
+        label="序号"  align="center">
+        <template slot-scope="scope">
+          
+            <span >{{scope.row.nodeSeq.replace('.1','')}}</span>
+         
+        </template>
+      </el-table-column>
       <el-table-column 
         label="项目名称"  align="center">
         <template slot-scope="scope">

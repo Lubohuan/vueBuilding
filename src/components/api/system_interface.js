@@ -420,6 +420,14 @@ export function getVisualStatItemList(data) {
     params:data
   })
 }
+//根据项目id获取分部分项信息(树状)
+export function getVisualStatItemListTree(data) {
+  return request({
+    url: baseUrl + '/schedule/statItemTreeRegion',
+    method: 'get',
+    params:data
+  })
+}
 //获取区域产值统计分析
 export function getRegionOutputReport(data) {
   return request({

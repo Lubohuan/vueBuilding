@@ -6,9 +6,10 @@
         <el-cascader :options="projectList" v-model="dataModel.projectIdArry" :props="defaultProp" size="small" placeholder="请选择项目" style="width:100%;" @change="changeProject" clearable :disabled="iscompany"></el-cascader>
     </el-form-item>
     <el-form-item label="选择统计项：" prop="visualStatId">
-         <el-select filterable   size="small" v-model="dataModel.visualStatId" placeholder="请选择形象进度统计项"  style="width:100%;"  @change="changeVisu" clearable>
+         <!-- <el-select filterable   size="small" v-model="dataModel.visualStatId" placeholder="请选择形象进度统计项"  style="width:100%;"  @change="changeVisu" clearable>
             <el-option v-for="(item,index) in statisList" :label="item.statName" :value="item.id" :key="index" ></el-option>
-        </el-select>
+        </el-select> -->
+        <el-cascader :options="statisList" v-model="dataModel.visualStatId" :props="defaultProp1" size="small" placeholder="选择统计项" style="width:100%;" @change="changeVisu" clearable ></el-cascader>
         <span v-if="visualStatObject !== null" style="color:rgb(64, 158, 255);">分部分项：{{visualStatObject.subFullName}}</span>
         <div  v-if="visualStatObject !== null" class="visualSpan">
         <span>预算工程量：{{visualStatObject.budgetTotal}}{{visualStatObject.unitName}}</span>
@@ -47,7 +48,7 @@
 </template>
 
 <script>
-import { addConstructPlan,updateConstructPlan,getConstructPlanById,getVisualStatItemList,listUserInfo} from "../api/system_interface.js";
+import { addConstructPlan,updateConstructPlan,getConstructPlanById,getVisualStatItemListTree,listUserInfo} from "../api/system_interface.js";
 import { mapState, mapActions } from 'vuex'
 export default {
   name: "addPlan",
@@ -115,6 +116,11 @@ export default {
       defaultProp: {
         children: "child",
         label: "name",
+        value: "id"
+      },
+      defaultProp1:{
+        children: "child",
+        label: "regionName",
         value: "id"
       },
       userList:[],
@@ -286,7 +292,7 @@ export default {
 
     //查询形象进度统计项
     getVisitLIst(){
-      getVisualStatItemList({
+      getVisualStatItemListTree({
         projectId:this.dataModel.projectId
       })
         .then(response => {
