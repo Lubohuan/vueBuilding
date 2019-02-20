@@ -33,9 +33,9 @@
     <el-select v-model="respUser" clearable placeholder="请选择负责人" size="small">
     <el-option
       v-for="item in respUserList"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value">
+      :key="item.id"
+      :label="item.trueName"
+      :value="item.id">
     </el-option>
   </el-select>
   <el-select v-model="nowstate" clearable placeholder="请选择状态" size="small">
@@ -183,7 +183,7 @@
             </el-row>
             <el-row class="despSpans">
             <el-tabs v-model="activeName1" @tab-click="handleClick">
-                  <el-tab-pane label="基础信息" name="first1" class="firstTab">
+                  <el-tab-pane label="基础信息" name="first1" class="firstTab" v-if="personalData['startTime']">
                       <div>起止日期：{{personalData.startTime}}-{{personalData.endTime}}</div>
                       <!-- <div style="margin:0px;">任务描述</div>
                       <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入任务描述" v-model="textarea" @focus="focusInput"></el-input>
@@ -295,7 +295,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import addTasks from "../taskManagement/addTasks.vue";
-import { getPlanTaskPage,getConstructPlanDetailById,getConstructLogPage,updateTaskPriority,listRegionTree } from "../api/system_interface.js";
+import { getPlanTaskPage,getConstructPlanDetailById,getConstructLogPage,updateTaskPriority,listRegionTree,listUserInfo } from "../api/system_interface.js";
 import Aplayer from 'vue-aplayer';
 export default {
   name: "taskManagement",
@@ -412,18 +412,26 @@ export default {
   },
   methods: {
     resetForm(){
-        
+
     },
     //项目变化的时候
     projectchange(val){
+      
       let data = {projectId:''};
-      if( this.projectId.length>=1){
+      let obj = {}
+      if(this.projectId && this.projectId.length>=1){
          
          data = {projectId:this.projectId[this.projectId.length - 1]};
        }else{
-         data = {projectId:this.projectId[0]};
+           if(!this.projectId){
+               data = {projectId:''};
+           }else{
+                data = {projectId:this.projectId[0]};
+           }
+         
        }
        this.regintreedata(data); //
+       this.respUserListData(data.projectId||'');
     },
     async regintreedata(data) {
       listRegionTree(data)
@@ -433,6 +441,22 @@ export default {
             //this.refreshList();
           } else {
             this.roginTreeList= [];
+            this.$message.error(response.msg);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    //查人员
+    async respUserListData(data) {
+      listUserInfo(data)
+        .then(response => {
+          if (response.code == "200") {
+             this.respUserList = response.body;
+            //this.refreshList();
+          } else {
+            this.respUserList= [];
             this.$message.error(response.msg);
           }
         })
@@ -571,8 +595,9 @@ export default {
           regionId:this.regionId.length>0?this.regionId[this.regionId.length - 1]:''
       })
         .then(response => {
-          if(response.body.rows == undefined){
+          if(!response.body.rows || response.body.rows.length<=0){
               this.tableData = [];
+              this.personalData = {};
           }
           else{
               this.tableData = response.body.rows;
