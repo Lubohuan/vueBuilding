@@ -293,6 +293,7 @@ export default {
     resetForm(){
       this.regionId = [];
       this.projectId = [];
+      this.nowyear = '';
     },
     //修改年计划量
     editClick(data){
@@ -390,6 +391,8 @@ export default {
 
     //查询总计划 
     refreshList() {
+       this.topTotal =0;
+      this.topfinish=0;
       let _this = this;
         getYearPlan({
         projectId: this.projectIds,
@@ -541,7 +544,7 @@ export default {
     cursor:pointer;
 }
 .spacialinput > .el-input__inner[disabled]{
-  color:#606266;
+  color:#606266 !important;
   border-color:transparent;
 }
 </style>
