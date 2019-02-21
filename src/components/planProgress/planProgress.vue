@@ -351,6 +351,7 @@ export default {
       this.regionIds = null;
       this.projectIds = null;
       this.state = null;
+      this.timeArr = '';
     }
   },
   created(){

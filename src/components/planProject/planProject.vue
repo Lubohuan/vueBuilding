@@ -415,6 +415,7 @@ export default {
     resetForm(){
       this.regionId = [];
       this.projectId = [];
+      this.timeArr = '';
     },
     
 
@@ -433,6 +434,8 @@ export default {
 
     //查询实施项目计划 
     refreshList() {
+      this.topTotal =0;
+      this.topfinish=0;
       let _this = this;
         getProjectPlan({
         projectId: this.projectIds,
@@ -446,6 +449,7 @@ export default {
                 if(response.body){
                   //this.tableData = response.body;
                   if(response.body.length>0){
+
                     this.tableData = this.hanprodata(response.body);
                     this.tableData = initHandNode(this.tableData,0);
                     goAllexpand(this.tableData);//全部展开的话这样做

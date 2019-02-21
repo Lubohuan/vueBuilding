@@ -366,6 +366,7 @@ export default {
     resetForm(){
       this.regionId = [];
       this.projectId = [];
+      this.timeArr = '';
     },
     handleCurrentChange(cpage) {
       this.currentPage = cpage;
