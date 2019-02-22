@@ -47,7 +47,7 @@
       v-loading="loading"
       element-loading-text="拼命加载中"
       element-loading-spinner="el-icon-loading"
-      element-loading-background="rgba(0, 0, 0, 0.8)"
+      element-loading-background="rgba(255, 255, 255, 0.8)"
       :data="tableData"
       border
       style="width: 100%">
@@ -151,7 +151,7 @@
       </el-table-column>
       
       <el-table-column 
-        label="完成比例"  align="center">
+        label="完成比例"  align="left">
         <template slot-scope="scope">
           <el-progress v-if="!scope.row.finishOutputRate" :stroke-width="13"  :percentage="0"></el-progress>
           <el-progress v-else :stroke-width="13" :percentage="$common.fomatPrecent(Number(scope.row.finishOutputRate))"></el-progress>
@@ -266,7 +266,7 @@ export default {
       }
     },
      changeRatefn(){
-      let number = parseFloat(this.topfinish/this.topTotal*100).toFixed(2);
+      let number = parseFloat(this.topfinish/this.topTotal*100 || 0).toFixed(2);
       if(number == 0){
         return 0;
       }else{
@@ -528,8 +528,11 @@ export default {
           }
         }
         list[i]['type'] = 0;//项目
-         this.topTotal += isNaN(parseFloat(list[i]['profilePlanOutput']))?0:parseFloat(list[i]['profilePlanOutput']);
-        this.topfinish += isNaN(parseFloat(list[i]['profileFinishOutput']))?0:parseFloat(list[i]['profileFinishOutput']);
+        if(list[i]['level'] == 1){
+          this.topTotal += isNaN(parseFloat(list[i]['profilePlanOutput']))?0:parseFloat(list[i]['profilePlanOutput']);
+          this.topfinish += isNaN(parseFloat(list[i]['finishOutput']))?0:parseFloat(list[i]['finishOutput']);
+        }
+        
       }
       return list;
     },
