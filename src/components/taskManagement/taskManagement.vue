@@ -412,7 +412,10 @@ export default {
   },
   methods: {
     resetForm(){
-
+      this.projectId = [];
+      this.timeArr = '';
+      this.respUser = '';
+      this.regionId = [];
     },
     //项目变化的时候
     projectchange(val){
@@ -437,7 +440,7 @@ export default {
       listRegionTree(data)
         .then(response => {
           if (response.code == "200") {
-             this.roginTreeList = response.body;
+             this.roginTreeList = response.body || [];
             //this.refreshList();
           } else {
             this.roginTreeList= [];
