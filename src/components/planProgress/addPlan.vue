@@ -10,8 +10,8 @@
             <el-option v-for="(item,index) in statisList" :label="item.statName" :value="item.id" :key="index" ></el-option>
         </el-select> -->
         <el-cascader :options="statisList" v-model="dataModel.visualStatId" :props="defaultProp1" size="small" placeholder="选择统计项" style="width:100%;" @change="changeVisu" clearable ></el-cascader>
-        <span v-if="visualStatObject !== null" style="color:rgb(64, 158, 255);">分部分项：{{visualStatObject.subFullName}}</span>
-        <div  v-if="visualStatObject !== null" class="visualSpan">
+        <span v-if="visualStatObject&&JSON.stringify(visualStatObject) != '{}'" style="color:rgb(64, 158, 255);">分部分项：{{visualStatObject.subFullName}}</span>
+        <div  v-if="visualStatObject&&JSON.stringify(visualStatObject) != '{}'" class="visualSpan">
           <span>预算工程量：{{visualStatObject.budgetTotal}}{{visualStatObject.unitName}}</span>
           <span>已完成工程量：{{visualStatObject.finishBudget}}{{visualStatObject.unitName}}</span>
           <span>剩余工程量：{{(visualStatObject.budgetTotal - visualStatObject.finishBudget).toFixed(2)}}{{visualStatObject.unitName}}</span>
@@ -166,7 +166,7 @@ export default {
         this.getshowdata(this.dataModel.visualStatId[this.dataModel.visualStatId.length-1]);
       }
       else{
-        this.visualStatObject = null;
+        this.visualStatObject = {};
       }
     },
     //查询增加后展示内容
@@ -174,8 +174,8 @@ export default {
       getMonthAddoption(data)
         .then(response => {
           if (response.code == "200") {
-             this.visualStatObject = response.body;
-             this.dataModel.planName = this.visualStatObject.statName;
+             this.visualStatObject = response.body || {};
+             this.dataModel.planName = this.visualStatObject.statName || '';
             //this.refreshList();
           } else {
             this.visualStatObject= {};
@@ -331,7 +331,7 @@ export default {
 
     //切换项目查询形象进度统计项
     changeProject(){
-      this.dataModel.visualStatId = '';
+      this.dataModel.visualStatId = [];
       this.visualStatObject = null;
       if(this.dataModel.projectIdArry.length >= 1){
          this.dataModel.projectId = this.dataModel.projectIdArry[this.dataModel.projectIdArry.length - 1];

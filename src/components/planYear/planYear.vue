@@ -33,8 +33,8 @@
  
    
   <div style="height:45px;width:100%;border:1px solid #ebeef5;border-bottom:none;line-height:45px;">
-    <span style="margin:0 25px;">总计划产值：{{handRate(topTotal)}}万元</span>
-    <span style="margin:0 25px;">总完成产值：{{handRate(topfinish)}}万元</span>
+    <span style="margin:0 25px;">年计划产值：{{handRate(topTotal)}}万元</span>
+    <span style="margin:0 25px;">年完成产值：{{handRate(topfinish)}}万元</span>
     <span style="margin:0 25px;">完成比例：<el-progress style="display:inline-block;width:200px;"  :stroke-width="18"  :percentage="changeRatefn()"></el-progress></span>
     
     <!-- topTotal:0,
@@ -499,8 +499,8 @@ export default {
         list[i]['type'] = 0;//项目
         list[i]['update'] = '0';
         if(list[i]['level'] == 1){
-          this.topTotal += isNaN(parseFloat(list[i]['profilePlanOutput']))?0:parseFloat(list[i]['profilePlanOutput']);
-        this.topfinish += isNaN(parseFloat(list[i]['profileFinishOutput']))?0:parseFloat(list[i]['profileFinishOutput']);
+          this.topTotal += isNaN(parseFloat(list[i]['yearPlanOutput']))?0:parseFloat(list[i]['yearPlanOutput']);
+        this.topfinish += isNaN(parseFloat(list[i]['yearFinishOutput']))?0:parseFloat(list[i]['yearFinishOutput']);
         }
         
       }
@@ -549,6 +549,7 @@ export default {
 }
 .spacialinput > .el-input__inner[disabled]{
   color:#606266 !important;
-  border-color:transparent;
+  border-color:transparent !important;
+  background-color: transparent !important;
 }
 </style>
