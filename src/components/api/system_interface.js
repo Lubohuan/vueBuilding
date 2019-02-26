@@ -676,7 +676,14 @@ export function getMonthAddoption(data) {
     method: 'get',
   })
 }
-
+//查询施工日志（分页）
+export function getWorkRecord(data) {
+  return request({
+    url: baseUrl + '/task/constructLog/',
+    method: 'get',
+    params:data
+  })
+}
 
 // 云盘上传文件接口
 async function getPolicy(ext) {
