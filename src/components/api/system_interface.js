@@ -692,12 +692,20 @@ export function updateWorkRecord(data) {
     data:data
   })
 }
-//修改施工日志记录（分页）
+//修改施工日志的记录（分页）
 export function updateWorkRecordLog(data) {
   return request({
     url: baseUrl + '/task/logChange/',
     method: 'get',
     params:data
+  })
+}
+//根据主键查询月计划详情
+export function getMonthPlanDetail(data) {
+  return request({
+    url: baseUrl + '/schedule/constructPlanDetail/'+data,
+    method: 'get',
+    //params:data
   })
 }
 

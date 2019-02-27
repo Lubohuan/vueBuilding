@@ -1,7 +1,49 @@
 <template>
 <!--形象进度月计划-->
 <div class="planProgress">
-   
+   <el-col>
+     <div class="list">
+       <span>项目名称：</span>
+       <span class="content">{{allDetailshow.projectName}}</span>
+     </div>
+     <div class="list">
+       <span>任务名称：</span>
+       <span class="content">{{allDetailshow.planName}}</span>
+     </div>
+     <div class="list">
+       <span >施工区域：</span>
+       <span class="content">{{allDetailshow.regionFullName}}</span>
+     </div>
+     <div class="list">
+       <span>分部分项：</span>
+       <span class="content">{{allDetailshow.subFullName}}</span>
+     </div>
+     <div class="list">
+       <span>责任人：</span>
+       <span class="content">{{allDetailshow.respUserName}}</span>
+     </div>
+     <div class="list">
+       <span>计划工程量：</span>
+       <span class="content" style="width:calc(100% - 200px)">
+         
+         <el-progress :text-inside="true" :stroke-width="18" :percentage="ratehand()"></el-progress>
+         <!-- <span>{{allDetailshow.planFinish}}{{allDetailshow.unitName}}</span> -->
+       </span>
+       <span>{{allDetailshow.planFinish}}{{allDetailshow.unitName}}</span>
+     </div>
+     <div class="list">
+       <span>计划开始时间：</span>
+       <span class="content">{{allDetailshow.planStartTime}}</span>
+     </div>
+     <div class="list">
+       <span>计划结束时间：</span>
+       <span class="content">{{allDetailshow.planEndTime}}</span>
+     </div>
+     <div class="list">
+       <span>工期：</span>
+       <span class="content">{{allDetailshow.durationTime}}d</span>
+     </div>
+   </el-col>
   
   <el-table :data="tableData" style="width: 100%;margin-top:20px;"   @selection-change="handleSelectionChange" border :header-cell-style="rowClass">
     <!-- <el-table-column type="selection" width="40" align="center"></el-table-column> -->
@@ -46,7 +88,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import {updateWorkRecordLog,baseinUrl,} from "../api/system_interface.js";
+import {updateWorkRecordLog,baseinUrl,getMonthPlanDetail} from "../api/system_interface.js";
 
 export default {
   name: "workRecorddetail",
@@ -96,6 +138,7 @@ export default {
       roginTreeList:[],
       focusvalue:'',
       focusData:{},
+      allDetailshow:{},
     };
   },
   computed: {
@@ -119,6 +162,7 @@ export default {
       console.log(data);
       this.focusData = data;
       this.refreshList();
+      this.getDetail(data.planId);
     },
    
    
@@ -147,6 +191,16 @@ export default {
             this.tableData[i]['update'] = 0;
           }
           this.total = Number(response.body.page.rows);
+        })
+        .catch(error => {
+          console.log(error);
+      });
+    },
+     //查询详情
+    getDetail(id) {
+      getMonthPlanDetail(id)
+        .then(response => {
+          this.allDetailshow = response.body;
         })
         .catch(error => {
           console.log(error);
@@ -186,6 +240,14 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
+    ratehand(){
+      let val = this.allDetailshow['planFinishRate'];
+       if(val == 0 || !val){
+        return 0;
+      }else{
+        return parseFloat(val*100).toFixed(2);
+      }
+    },
 
 
 
@@ -196,5 +258,12 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-
+.list{
+  margin:15px 0;
+  .content{
+    display: inline-block;
+    color:#333;
+    width:calc(100% - 150px);
+  }
+}
 </style>
