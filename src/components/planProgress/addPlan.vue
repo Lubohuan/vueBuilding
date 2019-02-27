@@ -254,7 +254,9 @@ export default {
 
     //添加进度计划
     addPlan() {
-      addConstructPlan(this.dataModel)
+      let obj = JSON.parse(JSON.stringify(this.dataModel));
+      obj.visualStatId = this.dataModel['visualStatId'][this.dataModel['visualStatId'].length-1]
+      addConstructPlan(obj)
         .then(response => {
           if (response.code == "200") {
             this.$message.success("添加成功!");
