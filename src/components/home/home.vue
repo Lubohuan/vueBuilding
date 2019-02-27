@@ -94,6 +94,12 @@ export default {
               path:"/taskManagement",
               code:"110801"
             },
+            {
+              id: 56,
+              label: "施工记录管理",
+              path:"/workRecord",
+              code:"110801"
+            },
           ]
         },
         {

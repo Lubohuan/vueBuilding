@@ -85,6 +85,14 @@ export default new Router({
               require(['../components/planProgress/planProgress.vue'], resolve)
             }
           },
+          // 实施记录管理
+          {
+            path: '/workRecord',
+            name: 'workRecord',
+            component: (resolve) => {
+              require(['../components/workrecord/workRecord.vue'], resolve)
+            }
+          },
            // 总进度计划
            {
             path: '/planTotal',
