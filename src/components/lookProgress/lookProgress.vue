@@ -16,8 +16,8 @@
    </el-row>
    <el-row class="lookProgress_row">
    <el-col :span="15">
-      <el-cascader :show-all-levels="false" :options="listOrgInfoList" v-model="projectId" :props="defaultProps" size="small" placeholder="请选择项目" clearable></el-cascader>
-      <el-cascader :show-all-levels="false" :options="reginList" v-model="regionId" :props="defaultProp" size="small" placeholder="请选择施工区段" clearable></el-cascader>
+      <el-cascader change-on-select :show-all-levels="false" @change="projectchange" :options="listChildOrgInfoList" @blur="clearmodel()" v-model="projectId" :props="defaultProps1" size="small" placeholder="请选择项目" clearable></el-cascader>
+     <el-cascader change-on-select :show-all-levels="false" :options="roginTreeList" @blur="clearmodel()" v-model="regionId" :props="defaultProp" size="small" placeholder="请选择施工区段" clearable></el-cascader>
     <el-button size="mini" type="success" @click="resarchInfo" style="margin-left:30px;" plain>搜索</el-button>
        <el-button size="mini" @click="resetForm">重置</el-button>
    </el-col>
@@ -84,7 +84,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { getVisualStatMonitorPage,baseinUrl } from "../api/system_interface.js";
+import { getVisualStatMonitorPage,baseinUrl,listRegionTree } from "../api/system_interface.js";
 export default {
   name: "lookProgress",
   data() {
@@ -105,16 +105,20 @@ export default {
       pagesize: 10,
       currentPage: 1,
       total:0,
+      defaultProps: {
+        children: "child"
+      },
       defaultProp:{
         children: "child",
         label: "regionName",
         value: "id"
       },
-      defaultProps:{
+       defaultProps1:{
         children: "child",
         label: "name",
         value: "id"
       },
+      roginTreeList:[],
       projectId: [],
       regionId: [],
       regionIds:null,
@@ -130,6 +134,7 @@ export default {
     ...mapState([
      'reginList',
      'listOrgInfoList',
+     'listChildOrgInfoList'
     ]),
   },
   methods: {
@@ -137,7 +142,44 @@ export default {
         'getReginList',
         'getlistOrgInfoList'
     ]),
-
+    clearmodel(){
+      //alert(2);
+      if(this.regionId.length>=1){
+          this.regionIds = this.regionId[this.regionId.length - 1];
+       }else{
+         this.regionIds ='';
+       }
+       if( this.projectId.length>=1){
+         this.projectIds = this.projectId[this.projectId.length - 1];
+       }else{
+         this.projectIds = '';
+       }
+    },
+     projectchange(val){
+      let data = {projectId:''};
+      if( this.projectId.length>=1){
+         
+         data = {projectId:this.projectId[this.projectId.length - 1]};
+       }else{
+         data = {projectId:this.projectId[0]};
+       }
+        this.regintreedata(data); //
+    },
+    async regintreedata(data) {
+      listRegionTree(data)
+        .then(response => {
+          if (response.code == "200") {
+             this.roginTreeList = response.body || [];
+            //this.refreshList();
+          } else {
+            this.roginTreeList= [];
+            this.$message.error(response.msg);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
    exportExcel(){
      if(this.multipleSelection.length < 1){
           this.$message.success("请选择要导出的类别!");

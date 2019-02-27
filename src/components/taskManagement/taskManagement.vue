@@ -594,6 +594,7 @@ export default {
           endTimeStart:this.timeArr&&this.timeArr['length']?this.timeArr[0]:'',
           endTimeEnd:this.timeArr&&this.timeArr['length']?this.timeArr[1]:'',
           state:this.nowstate,
+          respUser:this.respUser,
           projectId:this.projectId.length>0?this.projectId[this.projectId.length - 1]:'',
           regionId:this.regionId.length>0?this.regionId[this.regionId.length - 1]:''
       })
