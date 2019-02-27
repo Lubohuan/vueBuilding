@@ -684,6 +684,23 @@ export function getWorkRecord(data) {
     params:data
   })
 }
+//修改施工日志（分页）
+export function updateWorkRecord(data) {
+  return request({
+    url: baseUrl + '/task/constructLog/',
+    method: 'put',
+    data:data
+  })
+}
+//修改施工日志记录（分页）
+export function updateWorkRecordLog(data) {
+  return request({
+    url: baseUrl + '/task/logChange/',
+    method: 'get',
+    params:data
+  })
+}
+
 
 // 云盘上传文件接口
 async function getPolicy(ext) {

@@ -45,23 +45,56 @@
   <el-table :data="tableData" style="width: 100%;margin-top:20px;"   @selection-change="handleSelectionChange" border :header-cell-style="rowClass">
     <!-- <el-table-column type="selection" width="40" align="center"></el-table-column> -->
     <el-table-column type="index" label="序号" width="45" align="center"></el-table-column>
-    <el-table-column prop="createTime"  label="日期" align="center" min-width="190" :show-overflow-tooltip="true"></el-table-column>
-    <el-table-column prop="projectName"  label="项目名称" align="center" min-width="100" :show-overflow-tooltip="true"></el-table-column>
+    <el-table-column   label="日期" align="center"  :show-overflow-tooltip="true">
+      <template slot-scope="scope">
+        <span>{{scope.row.createTime}}</span>
+      </template>
+    </el-table-column>
+    <el-table-column   label="项目名称" align="center" min-width="100" :show-overflow-tooltip="true">
+      <template slot-scope="scope">
+        <span>{{scope.row.projectName}}</span>
+      </template>
+    </el-table-column>
     
-    <el-table-column prop="planName"  label="计划任务名称" align="center" min-width="190" :show-overflow-tooltip="true"></el-table-column>
-    <el-table-column prop="regionName"  label="施工区段" align="center" min-width="100" :show-overflow-tooltip="true"></el-table-column>
+    <el-table-column  label="计划任务名称" align="center" min-width="190" :show-overflow-tooltip="true">
+      <template slot-scope="scope">
+        <span>{{scope.row.planName}}</span>
+      </template>
+    </el-table-column>
+    <el-table-column   label="施工区段" align="center" min-width="100" :show-overflow-tooltip="true">
+      <template slot-scope="scope">
+        <span>{{scope.row.regionName}}</span>
+      </template>
+    </el-table-column>
     
-    <el-table-column prop="unitName"  label="形象单位" align="center"></el-table-column>
-    <el-table-column prop="finishAmount"  label="本次完成工程量" align="center" min-width="100"></el-table-column>
-    <el-table-column prop="createUserName"  label="施工责任人" align="center" min-width="110"></el-table-column>
-    <el-table-column prop="changTotal"  label="变更记录" align="center" min-width="110"></el-table-column>
+    <el-table-column   label="形象单位" align="center">
+      <template slot-scope="scope">
+        <span>{{scope.row.unitName}}</span>
+      </template>
+    </el-table-column>
+    <el-table-column  label="本次完成工程量" align="center" >
+      <template slot-scope="scope">
+        <!-- <span> -->
+          <span v-if="scope.row.update == 0">{{scope.row.finishAmount}}</span>
+          <!-- <el-input  size="mini" v-model="scope.row.finishAmount" v-if="scope.row.update == 0" disabled  class="spacialinput"/> -->
+          <el-input  size="mini" v-model="focusvalue" v-if="scope.row.update == 1"  />
+        <!-- </span> -->
+      </template>
+    </el-table-column>
+    <el-table-column prop="createUserName"  label="施工责任人" align="center"></el-table-column>
+    <el-table-column  label="变更记录" align="center" >
+      <template slot-scope="scope">
+        <span v-if="!scope.row.changTotal || scope.row.changTotal==0">无变更</span>
+        <span @click="addPlan(scope.row)" style="color:#3296fa;cursor:pointer;" v-else>变更{{scope.row.changTotal}}次</span>
+      </template>
+    </el-table-column>
     
     <el-table-column label="操作" align="center" min-width="150">
       <template slot-scope="scope">
-         <el-button v-if="hasPerm('110604')" size="mini" type="primary" @click="editPlan(scope.row)">编辑</el-button>
-         <el-button v-if="scope.row.isForbid == 0 && hasPerm('110604')" size="mini" type="warning" @click="stopClick(scope)">禁用</el-button>
-         <el-button v-if="scope.row.isForbid == 1 && hasPerm('110604')" size="mini" type="success" @click="startClick(scope)">启用</el-button>
-         <el-button v-if="scope.row.isForbid == 1 && hasPerm('110603')" size="mini" type="danger" @click="deleteClick(scope)">删除</el-button>
+         <el-button v-if="hasPerm('110604') && scope.row.update==0" size="mini" type="primary" @click="editPlan(scope.row)">编辑</el-button>
+        
+         <el-button v-if="hasPerm('110604') && scope.row.update==1" size="mini" type="success" @click="updatenowdata(scope.row)">确定</el-button>
+         <el-button v-if="hasPerm('110604') && scope.row.update==1" size="mini" type="info" @click="cancleeditClick(scope.row)">取消</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -78,7 +111,7 @@
    </el-pagination>
 
  <!--新增/修改进度计划-->
-    <el-dialog  title="变更记录" :center="true" :visible.sync="dialog.workRecorddetail" width="700px" @open="$nextTick(()=>$refs['workRecorddetail'].update(dataObj))" @close="$refs['workRecorddetail'].reset()">
+    <el-dialog  title="变更记录" :center="true" :visible.sync="dialog.workRecorddetail" width="700px" @open="$nextTick(()=>$refs['workRecorddetail'].update(dataObj))" >
       <workRecorddetail  ref="workRecorddetail"  @refreshData="refreshList"  @close="dialog.workRecorddetail = false" ></workRecorddetail>
     </el-dialog>
 
@@ -87,7 +120,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import {getWorkRecord,getConstructPlanPage,startConstructPlan,stopVisualStatItem,deleteConstructPlanById,baseinUrl,listRegionTree,listUserInfo} from "../api/system_interface.js";
+import {getWorkRecord,getConstructPlanPage,startConstructPlan,stopVisualStatItem,deleteConstructPlanById,baseinUrl,listRegionTree,listUserInfo,updateWorkRecord} from "../api/system_interface.js";
 import workRecorddetail from "../workrecord/workRecorddetail.vue";
 export default {
   name: "workRecord",
@@ -139,6 +172,8 @@ export default {
         value: "id"
       },
       roginTreeList:[],
+      focusvalue:'',
+      focusData:{},
     };
   },
   computed: {
@@ -185,7 +220,42 @@ export default {
           console.log(error);
         });
     },
-    
+    //修改数据
+    async updatenowdata(data){
+      if(data.finishAmount == this.focusvalue){
+        data.update = 0;
+        let length = this.tableData.length;
+        for(let i=length;i--;){
+          if(this.tableData[i]['id'] == data['id']){
+            this.$set(this.tableData[i],'update', 0);
+            this.tableData.splice(i,1,data);
+            break;
+          }
+        }
+        return ;
+      }
+      if(isNaN(Number(this.focusvalue))){
+        this.$message.error('数据非法');
+        return ;
+      }
+        updateWorkRecord({
+          "finishAmount": this.focusvalue,
+          "id": data.id
+        })
+          .then(response => {
+            if (response.code == "200") {
+              
+                 
+                  this.$message.success('更新成功');
+                  this.refreshList();
+                } else {
+                  this.$message.error(response.msg);
+                }
+          })
+          .catch(error => {
+            console.log(error);
+        })  
+    },
     //选择项变化
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -193,73 +263,53 @@ export default {
 
    
 
-    //删除方法
-    deleteClick(scope) {
-       this.$confirm("确定要删除此进度吗", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消"
-      })
-        .then(() => {
-        deleteConstructPlanById(scope.row.id)
-        .then(response => {
-          if (response.code == "200") {
-            this.$message.success("删除成功!");
-            this.refreshList();
-          } else {
-            this.$message.error(response.msg);
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });  
-        })
-        .catch(() => {
-          this.$message.error("已取消删除");
-        });
-    },
+    
+    
 
-    //禁用
-    stopClick(scope) {
-      stopVisualStatItem(scope.row.id)
-        .then(response => {
-          if (response.code == "200") {
-            this.$message.success("禁用成功!");
-            this.refreshList();
-          } else {
-            this.$message.error(response.msg);
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-
-    //启用
-    startClick(scope) {
-      startConstructPlan(scope.row.id)
-        .then(response => {
-          if (response.code == "200") {
-            this.$message.success("启用成功!");
-            this.refreshList();
-          } else {
-            this.$message.error(response.msg);
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
+    
+    
 
     //新增
-    addPlan(){
-       this.dialog.addPlan = true;
-       this.dataObj = {}
+    addPlan(data){
+       this.dialog.workRecorddetail = true;
+       this.dataObj = data;
     },
 
     //编辑
     editPlan(data){
-        this.dialog.addPlan = true;
-        this.dataObj = data;
+      
+      if(!this.focusData['finishAmount']){
+        this.focusData['finishAmount'] = 0;
+      }
+      this.focusvalue = data.finishAmount;
+      if(this.focusData['id'] != data.id && this.focusData['id']){
+        this.focusData.update = 0;
+      }
+      this.focusData = data;
+      data.update = 1;
+      let length = this.tableData.length;
+      for(let i=length;i--;){
+        if(this.tableData[i]['id'] == data['id']){
+          this.tableData.splice(i,1,data);
+          //this.$set(this.tableData[i],'update',1);
+          break;
+        }
+      }
+      
+    },
+    cancleeditClick(data){
+      this.focusvalue = data.finishAmount;
+      data.update = 0;
+      let length = this.tableData.length;
+      for(let i=length;i--;){
+        if(this.tableData[i]['id'] == data['id']){
+          this.tableData.splice(i,1,data);
+          //this.$set(this.tableData[i],'update',0);
+          break;
+        }
+      }
+
+      console.log(JSON.stringify(data));
     },
 
     handleCurrentChange(cpage) {
@@ -285,6 +335,10 @@ export default {
       })
         .then(response => {
           this.tableData = response.body.rows;
+          let length = this.tableData.length;
+          for(let i=length;i--;){
+            this.tableData[i]['update'] = 0;
+          }
           this.total = Number(response.body.page.rows);
         })
         .catch(error => {
