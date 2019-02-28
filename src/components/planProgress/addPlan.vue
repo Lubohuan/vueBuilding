@@ -159,14 +159,17 @@ export default {
 
     //根据选中的统计项id获取项目信息
     changeVisu(){
+      console.log(this.dataModel.visualStatId);
+      console.log(this.dataModel.visualStatId.length);
       //dataModel.visualStatId
-      if(this.dataModel.visualStatId || this.dataModel.visualStatId.length>0){
+      if(this.dataModel.visualStatId && this.dataModel.visualStatId.length>0){
         // this.visualStatObject = this.statisList.find((v) => v.id === this.dataModel.visualStatId);
         // this.dataModel.planName = this.visualStatObject.statName;
         this.getshowdata(this.dataModel.visualStatId[this.dataModel.visualStatId.length-1]);
       }
       else{
         this.visualStatObject = {};
+        this.dataModel.planName = '';
       }
     },
     //查询增加后展示内容
@@ -335,13 +338,14 @@ export default {
     changeProject(){
       this.dataModel.visualStatId = [];
       this.visualStatObject = null;
-      if(this.dataModel.projectIdArry.length >= 1){
+      if(this.dataModel.projectIdArry && this.dataModel.projectIdArry.length >= 1){
          this.dataModel.projectId = this.dataModel.projectIdArry[this.dataModel.projectIdArry.length - 1];
          this.getVisitLIst();
          this.getUserLIst(); 
       }
       else{
         this.statisList = [];
+        this.dataModel.planName = '';
       }
     },
 
