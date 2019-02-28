@@ -41,8 +41,9 @@
       topfinish:0,
       topfinishrate:0, -->
   </div>
-  <div style="height:calc(100% - 87px);width:100%;overflow-y:hidden;">
-    <el-table height="100%" 
+  <div style="width:100%;height:calc(100% - 133px);overflow-y:auto;" >
+   <div style="height:auto;overflow-y:auto;">
+    <el-table 
       v-loading="loading"
       element-loading-text="拼命加载中"
       element-loading-spinner="el-icon-loading"
@@ -147,6 +148,16 @@
       </el-table-column>
       </el-table>
     </div>
+    <el-col style="text-align:right;" v-if="pageSet">
+      <el-pagination style="margin:18px 0 0px;"
+        background
+        @current-change="handleCurrentChange"
+        layout="prev, pager, next"
+        :page-size="pagesize"
+        :total="total">
+      </el-pagination>
+    </el-col>
+  </div>
   </div>
 </template>
 
@@ -204,6 +215,8 @@ export default {
       roginTreeList:[],
       topTotal:0,
       topfinish:0,
+      allstorage:[],
+      pageSet:false,//控制分页
     };
   },
   computed: {
@@ -380,9 +393,11 @@ export default {
     },
 
 
-    handleCurrentChange(cpage) {
+   
+     handleCurrentChange(cpage) {
       this.currentPage = cpage;
-      this.refreshList();
+      this.tableData = this.allstorage.slice((this.currentPage-1)*this.pagesize,this.currentPage*this.pagesize);
+      //goAllexpand(this.treeTableDate);
     },
 
     handleSizeChange(psize) {
@@ -403,23 +418,14 @@ export default {
         .then(response => {
           if (response.code == "200") {
             
-                // if(response.body){
-                //   //this.tableData = response.body;
-                //   if(response.body.length>0){
-                //     this.tableData = this.hanprodata(response.body);
-                //   }else{
-                //     this.tableData = [];
-                //   }
-                // }
-                // else{
-                //   this.tableData = [];
-                // }
+                
                 if(response.body){
                   //this.tableData = response.body;
                   if(response.body.length>0){
-                    this.tableData = this.hanprodata(response.body);
-                    this.tableData = initHandNode(this.tableData,0);
-                    goAllexpand(this.tableData);//全部展开的话这样做
+                    // this.tableData = this.hanprodata(response.body);
+                    // this.tableData = initHandNode(this.tableData,0);
+                    // goAllexpand(this.tableData);//全部展开的话这样做
+                    this.hanpagepart(response.body);
                   }else{
                     this.tableData = [];
                   }
@@ -438,7 +444,23 @@ export default {
           console.log(error);
       })  
     },
-
+    //切换分页
+    hanpagepart(data){
+      console.log('测试数据');
+      if(data.length>20){
+        this.pageSet = true;
+        // this.total = Math.ceil(data.length/20);
+      }else{
+        this.pageSet = false;
+        // /this.total = 1;
+      }
+      this.total = data.length;
+      this.allstorage = JSON.parse(JSON.stringify(data));
+      this.allstorage = this.hanprodata(this.allstorage);
+      this.allstorage = initHandNode(this.allstorage,0);
+      this.tableData = this.allstorage.slice((this.currentPage-1)*this.pagesize,this.currentPage*this.pagesize);
+      //goAllexpand(this.treeTableDate);//全部展开的话这样做
+    },
     //查询工程类别
     refreshLists(){
        return new Promise((resolve, reject) => {
