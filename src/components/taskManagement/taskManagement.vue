@@ -602,6 +602,7 @@ export default {
           if(!response.body.rows || response.body.rows.length<=0){
               this.tableData = [];
               this.personalData = {};
+              this.tableDatas = [];
           }
           else{
               this.tableData = response.body.rows;
