@@ -447,7 +447,7 @@ export default {
     //切换分页
     hanpagepart(data){
       console.log('测试数据');
-      if(data.length>20){
+      if(data.length>this.pagesize){
         this.pageSet = true;
         // this.total = Math.ceil(data.length/20);
       }else{
