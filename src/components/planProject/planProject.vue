@@ -42,9 +42,8 @@
       topfinish:0,
       topfinishrate:0, -->
   </div>
-   <div style="width:100%;height:calc(100% - 133px);overflow-y:auto;" >
-   <div style="height:auto;overflow-y:auto;">
-    <el-table  
+   <div style="width:100%;overflow-y:hidden;" :style="{height:pageSet?'calc(100% - 183px)':'calc(100% - 133px)'}">
+    <el-table  height="100%"
       v-loading="loading"
       element-loading-text="拼命加载中"
       element-loading-spinner="el-icon-loading"
@@ -170,8 +169,10 @@
         </template>
       </el-table-column>
       </el-table>
-   </div>
-    <el-col style="text-align:right;" v-if="pageSet">
+   
+    
+  </div>
+  <el-col style="text-align:right;" v-if="pageSet">
       <el-pagination style="margin:18px 0 0px;"
         background
         @current-change="handleCurrentChange"
@@ -180,8 +181,6 @@
         :total="total">
       </el-pagination>
     </el-col>
-  </div>
-
 
 
 
