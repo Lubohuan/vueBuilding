@@ -98,7 +98,7 @@ export default {
               id: 56,
               label: "施工记录管理",
               path:"/workRecord",
-              code:"110801"
+              code:"112001"
             },
           ]
         },

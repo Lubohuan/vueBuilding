@@ -85,16 +85,17 @@
     <el-table-column  label="变更记录" align="center" >
       <template slot-scope="scope">
         <span v-if="!scope.row.changTotal || scope.row.changTotal==0">无变更</span>
-        <span @click="addPlan(scope.row)" style="color:#3296fa;cursor:pointer;" v-else>变更{{scope.row.changTotal}}次</span>
+        <span @click="addPlan(scope.row)" style="color:#3296fa;cursor:pointer;" v-if="hasPerm('112004') && scope.row.changTotal">变更{{scope.row.changTotal}}次</span>
+        <span  style="color:#3296fa;cursor:pointer;" v-if="!hasPerm('112004') && scope.row.changTotal">变更{{scope.row.changTotal}}次</span>
       </template>
     </el-table-column>
     
     <el-table-column label="操作" align="center" min-width="150">
       <template slot-scope="scope">
-         <el-button v-if="hasPerm('110604') && scope.row.update==0" size="mini" type="primary" @click="editPlan(scope.row)">编辑</el-button>
+         <el-button v-if="hasPerm('112004') && scope.row.update==0" size="mini" type="primary" @click="editPlan(scope.row)">编辑</el-button>
         
-         <el-button v-if="hasPerm('110604') && scope.row.update==1" size="mini" type="success" @click="updatenowdata(scope.row)">确定</el-button>
-         <el-button v-if="hasPerm('110604') && scope.row.update==1" size="mini" type="info" @click="cancleeditClick(scope.row)">取消</el-button>
+         <el-button v-if="hasPerm('112004') && scope.row.update==1" size="mini" type="success" @click="updatenowdata(scope.row)">确定</el-button>
+         <el-button v-if="hasPerm('112004') && scope.row.update==1" size="mini" type="info" @click="cancleeditClick(scope.row)">取消</el-button>
       </template>
     </el-table-column>
   </el-table>
