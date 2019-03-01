@@ -267,6 +267,14 @@ export default {
         .then(response => {
           this.tableData = response.body.rows;
           this.total = Number(response.body.page.rows);
+          this.indexArry = [];
+          let obj = this.tableData[0]['logMms'];
+          let length = obj.length;
+          console.log(obj);
+          for(let i=0;i<length;i++){
+            this.indexArry.push(obj[i]['statCode'].substr(-2));
+          }
+          
         })
         .catch(error => {
           console.log(error);
@@ -318,7 +326,7 @@ export default {
   
     //获取月份数组
     getMonthAll(begin,end) {
-        this.indexArry = this.$common.getMonthAll(begin,end);   
+        //this.indexArry = this.$common.getMonthAll(begin,end);   
     },
 
     //根据传入数获取当前时间前后几月
@@ -336,6 +344,17 @@ export default {
        if(this.projectId.length>0){
          this.projectIds = this.projectId[this.projectId.length - 1];
        } 
+       
+       if(this.timeStart && this.endStart){
+         let start = new Date(this.timeStart).getTime();
+          let end = new Date(this.endStart).getTime();
+          if(end < start){
+            this.$message.error('检视结束时间必须大于等于检视开始时间');
+            return ;
+          }
+         
+       }
+       
        this.refreshList();
     },
   },
