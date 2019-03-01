@@ -11,11 +11,22 @@
       <el-button size="mini" type="success" @click="exportExcel">导出excel</el-button>
    </el-col>
    <el-col :span="14" class="lookProgress_btn1">
-     <el-input size="small" placeholder="选择检视时间范围"  v-on:click.native="openData" style="width:200px;"></el-input>
+     <!-- <el-input size="small" placeholder="选择检视时间范围"  v-on:click.native="openData" style="width:200px;"></el-input> -->
    </el-col>
    </el-row>
    <el-row class="lookProgress_row">
-   <el-col :span="15">
+   <el-col :span="24">
+     <!-- <el-date-picker size="small"
+      v-model="timeArr"
+      type="daterange"
+      :default-time="['00:00:00', '23:59:59']"
+      value-format="yyyy-MM"
+      range-separator="至"
+      start-placeholder="开始日期"
+      end-placeholder="结束日期">
+      </el-date-picker> -->
+      <el-date-picker size="small" :default-time="['00:00:00']" value-format="yyyy-MM-dd" v-model="timeStart" type="month" placeholder="开始检视时间" ></el-date-picker>
+      <el-date-picker size="small" :default-time="['23:59:59']" value-format="yyyy-MM-dd" v-model="endStart" type="month" placeholder="结束检视时间"></el-date-picker>
       <el-cascader change-on-select :show-all-levels="false" @change="projectchange" :options="listChildOrgInfoList" @blur="clearmodel()" v-model="projectId" :props="defaultProps1" size="small" placeholder="请选择项目" clearable></el-cascader>
      <el-cascader change-on-select :show-all-levels="false" :options="roginTreeList" @blur="clearmodel()" v-model="regionId" :props="defaultProp" size="small" placeholder="请选择施工区段" clearable></el-cascader>
     <el-button size="mini" type="success" @click="resarchInfo" style="margin-left:30px;" plain>搜索</el-button>
@@ -89,6 +100,8 @@ export default {
   name: "lookProgress",
   data() {
     return {
+      timeStart:'',
+      endStart:'',
       multipleSelection: [],
       valueData:{
          value1:null,
@@ -248,8 +261,8 @@ export default {
         offset: this.pagesize,
         projectId: this.projectIds,
         regionId: this.regionIds,
-        startTime:this.valueData.value1,
-        endTime:this.valueData.value2
+        startTime:this.timeStart,
+        endTime:this.endStart,
       })
         .then(response => {
           this.tableData = response.body.rows;
@@ -299,6 +312,8 @@ export default {
      this.projectId = [];
      this.regionIds = null;
      this.projectIds = null;
+     this.timeStart = '';
+     this.endStart = '';
     },
   
     //获取月份数组
