@@ -270,7 +270,9 @@ export default {
           this.indexArry = [];
           let obj = this.tableData[0]['logMms'];
           let length = obj.length;
-          console.log(obj);
+          if(length<=0){
+            this.indexArry.push(new Date().toISOString().substr(0,10).substr(-2));
+          }
           for(let i=0;i<length;i++){
             this.indexArry.push(obj[i]['statCode'].substr(-2));
           }
