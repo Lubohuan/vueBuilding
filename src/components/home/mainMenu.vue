@@ -273,7 +273,8 @@ export default {
         this.$nextTick(()=>{
                 this.isRouterAlive = true;
         }) ;
-        this.$store.dispatch('getChildlistOrgInfoList');             
+        this.$store.dispatch('getChildlistOrgInfoList');   
+                 
       },
 
       //获取用户权限码

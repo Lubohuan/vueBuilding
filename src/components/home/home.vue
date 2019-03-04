@@ -32,18 +32,30 @@ export default {
         label: "label"
       },
       company:{
-          id: 1,
+          id: -1,
           label: "企业级管理看板",
           path:"/enterpriseCommandCenter",
           code:"110101"
       },
       project: {
-          id: 2,
+          id: -2,
           label: "项目管理看板",
           path:"/commandCentre",
           code:"110101"
       },
       data2: [
+        {
+          id: -1,
+          label: "企业级管理看板",
+          path:"/enterpriseCommandCenter",
+          code:"110101"
+        },
+        {
+          id: -2,
+          label: "项目管理看板",
+          path:"/commandCentre",
+          code:"110101"
+        },
         {
           id: 3,
           label: "施工区段管理",
@@ -243,15 +255,46 @@ export default {
   async created(){
     await this.getUserInfo();
     await this.getUserPermission();
-    // if(sessionStorage.getItem("orgType")){
-    //   this.orangeType = sessionStorage.getItem("orgType");
-    // }
+    console.log(this.companyType);
+   
+  //  if(this.companyType == 2||this.companyType == 3){
+  //     this.data2.unshift(this.company);
+  //   }
+  //   else if(this.companyType == 4){
+  //     this.data2.unshift(this.project);
+  //   }
+  //   else if(this.companyType == 1){
+  //     this.data2.unshift(this.project);
+  //     this.data2.unshift(this.company);
+  //   }
+   if(this.companyType == 2||this.companyType == 3){
+      // this.data2.unshift(this.company);//企业级的
+      this.data2.splice(1,1);
+    }
+    else if(this.companyType == 4){
+      // this.data2.unshift(this.project);//项目级的
+      this.data2.splice(0,1);
+    }
+    else if(this.companyType == 1){
+      // this.data2.unshift(this.project);
+      // this.data2.unshift(this.company);
+    }
+    console.log(this.data2);
     if(this.companyType == 2||this.companyType== 3){
       let nowRouter = localStorage.getItem('nowRouter');
       let index = localStorage.getItem('nowRouterIndex');
       if(nowRouter && index){
-        this.$router.push({path:nowRouter});
-        setTimeout(()=>{this.$refs.tree2.setCurrentKey(index)},100);
+        if(index>0){
+          this.$router.push({path:nowRouter});
+          setTimeout(()=>{this.$refs.tree2.setCurrentKey(index)},100);
+        }else{
+          localStorage.setItem('nowRouter', '/enterpriseCommandCenter');
+          localStorage.setItem('nowRouterIndex', '-1');
+          this.$router.push({path:'/enterpriseCommandCenter'});
+          // this.$router.push({path:nowRouter});
+          setTimeout(()=>{this.$refs.tree2.setCurrentKey(-1)},100);
+        }
+        
       }else{
         localStorage.setItem('nowRouter', '/enterpriseCommandCenter');
         localStorage.setItem('nowRouterIndex', '-1');
@@ -264,24 +307,24 @@ export default {
       let nowRouter = localStorage.getItem('nowRouter');
       let index = localStorage.getItem('nowRouterIndex');
       if(nowRouter){
-        this.$router.push({path:nowRouter});
-        setTimeout(()=>{this.$refs.tree2.setCurrentKey(index)},100);
+        if(index>0){
+          this.$router.push({path:nowRouter});
+          setTimeout(()=>{this.$refs.tree2.setCurrentKey(index)},100);
+        }else{
+          localStorage.setItem('nowRouter', '/commandCentre');
+          localStorage.setItem('nowRouterIndex', '-2');
+          this.$router.push({path:'/commandCentre'});
+          // this.$router.push({path:nowRouter});
+          setTimeout(()=>{this.$refs.tree2.setCurrentKey(-2)},100);
+        }
+        
       }else{
         localStorage.setItem('nowRouter', '/commandCentre');
-        localStorage.setItem('nowRouterIndex', '-1');
+        localStorage.setItem('nowRouterIndex', '-2');
         this.$router.push({path:'/commandCentre'});
       }
     }  
-    if(this.companyType == 2||this.companyType == 3){
-      this.data2.unshift(this.company);
-    }
-    else if(this.companyType == 4){
-      this.data2.unshift(this.project);
-    }
-    else if(this.companyType == 1){
-      this.data2.unshift(this.project);
-      this.data2.unshift(this.company);
-    }
+    
     //this.data3 = JSON.parse(JSON.stringify(this.data2));
     for(var i=0;i<this.data2.length;i++){
       if(this.hasPerm(this.data2[i].code)){

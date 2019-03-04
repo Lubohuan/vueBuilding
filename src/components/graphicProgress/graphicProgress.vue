@@ -8,7 +8,7 @@
   </el-breadcrumb>
   <el-row>
    <el-col :span="10">
-      <el-button v-if="hasPerm('111002')" size="mini" type="primary" @click="addProgress">+新增形象进度统计项</el-button>
+      <!-- <el-button v-if="hasPerm('111002')" size="mini" type="primary" @click="addProgress">+新增形象进度统计项</el-button> -->
       <el-button size="mini" type="success" @click="exportExcel">导出excel</el-button>
    </el-col>
    <!-- <el-col :span="14" class="graphicProgress_btn1">
