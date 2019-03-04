@@ -96,8 +96,8 @@
       <el-table-column 
         label="结束时间" align="center" width="100">
         <template slot-scope="scope">
-          <span v-if="scope.row.startTime == null">--</span>
-          <span v-else>{{ scope.row.startTime.substr(0,10) }}</span> 
+          <span v-if="scope.row.endTime == null">--</span>
+          <span v-else>{{ scope.row.endTime.substr(0,10) }}</span> 
         </template>
       </el-table-column>
       <el-table-column 
