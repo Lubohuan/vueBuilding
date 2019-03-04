@@ -151,7 +151,7 @@
       </el-table-column>
       
       <el-table-column 
-        label="完成比例"  header-align="center" align="left">
+        label="完成比例"  header-align="center" align="left" width="120">
         <template slot-scope="scope">
           <el-progress v-if="!scope.row.finishOutputRate" :stroke-width="13"  :percentage="0"></el-progress>
           <el-progress v-else :stroke-width="13" :percentage="$common.fomatPrecent(Number(scope.row.finishOutputRate))"></el-progress>
