@@ -69,7 +69,7 @@
           </el-tooltip>
         </template>
       </el-table-column>
-      <el-table-column  width="300"
+      <el-table-column  width="300" header-align="center" align="left"
         label="名称"  show-overflow-tooltip>
         <template slot-scope="scope">
           <div class="treetablecon" >
@@ -109,7 +109,7 @@
         </template>
       </el-table-column>
       <el-table-column 
-        label="完成比例"  align="center">
+        label="完成比例"  align="left" width="100" header-align="center" >
         <template slot-scope="scope">
           <el-progress v-if="!scope.row.profileFinishOutputRate" :stroke-width="13"  :percentage="0"></el-progress>
           <el-progress v-else :stroke-width="13" :percentage="$common.fomatPrecent(Number(scope.row.profileFinishOutputRate))"></el-progress>
@@ -133,7 +133,7 @@
         </template>
       </el-table-column>
       <el-table-column 
-        label="年完成比例"  align="left">
+        label="年完成比例"  header-align="center" align="left">
         <template slot-scope="scope">
          <el-progress v-if="!scope.row.yearFinishOutputRate" :stroke-width="13"  :percentage="0"></el-progress>
         <el-progress v-else :stroke-width="13" :percentage="$common.fomatPrecent(Number(scope.row.yearFinishOutputRate))"></el-progress>

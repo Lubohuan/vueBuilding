@@ -61,7 +61,7 @@
           </el-tooltip>
         </template>
       </el-table-column>
-      <el-table-column  width="300"
+      <el-table-column  width="300" header-align="center" align="left"
         label="名称"  show-overflow-tooltip>
         <template slot-scope="scope">
           <div class="treetablecon" >
@@ -123,8 +123,8 @@
       </el-table-column>
 
     <el-table-column 
-        label="完成比例"  align="left">
-        <template slot-scope="scope">
+        label="完成比例" header-align="center" align="left"  min-width="120" >
+        <template slot-scope="scope" style="text-align:left !important;">
           <el-progress v-if="!scope.row.profileFinishOutputRate" :stroke-width="13"  :percentage="0"></el-progress>
           <el-progress v-else :stroke-width="13" :percentage="$common.fomatPrecent(Number(scope.row.profileFinishOutputRate))"></el-progress>
         </template>
@@ -537,9 +537,11 @@ export default {
   }
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 @import "planTotal.scss";
-
+.tr_title{
+  text-align: center ;
+}
 .tableCol{
   overflow: hidden;
   text-overflow: ellipsis;
@@ -571,4 +573,5 @@ export default {
 .text{
     cursor:pointer;
 }
+
 </style>
